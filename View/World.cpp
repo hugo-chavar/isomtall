@@ -103,10 +103,10 @@ model::World::~World() {
 }
 
 //arranca el namespace view (lo de arriba a esta linea deberia ser eliminado completamente). Hugo
-World::World() {
+view::World::World() {
 }
 
-void World::render(model::Camera& camera) {
+void view::World::render(model::Camera& camera) {
 	//TODO: Fix this function.
 	unsigned int horizontalTilesInCamera = ceil(static_cast<float>(camera.getWidth()) / worldModel.getTileWidth()) + 1;
 	unsigned int verticalTilesInCamera = ceil(static_cast<float>(camera.getHeight()) / worldModel.getTileHeight()) + 1;
@@ -142,5 +142,5 @@ void World::render(model::Camera& camera) {
 	}
 }
 
-World::~World() {
+view::World::~World() {
 }

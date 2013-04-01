@@ -4,7 +4,7 @@
 #include "SDL.h"
 #include "Camera.h"
 #include "World.h"
-#include "Stage.h"
+//#include "Stage.h"
 
 using namespace view;
 using namespace model;
