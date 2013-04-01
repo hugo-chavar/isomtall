@@ -5,61 +5,65 @@
 #include <utility>
 #include "Tile.h"
 #include "Camera.h"
+//#include "Stage.h" hay q resolver el tema del Tile antes de usar esto
+
+
+using namespace model;
 
 namespace model {
 
 	class World {
-		private:
-			// TODO: Test with width != height.
-			//X axis world dimension in tiles
-			unsigned int dimentionX;
+	private:
+		// TODO: Test with width != height.
+		//X axis world dimension in tiles
+		unsigned int dimentionX;
 
-			//Y axis world dimension in tiles
-			unsigned int dimentionY;
+		//Y axis world dimension in tiles
+		unsigned int dimentionY;
 
-			//World's tiles height
-			unsigned int tileHeight;
+		//World's tiles height
+		unsigned int tileHeight;
 
-			//World's tiles width
-			unsigned int tileWidth;
+		//World's tiles width
+		unsigned int tileWidth;
 
-			std::vector<model::Tile*> tileArray;
+		std::vector<model::Tile*> tileArray;
 
-			void setDimentionX(unsigned int dimentionX);
+		void setDimentionX(unsigned int dimentionX);
 
-			void setDimentionY(unsigned int dimentionY);
+		void setDimentionY(unsigned int dimentionY);
 
-			void setTileHeight(unsigned int tileHeight);
+		void setTileHeight(unsigned int tileHeight);
 
-			void setTileWidth(unsigned int tileWidth);
+		void setTileWidth(unsigned int tileWidth);
 
-		public:
-			World();
+	public:
+		World();
 
-			unsigned int getDimentionX();
+		unsigned int getDimentionX();
 
-			unsigned int getDimentionY();
+		unsigned int getDimentionY();
 
-			unsigned int getTileHeight();
+		unsigned int getTileHeight();
 
-			unsigned int getTileWidth();
+		unsigned int getTileWidth();
 
-			std::vector<model::Tile*>& getTileArray();
+		std::vector<model::Tile*>& getTileArray();
 
-			void addTile(model::Tile* tile);
+		void addTile(model::Tile* tile);
 
-			void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
+		void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
 
-			void update();
+		void update();
 
-			//TODO: Utility function. Might be unnecessary.
-			std::pair<int,int> tileToPixelCoordinates(std::pair<int,int> tileCoordinates);
+		//TODO: Utility function. Might be unnecessary.
+		std::pair<int,int> tileToPixelCoordinates(std::pair<int,int> tileCoordinates);
 
-			std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
+		std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
 
-			void cleanUp();
+		void cleanUp();
 
-			~World();
+		~World();
 	};
 
 } // namespace model
@@ -67,15 +71,18 @@ namespace model {
 namespace view {
 
 	class World {
-		public:
-			World();
+	public:
+		World();
 
-			model::World worldModel; //porque dentro de la clase esta declarado un objeto de la misma clase?? Hugo
+		model::World worldModel;
 
-			//TODO: the camera should be retrieved from the model.
-			void render(model::Camera& camera);
+		// model::World worldModel; se reemplaza por Stage
+		//Stage stage; hay q resolver el tema del Tile antes de usar esto
 
-			~World();
+		//TODO: the camera should be retrieved from the model.
+		void render(model::Camera& camera);
+
+		~World();
 	};
 
 } // namespace view
