@@ -1,2 +1,2 @@
 
-typedef std::pair<int,int> Key;
+typedef std::pair<unsigned int,unsigned int> Key;
