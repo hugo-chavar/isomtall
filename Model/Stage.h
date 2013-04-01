@@ -1,5 +1,5 @@
 #include <map>
-#include "..\Common\DataTypes.h" //de aca viene el tipo de datos Key
+#include "..\Common\DataTypes.h" 
 #include "Tile.h"
 
 using namespace std;
