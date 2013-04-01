@@ -2,10 +2,17 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "View", "View\View.vcxproj", "{1E54591B-F570-44E3-A78D-A8025CA47CD9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{746EE20C-33A8-41E5-8DBF-EB3A15229599} = {746EE20C-33A8-41E5-8DBF-EB3A15229599}
+		{212F5671-8725-44EA-B548-EBD7852B6D5E} = {212F5671-8725-44EA-B548-EBD7852B6D5E}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{746EE20C-33A8-41E5-8DBF-EB3A15229599}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Model", "Model\Model.vcxproj", "{212F5671-8725-44EA-B548-EBD7852B6D5E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{746EE20C-33A8-41E5-8DBF-EB3A15229599} = {746EE20C-33A8-41E5-8DBF-EB3A15229599}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
