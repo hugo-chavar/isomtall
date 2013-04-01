@@ -83,11 +83,6 @@
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.vcxproj">
-      <Project>{746ee20c-33a8-41e5-8dbf-eb3a15229599}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
