@@ -4,8 +4,10 @@
 #include "SDL.h"
 #include "Camera.h"
 #include "World.h"
+#include "Stage.h"
 
 using namespace view;
+using namespace model;
 
 class Engine {
 	private:
@@ -21,6 +23,7 @@ class Engine {
 
 		//TODO: Create getter/setter
 		model::Camera camera;
+
 
 		bool isRunning();
 

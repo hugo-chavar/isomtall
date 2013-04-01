@@ -5,11 +5,9 @@
 using namespace common;
 
 int main(int argc, char *argv[]) {
-	Logger::instance().setFile("hola.log");
-	Logger::instance().log("Hola mundo");
+	Logger::instance().setFile(LOGFILE);
+	Logger::instance().log("Iniciando el juego..");
     Engine engine;
-
-	//engine.initialize();
  
 	return engine.execute();
 }
