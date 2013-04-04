@@ -65,14 +65,22 @@
   <ItemGroup>
     <ClCompile Include="AnimatedEntity.cpp" />
     <ClCompile Include="EntityObject.cpp" />
+    <ClCompile Include="ListaPath.cpp" />
     <ClCompile Include="MovilEntity.cpp" />
+    <ClCompile Include="Nodo.cpp" />
+    <ClCompile Include="Par.cpp" />
+    <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedEntity.h" />
     <ClInclude Include="EntityObject.h" />
+    <ClInclude Include="ListaPath.h" />
     <ClInclude Include="MovilEntity.h" />
+    <ClInclude Include="Nodo.h" />
+    <ClInclude Include="Par.h" />
+    <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
