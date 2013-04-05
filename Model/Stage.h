@@ -1,7 +1,11 @@
+#ifndef _STAGE_H_
+#define _STAGE_H_
+
 #include <map>
 #include "..\Common\Logger.h"
 #include "..\Common\DataTypes.h" 
 #include "Tile.h"
+#include "Par.h"
 
 using namespace std;
 using namespace common;
@@ -20,8 +24,10 @@ namespace model
 		unsigned int tileWidth(); 
 		unsigned int tileHeight();
 		void tileWidth(unsigned int);
+		//void setEntities(vector<> v);
 		void tileHeight(unsigned int);
 		void addTile(unsigned int, unsigned int, Tile*);
+		unsigned int cost(unsigned int, unsigned int);
 		void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
 		void update();
 	private:
@@ -29,6 +35,7 @@ namespace model
 		unsigned int _height;
 		unsigned int _tileWidth;
 		unsigned int _tileHeight;
+
 		map<Key,Tile*> scene;
 
 		//para insertar (no testeado) en scene un tile en la pos x=12, y=20:
@@ -39,3 +46,4 @@ namespace model
 	
 
 }
+#endif //_STAGE_H_

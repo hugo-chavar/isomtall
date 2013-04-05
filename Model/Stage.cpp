@@ -45,6 +45,10 @@ void Stage::addTile(unsigned int x, unsigned int y, Tile* tile) {
 	scene.insert(make_pair(position, tile)); //se podria chequear errores aca.. que no vengan repetidas las posiciones
 }
 
+unsigned int Stage::cost(unsigned int x, unsigned int y){
+	return 1;
+}
+
 void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tHeight, unsigned int tWidth){
 	width(dimentionX);
 	height(dimentionY);

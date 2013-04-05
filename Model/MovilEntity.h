@@ -1,3 +1,6 @@
+#ifndef _MOVILENTITY_H_
+#define _MOVILENTITY_H_
+
 #include "EntityObject.h"
 
 namespace model
@@ -15,3 +18,4 @@ namespace model
 	};
 
 }
+#endif //_MOVILENTITY_H_

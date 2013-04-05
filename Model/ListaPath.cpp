@@ -1,5 +1,7 @@
 #include "ListaPath.h"
 
+using namespace model;
+
 ListaPath::ListaPath() {
 }
 

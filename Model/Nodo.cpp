@@ -1,5 +1,7 @@
 #include "Nodo.h"
 
+using namespace model;
+
 Nodo::Nodo() {
 	posX = 0;
 	posY = 0;

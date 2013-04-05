@@ -70,8 +70,8 @@ void model::Camera::update() {
 
 	SDL_GetMouseState(&x,&y);
 
-	if (x > (this->getWidth() - this->getScrollBoxSize())) {
-		newOffset = ceil(this->getOffsetX() + this->getScrollSpeed() * model::TimeManager::getDeltaTime());
+	if (x > int(this->getWidth() - this->getScrollBoxSize())) {
+		newOffset = int(ceil(this->getOffsetX() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
 		//TODO: harcoded value. Mus be obtained from the model.
 		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
@@ -80,8 +80,8 @@ void model::Camera::update() {
 		this->setOffsetX(newOffset);
 	}
 
-	if (x < this->getScrollBoxSize()) {
-		newOffset = ceil(this->getOffsetX() - this->getScrollSpeed() * model::TimeManager::getDeltaTime());
+	if (x < int(this->getScrollBoxSize())) {
+		newOffset = int(ceil(this->getOffsetX() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
 		//TODO: harcoded value. Mus be obtained from the model.
 		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
@@ -90,8 +90,8 @@ void model::Camera::update() {
 		this->setOffsetX(newOffset);
 	}
 
-	if (y > (this->getHeight() - this->getScrollBoxSize())) {
-		newOffset = ceil(this->getOffsetY() + this->getScrollSpeed() * model::TimeManager::getDeltaTime());
+	if (y > int(this->getHeight() - this->getScrollBoxSize())) {
+		newOffset = int(ceil(this->getOffsetY() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
 		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetY();
@@ -99,8 +99,8 @@ void model::Camera::update() {
 		this->setOffsetY(newOffset);
 	}
 
-	if (y < this->getScrollBoxSize()) {
-		newOffset = ceil(this->getOffsetY() - this->getScrollSpeed() * model::TimeManager::getDeltaTime());
+	if (y < int(this->getScrollBoxSize())) {
+		newOffset = int(ceil(this->getOffsetY() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
 		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetY();
@@ -126,5 +126,5 @@ std::pair<int,int> model::Camera::pixelToTileCoordinates(std::pair<int,int> pixe
 	a = (static_cast<float>(pixelCoordinates.second) / 31);
 	b = (static_cast<float>(c) / 62);
 
-	return std::make_pair<int,int>(a + b,a - b);
+	return std::make_pair<int,int>(int(a + b),int(a - b));
 }

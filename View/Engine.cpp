@@ -18,7 +18,7 @@ unsigned int Engine::getDesiredFPS() {
 }
 
 int Engine::execute() {
-	float milisecondsTonextFrame = 1000.0/this->getDesiredFPS();
+	double milisecondsTonextFrame = 1000.0/this->getDesiredFPS();
 	unsigned int frameStartedAt = 0;
 	SDL_Event sdlEvent;
 
@@ -37,7 +37,7 @@ int Engine::execute() {
 		this->render();
 
 		if (milisecondsTonextFrame >= SDL_GetTicks() - frameStartedAt)
-			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
+			SDL_Delay(int(milisecondsTonextFrame) - (SDL_GetTicks() - frameStartedAt));
 	}
 
 	this->cleanUp();
@@ -51,7 +51,7 @@ void Engine::initialize() {
 
 	worldView.worldModel.initialize(30,30,62,31);
 
-	this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.getTileWidth() * this->worldView.worldModel.getDimentionX() / 2) - 400,(this->worldView.worldModel.getTileHeight() * this->worldView.worldModel.getDimentionY() / 2) - 300);
+	this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.tileWidth() * this->worldView.worldModel.width() / 2) - 400,(this->worldView.worldModel.tileHeight() * this->worldView.worldModel.height() / 2) - 300);
 
 	this->loadLevel();
 }
@@ -87,7 +87,7 @@ void Engine::cleanUp() {
 
 void Engine::loadLevel() {
 	//TODO: Mock harcoded function.
-	model::Tile* tile = NULL;
+	TileView* tile = NULL;
 	SDL_Surface* tileSet = NULL;
 	unsigned int tileSetOffsetX = 0;
 	unsigned int tileSetOffsetY = 0;
@@ -98,9 +98,9 @@ void Engine::loadLevel() {
 
 	tileSet = Surface::loadFromBMP("../images/tiles.bmp");
 
-	for (unsigned int i = 0; i < this->worldView.worldModel.getDimentionX() * this->worldView.worldModel.getDimentionY(); i++) {
-		tile = new model::Tile(tileSet,tileSetOffsetX,tileSetOffsetY,this->worldView.worldModel.getTileHeight(),this->worldView.worldModel.getTileWidth(),0,tileCenterX,tileCenterY);
-		this->worldView.worldModel.addTile(tile);
+	for (unsigned int i = 0; i < this->worldView.worldModel.width() * this->worldView.worldModel.width(); i++) {
+		tile = new TileView(tileSet,tileSetOffsetX,tileSetOffsetY,this->worldView.worldModel.tileHeight(),this->worldView.worldModel.tileWidth(),0,tileCenterX,tileCenterY);
+		this->worldView.addTile(tile);
 	}
 
 	SDL_FreeSurface(tileSet);
