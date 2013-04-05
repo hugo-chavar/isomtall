@@ -2,6 +2,9 @@
 
 using namespace model;
 
+EntityObject::EntityObject(){
+}
+
 int EntityObject::positionX()
 {
 	return _positionX;

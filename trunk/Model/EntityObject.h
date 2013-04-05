@@ -1,3 +1,6 @@
+#ifndef _ENTITYOBJECT_H_
+#define _ENTITYOBJECT_H_
+
 #include <string>
 
 using namespace std;
@@ -8,6 +11,7 @@ namespace model
 	{
 
 	public:
+		EntityObject();
 		int positionX(); //este es el get
 		int positionY();//este es el get
 		void position(int,int); //este es el set
@@ -20,3 +24,5 @@ namespace model
 	};
 
 }
+
+#endif //_ENTITYOBJECT_H_

@@ -1,5 +1,7 @@
 #include "Par.h"
 
+using namespace model;
+
 Par::Par() {
 	X = 0;
 	Y = 0;

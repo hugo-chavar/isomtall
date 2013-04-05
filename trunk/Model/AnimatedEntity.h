@@ -1,3 +1,6 @@
+#ifndef _ANIMATEDENTITY_H_
+#define _ANIMATEDENTITY_H_
+
 #include "EntityObject.h"
 
 namespace model
@@ -15,3 +18,5 @@ namespace model
 	};
 
 }
+
+#endif //_ANIMATEDENTITY_H_
