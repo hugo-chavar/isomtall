@@ -2,6 +2,14 @@
 
 using namespace model;
 
+
+
+AnimatedEntity::AnimatedEntity() {
+	// DEFINIR _fps, _delay
+}
+
+AnimatedEntity::~AnimatedEntity() { }
+
 int AnimatedEntity::fps()
 {
 	return _fps;

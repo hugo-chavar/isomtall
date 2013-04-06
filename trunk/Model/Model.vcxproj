@@ -66,6 +66,7 @@
     <ClCompile Include="AnimatedEntity.cpp" />
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="ListaPath.cpp" />
+    <ClCompile Include="MainCharacter.cpp" />
     <ClCompile Include="MovilEntity.cpp" />
     <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="Par.cpp" />
@@ -78,6 +79,7 @@
     <ClInclude Include="AnimatedEntity.h" />
     <ClInclude Include="EntityObject.h" />
     <ClInclude Include="ListaPath.h" />
+    <ClInclude Include="MainCharacter.h" />
     <ClInclude Include="MovilEntity.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
