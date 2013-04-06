@@ -2,6 +2,9 @@
 #include <cstdlib>
 #include "Pathfinder.h"
 
+using namespace model;
+
+
 PersonajeModelo::PersonajeModelo() {
 	current.first = 0;
 	current.second = 0;
