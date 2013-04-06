@@ -1,9 +1,9 @@
 #include "PersonajeModelo.h"
 #include <cstdlib>
 #include "Pathfinder.h"
+#include "PersonajeConstantes.h"
 
 using namespace model;
-
 
 PersonajeModelo::PersonajeModelo() {
 	current.first = 0;
@@ -14,9 +14,11 @@ PersonajeModelo::PersonajeModelo() {
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
+	estado = PARADO_S;
+	mundo = NULL;
 }
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -25,6 +27,8 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
+	this->estado = estado;
+	mundo = worldModel;
 }
 
 void PersonajeModelo::setCurrent(int x, int y) {
@@ -35,6 +39,14 @@ void PersonajeModelo::setCurrent(int x, int y) {
 void PersonajeModelo::setDestino(int x, int y) {
 	target.first = x;
 	target.second = y;
+}
+
+void PersonajeModelo::setEstado(int state) {
+	estado = state;
+}
+
+void PersonajeModelo::setStage(Stage* worldModel) {
+	mundo = worldModel;
 }
 
 int PersonajeModelo::mover(std::pair<int, int>& destino) {
@@ -52,8 +64,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino) {
 			xPath = NULL;
 			yPath = NULL;
 		}
-		//TODO: Agregar el Mapa para pasarselo al pathfinder
-		//caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, , xPath, yPath);
+		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, mundo, xPath, yPath);
 		if (caminoSize <  0) {
 			return 0;
 		}
