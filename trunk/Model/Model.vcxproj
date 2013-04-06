@@ -84,6 +84,7 @@
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
     <ClInclude Include="Pathfinder.h" />
+    <ClInclude Include="PersonajeConstantes.h" />
     <ClInclude Include="PersonajeModelo.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Tile.h" />

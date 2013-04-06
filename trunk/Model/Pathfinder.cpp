@@ -9,7 +9,7 @@ using namespace model;
 #define MOV_PENALTY 10
 
 
-int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, int* &XPath, int* &YPath) { //, Foo &Tiles
+int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, Stage * worldModel, int* &XPath, int* &YPath) { //, Foo &Tiles
 	int actualX = OrigenX;
 	int actualY = OrigenY;
 	bool found = false;
@@ -36,7 +36,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 			found = true;
 			break;
 		}
-		agregarVecinos(*actual, DestinoX, DestinoY, closeList, openList); //, Tiles
+		agregarVecinos(*actual, DestinoX, DestinoY, worldModel, closeList, openList); //, Tiles
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
 	}
@@ -70,7 +70,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 	return tamano;
 }
 
-void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
+void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, Stage * worldModel, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
 	Par* posExplorar = NULL;
 	Nodo* nuevoNodo = NULL;
 	int alto = 0;
@@ -84,8 +84,8 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 	unsigned int GCost = 0;
 	unsigned int HCost = 0;
 
-	alto = this->worldModel->height();
-	ancho = this->worldModel->width();
+	alto = worldModel->height();
+	ancho = worldModel->width();
 	actual.getPos(actualX, actualY);
 	explorarX = explorarX + actualX;
 	explorarY = actualY + explorarY;
@@ -105,7 +105,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		if (((explorarX < 0)||(explorarX > ancho))||((explorarY < 0)||(explorarY > alto))) {
 			continue;
 		}
-		coste = this->worldModel->cost(explorarX, explorarY);
+		coste = worldModel->cost(explorarX, explorarY);
 		if (coste == 0) {
 			continue;
 		}
@@ -138,10 +138,11 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 
 
 unsigned int Pathfinder::calcularGCost (unsigned int padre, int posX, int posY, double coste) {
+	unsigned int costeRed = 0;
 
 	coste = MOV_PENALTY/coste;
-	return (unsigned(std::floor(coste + padre))); // tratar de eliminar el warning 
-//1>c:\users\hugow7\documents\visual studio 2010\projects\tptaller\model\pathfinder.cpp(142): warning C4244: 'return' : conversión de 'double' a 'unsigned int'; posible pérdida de datos
+	costeRed = (unsigned)std::floor(coste);
+	return (costeRed + padre); 
 }
 
 unsigned int Pathfinder::calcularHeuristica(int posX, int posY, int DestinoX, int DestinoY) {
