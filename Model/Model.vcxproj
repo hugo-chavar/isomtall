@@ -70,6 +70,7 @@
     <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="Par.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
+    <ClCompile Include="PersonajeModelo.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Tile.cpp" />
   </ItemGroup>
@@ -81,6 +82,7 @@
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
     <ClInclude Include="Pathfinder.h" />
+    <ClInclude Include="PersonajeModelo.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
