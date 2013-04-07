@@ -20,6 +20,8 @@ public:
 	int mover(std::pair<int, int>& destino);	//Devuelve el estado, que son las orientaciones
 	~PersonajeModelo();
 private:
+	int cambiarEstado(int x, int y, int cambio);
+	int comparadorOctario(int x, int y);
 	std::pair<int, int> current;
 	std::pair<int, int> target;
 	int* xPath;

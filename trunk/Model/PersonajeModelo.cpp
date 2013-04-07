@@ -3,6 +3,15 @@
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
 
+#define NORTE 0
+#define NORESTE 1
+#define NOROESTE 2
+#define SUR 3
+#define SUDESTE 4
+#define SUDOESTE 5
+#define ESTE 6
+#define OESTE 7
+
 using namespace model;
 
 PersonajeModelo::PersonajeModelo() {
@@ -51,9 +60,21 @@ void PersonajeModelo::setStage(Stage* worldModel) {
 
 int PersonajeModelo::mover(std::pair<int, int>& destino) {
 	Pathfinder pathF;
+	int cambio = SIN_CAMBIO;
 
+	if (mundo == NULL) {
+		if ((estado<10) || (estado>19)) {
+			cambio = ESTADO_MOVIMIENTO;
+		}
+		estado = cambiarEstado(current.first, current.second, cambio);
+		return estado;
+	}
 	if (target == current) {
-		return 0;
+		if ((estado<10) || (estado>19)) {
+			cambio = ESTADO_MOVIMIENTO;
+		}
+		estado = cambiarEstado(current.first, current.second, cambio);
+		return estado;
 	}
 	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=target.first)&&(yPath[caminoSize-1]!=target.second))) {
 		posMov = 0;
@@ -66,7 +87,11 @@ int PersonajeModelo::mover(std::pair<int, int>& destino) {
 		}
 		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, mundo, xPath, yPath);
 		if (caminoSize <  0) {
-			return 0;
+			if ((estado<10) || (estado>19)) {
+				cambio = ESTADO_MOVIMIENTO;
+			}
+			estado = cambiarEstado(current.first, current.second, cambio);
+			return estado;
 		}
 	}
 	if (posMov < caminoSize) {
@@ -74,9 +99,66 @@ int PersonajeModelo::mover(std::pair<int, int>& destino) {
 		destino.second = yPath[posMov];
 		posMov++;
 	} else {
-		return 0;
+		if ((estado<10) || (estado>19)) {
+			cambio = ESTADO_MOVIMIENTO;
+		}
+		estado = cambiarEstado(target.first, target.second, cambio);
+		return estado;
 	}
-	return 1;
+	cambio = ESTADO_MOVIMIENTO;
+	estado = cambiarEstado(destino.first, destino.second, cambio);
+	return estado;
+}
+
+int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
+	if (cambio==SIN_CAMBIO) {
+		return estado;
+	}
+	if((x==current.first)&&(y==current.second)&&(cambio==ESTADO_MOVIMIENTO)){
+		return (estado-FACTOR_ORIENTACION);
+	}
+	switch (comparadorOctario(x, y)) {
+	case NORTE: return CAMINANDO_N;
+	case NORESTE: return CAMINANDO_NE;
+	case NOROESTE: return CAMINANDO_NOE;
+	case SUR: return CAMINANDO_S;
+	case SUDESTE: return CAMINANDO_SE;
+	case SUDOESTE: return CAMINANDO_SOE;
+	case ESTE: return CAMINANDO_E;
+	case OESTE: return CAMINANDO_O;
+	default: return ERROR;
+	}
+}
+
+int PersonajeModelo::comparadorOctario(int x, int y) {
+	int xCurr = current.first;
+	int yCurr = current.second;
+	
+	if ((x < xCurr)&&(y < yCurr)) {
+		return NORTE;
+	}
+	if ((x == xCurr)&&(y < yCurr)) {
+		return NORESTE;
+	}
+	if ((x > xCurr)&&(y < yCurr)) {
+		return ESTE;
+	}
+	if ((x < xCurr)&&(y == yCurr)) {
+		return NOROESTE;
+	}
+	if ((x > xCurr)&&(y == yCurr)) {
+		return SUDESTE;
+	}
+	if ((x < xCurr)&&(y > yCurr)) {
+		return OESTE;
+	}
+	if ((x == xCurr)&&(y > yCurr)) {
+		return SUDOESTE;
+	}
+	if ((x > xCurr)&&(y > yCurr)) {
+		return SUR;
+	}
+	return ERROR;
 }
 
 PersonajeModelo::~PersonajeModelo(){
