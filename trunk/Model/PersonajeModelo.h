@@ -12,13 +12,14 @@ class PersonajeModelo {
 
 public:
 	PersonajeModelo();
-	PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel);
+	PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, int velocidad);
 	void setStage(Stage* worldModel);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
-	int mover(std::pair<int, int>& destino);	//Devuelve el estado, que son las orientaciones
-	~PersonajeModelo();
+	void setVelocidad(int vel);
+	int mover(std::pair<int, int>& destino, int &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
+	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
 private:
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);
@@ -29,6 +30,7 @@ private:
 	int posMov;
 	int caminoSize;
 	int estado;
+	int velocidad;
 	Stage* mundo;
 };
 }

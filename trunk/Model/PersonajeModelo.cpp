@@ -24,10 +24,11 @@ PersonajeModelo::PersonajeModelo() {
 	posMov = 0;
 	caminoSize = 0;
 	estado = PARADO_S;
+	velocidad = 1;
 	mundo = NULL;
 }
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, int velocidad) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -37,6 +38,7 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* wo
 	posMov = 0;
 	caminoSize = 0;
 	this->estado = estado;
+	this->velocidad = velocidad;
 	mundo = worldModel;
 }
 
@@ -58,9 +60,14 @@ void PersonajeModelo::setStage(Stage* worldModel) {
 	mundo = worldModel;
 }
 
-int PersonajeModelo::mover(std::pair<int, int>& destino) {
+void PersonajeModelo::setVelocidad(int vel) {
+	velocidad = vel;
+}
+
+int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
+	double coste;
 
 	if (mundo == NULL) {
 		if ((estado<10) || (estado>19)) {
@@ -97,6 +104,9 @@ int PersonajeModelo::mover(std::pair<int, int>& destino) {
 	if (posMov < caminoSize) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
+		coste = mundo->cost(xPath[posMov], yPath[posMov]);
+		coste = std::floor(this->velocidad/coste);
+		velocidad = (int) coste;
 		posMov++;
 	} else {
 		if ((estado<10) || (estado>19)) {
