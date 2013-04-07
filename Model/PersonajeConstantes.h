@@ -3,6 +3,16 @@
 #ifndef PERSONAJECONSTANTES_H
 #define PERSONAJECONSTANTES_H
 
+//Factor de separación. Permite que las orientaciones esten alineadas (p.e. norte siempre termina en 0)
+
+#define FACTOR_ORIENTACION 10
+
+//Cambios de estado
+
+#define ERROR -1;
+#define ESTADO_MOVIMIENTO 1
+#define SIN_CAMBIO 0
+
 //Parado esperando
 
 #define PARADO_N 10
@@ -19,11 +29,11 @@
 #define CAMINANDO_N 20
 #define CAMINANDO_NE 21
 #define CAMINANDO_NOE 22
-#define CAMINANDO_S 13
-#define CAMINANDO_SE 14
-#define CAMINANDO_SOE 15
-#define CAMIANNDO_E 16
-#define CAMINANDO_O 17
+#define CAMINANDO_S 23
+#define CAMINANDO_SE 24
+#define CAMINANDO_SOE 25
+#define CAMINANDO_E 26
+#define CAMINANDO_O 27
 
 
 
