@@ -11,7 +11,6 @@ unsigned int Stage::width(){
 }
 
 unsigned int Stage::height(){
-	Logger::instance().setFile("hola.log");
 	return _height;
 }
 

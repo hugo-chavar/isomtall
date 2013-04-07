@@ -4,68 +4,11 @@
 
 using namespace view;
 
-//desde aca todos los metodos fueron pasados al modelo en la clase Stage (Hugo)
-//model::World::World() {
-//	this->dimentionX = 0;
-//	this->dimentionY = 0;
-//	this->tileHeight = 0;
-//	this->tileWidth = 0;
-//}
-//
-//unsigned int model::World::getDimentionX() { //reemplazado por unsigned int width();
-//	return this->dimentionX;
-//}
-//
-//unsigned int model::World::getDimentionY() { //reemplazado por height()
-//	return this->dimentionY;
-//}
-//
-//void model::World::setDimentionX(unsigned int dimentionX) {
-//	this->dimentionX = dimentionX;
-//}
-//
-//void model::World::setDimentionY(unsigned int dimentionY) {
-//	this->dimentionY = dimentionY;
-//}
-//
-//unsigned int model::World::getTileWidth() {
-//	return this->tileWidth;
-//}
-//
-//void model::World::setTileWidth(unsigned int tileWidth) {
-//	this->tileWidth = tileWidth;
-//}
-//
-//unsigned int model::World::getTileHeight() {
-//	return this->tileHeight;
-//}
-//
-//void model::World::setTileHeight(unsigned int tileHeight) {
-//	this->tileHeight = tileHeight;
-//}
-
-//void model::World::addTile(Tile* tile) {
-//	this->getTileArray().push_back(tile);
-//}
-//
-//void model::World::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileWidth, unsigned int tileHeight) {
-//	this->setDimentionX(dimentionX);
-//	this->setDimentionY(dimentionY);
-//	this->setTileWidth(tileWidth);
-//	this->setTileHeight(tileHeight);
-//}
-//
-//void model::World::update() {
-//}
-
-
-std::vector<TileView*>& view::World::getTileArray() {
+std::vector<TileView*>& World::getTileArray() {
 	return this->tileArray;
 }
 
 
-//para dejar mas limpio el codigo reemplazar "std::pair<int,int>" por Key haciendo el siguiente include
-//#include "..\Common\DataTypes.h", luego si no alcanza la funcionalidad se hace una clase Key
 std::pair<int,int> World::tileToPixelCoordinates(std::pair<int,int> tileCoordinates) {
 	int pixelX;
 	int pixelY;
@@ -89,9 +32,7 @@ std::pair<int,int> World::pixelToTileCoordinates(std::pair<int,int> pixelCoordin
 	return std::make_pair<int,int>(int(a + b),int(a - b));
 }
 
-//me falta separar bien el tema de los tiles, con Andy nos reunimos a chequear esto
-//porque asi como está, esta medio mezclado.. pero lo acomodaremos sin cambiar la funcionalidad
-//Ultimo momento, dejo comentado porque da error durante la adaptacion del modelo
+
 //void model::World::cleanUp() {
 //	for (unsigned int i = 0; i < this->getTileArray().size(); i++) {
 //		this->getTileArray()[i]->cleanUp();
@@ -104,14 +45,14 @@ std::pair<int,int> World::pixelToTileCoordinates(std::pair<int,int> pixelCoordin
 //	}
 //}
 
-//arranca el namespace view (lo de arriba a esta linea deberia ser eliminado completamente). Hugo
-view::World::World() {
+
+World::World() {
 }
 
-void view::World::render(model::Camera& camera) {
+void World::render(model::Camera& camera) {
 	//TODO: Fix this function.
-	unsigned int horizontalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getWidth()) / worldModel.tileWidth())) + 1;
-	unsigned int verticalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getHeight()) / worldModel.tileHeight())) + 1;
+	unsigned int horizontalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getWidth()) / worldModel.tileWidth())) + 1; 
+	unsigned int verticalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getHeight()) / worldModel.tileHeight())) + 1; 
 	std::pair<int,int> cameraReferenceTile = this->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
 	std::pair<int,int> cameraReferencePixel = this->tileToPixelCoordinates(cameraReferenceTile);
 	unsigned Xt = 0; //Xt era int, estoy eliminando warnings
@@ -144,7 +85,7 @@ void view::World::render(model::Camera& camera) {
 	}
 }
 
-view::World::~World() {
+World::~World() {
 }
 
 void World::addTile(TileView* tile) {

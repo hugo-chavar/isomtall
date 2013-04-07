@@ -98,7 +98,7 @@ void Engine::loadLevel() {
 
 	tileSet = Surface::loadFromBMP("../images/tiles.bmp");
 
-	for (unsigned int i = 0; i < this->worldView.worldModel.width() * this->worldView.worldModel.width(); i++) {
+	for (unsigned int i = 0; i < this->worldView.worldModel.width() * this->worldView.worldModel.height(); i++) {
 		tile = new TileView(tileSet,tileSetOffsetX,tileSetOffsetY,this->worldView.worldModel.tileHeight(),this->worldView.worldModel.tileWidth(),0,tileCenterX,tileCenterY);
 		this->worldView.addTile(tile);
 	}
