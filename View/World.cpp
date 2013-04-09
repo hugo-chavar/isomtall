@@ -2,6 +2,7 @@
 
 #include "Surface.h"
 #include "EntityObject.h"
+#include "DataTypes.h"
 
 using namespace view;
 using namespace model;
@@ -88,10 +89,11 @@ void World::initialize()
 	//Sprite s("../images/","piso",1,32,0,0,0); constructor de copia
 	//for (int i = 0;
 	EntityObject entity = Game::instance().vEntitiesObject()[1];
+	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 	
 
 	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
-	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,32,0,0,0));
+	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,entity.pixelRefX(),entity.pixelRefY(),0,0));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 
@@ -100,10 +102,10 @@ void World::initialize()
 		for(int j=0; j<25;j++){
 			entityList.push_back(new Entity(i,j,spriteArray[0]));
 		}
-	entityList.push_back(new Entity(2,3,spriteArray[1]));
-	entityList.push_back(new Entity(15,2,spriteArray[2]));
-	entityList.push_back(new Entity(15,5,spriteArray[2]));
-	entityList.push_back(new Entity(15,10,spriteArray[2]));
+	entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1]));
+	entityList.push_back(new Entity(15,2,spriteArray[3]));
+	entityList.push_back(new Entity(15,5,spriteArray[3]));
+	entityList.push_back(new Entity(15,10,spriteArray[3]));
 
 }
 
