@@ -2,10 +2,10 @@
 #define _CAMERA_H_
 
 #include "SDL.h"
-
+#include "Sprite.h"
 #include <utility>
 
-namespace model {
+namespace view {
 
 	class Camera {
 	private:
@@ -33,6 +33,7 @@ namespace model {
 		void initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, int offsetX, int offsetY);
 		void update();
 		void cleanUp();
+		void render(SDL_Rect spriteRec,SDL_Surface* surface);
 		~Camera();
 		std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
 	};

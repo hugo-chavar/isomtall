@@ -1,4 +1,7 @@
 #include "Frame.h"
+#include "Logger.h"
+
+using namespace common;
 
 Frame::Frame(void)
 {}
@@ -10,7 +13,9 @@ Frame::~Frame(void)
 int Frame::cargar(std::string path){
 	superficie=IMG_Load(path.c_str());
 	if(superficie==NULL)
+		{Logger::instance().log(path);
 		return 1;
+		}
 	// Asignamos el color transparente al color rojo.
 	SDL_SetColorKey(superficie,SDL_SRCCOLORKEY|SDL_RLEACCEL, SDL_MapRGB(superficie->format,255,0,255));
 	superficie=SDL_DisplayFormat(superficie);

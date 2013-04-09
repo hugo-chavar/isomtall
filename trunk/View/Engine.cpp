@@ -49,9 +49,10 @@ void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 
-	worldView.worldModel.initialize(30,30,62,31);
+	//this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.tileWidth() * this->worldView.worldModel.width() / 2) - 400,(this->worldView.worldModel.tileHeight() * this->worldView.worldModel.height() / 2) - 300);
+	this->camera.initialize(800,600,24,200,50,0,0);
 
-	this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.tileWidth() * this->worldView.worldModel.width() / 2) - 400,(this->worldView.worldModel.tileHeight() * this->worldView.worldModel.height() / 2) - 300);
+	worldView.initialize();
 
 	this->loadLevel();
 }
@@ -69,6 +70,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 
 void Engine::update() {
 	this->camera.update();
+	this->worldView.update();
 }
 
 void Engine::render() {

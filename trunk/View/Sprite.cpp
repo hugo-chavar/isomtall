@@ -4,40 +4,55 @@
 #define pptx 64 //pixels por tile en x
 
 
-Sprite::Sprite()
-{}
-
 Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty)
 {
-	delay=0;
-	comienzo_frame=0;
+	//propiedades q tienen que ver con la entidad concreta (es externo al sprite porque muchas entidades pueden apuntar al mismo sprite)
+	comienzo_frame=0; // sacar este campo a una entidad externa y obtenerla x parametro en todos los metodos para calcular
+	estado=0; // sacar este campo a una entidad externa y obtenerla x parametro en todos los metodos para calcular
+
+	
+	//propiedades q tienen q ver con el Sprite
+	//debe tener un constructor que solo reciba un puntero a la entidad del modelo (Hugo)
+	//y obtener estos datos de esa entidad
+	delay=0; // cada llamada se reemplaza por algo asi, this->entidad->getDelay();
 	fps=0;
-	estado=0;
 	relx=relatx;
 	rely=relaty;
 	nroFrames=nroFr;
-	cargarFrames(path,nombre,"png",1);//podria agregarle el parametro formato a el constructor
+	//TODO: Hugo: reemplazar por una lista de archivos tipo el tp de datos
+	//cargarFrames(this->entitad.getListaImagenes());
+	cargarFrames(path,nombre,"png",nroFr);//podria agregarle el parametro formato a el constructor
 }
 
 //Constructor por sobrecarga para entidades animadas
+//debe tener un constructor que solo reciba un puntero a la entidad del modelo (Hugo)
 Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty,float Delay,float Fps)
 {
 
+	
+	comienzo_frame=SDL_GetTicks();
+	estado=0;
+
+
 	delay=Delay;
 	fps=Fps;
-	estado=0;
 	relx=relatx;
 	rely=relaty;
 	nroFrames=nroFr;
 	cargarFrames(path,nombre,"png",nroFr);
-	comienzo_frame=SDL_GetTicks();
+	
 }
 
-Sprite::~Sprite()
+Sprite::~Sprite(void)
 {
-			frames[0]->liberar();
-			delete frames[0];
-}
+	for(unsigned i=0;i<nroFrames;i++)
+		{
+			frames[i]->liberar();
+			delete frames[i];
+		}
+
+	}
+
 	
 void Sprite::cargarFrames(std::string path,std::string nombre,std::string formato,int nro)
 {
@@ -51,8 +66,7 @@ void Sprite::cargarFrames(std::string path,std::string nombre,std::string format
 	}
 }
 
-
-void Sprite::actualizar()
+void Sprite::actualizarFrame()
 {
 	if(estado==0)
 	{
@@ -77,7 +91,7 @@ void Sprite::actualizar()
 
 Frame* Sprite::getFrameActual()
 {
-	return frames[0];
+	return frames[estado];
 }
 
 int Sprite::relatx()

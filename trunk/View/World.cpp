@@ -49,45 +49,58 @@ std::pair<int,int> World::pixelToTileCoordinates(std::pair<int,int> pixelCoordin
 World::World() {
 }
 
-void World::render(model::Camera& camera) {
-	//TODO: Fix this function.
-	unsigned int horizontalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getWidth()) / worldModel.tileWidth())) + 1; 
-	unsigned int verticalTilesInCamera = unsigned(ceil(static_cast<float>(camera.getHeight()) / worldModel.tileHeight())) + 1; 
-	std::pair<int,int> cameraReferenceTile = this->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
-	std::pair<int,int> cameraReferencePixel = this->tileToPixelCoordinates(cameraReferenceTile);
-	unsigned Xt = 0; //Xt era int, estoy eliminando warnings
-	unsigned Yt = 0; //Yt era int, estoy eliminando warnings
-	unsigned int index = 0;
-
-	cameraReferenceTile.first--;
-	cameraReferenceTile.second--;
-	horizontalTilesInCamera++;
-	verticalTilesInCamera++;
-
-	for (unsigned int i = 0; i < verticalTilesInCamera * 2; i++) {
-		Xt = cameraReferenceTile.first + i;
-		Yt = cameraReferenceTile.second + i;
-		for (unsigned int j = 0; j < 2; j++) {
-			Xt = cameraReferenceTile.first + j;
-			Yt = cameraReferenceTile.second + i;
-			for (unsigned int k = 0; k < horizontalTilesInCamera; k++) {
-				if ( (Xt >= 0) && (Xt < worldModel.width()) && (Yt >= 0) && (Yt < worldModel.width())) {
-					index = Yt * worldModel.width() + Xt;
-					cameraReferencePixel = this->tileToPixelCoordinates(std::make_pair<int,int>(Xt,Yt));
-					cameraReferencePixel.first = cameraReferencePixel.first - camera.getOffsetX();
-					cameraReferencePixel.second = cameraReferencePixel.second - camera.getOffsetY();
-					Surface::draw(this->getTileArray()[Yt * worldModel.width() + Xt]->sdlSurface,0,0,worldModel.tileHeight(),worldModel.tileWidth(),camera.cameraSurface,cameraReferencePixel.first,cameraReferencePixel.second);
-				}
-				Xt++;
-				Yt--;
-			}
-		}
+void World::render(Camera& camera) {
+	
+	list<Entity*>::iterator iterador= entityList.begin();
+	for (int i=0;i<entityList.size();i++)
+	{
+						(*iterador)->render(camera);
+                        iterador++;
 	}
 }
 
 World::~World() {
+		for (unsigned int i = 0; i < spriteArray.size(); i++)
+	{
+		delete spriteArray[i];
+	}
+
+	list<Entity*>::iterator iterador= entityList.begin();
+	for (int i=0;i<entityList.size();i++)
+	{
+						delete(*iterador);
+                        iterador++;
+	}
 }
 
 void World::addTile(TileView* tile) {
 	this->getTileArray().push_back(tile);
+}
+
+void World::initialize()
+{
+	worldModel.initialize(30,30,62,31);//metodo harcodeado
+
+	//Sprite s("../images/","piso",1,32,0,0,0); constructor de copia
+	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
+	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
+	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
+
+	//Harcodeo la carga de entidades. debera venir del modelo
+	for(int i=0;i<50;i++)
+		for(int j=0; j<25;j++){
+			entityList.push_back(new Entity(i,j,spriteArray[0]));
+		}
+	entityList.push_back(new Entity(2,3,spriteArray[1]));
+	entityList.push_back(new Entity(15,2,spriteArray[2]));
+	entityList.push_back(new Entity(15,5,spriteArray[2]));
+	entityList.push_back(new Entity(15,10,spriteArray[2]));
+
+}
+
+void view::World::update() {
+	for(int i=0;i<spriteArray.size();i++)
+	{
+		spriteArray[i]->actualizarFrame();
+	}
 }
