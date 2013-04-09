@@ -6,9 +6,11 @@
 #include "TileView.h"
 #include "Camera.h"
 #include "Stage.h"
-
+#include "Entity.h"
+#include <list>
 
 using namespace model;
+using namespace std;
 
 //namespace model {
 //
@@ -67,19 +69,28 @@ using namespace model;
 namespace view {
 
 	class World {
+	private:
+	
+		//Se cargan una vez solamente los sprites
+		vector<Sprite*> spriteArray;
+
+
+		//std::vector<model::Tile*> tileArray;
+		std::vector<TileView*> tileArray;
+
 	public:
 		World();
 
 		//model::World worldModel;
 
-		//std::vector<model::Tile*> tileArray;
-		std::vector<TileView*> tileArray;
-
+		void update(); 
 		// model::World worldModel; se reemplaza por Stage
 		Stage worldModel;
+		
 
+		list<Entity *> entityList;
 		//TODO: the camera should be retrieved from the model.
-		void render(model::Camera& camera);
+		void render(Camera& camera);
 
 		void addTile(TileView* tile);
 
@@ -89,6 +100,8 @@ namespace view {
 		std::pair<int,int> tileToPixelCoordinates(std::pair<int,int> tileCoordinates);
 
 		std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
+
+		void initialize();
 
 		~World();
 	};

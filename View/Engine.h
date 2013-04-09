@@ -22,7 +22,7 @@ class Engine {
 		view::World worldView;
 
 		//TODO: Create getter/setter
-		model::Camera camera;
+		Camera camera;
 
 
 		bool isRunning();

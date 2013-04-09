@@ -4,7 +4,9 @@
 #include <cmath>
 #include "TimeManager.h"
 
-model::Camera::Camera() {
+using namespace view;
+
+Camera::Camera() {
 	this->offsetX = 0;
 	this->offsetY = 0;
 	this->scrollSpeed = 0;
@@ -12,48 +14,48 @@ model::Camera::Camera() {
 	this->cameraSurface = NULL;
 }
 
-int model::Camera::getOffsetX() {
+int Camera::getOffsetX() {
 	return this->offsetX;
 }
 
-void model::Camera::setOffsetX(int offsetX) {
+void Camera::setOffsetX(int offsetX) {
 	this->offsetX = offsetX;
 }
 
-int model::Camera::getOffsetY() {
+int Camera::getOffsetY() {
 	return this->offsetY;
 }
 
-void model::Camera::setOffsetY(int offsetY) {
+void Camera::setOffsetY(int offsetY) {
 	this->offsetY = offsetY;
 }
 
-unsigned int model::Camera::getScrollSpeed() {
+unsigned int Camera::getScrollSpeed() {
 	return this->scrollSpeed;
 }
 
-void model::Camera::setScrollSpeed(unsigned int scrollSpeed) {
+void Camera::setScrollSpeed(unsigned int scrollSpeed) {
 	this->scrollSpeed = scrollSpeed;
 }
 
 
-unsigned int model::Camera::getScrollBoxSize() {
+unsigned int Camera::getScrollBoxSize() {
 	return this->scrollBoxSize;
 }
 
-void model::Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
+void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	this->scrollBoxSize = scrollBoxSize;
 }
 
-unsigned int model::Camera::getWidth() {
+unsigned int Camera::getWidth() {
 	return this->cameraSurface->w;
 }
 
-unsigned int model::Camera::getHeight() {
+unsigned int Camera::getHeight() {
 	return this->cameraSurface->h;
 }
 
-void model::Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, int offsetX, int offsetY) {
+void Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, int offsetX, int offsetY) {
 	this->setScrollSpeed(scrollSpeed);
 	this->setScrollBoxSize(scrollBoxSize);
 	this->setOffsetX(offsetX); 
@@ -62,7 +64,7 @@ void model::Camera::initialize(unsigned int width, unsigned int height, unsigned
 	SDL_WarpMouse(width/2,height/2);
 }
 
-void model::Camera::update() {
+void Camera::update() {
 	int x;
 	int y;
 	int newOffset = 0;
@@ -74,7 +76,7 @@ void model::Camera::update() {
 		newOffset = int(ceil(this->getOffsetX() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
 		//TODO: harcoded value. Mus be obtained from the model.
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
+		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
@@ -84,7 +86,7 @@ void model::Camera::update() {
 		newOffset = int(ceil(this->getOffsetX() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
 		//TODO: harcoded value. Mus be obtained from the model.
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
+		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
@@ -93,7 +95,7 @@ void model::Camera::update() {
 	if (y > int(this->getHeight() - this->getScrollBoxSize())) {
 		newOffset = int(ceil(this->getOffsetY() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
+		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
@@ -102,22 +104,34 @@ void model::Camera::update() {
 	if (y < int(this->getScrollBoxSize())) {
 		newOffset = int(ceil(this->getOffsetY() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
 		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > 30) ) {
+		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
 	}
 }
 
-void model::Camera::cleanUp() {
+void Camera::cleanUp() {
 	SDL_FreeSurface(this->cameraSurface);
 }
 
-model::Camera::~Camera() {
+void Camera::render(SDL_Rect spriteRec,SDL_Surface* surface)
+{
+if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(spriteRec.x<offsetX+getWidth())&&(spriteRec.y<offsetY+getHeight()))
+	{	
+	SDL_Rect rectangulo;
+	rectangulo.x=spriteRec.x-offsetX;
+	rectangulo.y=spriteRec.y-offsetY;
+	SDL_BlitSurface(surface, NULL,cameraSurface,&rectangulo);
+	}
+}
+
+
+Camera::~Camera() {
 }
 
 //TODO: Method copied from model::world and harcoded. Move to proper location.
-std::pair<int,int> model::Camera::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+std::pair<int,int> Camera::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
 	float a = 0;
 	float b = 0;
 	int c = 0;
