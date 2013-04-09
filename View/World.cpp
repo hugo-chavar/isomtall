@@ -1,8 +1,10 @@
 #include "World.h"
 
 #include "Surface.h"
+#include "EntityObject.h"
 
 using namespace view;
+using namespace model;
 
 std::vector<TileView*>& World::getTileArray() {
 	return this->tileArray;
@@ -79,10 +81,17 @@ void World::addTile(TileView* tile) {
 
 void World::initialize()
 {
-	worldModel.initialize(30,30,62,31);//metodo harcodeado
+	
+	worldModel = Game::instance().world();
+	worldModel.initialize(100,100,62,31);//metodo harcodeado
 
 	//Sprite s("../images/","piso",1,32,0,0,0); constructor de copia
+	//for (int i = 0;
+	EntityObject entity = Game::instance().vEntitiesObject()[1];
+	
+
 	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
+	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,32,0,0,0));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 

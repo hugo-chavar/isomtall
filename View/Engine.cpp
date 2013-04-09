@@ -2,6 +2,7 @@
 
 #include "Surface.h"
 #include "TimeManager.h"
+#include "Game.h"
 
 Engine::Engine() {
 	this->running = true;
@@ -53,6 +54,7 @@ void Engine::initialize() {
 	this->camera.initialize(800,600,24,200,50,0,0);
 
 	worldView.initialize();
+
 
 	this->loadLevel();
 }

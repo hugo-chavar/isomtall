@@ -1,11 +1,10 @@
 #include "AnimatedEntity.h"
 
-using namespace model;
-
-
 
 AnimatedEntity::AnimatedEntity() {
-	// DEFINIR _fps, _delay
+	_fps = DEFAULT_FPS;
+	_delay = DEFAULT_DELAY;
+	imagePath(DEFAULT_ANIMATED_IMAGE);
 }
 
 AnimatedEntity::~AnimatedEntity() { }

@@ -6,6 +6,14 @@ using namespace model;
 
 
 //info del escenario
+
+Stage::Stage(){
+}
+
+string Stage::name() {
+	return _name;
+}
+
 unsigned int Stage::width(){
 	return _width;
 }
@@ -20,6 +28,18 @@ void Stage::height(unsigned int value){
 
 void Stage::width(unsigned int value){
 	_width = value;
+}
+
+vector <EntityDef> Stage::vEntitiesDef() {
+	return _vEntitiesDef;
+}
+
+vector <MainCharacter> Stage::vMainCharacters() {
+	return _vMainCharacters;
+}
+
+map <KeyPair, EntityObject*> Stage::entityMap() {
+	return _entityMap;
 }
 
 //info de los tiles
@@ -39,10 +59,11 @@ void Stage::tileWidth(unsigned int value){
 	_tileWidth = value;
 }
 
-void Stage::addTile(unsigned int x, unsigned int y, Tile* tile) {
-	Key position(x,y);
-	scene.insert(make_pair(position, tile)); //se podria chequear errores aca.. que no vengan repetidas las posiciones
-}
+
+//void Stage::addTile(unsigned int x, unsigned int y, Tile* tile) {
+//	Key position(x,y);
+//	scene.insert(make_pair(position, tile)); //se podria chequear errores aca.. que no vengan repetidas las posiciones
+//}
 
 unsigned int Stage::cost(unsigned int x, unsigned int y){
 	return 1;
@@ -54,7 +75,7 @@ void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigne
 	tileWidth(tWidth);
 	tileHeight(tHeight);
 }
-
-void Stage::update(){
-
-}
+//
+//void Stage::update(){
+//
+//}
