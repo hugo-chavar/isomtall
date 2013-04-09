@@ -12,7 +12,7 @@ entidades:
       ancho_base: 1 
       alto_base: 1 
       pixel_ref_x: 32 
-      pixel_ref_y: 60 
+      pixel_ref_y: 32 
        
     - nombre: castillo
       imagen: path/a/imagen.png 
@@ -41,7 +41,7 @@ escenarios:
       size_x: 100
       size_y: 100 
       entidadesDef:  
-         - {x: 10, y: 15, entidad: arbol} 
+         - {x: 3, y: 2, entidad: arbol} 
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 10, y: 15, entidad: agua} 
          - {x: 30, y: 55, entidad: arbol} 
