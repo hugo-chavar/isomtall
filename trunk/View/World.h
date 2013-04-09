@@ -7,64 +7,11 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "Entity.h"
+#include "Game.h"
 #include <list>
 
 using namespace model;
 using namespace std;
-
-//namespace model {
-//
-//	class World {
-//	private:
-//		// TODO: Test with width != height.
-//		//X axis world dimension in tiles
-//		unsigned int dimentionX;
-//
-//		//Y axis world dimension in tiles
-//		unsigned int dimentionY;
-//
-//		//World's tiles height
-//		unsigned int tileHeight;
-//
-//		//World's tiles width
-//		unsigned int tileWidth;
-//
-//		//std::vector<model::Tile*> tileArray; pasado a view
-//
-//		void setDimentionX(unsigned int dimentionX);
-//
-//		void setDimentionY(unsigned int dimentionY);
-//
-//		void setTileHeight(unsigned int tileHeight);
-//
-//		void setTileWidth(unsigned int tileWidth);
-//
-//	public:
-//		World();
-//
-//		unsigned int getDimentionX();
-//
-//		unsigned int getDimentionY();
-//
-//		unsigned int getTileHeight();
-//
-//		unsigned int getTileWidth();
-//
-//		//std::vector<model::Tile*>& getTileArray(); pasado a view
-//
-//		void addTile(model::Tile* tile);
-//
-//		void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
-//
-//		void update();
-//
-//
-//		void cleanUp();
-//
-//		~World();
-//	};
-//
-//} // namespace model
 
 namespace view {
 

@@ -1,8 +1,5 @@
 #include "MainCharacter.h"
 
-using namespace model;
-
-
 
 MainCharacter::MainCharacter() { }
 

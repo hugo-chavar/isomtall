@@ -39,9 +39,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="Dibujador.cpp">
-      <Filter>Archivos de código fuente</Filter>
-    </ClCompile>
     <ClCompile Include="Frame.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>

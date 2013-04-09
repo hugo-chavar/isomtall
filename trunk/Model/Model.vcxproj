@@ -38,12 +38,15 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
+    <IncludePath>..\Libraries\Parser YAML\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Libraries\Parser YAML\bin\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,6 +68,7 @@
   <ItemGroup>
     <ClCompile Include="AnimatedEntity.cpp" />
     <ClCompile Include="EntityObject.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="ListaPath.cpp" />
     <ClCompile Include="MainCharacter.cpp" />
     <ClCompile Include="MovilEntity.cpp" />
@@ -74,10 +78,14 @@
     <ClCompile Include="PersonajeModelo.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="YAMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedEntity.h" />
+    <ClInclude Include="Constants.h" />
+    <ClInclude Include="DataTypes.h" />
     <ClInclude Include="EntityObject.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="ListaPath.h" />
     <ClInclude Include="MainCharacter.h" />
     <ClInclude Include="MovilEntity.h" />
@@ -88,6 +96,12 @@
     <ClInclude Include="PersonajeModelo.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="YAMLParser.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{746ee20c-33a8-41e5-8dbf-eb3a15229599}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,13 +1,14 @@
 #include "EntityObject.h"
 
-using namespace model;
-
-
 
 EntityObject::EntityObject() {
-	_name = "default";
-	// DEFINIR _image_path, _base_width, _base_height, _positionX, _positionY DEFAULT
-	// pixel_ref_x, pixel_ref_y ?
+	_name = "DEFAULT";
+	_image_path = DEFAULT_TILE_IMAGE;
+	_base_width = DEFAULT_BASE_WIDTH;
+	_base_height = DEFAULT_BASE_HEIGHT;
+	_pixel_ref_x = DEFAULT_PIXEL_REF_X;
+	_pixel_ref_y = DEFAULT_PIXEL_REF_Y;
+	// DEFINIR _positionX, _positionY DEFAULT
 }
 
 EntityObject::~EntityObject() { }
@@ -16,18 +17,18 @@ string EntityObject::name() {
 	return _name;
 }
 
-int EntityObject::positionX() {
-	return _positionX;
-}
+//int EntityObject::positionX() {
+//	return _positionX;
+//}
+//
+//int EntityObject::positionY() {
+//	return _positionY;
+//}
 
-int EntityObject::positionY() {
-	return _positionY;
-}
-
-void EntityObject::position(int valueX, int valueY) {
-	_positionX = valueX;
-	_positionY = valueY;
-}
+//void EntityObject::position(int valueX, int valueY) {
+//	_positionX = valueX;
+//	_positionY = valueY;
+//}
 
 void EntityObject::imagePath(string value) {
 	_image_path = value;
