@@ -162,28 +162,30 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	entity = entity_aux;
 }
 
-bool validateImageDirectory(string imageDir) {
-	DirList dirList;
-	if (!dirList.createFromDirectory(imageDir)) {
-		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
-		return false;
-	}
-	return true;
-}
-
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
-	int fps, delay;
+	int fps, delay, nFrames;
 	string imageDir;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
 
 	try {
+		bool imageDirFound = false;
+		DirList dirList;
 		node["imagen"] >> imageDir;
-		if ((imageDir=="~") || (!validateImageDirectory(imageDir)))
+		if (dirList.createFromDirectory(imageDir)) {
+			nFrames = dirList.count();
+			imageDirFound = true;
+		}
+		else
+			Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+		if ((imageDir=="~") || (!imageDirFound)) {
 			imageDir = DEFAULT_ANIMATED_DIR;
+			nFrames = DEFAULT_NUMBER_OF_FRAMES;
+		}
 	} catch (KeyNotFound) {
 		imageDir = DEFAULT_ANIMATED_DIR;
+		nFrames = DEFAULT_NUMBER_OF_FRAMES;
 	};
 	try {
 		node["fps"] >> fps;
@@ -211,7 +213,7 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		delay = DEFAULT_DELAY;
 	}
 
-	AnimatedEntity animatedEntity_aux(entity_aux.name(), imageDir, entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), fps, delay);
+	AnimatedEntity animatedEntity_aux(entity_aux.name(), imageDir, entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), nFrames, fps, delay);
 	animatedEntity = animatedEntity_aux;
 }
 
@@ -469,8 +471,8 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 			}
 		}
 	}
-	for(unsigned int i=0; i<stage_aux.size_x; i++) // Completo el mapa con entidad objeto default guardada en la primera posición.
-		for(unsigned int j=0; j<stage_aux.size_y; j++) {
+	for(int i=0; i<stage_aux.size_x; i++) // Completo el mapa con entidad objeto default guardada en la primera posición.
+		for(int j=0; j<stage_aux.size_y; j++) {
 			KeyPair key(i, j);
 			entityMap.insert(make_pair(key, &entities.vEntitiesObject[0]));
 		}

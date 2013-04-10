@@ -43,11 +43,11 @@ escenarios:
       size_x: 100
       size_y: 100 
       entidadesDef:  
-         - {x: 3, y: 2, entidad: arbol} 
+         - {x: 3, y: 2, entidad: tierra} 
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 10, y: 15, entidad: agua} 
-         - {x: 30, y: 55, entidad: arbol} 
-         - {x: -30, y: 55, entidad: arbol} 
+         - {x: 30, y: 55, entidad: tierra} 
+         - {x: -30, y: 55, entidad: tierra} 
          - {x: 29, y: 55, entidad: xx} 
       protagonista: 
          - tipoEntidad: frodo 

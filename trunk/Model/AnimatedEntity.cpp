@@ -5,6 +5,7 @@ AnimatedEntity::AnimatedEntity() {
 	_fps = DEFAULT_FPS;
 	_delay = DEFAULT_DELAY;
 	imagePath(DEFAULT_ANIMATED_DIR);
+	_nFrames = DEFAULT_NUMBER_OF_FRAMES;
 }
 
 AnimatedEntity::~AnimatedEntity() { }
@@ -27,4 +28,8 @@ void AnimatedEntity::fps(int value)
 void AnimatedEntity::delay(int value)
 {
 	_delay = value;
+}
+
+int AnimatedEntity::nFrames() {
+	return _nFrames;
 }
