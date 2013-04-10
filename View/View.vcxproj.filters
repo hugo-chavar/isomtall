@@ -68,9 +68,6 @@
     <ClInclude Include="Entity.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="Dibujador.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="Frame.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>

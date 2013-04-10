@@ -86,8 +86,6 @@ void World::initialize()
 	worldModel = Game::instance().world();
 	worldModel.initialize(100,100,62,31);//metodo harcodeado
 
-	//Sprite s("../images/","piso",1,32,0,0,0); constructor de copia
-	//for (int i = 0;
 	EntityObject entity = Game::instance().vEntitiesObject()[1];
 	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 	
@@ -102,6 +100,7 @@ void World::initialize()
 		for(int j=0; j<25;j++){
 			entityList.push_back(new Entity(i,j,spriteArray[0]));
 		}
+
 	entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1]));
 	entityList.push_back(new Entity(15,2,spriteArray[3]));
 	entityList.push_back(new Entity(15,5,spriteArray[3]));

@@ -28,8 +28,8 @@ namespace view {
 		int getOffsetY();
 		unsigned int getScrollSpeed();
 		unsigned int getScrollBoxSize();
-		unsigned int getWidth();
-		unsigned int getHeight();
+		int getWidth();
+		int getHeight();
 		void initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, int offsetX, int offsetY);
 		void update();
 		void cleanUp();
