@@ -47,11 +47,11 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	this->scrollBoxSize = scrollBoxSize;
 }
 
-unsigned int Camera::getWidth() {
+ int Camera::getWidth() {
 	return this->cameraSurface->w;
 }
 
-unsigned int Camera::getHeight() {
+ int Camera::getHeight() {
 	return this->cameraSurface->h;
 }
 
@@ -117,8 +117,10 @@ void Camera::cleanUp() {
 
 void Camera::render(SDL_Rect spriteRec,SDL_Surface* surface)
 {
+
 if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(spriteRec.x<offsetX+getWidth())&&(spriteRec.y<offsetY+getHeight()))
-	{	
+	
+	{
 	SDL_Rect rectangulo;
 	rectangulo.x=spriteRec.x-offsetX;
 	rectangulo.y=spriteRec.y-offsetY;
