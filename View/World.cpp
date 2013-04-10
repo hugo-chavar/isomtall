@@ -55,7 +55,7 @@ World::World() {
 void World::render(Camera& camera) {
 	
 	list<Entity*>::iterator iterador= entityList.begin();
-	for (int i=0;i<entityList.size();i++)
+	for (unsigned i=0;i<entityList.size();i++)
 	{
 						(*iterador)->render(camera);
                         iterador++;
@@ -69,7 +69,7 @@ World::~World() {
 	}
 
 	list<Entity*>::iterator iterador= entityList.begin();
-	for (int i=0;i<entityList.size();i++)
+	for (unsigned i=0;i<entityList.size();i++)
 	{
 						delete(*iterador);
                         iterador++;
@@ -109,7 +109,7 @@ void World::initialize()
 }
 
 void view::World::update() {
-	for(int i=0;i<spriteArray.size();i++)
+	for(unsigned i=0;i<spriteArray.size();i++)
 	{
 		spriteArray[i]->actualizarFrame();
 	}
