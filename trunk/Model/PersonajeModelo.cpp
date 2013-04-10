@@ -74,6 +74,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 			cambio = ESTADO_MOVIMIENTO;
 		}
 		estado = cambiarEstado(current.first, current.second, cambio);
+		velocidad = 0;
 		return estado;
 	}
 	if (target == current) {
@@ -81,6 +82,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 			cambio = ESTADO_MOVIMIENTO;
 		}
 		estado = cambiarEstado(current.first, current.second, cambio);
+		velocidad = 0;
 		return estado;
 	}
 	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=target.first)&&(yPath[caminoSize-1]!=target.second))) {
@@ -98,6 +100,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 				cambio = ESTADO_MOVIMIENTO;
 			}
 			estado = cambiarEstado(current.first, current.second, cambio);
+			velocidad = 0;
 			return estado;
 		}
 	}
@@ -105,7 +108,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
 		coste = mundo->cost(xPath[posMov], yPath[posMov]);
-		coste = std::floor(this->velocidad/coste);
+		coste = std::floor((this->velocidad)*coste);
 		velocidad = (int) coste;
 		posMov++;
 	} else {
@@ -113,6 +116,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 			cambio = ESTADO_MOVIMIENTO;
 		}
 		estado = cambiarEstado(target.first, target.second, cambio);
+		velocidad = 0;
 		return estado;
 	}
 	cambio = ESTADO_MOVIMIENTO;
