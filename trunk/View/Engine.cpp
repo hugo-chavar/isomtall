@@ -48,7 +48,7 @@ int Engine::execute() {
 
 void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	//SDL_WM_GrabInput(SDL_GRAB_ON);
 
 	//this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.tileWidth() * this->worldView.worldModel.width() / 2) - 400,(this->worldView.worldModel.tileHeight() * this->worldView.worldModel.height() / 2) - 300);
 	this->camera.initialize(800,600,24,200,50,0,0);

@@ -66,9 +66,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirList.cpp" />
     <ClCompile Include="Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dirent.h" />
+    <ClInclude Include="DirList.h" />
     <ClInclude Include="Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
