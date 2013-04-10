@@ -4,7 +4,7 @@
 AnimatedEntity::AnimatedEntity() {
 	_fps = DEFAULT_FPS;
 	_delay = DEFAULT_DELAY;
-	imagePath(DEFAULT_ANIMATED_IMAGE);
+	imagePath(DEFAULT_ANIMATED_DIR);
 }
 
 AnimatedEntity::~AnimatedEntity() { }

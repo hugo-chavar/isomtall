@@ -75,12 +75,16 @@ void operator >> (const Node& node, Configuration& configuration) {
 }
 
 bool validateImagePath(string imagePath) {
+	DirList dirList;
 	ifstream file;
 	file.open(imagePath);
 	if (!file.is_open()) {
-		Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
+		if (!dirList.createFromDirectory(imagePath)) // Si no es un directorio.
+			Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
 		return false;
 	}
+	else
+		file.close();
 	return true;
 }
 
@@ -98,7 +102,7 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	};
 	try {
 		node["imagen"] >> imagePath;
-		if ((imagePath=="~") )//|| (!validateImagePath(imagePath)))
+		if ((imagePath=="~") || (!validateImagePath(imagePath)))
 			imagePath = DEFAULT_TILE_IMAGE;
 	} catch (KeyNotFound) {
 		Logger::instance().log("Parser Error: Field 'imagen' is not defined in entity '"+name+"'.");
@@ -158,12 +162,29 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	entity = entity_aux;
 }
 
+bool validateImageDirectory(string imageDir) {
+	DirList dirList;
+	if (!dirList.createFromDirectory(imageDir)) {
+		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+		return false;
+	}
+	return true;
+}
+
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 	int fps, delay;
+	string imageDir;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
 
+	try {
+		node["imagen"] >> imageDir;
+		if ((imageDir=="~") || (!validateImageDirectory(imageDir)))
+			imageDir = DEFAULT_ANIMATED_DIR;
+	} catch (KeyNotFound) {
+		imageDir = DEFAULT_ANIMATED_DIR;
+	};
 	try {
 		node["fps"] >> fps;
 		fpsFound = true;
@@ -190,7 +211,7 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		delay = DEFAULT_DELAY;
 	}
 
-	AnimatedEntity animatedEntity_aux(entity_aux.name(), entity_aux.imagePath(), entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), fps, delay);
+	AnimatedEntity animatedEntity_aux(entity_aux.name(), imageDir, entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), fps, delay);
 	animatedEntity = animatedEntity_aux;
 }
 

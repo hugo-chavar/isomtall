@@ -10,6 +10,7 @@
 #include "Logger.h"
 #include "DataTypes.h"
 #include "Stage.h"
+#include "DirList.h"
 
 using namespace std;
 using namespace YAML;

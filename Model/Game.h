@@ -19,6 +19,7 @@ namespace model
 		Stage world();
 		void initialize();
 		vector <EntityObject> vEntitiesObject();
+		vector <AnimatedEntity> vAnimatedEntities();
 		//void setFile(string path);
 		
 	private:
