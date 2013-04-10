@@ -93,7 +93,7 @@ void World::initialize()
 	
 
 	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
-	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),7,entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
+	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),entity.nFrames(),entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 
