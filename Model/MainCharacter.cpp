@@ -16,3 +16,11 @@ int MainCharacter::x() {
 int MainCharacter::y() {
 	return _y;
 }
+
+int MainCharacter::speed() {
+	return _speed;
+}
+
+void MainCharacter::speed(int value) {
+	_speed = value;
+}

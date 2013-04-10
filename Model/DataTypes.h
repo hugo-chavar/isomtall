@@ -6,8 +6,8 @@ typedef std::pair<unsigned int,unsigned int> KeyPair;
 
 struct EntityDef {
 	std::string entity;
-	unsigned int x;
-	unsigned int y;
+	int x;
+	int y;
 	};
 
 

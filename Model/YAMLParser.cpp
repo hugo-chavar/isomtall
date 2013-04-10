@@ -548,6 +548,12 @@ void YAMLParser::parse(string inputFilePath) {
 		cout << parserException.what() << endl;
 	};
 
+	// Cargo la velocidad en los personajes.
+	for(unsigned int i=0; i<stages.vStages.size(); i++)
+		for(unsigned int j=0; j<stages.vStages[i].vMainCharacters().size(); j++)
+			stages.vStages[i].vMainCharacters()[j].speed(configuration.main_character_speed);
+
+
 	/*
 	// TESTEO RAPIDO
 	cout << "Pantalla:\n   Ancho: " << screen.width << " Alto: " << screen.height << endl;

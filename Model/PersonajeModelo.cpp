@@ -15,8 +15,8 @@
 using namespace model;
 
 PersonajeModelo::PersonajeModelo() {
-	current.first = 0;
-	current.second = 0;
+	current.first = DEFAULT_MAIN_CHARACTER_X;
+	current.second = DEFAULT_MAIN_CHARACTER_Y;
 	target.first = current.first;
 	target.second = current.second;
 	xPath = NULL;
@@ -24,11 +24,11 @@ PersonajeModelo::PersonajeModelo() {
 	posMov = 0;
 	caminoSize = 0;
 	estado = PARADO_S;
-	velocidad = 1;
+	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 	mundo = NULL;
 }
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, int velocidad) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, MainCharacter *datosPersonaje) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -37,8 +37,9 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* wo
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
+	_datosPersonaje = datosPersonaje;
 	this->estado = estado;
-	this->velocidad = velocidad;
+	this->velocidad = datosPersonaje->speed();
 	mundo = worldModel;
 }
 

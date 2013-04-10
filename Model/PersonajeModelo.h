@@ -6,13 +6,14 @@
 
 #include <utility>
 #include "Stage.h"
+#include "Constants.h"
 
 namespace model {
 class PersonajeModelo {
 
 public:
 	PersonajeModelo();
-	PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, int velocidad);
+	PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, MainCharacter *datosPersonaje);
 	void setStage(Stage* worldModel);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
@@ -32,6 +33,7 @@ private:
 	int estado;
 	int velocidad;
 	Stage* mundo;
+	MainCharacter *_datosPersonaje;
 };
 }
 
