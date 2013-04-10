@@ -86,12 +86,14 @@ void World::initialize()
 	worldModel = Game::instance().world();
 	worldModel.initialize(100,100,62,31);//metodo harcodeado
 
-	EntityObject entity = Game::instance().vEntitiesObject()[1];
-	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
+	//EntityObject entity = Game::instance().vEntitiesObject()[1];
+	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
+
+	AnimatedEntity entity = Game::instance().vAnimatedEntities()[0]; // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
 	
 
 	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
-	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,entity.pixelRefX(),entity.pixelRefY(),0,0));
+	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),7,entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 
@@ -101,7 +103,8 @@ void World::initialize()
 			entityList.push_back(new Entity(i,j,spriteArray[0]));
 		}
 
-	entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1]));
+	// entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1])); Para entidades no animadas (vienen las posiciones en vEntitiesDev
+	entityList.push_back(new Entity(3,2,spriteArray[1]));
 	entityList.push_back(new Entity(15,2,spriteArray[3]));
 	entityList.push_back(new Entity(15,5,spriteArray[3]));
 	entityList.push_back(new Entity(15,10,spriteArray[3]));

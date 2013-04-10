@@ -12,10 +12,12 @@ entidades:
       ancho_base: 1 
       alto_base: 1 
       pixel_ref_x: 32 
-      pixel_ref_y: 32 
+      pixel_ref_y: 32
+      fps: 15
+      delay: 1000
        
     - nombre: castillo
-      imagen: path/a/imagen.png 
+      imagen: ../Images/cubo.png 
       ancho_base: 2 
       alto_base: 2 
       pixel_ref_x: 30 

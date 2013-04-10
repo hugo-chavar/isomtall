@@ -43,3 +43,7 @@ void Game::initialize()
 vector <EntityObject> Game::vEntitiesObject(){
 	return _vEntitiesObject;
 }
+
+vector <AnimatedEntity> Game::vAnimatedEntities() {
+	return _vAnimatedEntities;
+}

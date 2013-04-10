@@ -1,12 +1,12 @@
 #ifndef _CONSTANTS_H_
 #define _CONSTANTS_H_
 
-#define LOGFILE "..\\game.log"
-#define CONFIGFILE "..\\test.yaml"
+#define LOGFILE "../game.log"
+#define CONFIGFILE "../test.yaml"
 
-#define IMAGES_DIR "..\\Images\\"
-#define DEFAULT_TILE_IMAGE "..\\Images\\tiledef.png"
-#define DEFAULT_ANIMATED_IMAGE "..\\Images\\animateddef.png"
+#define IMAGES_DIR "../Images/"
+#define DEFAULT_TILE_IMAGE "../Images/piso.png"
+#define DEFAULT_ANIMATED_DIR "../Images/personaje/"
 
 #define DEFAULT_SCREEN_WIDTH 800
 #define DEFAULT_SCREEN_HEIGHT 600
