@@ -43,6 +43,24 @@ Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int rela
 	
 }
 
+//Para que funcione por ahora
+Sprite::Sprite(std::list<std::string> imagesPaths,int relatx,int relaty,float Delay,float Fps)
+{
+
+	
+	comienzo_frame=SDL_GetTicks();
+	estado=0;
+
+
+	delay=Delay;
+	fps=Fps;
+	relx=relatx;
+	rely=relaty;
+	nroFrames=imagesPaths.size();
+	cargarFrames(imagesPaths);
+	
+}
+
 Sprite::~Sprite(void)
 {
 	for(unsigned i=0;i<nroFrames;i++)
@@ -63,6 +81,20 @@ void Sprite::cargarFrames(std::string path,std::string nombre,std::string format
 		std::string pathCompleto=path+nombre+string_num.str()+"."+formato;
 		frames.push_back(new Frame());
 		frames[i]->cargar(pathCompleto);
+	}
+}
+
+// Para que funcione por ahora
+void Sprite::cargarFrames(std::list<std::string> imagesPaths)
+{
+	int i = 0;
+	std::list<std::string>::iterator iter;
+	iter = imagesPaths.begin();
+	while (iter!=imagesPaths.end()) {
+		frames.push_back(new Frame());
+		frames[i]->cargar(*iter);
+		iter++;
+		i++;
 	}
 }
 
