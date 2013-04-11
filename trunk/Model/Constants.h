@@ -8,7 +8,6 @@
 #define IMAGES_DIR "../Images/"
 #define DEFAULT_TILE_IMAGE "../Images/piso.png"
 #define DEFAULT_ANIMATED_DIR "../Images/default/"
-#define DEFAULT_NUMBER_OF_FRAMES 7 // Debe concordar con lo de arriba
 
 #define DEFAULT_SCREEN_WIDTH 800
 #define DEFAULT_SCREEN_HEIGHT 600

@@ -169,37 +169,39 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	entity = entity_aux;
 }
 
+list <string> loadImagesPaths(string imageDir) {
+	DirList dirList;
+	list <string> imagesPaths;
+	if (dirList.createFromDirectory(imageDir)) {
+		while (dirList.hasNext()) {
+			string dir_aux = dirList.nextFullPath();
+			if (dir_aux.find(IMAGES_EXTENSION)!=string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+				imagesPaths.push_back(dir_aux);
+		}
+		if (imagesPaths.empty())
+			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
+	}
+	else
+		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+	return imagesPaths;
+}
+
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
-	int fps, delay, nFrames = 0;
+	int fps, delay;
 	string imageDir;
+	list <string> imagesPaths;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
 
 	try {
-		bool imageDirFound = false;
-		DirList dirList;
 		node["imagen"] >> imageDir;
-		if (dirList.createFromDirectory(imageDir)) {
-			while (dirList.hasNext()) {
-				string dir_aux = dirList.next();
-				if ((dir_aux.find(entity_aux.name())!=string::npos) && (dir_aux.find(IMAGES_EXTENSION)!=string::npos)) { // Las imágenes de las entidades animadas deben ser de la forma 'entity0.png'.
-					imageDirFound = true;
-					nFrames++;
-				}
-			}
-			if (!imageDirFound)
-				Logger::instance().log("Parser Error: No images in the '[name][frame].png' format found in the directory '"+imageDir+"'.");
-		}
-		else
-			Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
-		if ((imageDir=="~") || (!imageDirFound)) {
+		imagesPaths = loadImagesPaths(imageDir);
+		if ((imageDir=="~") || (imagesPaths.empty())) {
 			imageDir = DEFAULT_ANIMATED_DIR;
-			nFrames = DEFAULT_NUMBER_OF_FRAMES;
 		}
 	} catch (KeyNotFound) {
-		imageDir = DEFAULT_ANIMATED_DIR;
-		nFrames = DEFAULT_NUMBER_OF_FRAMES;
+		imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 	};
 	try {
 		node["fps"] >> fps;
@@ -227,7 +229,7 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		delay = DEFAULT_DELAY;
 	}
 
-	AnimatedEntity animatedEntity_aux(entity_aux.name(), imageDir, entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), nFrames, fps, delay);
+	AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
 	animatedEntity = animatedEntity_aux;
 }
 

@@ -2,10 +2,14 @@
 
 
 AnimatedEntity::AnimatedEntity() {
+	DirList dirList;
+	dirList.createFromDirectory(DEFAULT_ANIMATED_DIR);
+	while (dirList.hasNext()) {
+		_imagesPaths.push_back(dirList.nextFullPath());
+	}
 	_fps = DEFAULT_FPS;
 	_delay = DEFAULT_DELAY;
-	imagePath(DEFAULT_ANIMATED_DIR);
-	_nFrames = DEFAULT_NUMBER_OF_FRAMES;
+	imagePath("");
 }
 
 AnimatedEntity::~AnimatedEntity() { }
@@ -30,6 +34,6 @@ void AnimatedEntity::delay(int value)
 	_delay = value;
 }
 
-int AnimatedEntity::nFrames() {
-	return _nFrames;
+list <string> AnimatedEntity::imagesPaths() {
+	return _imagesPaths;
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <list>
 #include <map>
 #include "..\Libraries\Parser YAML\include\yaml-cpp\yaml.h"
 #include "Logger.h"

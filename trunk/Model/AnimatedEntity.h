@@ -2,6 +2,8 @@
 #define _ANIMATEDENTITY_H_
 
 #include "EntityObject.h"
+#include "DirList.h"
+#include <list>
 
 
 class AnimatedEntity: public EntityObject {
@@ -9,18 +11,18 @@ class AnimatedEntity: public EntityObject {
 public:
 	AnimatedEntity();
 	~AnimatedEntity();
-	AnimatedEntity(string name, string imagePath, int baseWidth, int baseHeight, int pixelRefX, int pixelRefY, int nFrames, int fps, int delay): 
-		EntityObject(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY), _nFrames(nFrames), _fps(fps), _delay(delay) { };
+	AnimatedEntity(string name, string imagePath, int baseWidth, int baseHeight, int pixelRefX, int pixelRefY, list <string> imagesPaths, int fps, int delay): 
+		EntityObject(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY), _imagesPaths(imagesPaths), _fps(fps), _delay(delay) { };
 	int fps();
 	void fps(int);
 	int delay();
 	void delay(int);
-	int nFrames();
+	list <string> imagesPaths();
 
 private:
 	int _fps;
 	int _delay;
-	int _nFrames;
+	list <string> _imagesPaths;
 };
 
 
