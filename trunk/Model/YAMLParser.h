@@ -69,7 +69,8 @@ private:
 	Screen generateDefaultScreen();
 	Configuration generateDefaultConfiguration();
 	MainCharacter generateDefaultMainCharacter();
-	sStage generateDefaultStage();
+	Stage generateDefaultStage();
+	void loadEverythingByDefault();
 	void loadEntitiesToMap(int stage_index);
 	void loadMainCharacters(int stage_index);
 	void manageEntityCase();
@@ -78,10 +79,16 @@ private:
 public:
 	YAMLParser();
 	~YAMLParser();
+
 	void parse(string inputFilePath);
+
+	int screenWidth();
+	int screenHeight();
+	int scrollMargin();
 	vector <Stage> vStages();
 	vector <EntityObject> vEntitiesObject();
 	vector <AnimatedEntity> vAnimatedEntities();
+
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);
 };

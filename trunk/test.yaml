@@ -17,19 +17,19 @@ entidades:
       delay: 1000
        
     - nombre: castillo
-      imagen: ../Images/cubo.png 
+      imagen: ../Images/cubo.png
       ancho_base: 2 
       alto_base: 2 
       pixel_ref_x: 30 
       pixel_ref_y: 40 
 
     - nombre: orco 
-      imagen: path/a/imagen.png 
+      imagen: path/a/imagen/
       fps: 10 
       delay: 5 
        
     - nombre: frodo 
-      imagen: path/a/imagen.png 
+      imagen: path/a/imagen/
       fps: 10 
        
     - nombre: tierra 
