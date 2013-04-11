@@ -20,7 +20,7 @@ public:
 	unsigned int width(); 
 	unsigned int height();
 	string name(); 
-	vector <EntityDef> vEntitiesDef(); 
+	vector <EntityDef> vEntitiesDef(); // Sólo para las pruebas rápidas. Las entidades están bien cargadas en el entityMap.
 	vector <MainCharacter> vMainCharacters(); 
 	map <KeyPair, EntityObject*> entityMap();
 	void width(unsigned int); 
