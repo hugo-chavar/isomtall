@@ -20,7 +20,7 @@ Logger& Logger::instance()
 
 void Logger::setFile(string path)
 {
-	fd.open (path.c_str(), std::ios::out | std::ios::app);
+	fd.open (path.c_str(), std::ios::out);
 	if (!fd)
 	{
 		std::cerr<<"No se pudo abrir el archivo de log."<<std::endl;

@@ -75,17 +75,24 @@ void operator >> (const Node& node, Configuration& configuration) {
 }
 
 bool validateImagePath(string imagePath) {
-	DirList dirList;
-	ifstream file;
-	file.open(imagePath);
-	if (!file.is_open()) {
-		if (!dirList.createFromDirectory(imagePath)) // Si no es un directorio.
+	if ((imagePath[imagePath.size()-1]!='/') && (imagePath[imagePath.size()-1]!='\\')) { // Si no es un directorio.
+		if (imagePath.find(IMAGES_EXTENSION)==string::npos) { // Veo que sea '.png'.
+			Logger::instance().log("Parser Error: '"+imagePath+"' does not have a valid extension.");
+			return false;
+		}
+
+		ifstream file;
+		file.open(imagePath);
+		if (!file.is_open()) { // Veo que exista.
 			Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
-		return false;
+			return false;
+		}
+		else {
+			file.close();
+			return true;
+		}
 	}
-	else
-		file.close();
-	return true;
+	return false;
 }
 
 void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOMBRES IGUALES
@@ -163,7 +170,7 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 }
 
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
-	int fps, delay, nFrames;
+	int fps, delay, nFrames = 0;
 	string imageDir;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
@@ -174,8 +181,15 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		DirList dirList;
 		node["imagen"] >> imageDir;
 		if (dirList.createFromDirectory(imageDir)) {
-			nFrames = dirList.count();
-			imageDirFound = true;
+			while (dirList.hasNext()) {
+				string dir_aux = dirList.next();
+				if ((dir_aux.find(entity_aux.name())!=string::npos) && (dir_aux.find(IMAGES_EXTENSION)!=string::npos)) { // Las imágenes de las entidades animadas deben ser de la forma 'entity0.png'.
+					imageDirFound = true;
+					nFrames++;
+				}
+			}
+			if (!imageDirFound)
+				Logger::instance().log("Parser Error: No images in the '[name][frame].png' format found in the directory '"+imageDir+"'.");
 		}
 		else
 			Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
@@ -415,13 +429,17 @@ MainCharacter YAMLParser::generateDefaultMainCharacter() {
 	return mainCharacter;
 }
 
-sStage YAMLParser::generateDefaultStage() {
-	sStage stage;
-	stage.name = "DEFAULT";
-	stage.size_x = DEFAULT_STAGE_SIZE_X;
-	stage.size_y = DEFAULT_STAGE_SIZE_Y;
-	loadEntitiesToMap(0);
-	stage.vMainCharacters.push_back(generateDefaultMainCharacter());
+Stage YAMLParser::generateDefaultStage() {
+	vector <EntityDef> vEntitiesDef;
+	vector <MainCharacter> vMainCharacters;
+	map <KeyPair, EntityObject*> entityMap;
+	for(int i=0; i<DEFAULT_STAGE_SIZE_X; i++) // Cargo el mapa con entidad objeto default guardada en la primera posición.
+		for(int j=0; j<DEFAULT_STAGE_SIZE_Y; j++) {
+			KeyPair key(i, j);
+			entityMap.insert(make_pair(key, &entities.vEntitiesObject[0]));
+		}
+	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
+	Stage stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, entityMap, vMainCharacters);
 	return stage;
 }
 
@@ -512,106 +530,88 @@ void YAMLParser::manageStageCase() {
 		loadMainCharacters(i);
 		loadEntitiesToMap(i);
 	}
-	if (stages.vStages_aux.size()<=0) { // Verifico que exista al menos un escenario.
+	if (stages.vStages.size()<=0) { // Verifico que exista al menos un escenario.
 		Logger::instance().log("Parser Error: No stages found.");
-		stages.vStages_aux.push_back(generateDefaultStage());
+		stages.vStages.push_back(generateDefaultStage());
 	}
+}
+
+void YAMLParser::loadEverythingByDefault() {
+	screen = generateDefaultScreen();
+	configuration = generateDefaultConfiguration();
+	manageEntityCase();
+	manageStageCase();
 }
 
 void YAMLParser::parse(string inputFilePath) {
 	Node doc;
 	bool screenFound = false, stagesFound = false, entitiesFound = false, configurationFound = false;
-	ifstream inputFile(inputFilePath);
-	// Verificar si existe el archivo y si está vacío
-	Parser parser(inputFile);
+	ifstream inputFile_aux;
 
-	// MEJORAR INICIALIZAR. VER EL RESTO (EJ ANIMADAS)
 	EntityObject entity_default;
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
-
-	try {
-		parser.GetNextDocument(doc);
-		try {
-			doc["pantalla"] >> screen;
-			screenFound = true;
-		} catch (KeyNotFound) { };
-		try {
-			doc["configuracion"] >> configuration;
-			configurationFound = true;
-		} catch (KeyNotFound) { };
-		try {
-			doc["entidades"] >> entities;
-			manageEntityCase();
-			entitiesFound = true;
-		} catch (KeyNotFound) { };
-		try {
-			doc["escenarios"] >> stages;
-			manageStageCase();
-			stagesFound = true;
-		} catch (KeyNotFound) { };
+	
+	inputFile_aux.open(inputFilePath);
+	if (!inputFile_aux.is_open()) {
+		Logger::instance().log("Parser Error: No se pudo abrir el archivo '"+inputFilePath+"'.");
+		loadEverythingByDefault();
+	}
+	else {
+		inputFile_aux.close();
+		ifstream inputFile(inputFilePath);
+		Parser parser(inputFile);
 		
-		if (!screenFound) {
-			Logger::instance().log("Parser Error: Field 'pantalla' is not defined.");
-			screen = generateDefaultScreen();
-		}
-		if (!stagesFound) {
-			Logger::instance().log("Parser Error: Field 'escenarios' is not defined.");
-			sStage stage_aux = generateDefaultStage();
-		}
-		if (!entitiesFound) {
-			Logger::instance().log("Parser Error: Field 'entidades' is not defined.");
-			manageEntityCase();
-		}
-		if (!configurationFound) {
-			Logger::instance().log("Parser Error: Field 'configuracion' is not defined.");
-			configuration = generateDefaultConfiguration();
-		}
-	} catch (Exception& parserException) { // SI ES UN ERROR DE SINTAXIS TERMINAR EL PROGRAMA O CARGAR TODO DEFAULT Y LOGGEAR EL ERROR?
-		Logger::instance().log(parserException.what());
-		cout << parserException.what() << endl;
-	};
+		try {
+			parser.GetNextDocument(doc);
 
-	// Cargo la velocidad en los personajes.
-	for(unsigned int i=0; i<stages.vStages.size(); i++)
+			try {
+				doc["pantalla"] >> screen;
+				screenFound = true;
+			} catch (KeyNotFound) { };
+			if (!screenFound) {
+				Logger::instance().log("Parser Error: Field 'pantalla' is not defined.");
+				screen = generateDefaultScreen();
+			}
+
+			try {
+				doc["configuracion"] >> configuration;
+				configurationFound = true;
+			} catch (KeyNotFound) { };
+			if (!configurationFound) {
+				Logger::instance().log("Parser Error: Field 'configuracion' is not defined.");
+				configuration = generateDefaultConfiguration();
+			}
+
+			try {
+				doc["entidades"] >> entities;
+				manageEntityCase();
+				entitiesFound = true;
+			} catch (KeyNotFound) { };
+			if (!entitiesFound) {
+				Logger::instance().log("Parser Error: Field 'entidades' is not defined.");
+				manageEntityCase();
+			}
+
+			try {
+				doc["escenarios"] >> stages;
+				manageStageCase();
+				stagesFound = true;
+			} catch (KeyNotFound) { };
+			if (!stagesFound) {
+				Logger::instance().log("Parser Error: Field 'escenarios' is not defined.");
+				manageStageCase();
+			}
+		
+		} catch (Exception& parserException) { // Error de sintaxis.
+			Logger::instance().log(parserException.what());
+			cout << parserException.what() << endl;
+			loadEverythingByDefault();
+		};
+	}
+
+	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad en los personajes.
 		for(unsigned int j=0; j<stages.vStages[i].vMainCharacters().size(); j++)
 			stages.vStages[i].vMainCharacters()[j].speed(configuration.main_character_speed);
-
-
-	/*
-	// TESTEO RAPIDO
-	cout << "Pantalla:\n   Ancho: " << screen.width << " Alto: " << screen.height << endl;
-	cout << "Configuracion:\n   Vel_Personaje: " << configuration.main_character_speed << " Margen_Scroll: " << configuration.scroll_margin << endl;
-	cout << "Entidades:" << endl;
-	for(unsigned int i=0; i<entities.vEntitiesObject.size(); i++) {
-		cout << "   Nombre: " << entities.vEntitiesObject[i].name() << " Imagen: " << entities.vEntitiesObject[i].imagePath() << endl;
-	}
-	for(unsigned int i=0; i<entities.vAnimatedEntities.size(); i++) {
-		cout << "   Nombre: " << entities.vAnimatedEntities[i].name() << " Imagen: " << entities.vAnimatedEntities[i].imagePath() <<
-			" Fps: " << entities.vAnimatedEntities[i].fps() << endl;
-	}
-	cout << "Escenarios:" << endl;
-	for(unsigned int i=0; i<stages.vStages.size(); i++) {
-		Stage stage = stages.vStages[i];
-		cout << "   Nombre: " << stage.name() << " Size_X: " << stage.width() << " Size_Y: " << stage.height() << endl;
-		cout << "   Entidades:" << endl;
-		for(unsigned int j=0; j<stage.vEntitiesDef().size(); j++) {
-			EntityDef entityDef = stage.vEntitiesDef()[j];
-			cout << "      Entidad: " << entityDef.entity << " X: " << entityDef.x << " Y: " << entityDef.y << endl;
-		}
-		/*cout << "   Mapa: " << endl;
-		for(unsigned int j=0; j<stage.height(); j++) {
-			for(unsigned int k=0; k<stage.width(); k++) {
-				KeyPair key(k,j);
-				cout << " " << (*stage.entityMap()[key]).name();
-			}
-			cout << endl;
-		}
-		cout << "   Protagonistas:" << endl;
-		for(unsigned int j=0; j<stage.vMainCharacters().size(); j++) {
-			MainCharacter mainCharacter = stage.vMainCharacters()[j];
-			cout << "      TipoEntidad: " << (*mainCharacter.entityType()).name() << " X: " << mainCharacter.x() << " Y: " << mainCharacter.y() << endl;
-		}
-	}*/
 }
 
 vector <Stage> YAMLParser::vStages() {
@@ -624,4 +624,16 @@ vector <EntityObject> YAMLParser::vEntitiesObject() {
 
 vector <AnimatedEntity> YAMLParser::vAnimatedEntities() {
 	return entities.vAnimatedEntities;
+}
+
+int YAMLParser::screenWidth() {
+	return screen.width;
+}
+
+int YAMLParser::screenHeight() {
+	return screen.height;
+}
+
+int YAMLParser::scrollMargin() {
+	return configuration.scroll_margin;
 }
