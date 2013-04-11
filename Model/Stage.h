@@ -15,7 +15,8 @@ class Stage {
 public:
 	Stage();
 	Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, const map <KeyPair, EntityObject*> entityMap, vector <MainCharacter> vMainCharacters): 
-		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _vMainCharacters(vMainCharacters) { }; // TILEWIDTH Y TILEHEIGHT ?
+		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _vMainCharacters(vMainCharacters) { _entityMap = entityMap; };
+		// TILEWIDTH Y TILEHEIGHT ?
 	unsigned int width(); 
 	unsigned int height();
 	string name(); 
