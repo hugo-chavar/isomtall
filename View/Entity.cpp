@@ -1,9 +1,10 @@
 #include "Entity.h"
 
 
-#define ppty 32 //pixels por tile en y
-#define pptx 64 //pixels por tile en x
 
+
+
+Entity::Entity() {}
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado)//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely)
 {

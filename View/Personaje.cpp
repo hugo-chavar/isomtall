@@ -2,7 +2,17 @@
 #include "../Model/PersonajeConstantes.h"
 
 
-Personaje::Personaje() {
+Personaje::Personaje(int xTile, int yTile, int estadoNuevo) {
+	MainCharacter* m_char = NULL;
+	
+	tileActual.first = xTile;
+	tileActual.second = yTile;
+	estado = estadoNuevo;
+	velocidad = 0;
+	delta.first = 0;
+	delta.second = 0;
+	m_char = new MainCharacter();
+	modelo = new model::PersonajeModelo(xTile, yTile, estadoNuevo, m_char);
 }
 
 void Personaje::update(){
@@ -11,28 +21,28 @@ void Personaje::update(){
 	tile.second = 0;
 	int animacion = 0;
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
-		modelo.getCurrent(tileActual);
-		animacion = modelo.mover(tile, velocidad);
+		modelo->getCurrent(tileActual);
+		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
-		modelo.setCurrent(tile.first, tile.second);
+		modelo->setCurrent(tile.first, tile.second);
 	}
 	if (estado != ERROR) {
 		sprites[estado]->actualizarFrame();
 		if ((delta.first) < 0) {
-			
+			//spriteRect.x= pptx*tileActual.first/2-pptx*tileActual.second/2-sprites[estado]->relatx()-factor;
 			delta.first = delta.first + velocidad;
 		} else {
 			if ((delta.first) > 0) {
-
+				//spriteRect.x= pptx*tileActual.first/2-pptx*tileActual.second/2-sprites[estado]->relatx()-factor;
 				delta.first = delta.first - velocidad;
 			}
 		}
 		if ((delta.second) < 0) {
-
+			//spriteRect.y= ppty*tileActual.first/2+ppty*tileActual.second/2-sprites[estado]->relaty()-factor;
 			delta.second = delta.second + velocidad;
 		} else {
 			if ((delta.second) > 0) {
-
+				//spriteRect.y= ppty*tileActual.first/2+ppty*tileActual.second/2-sprites[estado]->relaty()-factor;
 				delta.second = delta.second - velocidad;
 			}
 		}
@@ -45,10 +55,15 @@ void Personaje::render(Camera& camera) {
 
 
 void Personaje::setDestino(int xTile, int yTile){
-	modelo.setDestino(xTile, yTile);
+	modelo->setDestino(xTile, yTile);
 }
 
 void Personaje::agregarSprite(Sprite* sprite) {
+	if (sprites.empty()) {
+		spriteRect=posicionIsometricaPorTiles(tileActual.first, tileActual.second,sprite);
+		spriteRect.w=sprite->getFrameActual()->getSuperficie()->w;
+		spriteRect.h=sprite->getFrameActual()->getSuperficie()->h;
+	}
 	sprites.push_back(sprite);
 }
 
@@ -112,6 +127,8 @@ int Personaje::procesarAnimacion(int animacion) {
 	}
 	return ERROR;
 }
+
+
 
 Personaje::~Personaje(){
 }

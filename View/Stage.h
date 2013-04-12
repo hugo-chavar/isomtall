@@ -8,6 +8,7 @@
 #include "Stage.h"
 #include "Entity.h"
 #include "Game.h"
+#include "Personaje.h"
 #include <list>
 
 using namespace std;
@@ -19,7 +20,7 @@ namespace view {
 	
 		//Se cargan una vez solamente los sprites
 		vector<Sprite*> spriteArray;
-
+		Personaje* pj;
 
 		//std::vector<model::Tile*> tileArray;
 		std::vector<TileView*> tileArray;
