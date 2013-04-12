@@ -96,7 +96,23 @@ void view::Stage::initialize()
 	//spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),entity.nFrames(),entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
-	pj = new Personaje(10, 10, 0);
+	pj = new Personaje(15, 10, 1.0, 0);
+	pj->setDestino(5,5);
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
+	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	//Harcodeo la carga de entidades. debera venir del modelo
 	for(int i=0;i<50;i++)
@@ -108,7 +124,7 @@ void view::Stage::initialize()
 	entityList.push_back(new Entity(3,2,spriteArray[1]));
 	//entityList.push_back(new Entity(15,2,spriteArray[2]));
 	//entityList.push_back(new Entity(15,5,spriteArray[2]));
-	//entityList.push_back(new Entity(15,10,spriteArray[2]));
+	//entityList.push_back(new Entity(15,10,spriteArray[2]));vpj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	entityList.push_back(pj);
 }
 
@@ -117,4 +133,5 @@ void view::Stage::update() {
 	{
 		spriteArray[i]->actualizarFrame();
 	}
+	pj->update();
 }

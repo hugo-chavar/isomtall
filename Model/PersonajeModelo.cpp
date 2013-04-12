@@ -28,7 +28,7 @@ PersonajeModelo::PersonajeModelo() {
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, MainCharacter *datosPersonaje) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -39,7 +39,7 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, MainChara
 	caminoSize = 0;
 	_datosPersonaje = datosPersonaje;
 	this->estado = estado;
-	this->velocidad = datosPersonaje->speed();
+	this->velocidad = velocidad;
 }
 
 void PersonajeModelo::setCurrent(int x, int y) {
@@ -71,12 +71,6 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	int cambio = SIN_CAMBIO;
 	double coste;
 
-	if ((estado<10) || (estado>19)) {
-		cambio = ESTADO_MOVIMIENTO;
-		estado = cambiarEstado(current.first, current.second, cambio);
-		velocidad = 0;
-		return estado;
-	}
 	if (target == current) {
 		if ((estado<10) || (estado>19)) {
 			cambio = ESTADO_MOVIMIENTO;

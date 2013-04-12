@@ -2,17 +2,17 @@
 #include "../Model/PersonajeConstantes.h"
 
 
-Personaje::Personaje(int xTile, int yTile, int estadoNuevo) {
+Personaje::Personaje(int xTile, int yTile, float velocity, int estadoNuevo) {
 	MainCharacter* m_char = NULL;
 	
 	tileActual.first = xTile;
 	tileActual.second = yTile;
 	estado = estadoNuevo;
-	velocidad = 0;
+	velocidad = velocity;
 	delta.first = 0;
 	delta.second = 0;
 	m_char = new MainCharacter();
-	modelo = new model::PersonajeModelo(xTile, yTile, estadoNuevo, m_char);
+	modelo = new model::PersonajeModelo(xTile, yTile, estadoModelo(estadoNuevo), velocity, m_char);
 }
 
 void Personaje::update(){
@@ -20,30 +20,33 @@ void Personaje::update(){
 	tile.first = 0;
 	tile.second = 0;
 	int animacion = 0;
+	float factor = velocidad;
+
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
 		modelo->setCurrent(tile.first, tile.second);
+		factor = velocidad;
 	}
 	if (estado != ERROR) {
 		sprites[estado]->actualizarFrame();
 		if ((delta.first) < 0) {
-			//spriteRect.x= pptx*tileActual.first/2-pptx*tileActual.second/2-sprites[estado]->relatx()-factor;
-			delta.first = delta.first + velocidad;
+			spriteRect.x= spriteRect.x-factor;
+			delta.first = delta.first + factor;
 		} else {
 			if ((delta.first) > 0) {
-				//spriteRect.x= pptx*tileActual.first/2-pptx*tileActual.second/2-sprites[estado]->relatx()-factor;
-				delta.first = delta.first - velocidad;
+				spriteRect.x= spriteRect.x+factor;
+				delta.first = delta.first - factor;
 			}
 		}
 		if ((delta.second) < 0) {
-			//spriteRect.y= ppty*tileActual.first/2+ppty*tileActual.second/2-sprites[estado]->relaty()-factor;
-			delta.second = delta.second + velocidad;
+			spriteRect.y= spriteRect.y-factor;
+			delta.second = delta.second + factor;
 		} else {
 			if ((delta.second) > 0) {
-				//spriteRect.y= ppty*tileActual.first/2+ppty*tileActual.second/2-sprites[estado]->relaty()-factor;
-				delta.second = delta.second - velocidad;
+				spriteRect.y= spriteRect.y+factor;
+				delta.second = delta.second - factor;
 			}
 		}
 	}
@@ -128,7 +131,28 @@ int Personaje::procesarAnimacion(int animacion) {
 	return ERROR;
 }
 
-
+int Personaje::estadoModelo(int estado) {
+	switch(estado) {
+	case STOP_N: return PARADO_N;
+	case STOP_NE: return PARADO_NE;
+	case STOP_NOE: return PARADO_NOE;
+	case STOP_S: return PARADO_S;
+	case STOP_SE: return PARADO_SE;
+	case STOP_SOE: return PARADO_SOE;
+	case STOP_E: return PARADO_E;
+	case STOP_O: return PARADO_O;
+	case WALK_N: return CAMINANDO_N;
+	case WALK_NE: return CAMINANDO_NE;
+	case WALK_NOE: return CAMINANDO_NOE;
+	case WALK_S: return CAMINANDO_S;
+	case WALK_SE: return CAMINANDO_SE;
+	case WALK_SOE: return CAMINANDO_SOE;
+	case WALK_E: return CAMINANDO_E;
+	case WALK_O: return CAMINANDO_O;
+	default: return ERROR;
+	}
+	return ERROR;
+}
 
 Personaje::~Personaje(){
 }
