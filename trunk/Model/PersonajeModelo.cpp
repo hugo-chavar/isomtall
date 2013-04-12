@@ -102,8 +102,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
 		coste = Game::instance().world().cost(xPath[posMov], yPath[posMov]);
-		coste = std::floor((this->velocidad)*coste);
-		velocidad = (float) coste;
+		velocidad = ((this->velocidad)*coste);
 		posMov++;
 	} else {
 		if ((estado<10) || (estado>19)) {
@@ -177,5 +176,8 @@ PersonajeModelo::~PersonajeModelo(){
 	if (yPath != NULL) {
 		delete [] yPath;
 		yPath = NULL;
+	}
+	if(_datosPersonaje != NULL) {
+		delete _datosPersonaje;
 	}
 }

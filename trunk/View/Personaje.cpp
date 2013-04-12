@@ -13,6 +13,8 @@ Personaje::Personaje(int xTile, int yTile, float velocity, int estadoNuevo) {
 	delta.second = 0;
 	m_char = new MainCharacter();
 	modelo = new model::PersonajeModelo(xTile, yTile, estadoModelo(estadoNuevo), velocity, m_char);
+	ePot.first = 0;
+	ePot.second = 0;
 }
 
 void Personaje::update(){
@@ -20,37 +22,53 @@ void Personaje::update(){
 	tile.first = 0;
 	tile.second = 0;
 	int animacion = 0;
-	float factor = velocidad;
+	std::pair<float, float> factor;
+	factor.first = 0;
+	factor.second = 0;
+	std::pair<bool, bool> serrucho;
 
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
 		modelo->setCurrent(tile.first, tile.second);
-		factor = velocidad;
+		if (velocidad == 0) {
+			ePot.first = 0;
+			ePot.second = 0;
+		}
 	}
+	velocidadRelativa(factor);
 	if (estado != ERROR) {
 		sprites[estado]->actualizarFrame();
-		if ((delta.first) < 0) {
-			spriteRect.x= spriteRect.x-factor;
-			delta.first = delta.first + factor;
-		} else {
-			if ((delta.first) > 0) {
-				spriteRect.x= spriteRect.x+factor;
-				delta.first = delta.first - factor;
+		if (delta.first != 0) {
+			ePot.first = ePot.first + factor.first;
+			if (ePot.first >= 1) {
+				ePot.first --;
+				if (delta.first < 0) {
+					spriteRect.x --;
+					delta.first ++;
+				} else {
+					spriteRect.x ++;
+					delta.first --;
+				}
 			}
 		}
-		if ((delta.second) < 0) {
-			spriteRect.y= spriteRect.y-factor;
-			delta.second = delta.second + factor;
-		} else {
-			if ((delta.second) > 0) {
-				spriteRect.y= spriteRect.y+factor;
-				delta.second = delta.second - factor;
+		if (delta.second != 0) {
+			ePot.second = ePot.second + factor.second;
+			if (ePot.second >= 1) {
+				ePot.second --;
+				if (delta.second < 0) {
+					spriteRect.y --;
+					delta.second ++;
+				} else {
+					spriteRect.y ++;
+					delta.second --;
+				}
 			}
 		}
 	}
 }
+
 
 void Personaje::render(Camera& camera) {
 	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie());
@@ -59,6 +77,36 @@ void Personaje::render(Camera& camera) {
 
 void Personaje::setDestino(int xTile, int yTile){
 	modelo->setDestino(xTile, yTile);
+}
+
+void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
+	//Velocidad Relativa Hacia el Norte
+	if ((delta.second < 0)&&(delta.first == 0)) {
+		factor.second = velocidad/2;
+	}
+	//Velocidad Relativa Hacia el Sur
+	if ((delta.second > 0)&&(delta.first == 0)) {
+		factor.second = velocidad;
+	}
+	//Velocidad Relativa Hacia el Este y el Oeste
+	if ((delta.first != 0)&&(delta.second == 0)) {
+		factor.first = velocidad;
+	}
+	//Velocidades Relativas Hacia el NorOeste y NorEste
+	if ((delta.first != 0)&&(delta.second < 0)) {
+		factor.first = velocidad;
+		factor.second = velocidad/2;
+	}
+	//Velocidades Relativas Hacia el SudOeste y SudEste
+	if ((delta.first != 0)&&(delta.second > 0)) {
+		factor.first = velocidad;
+		factor.second = velocidad/2;
+	}
+	//Velocidad Cuando No se Mueve
+	if ((delta.first == 0)&&(delta.second == 0)){
+		factor.first = 0;
+		factor.second = 0;
+	}
 }
 
 void Personaje::agregarSprite(Sprite* sprite) {
@@ -155,4 +203,7 @@ int Personaje::estadoModelo(int estado) {
 }
 
 Personaje::~Personaje(){
+	if (modelo != NULL) {
+		delete modelo;
+	}
 }
