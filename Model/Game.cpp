@@ -24,9 +24,13 @@ Game& Game::instance()
 	return singleton;
 }
 
-Stage Game::world()
+Stage& Game::world()
 {
 	return _world;
+}
+
+TimeManager& Game::time() {
+	return this->_time;
 }
 
 void Game::initialize()

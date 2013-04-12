@@ -11,22 +11,22 @@ namespace model {
 		private:
 	//TODO: Not OK with this aproach. Review.
 	//Internal variable to calculate deltaTime.
-			static unsigned int startTime;
+			unsigned int startTime;
 
 			//Time between updateTime() calls in seconds.
-			static float deltaTime;
+			float deltaTime;
 
 		public:
 			TimeManager();
 
 			//Starts world's time.
-			static void initializeTime();
+			void initializeTime();
 
 			//Updates world's time.
-			static void updateTime();
+			void updateTime();
 
 			//Returns time between updateTime() calls in seconds.
-			static float getDeltaTime();
+			float getDeltaTime();
 
 			~TimeManager();
 	};

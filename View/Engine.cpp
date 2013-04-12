@@ -1,13 +1,12 @@
 #include "Engine.h"
 
 #include "Surface.h"
-#include "TimeManager.h"
 #include "Game.h"
 
 Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
-	this->desiredFPS = 50;
+	this->desiredFPS = 100;
 }
 
 bool Engine::isRunning() {
@@ -19,16 +18,16 @@ unsigned int Engine::getDesiredFPS() {
 }
 
 int Engine::execute() {
-	double milisecondsTonextFrame = 1000.0/this->getDesiredFPS();
+	float milisecondsTonextFrame = static_cast<float>(1000/this->getDesiredFPS());
 	unsigned int frameStartedAt = 0;
 	SDL_Event sdlEvent;
 
 	this->initialize();
  
-	model::TimeManager::initializeTime();
+	Game::instance().time().initializeTime();
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
-		model::TimeManager::updateTime();
+		Game::instance().time().updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
 			this->onEvent(&sdlEvent);
 		}
@@ -38,7 +37,7 @@ int Engine::execute() {
 		this->render();
 
 		if (milisecondsTonextFrame >= SDL_GetTicks() - frameStartedAt)
-			SDL_Delay(int(milisecondsTonextFrame) - (SDL_GetTicks() - frameStartedAt));
+			SDL_Delay(static_cast<unsigned int>(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)));
 	}
 
 	this->cleanUp();
@@ -48,15 +47,12 @@ int Engine::execute() {
 
 void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	//SDL_WM_GrabInput(SDL_GRAB_ON);
+	SDL_WM_GrabInput(SDL_GRAB_ON);
 
-	//this->camera.initialize(800,600,32,300,50,(this->worldView.worldModel.tileWidth() * this->worldView.worldModel.width() / 2) - 400,(this->worldView.worldModel.tileHeight() * this->worldView.worldModel.height() / 2) - 300);
-	this->camera.initialize(800,600,24,200,50,0,0);
+	//TODO: center camera on player or default tile.
+	this->camera.initialize(800,600,32,200,60,0,0);
 
 	worldView.initialize();
-
-
-	this->loadLevel();
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
@@ -65,8 +61,41 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		running = false;
 	}
 
-	if ( (sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym) ) {
+	if ( (sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_ESCAPE) ) {
 		running = false;
+	}
+
+	switch(sdlEvent->type) {
+		case SDL_QUIT: {
+			running = false;
+			break;
+		}
+		case SDL_KEYDOWN: {
+			switch(sdlEvent->key.keysym.sym) {
+				case SDLK_ESCAPE: {
+					running = false;
+					break;
+				}
+			}
+			break;
+		}
+		case SDL_MOUSEBUTTONDOWN: {
+            switch(sdlEvent->button.button) {
+                case SDL_BUTTON_LEFT: {
+                    //TODO: add event handling;
+					//sdlEvent->button.x;
+					//sdlEvent->button.y;
+                    break;
+                }
+                case SDL_BUTTON_RIGHT: {
+                    //TODO: add event handling;
+					//sdlEvent->button.x;
+					//sdlEvent->button.y;
+                    break;
+                }
+            }
+            break;
+        }
 	}
 }
 
@@ -87,27 +116,6 @@ void Engine::cleanUp() {
 	this->camera.cleanUp();
 
 	SDL_Quit();
-}
-
-void Engine::loadLevel() {
-	//TODO: Mock harcoded function.
-	TileView* tile = NULL;
-	SDL_Surface* tileSet = NULL;
-	unsigned int tileSetOffsetX = 0;
-	unsigned int tileSetOffsetY = 0;
-	unsigned int tileCenterX = 0;
-	unsigned int tileCenterY = 0;
-
-//	this->getScenario().mapSurface = SDL_CreateRGBSurface(SDL_SWSURFACE,this->getScenario().getDimentions()*this->getScenario().getTileWidth(),this->getScenario().getDimentions()*this->getScenario().getTileHeight(),32,0,0,0,0);
-
-	tileSet = Surface::loadFromBMP("../images/tiles.bmp");
-
-	for (unsigned int i = 0; i < this->worldView.worldModel.width() * this->worldView.worldModel.height(); i++) {
-		tile = new TileView(tileSet,tileSetOffsetX,tileSetOffsetY,this->worldView.worldModel.tileHeight(),this->worldView.worldModel.tileWidth(),0,tileCenterX,tileCenterY);
-		this->worldView.addTile(tile);
-	}
-
-	SDL_FreeSurface(tileSet);
 }
 
 Engine::~Engine() {

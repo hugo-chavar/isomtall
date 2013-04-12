@@ -3,11 +3,8 @@
 
 #include "SDL.h"
 #include "Camera.h"
-#include "World.h"
-//#include "Stage.h"
+#include "Stage.h"
 
-using namespace view;
-using namespace model;
 
 class Engine {
 	private:
@@ -19,12 +16,11 @@ class Engine {
 		Engine();
 	
 		//TODO: Create getter/setter
-		view::World worldView;
+		view::Stage worldView;
 
 		//TODO: Create getter/setter
 		Camera camera;
-
-
+	
 		bool isRunning();
 
 		unsigned int getDesiredFPS();
@@ -40,8 +36,6 @@ class Engine {
 		void render();
 
 		void cleanUp();
-
-		void loadLevel();
 
 		~Engine();
 };
