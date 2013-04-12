@@ -110,10 +110,10 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	try {
 		node["imagen"] >> imagePath;
 		if ((imagePath=="~") || (!validateImagePath(imagePath)))
-			imagePath = DEFAULT_TILE_IMAGE;
+			imagePath = ERROR_IMAGE;
 	} catch (KeyNotFound) {
 		Logger::instance().log("Parser Error: Field 'imagen' is not defined in entity '"+name+"'.");
-		imagePath = DEFAULT_TILE_IMAGE;
+		imagePath = ERROR_IMAGE;
 	};
 	try {
 		node["ancho_base"] >> baseWidth;
