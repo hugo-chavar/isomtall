@@ -38,7 +38,7 @@ void Game::initialize()
 	YAMLParser yParser;
 	yParser.parse(CONFIGFILE);
 	_world = yParser.vStages()[0];
-	_personaje = _world.vMainCharacters()[0];
+	_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
 	_vEntitiesObject = yParser.vEntitiesObject();
 	_vAnimatedEntities = yParser.vAnimatedEntities();
 
@@ -50,4 +50,9 @@ vector <EntityObject> Game::vEntitiesObject(){
 
 vector <AnimatedEntity> Game::vAnimatedEntities() {
 	return _vAnimatedEntities;
+}
+
+PersonajeModelo * Game::personaje()
+{
+	return this->_personaje;
 }

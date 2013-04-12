@@ -28,6 +28,22 @@ PersonajeModelo::PersonajeModelo() {
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
+PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
+{
+	current.first = datosPersonaje.x();
+	current.second = datosPersonaje.y();
+	target.first = current.first;
+	target.second = current.second;
+	xPath = NULL;
+	yPath = NULL;
+	posMov = 0;
+	caminoSize = 0;
+	_datosPersonaje = &datosPersonaje;
+	this->estado =  PARADO_S;
+	this->velocidad =datosPersonaje.speed(); 
+
+}
+
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje) {
 	current.first = ActualX;
 	current.second = ActualY;
@@ -64,6 +80,14 @@ void PersonajeModelo::setVelocidad(float vel) {
 void PersonajeModelo::getCurrent(std::pair<int, int>& actual) {
 	actual.first = current.first;
 	actual.second = current.second;
+}
+
+int PersonajeModelo::getEstado() {
+	return estado;
+}
+
+float PersonajeModelo::getVelocidad() {
+	return velocidad;
 }
 
 int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
@@ -177,6 +201,7 @@ PersonajeModelo::~PersonajeModelo(){
 		delete [] yPath;
 		yPath = NULL;
 	}
+
 	if(_datosPersonaje != NULL) {
 		delete _datosPersonaje;
 	}

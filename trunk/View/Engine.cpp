@@ -82,6 +82,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		case SDL_MOUSEBUTTONDOWN: {
             switch(sdlEvent->button.button) {
                 case SDL_BUTTON_LEFT: {
+
+					Game::instance().world().destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
                     //TODO: add event handling;
 					//sdlEvent->button.x;
 					//sdlEvent->button.y;

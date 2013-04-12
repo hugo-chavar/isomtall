@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "Game.h"
 
 
 using namespace std;
@@ -80,15 +81,30 @@ void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigne
 //
 //}
 
-std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates,float cameraX,float cameraY) {
 	float a = 0;
 	float b = 0;
 	int c = 0;
 
 	//c = pixelCoordinates.first - ((this->height() * this->tileWidth()) / 2);
 	c = pixelCoordinates.first - (this->tileWidth()/ 2);
-	a = (static_cast<float>(pixelCoordinates.second) / this->tileHeight());
-	b = (static_cast<float>(c) / this->tileWidth());
+	a = ((static_cast<float>(pixelCoordinates.second)+cameraX) / this->tileHeight());
+	b = ((static_cast<float>(c)+cameraY) / this->tileWidth());
 
 	return std::make_pair<int,int>(a + b,a - b);
 }
+
+std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+
+	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
+}
+
+void Stage::destino(int x,int y,float cameraX,float cameraY)
+	{
+		std::pair<int,int> pixelCoordinates;
+		pixelCoordinates.first=x;
+		pixelCoordinates.second=y;
+		std::pair<int,int> destino=pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
+
+		Game::instance().personaje()->setDestino(destino.first,destino.second);
+	}

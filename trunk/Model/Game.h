@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include "PersonajeModelo.h"
 #include "Stage.h"
 #include "..\View\TimeManager.h"
 #include "..\Model\YAMLParser.h"
@@ -22,13 +23,14 @@ namespace model
 		void initialize();
 		vector <EntityObject> vEntitiesObject();
 		vector <AnimatedEntity> vAnimatedEntities();
+		PersonajeModelo * personaje();
 		//void setFile(string path);
 		
 	private:
 		Game();
 		Stage _world;
 		TimeManager _time;
-		MainCharacter _personaje; // CAMBIAR POR PERSONAJE MODELO
+		PersonajeModelo * _personaje; // CAMBIAR POR PERSONAJE MODELO
 		vector <EntityObject> _vEntitiesObject;
 		vector <AnimatedEntity> _vAnimatedEntities;
 		//ofstream fd;
