@@ -7,6 +7,7 @@
 #define IMAGES_EXTENSION ".png"
 #define IMAGES_DIR "../Images/"
 #define DEFAULT_TILE_IMAGE "../Images/piso.png"
+#define ERROR_IMAGE "../Images/error.png"
 #define DEFAULT_ANIMATED_DIR "../Images/default/"
 
 #define DEFAULT_SCREEN_WIDTH 800
