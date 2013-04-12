@@ -13,7 +13,7 @@ class PersonajeModelo {
 
 public:
 	PersonajeModelo();
-	PersonajeModelo(int ActualX, int ActualY, int estado, MainCharacter *datosPersonaje);
+	PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);

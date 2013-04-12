@@ -8,7 +8,7 @@
 
 class Personaje : public Entity {
 public:
-	Personaje(int xTile, int yTile, int estadoNuevo);
+	Personaje(int xTile, int yTile, float velocity, int estadoNuevo);
 	void agregarSprite(Sprite* sprite);
 	void update();
 	void render(Camera& camera);
@@ -16,7 +16,7 @@ public:
 	~Personaje();
 private:
 	int procesarAnimacion(int animacion);
-
+	int estadoModelo(int estado);
 
 	std::pair<int, int> tileActual;
 	model::PersonajeModelo* modelo;
