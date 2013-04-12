@@ -35,7 +35,10 @@ public:
 	unsigned int cost(unsigned int, unsigned int);
 	void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
 	//void update();
+	std::pair<int,int> pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates,float cameraX,float cameraY);
 	std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
+	void destino(int x,int y,float cameraX,float cameraY);
+
 private:
 	string _name;
 	unsigned int _width;

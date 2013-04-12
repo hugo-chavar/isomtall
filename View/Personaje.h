@@ -8,7 +8,7 @@
 
 class Personaje : public Entity {
 public:
-	Personaje(int xTile, int yTile, float velocity, int estadoNuevo);
+	Personaje(model::PersonajeModelo* pj);
 	void agregarSprite(Sprite* sprite);
 	void update();
 	void render(Camera& camera);

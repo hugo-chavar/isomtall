@@ -2,17 +2,16 @@
 #include "../Model/PersonajeConstantes.h"
 
 
-Personaje::Personaje(int xTile, int yTile, float velocity, int estadoNuevo) {
+Personaje::Personaje(model::PersonajeModelo* pj) {
 	MainCharacter* m_char = NULL;
 	
-	tileActual.first = xTile;
-	tileActual.second = yTile;
-	estado = estadoNuevo;
-	velocidad = velocity;
+	pj->getCurrent(tileActual);
+	estado = procesarAnimacion(pj->getEstado());
+	velocidad = pj->getVelocidad();
 	delta.first = 0;
 	delta.second = 0;
 	m_char = new MainCharacter();
-	modelo = new model::PersonajeModelo(xTile, yTile, estadoModelo(estadoNuevo), velocity, m_char);
+	modelo = pj;
 	ePot.first = 0;
 	ePot.second = 0;
 }
@@ -82,7 +81,7 @@ void Personaje::setDestino(int xTile, int yTile){
 void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//Velocidad Relativa Hacia el Norte
 	if ((delta.second < 0)&&(delta.first == 0)) {
-		factor.second = velocidad/2;
+		factor.second = velocidad;
 	}
 	//Velocidad Relativa Hacia el Sur
 	if ((delta.second > 0)&&(delta.first == 0)) {
@@ -95,12 +94,12 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//Velocidades Relativas Hacia el NorOeste y NorEste
 	if ((delta.first != 0)&&(delta.second < 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad/2;
+		factor.second = velocidad;
 	}
 	//Velocidades Relativas Hacia el SudOeste y SudEste
 	if ((delta.first != 0)&&(delta.second > 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad/2;
+		factor.second = velocidad;
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
@@ -203,7 +202,4 @@ int Personaje::estadoModelo(int estado) {
 }
 
 Personaje::~Personaje(){
-	if (modelo != NULL) {
-		delete modelo;
-	}
 }

@@ -13,12 +13,15 @@ class PersonajeModelo {
 
 public:
 	PersonajeModelo();
+	PersonajeModelo(MainCharacter& datosPersonaje);
 	PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
 	void getCurrent(std::pair<int, int>& actual);
+	int getEstado();
+	float getVelocidad();
 	int mover(std::pair<int, int>& destino, float &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
 private:

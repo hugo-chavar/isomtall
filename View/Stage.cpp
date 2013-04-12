@@ -96,8 +96,9 @@ void view::Stage::initialize()
 	//spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),entity.nFrames(),entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
-	pj = new Personaje(15, 10, 0.5, 0);
-	pj->setDestino(5,5);
+	pj = new Personaje(Game::instance().personaje());
+
+	//pj->setDestino(5,5);
 	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
