@@ -40,8 +40,8 @@ PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
 	caminoSize = 0;
 	_datosPersonaje = &datosPersonaje;
 	this->estado =  PARADO_S;
-	this->velocidad =datosPersonaje.speed(); 
-
+	this->velocidad =datosPersonaje.speed();
+	this->velocidad = 1.0;
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje) {
@@ -103,13 +103,15 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		velocidad = 0;
 		return estado;
 	}
-	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=target.first)&&(yPath[caminoSize-1]!=target.second))) {
+	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=target.first)||(yPath[caminoSize-1]!=target.second))) {
 		posMov = 0;
 		caminoSize = 0;
-		if ((xPath != NULL)&&(yPath != NULL)) {
+		if (xPath != NULL) {
 			delete [] xPath;
-			delete [] yPath;
 			xPath = NULL;
+		}
+		if (yPath != NULL) {
+			delete [] yPath;
 			yPath = NULL;
 		}
 		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, xPath, yPath);

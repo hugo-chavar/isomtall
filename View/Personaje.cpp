@@ -10,7 +10,6 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
 	delta.second = 0;
-	m_char = new MainCharacter();
 	modelo = pj;
 	ePot.first = 0;
 	ePot.second = 0;
@@ -30,10 +29,11 @@ void Personaje::update(){
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
-		modelo->setCurrent(tile.first, tile.second);
 		if (velocidad == 0) {
 			ePot.first = 0;
 			ePot.second = 0;
+		} else {
+			modelo->setCurrent(tile.first, tile.second);
 		}
 	}
 	velocidadRelativa(factor);
@@ -94,12 +94,12 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//Velocidades Relativas Hacia el NorOeste y NorEste
 	if ((delta.first != 0)&&(delta.second < 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad;
+		factor.second = velocidad/2;
 	}
 	//Velocidades Relativas Hacia el SudOeste y SudEste
 	if ((delta.first != 0)&&(delta.second > 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad;
+		factor.second = velocidad/2;
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){

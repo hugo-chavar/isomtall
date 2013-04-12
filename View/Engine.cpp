@@ -50,7 +50,7 @@ void Engine::initialize() {
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 
 	//TODO: center camera on player or default tile.
-	this->camera.initialize(800,600,32,200,60,0,0);
+	this->camera.initialize(800,600,32,200,60,-100,-100);
 
 	worldView.initialize();
 }
