@@ -11,7 +11,7 @@ void Personaje::update(){
 	tile.second = 0;
 	int animacion = 0;
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
-		
+		modelo.getCurrent(tileActual);
 		animacion = modelo.mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
 		modelo.setCurrent(tile.first, tile.second);
