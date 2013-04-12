@@ -9,9 +9,29 @@
 
 //Cambios de estado
 
-#define ERROR -1;
+#define ERROR -1
 #define ESTADO_MOVIMIENTO 1
 #define SIN_CAMBIO 0
+#define MOVIMIENTO 20
+
+//Codigo de las animaciones
+
+#define STOP_N 0
+#define STOP_NE 1
+#define STOP_NOE 2
+#define STOP_S 3
+#define STOP_SE 4
+#define STOP_SOE 5
+#define STOP_E 6
+#define STOP_O 7
+#define WALK_N 8
+#define WALK_NE 9
+#define WALK_NOE 10
+#define WALK_S 11
+#define WALK_SE 12
+#define WALK_SOE 13
+#define WALK_E 14
+#define WALK_O 15
 
 //Parado esperando
 
