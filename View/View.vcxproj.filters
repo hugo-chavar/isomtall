@@ -24,6 +24,9 @@
     <ClCompile Include="Surface.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
     <ClCompile Include="tp.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
@@ -42,7 +45,7 @@
     <ClCompile Include="Stage.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
-    <ClCompile Include="TimeManager.cpp">
+    <ClCompile Include="Personaje.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
   </ItemGroup>
@@ -54,6 +57,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Surface.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="TileView.h">
@@ -71,7 +77,7 @@
     <ClInclude Include="Stage.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="TimeManager.h">
+    <ClInclude Include="Personaje.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

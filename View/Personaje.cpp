@@ -1,5 +1,5 @@
 #include "Personaje.h"
-#include "./Model/PersonajeConstantes.h"
+#include "../Model/PersonajeConstantes.h"
 
 
 Personaje::Personaje() {
@@ -11,11 +11,13 @@ void Personaje::update(){
 	tile.second = 0;
 	int animacion = 0;
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
+		
 		animacion = modelo.mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
+		modelo.setCurrent(tile.first, tile.second);
 	}
 	if (estado != ERROR) {
-		sprites[estado].actualizarFrame();
+		sprites[estado]->actualizarFrame();
 		if ((delta.first) < 0) {
 			
 			delta.first = delta.first + velocidad;

@@ -5,21 +5,21 @@
 #define PERSONAJEMODELO_H
 
 #include <utility>
-#include "Stage.h"
 #include "Constants.h"
+#include "MainCharacter.h"
 
 namespace model {
 class PersonajeModelo {
 
 public:
 	PersonajeModelo();
-	PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, MainCharacter *datosPersonaje);
-	void setStage(Stage* worldModel);
+	PersonajeModelo(int ActualX, int ActualY, int estado, MainCharacter *datosPersonaje);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
-	void setVelocidad(int vel);
-	int mover(std::pair<int, int>& destino, int &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
+	void setVelocidad(float vel);
+	void getCurrent(std::pair<int, int>& actual);
+	int mover(std::pair<int, int>& destino, float &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
 private:
 	int cambiarEstado(int x, int y, int cambio);
@@ -31,8 +31,7 @@ private:
 	int posMov;
 	int caminoSize;
 	int estado;
-	int velocidad;
-	Stage* mundo;
+	float velocidad;
 	MainCharacter *_datosPersonaje;
 };
 }
