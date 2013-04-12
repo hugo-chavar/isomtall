@@ -85,7 +85,7 @@ void view::Stage::initialize()
 	
 	//worldModel = Game::instance().world();
 	//worldModel.initialize(100,100,62,31);//metodo harcodeado
-	Game::instance().world().initialize(100,100,31,62);//metodo harcodeado
+	Game::instance().world().initialize(100,100,32,64);//metodo harcodeado
 	//EntityObject entity = Game::instance().vEntitiesObject()[1];
 	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 

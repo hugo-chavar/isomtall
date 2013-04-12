@@ -87,9 +87,9 @@ std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixel
 	int c = 0;
 
 	//c = pixelCoordinates.first - ((this->height() * this->tileWidth()) / 2);
-	c = pixelCoordinates.first - (this->tileWidth()/ 2);
-	a = ((static_cast<float>(pixelCoordinates.second)+cameraX) / this->tileHeight());
-	b = ((static_cast<float>(c)+cameraY) / this->tileWidth());
+	c = pixelCoordinates.first - (this->tileWidth()/ 2);//275
+	a = ((static_cast<float>(pixelCoordinates.second)+cameraY) / this->tileHeight());
+	b = ((static_cast<float>(c)+cameraX+tileWidth()/ 2) / this->tileWidth());
 
 	return std::make_pair<int,int>(a + b,a - b);
 }
