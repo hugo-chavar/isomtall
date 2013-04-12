@@ -2,10 +2,6 @@
 
 #include "SDL.h"
 
-unsigned int model::TimeManager::startTime = 0;
-
-float model::TimeManager::deltaTime = 0;
-
 model::TimeManager::TimeManager() {
 	this->startTime = 0;
 	this->deltaTime = 0;

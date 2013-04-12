@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <iostream>
+#include <utility>
 #include "DataTypes.h"
 #include "MainCharacter.h"
 
@@ -34,7 +35,7 @@ public:
 	unsigned int cost(unsigned int, unsigned int);
 	void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
 	//void update();
-
+	std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
 private:
 	string _name;
 	unsigned int _width;

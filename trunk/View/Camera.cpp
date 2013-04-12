@@ -1,8 +1,10 @@
 #include "Camera.h"
 
-#include "World.h"
 #include <cmath>
+
+#include "World.h"
 #include "TimeManager.h"
+#include "Game.h"
 
 using namespace view;
 
@@ -14,19 +16,19 @@ Camera::Camera() {
 	this->cameraSurface = NULL;
 }
 
-int Camera::getOffsetX() {
+float Camera::getOffsetX() {
 	return this->offsetX;
 }
 
-void Camera::setOffsetX(int offsetX) {
+void Camera::setOffsetX(float offsetX) {
 	this->offsetX = offsetX;
 }
 
-int Camera::getOffsetY() {
+float Camera::getOffsetY() {
 	return this->offsetY;
 }
 
-void Camera::setOffsetY(int offsetY) {
+void Camera::setOffsetY(float offsetY) {
 	this->offsetY = offsetY;
 }
 
@@ -55,7 +57,7 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	return this->cameraSurface->h;
 }
 
-void Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, int offsetX, int offsetY) {
+void Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, float offsetX, float offsetY) {
 	this->setScrollSpeed(scrollSpeed);
 	this->setScrollBoxSize(scrollBoxSize);
 	this->setOffsetX(offsetX); 
@@ -67,44 +69,47 @@ void Camera::initialize(unsigned int width, unsigned int height, unsigned int bp
 void Camera::update() {
 	int x;
 	int y;
-	int newOffset = 0;
+	float newOffset = 0;
+	float scrollFactor = 0;
 	std::pair<int,int> cameraCenterInTiles;
 
 	SDL_GetMouseState(&x,&y);
 
-	if (x > int(this->getWidth() - this->getScrollBoxSize())) {
-		newOffset = int(ceil(this->getOffsetX() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
-		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
-		//TODO: harcoded value. Mus be obtained from the model.
-		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
+	if (x > this->getWidth() - this->getScrollBoxSize()) {
+		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getWidth() - x)) / this->getScrollBoxSize();
+		newOffset = this->getOffsetX() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
+		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
 	}
 
-	if (x < int(this->getScrollBoxSize())) {
-		newOffset = int(ceil(this->getOffsetX() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
-		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(newOffset + (this->getWidth() / 2),this->getOffsetY() + (this->getHeight() / 2)));
-		//TODO: harcoded value. Mus be obtained from the model.
-		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
+	if (x < this->getScrollBoxSize()) {
+		scrollFactor = static_cast<float>(this->getScrollBoxSize() - x) / this->getScrollBoxSize();
+		newOffset = this->getOffsetX() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
+		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
 	}
 
-	if (y > int(this->getHeight() - this->getScrollBoxSize())) {
-		newOffset = int(ceil(this->getOffsetY() + this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
-		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
-		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
+	if (y > this->getHeight() - this->getScrollBoxSize()) {
+		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getHeight() - y)) / this->getScrollBoxSize();
+		newOffset = this->getOffsetY() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
+		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
 	}
 
-	if (y < int(this->getScrollBoxSize())) {
-		newOffset = int(ceil(this->getOffsetY() - this->getScrollSpeed() * model::TimeManager::getDeltaTime()));
-		cameraCenterInTiles = this->pixelToTileCoordinates(std::make_pair<int,int>(this->getOffsetX() + (this->getWidth() / 2),newOffset + (this->getHeight() / 2)));
-		if ( (cameraCenterInTiles.first < -30) || (cameraCenterInTiles.first > 30) || (cameraCenterInTiles.second < -30) || (cameraCenterInTiles.second > 30) ) {
+	if (y < this->getScrollBoxSize()) {
+		scrollFactor = static_cast<float>(this->getScrollBoxSize() - y) / this->getScrollBoxSize();
+		newOffset = this->getOffsetY() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
+		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
@@ -130,17 +135,4 @@ if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(sprite
 
 
 Camera::~Camera() {
-}
-
-//TODO: Method copied from model::world and harcoded. Move to proper location.
-std::pair<int,int> Camera::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
-	float a = 0;
-	float b = 0;
-	int c = 0;
-
-	c = pixelCoordinates.first - ((30 * 62) / 2);
-	a = (static_cast<float>(pixelCoordinates.second) / 31);
-	b = (static_cast<float>(c) / 62);
-
-	return std::make_pair<int,int>(int(a + b),int(a - b));
 }

@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\Model;..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -77,7 +77,7 @@
     <ClCompile Include="TileView.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="tp.cpp" />
-    <ClCompile Include="World.cpp" />
+    <ClCompile Include="Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
@@ -87,8 +87,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="TileView.h" />
+    <ClInclude Include="Stage.h" />
     <ClInclude Include="TimeManager.h" />
-    <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">

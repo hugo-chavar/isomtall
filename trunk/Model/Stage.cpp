@@ -79,3 +79,16 @@ void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigne
 //void Stage::update(){
 //
 //}
+
+std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+	float a = 0;
+	float b = 0;
+	int c = 0;
+
+	//c = pixelCoordinates.first - ((this->height() * this->tileWidth()) / 2);
+	c = pixelCoordinates.first - (this->tileWidth()/ 2);
+	a = (static_cast<float>(pixelCoordinates.second) / this->tileHeight());
+	b = (static_cast<float>(c) / this->tileWidth());
+
+	return std::make_pair<int,int>(a + b,a - b);
+}
