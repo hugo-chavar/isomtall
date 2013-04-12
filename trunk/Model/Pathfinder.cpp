@@ -3,13 +3,14 @@
 #include <map>
 #include <vector>
 #include <math.h>
+#include "Game.h"
 
 using namespace model;
 
 #define MOV_PENALTY 10
 
 
-int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, Stage * worldModel, int* &XPath, int* &YPath) { //, Foo &Tiles
+int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, int* &XPath, int* &YPath) { //, Foo &Tiles
 	int actualX = OrigenX;
 	int actualY = OrigenY;
 	bool found = false;
@@ -36,7 +37,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, S
 			found = true;
 			break;
 		}
-		agregarVecinos(*actual, DestinoX, DestinoY, worldModel, closeList, openList); //, Tiles
+		agregarVecinos(*actual, DestinoX, DestinoY, closeList, openList); //, Tiles
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
 	}
@@ -70,7 +71,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, S
 	return tamano;
 }
 
-void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, Stage * worldModel, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
+void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
 	Par* posExplorar = NULL;
 	Nodo* nuevoNodo = NULL;
 	int alto = 0;
@@ -84,8 +85,8 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, Stage 
 	unsigned int GCost = 0;
 	unsigned int HCost = 0;
 
-	alto = worldModel->height();
-	ancho = worldModel->width();
+	alto = Game::instance().world().height();
+	ancho = Game::instance().world().width();
 	actual.getPos(actualX, actualY);
 	explorarX = explorarX + actualX;
 	explorarY = actualY + explorarY;
@@ -105,7 +106,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, Stage 
 		if (((explorarX < 0)||(explorarX > ancho))||((explorarY < 0)||(explorarY > alto))) {
 			continue;
 		}
-		coste = worldModel->cost(explorarX, explorarY);
+		coste = Game::instance().world().cost(explorarX, explorarY);
 		if (coste == 0) {
 			continue;
 		}

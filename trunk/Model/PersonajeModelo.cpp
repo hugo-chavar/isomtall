@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
+#include "Game.h"
 
 #define NORTE 0
 #define NORESTE 1
@@ -25,10 +26,9 @@ PersonajeModelo::PersonajeModelo() {
 	caminoSize = 0;
 	estado = PARADO_S;
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
-	mundo = NULL;
 }
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* worldModel, MainCharacter *datosPersonaje) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, MainCharacter *datosPersonaje) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -40,7 +40,6 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, Stage* wo
 	_datosPersonaje = datosPersonaje;
 	this->estado = estado;
 	this->velocidad = datosPersonaje->speed();
-	mundo = worldModel;
 }
 
 void PersonajeModelo::setCurrent(int x, int y) {
@@ -57,23 +56,23 @@ void PersonajeModelo::setEstado(int state) {
 	estado = state;
 }
 
-void PersonajeModelo::setStage(Stage* worldModel) {
-	mundo = worldModel;
-}
 
-void PersonajeModelo::setVelocidad(int vel) {
+void PersonajeModelo::setVelocidad(float vel) {
 	velocidad = vel;
 }
 
-int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
+void PersonajeModelo::getCurrent(std::pair<int, int>& actual) {
+	actual.first = current.first;
+	actual.second = current.second;
+}
+
+int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
 	double coste;
 
-	if (mundo == NULL) {
-		if ((estado<10) || (estado>19)) {
-			cambio = ESTADO_MOVIMIENTO;
-		}
+	if ((estado<10) || (estado>19)) {
+		cambio = ESTADO_MOVIMIENTO;
 		estado = cambiarEstado(current.first, current.second, cambio);
 		velocidad = 0;
 		return estado;
@@ -95,7 +94,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 			xPath = NULL;
 			yPath = NULL;
 		}
-		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, mundo, xPath, yPath);
+		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, xPath, yPath);
 		if (caminoSize <  0) {
 			if ((estado<10) || (estado>19)) {
 				cambio = ESTADO_MOVIMIENTO;
@@ -108,9 +107,9 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, int& velocidad) {
 	if (posMov < caminoSize) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
-		coste = mundo->cost(xPath[posMov], yPath[posMov]);
+		coste = Game::instance().world().cost(xPath[posMov], yPath[posMov]);
 		coste = std::floor((this->velocidad)*coste);
-		velocidad = (int) coste;
+		velocidad = (float) coste;
 		posMov++;
 	} else {
 		if ((estado<10) || (estado>19)) {

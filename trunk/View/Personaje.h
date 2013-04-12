@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Sprite.h"
-#include "./Model/PersonajeModelo.h"
+#include "../Model/PersonajeModelo.h"
 #include "Entity.h"
 
 class Personaje : public Entity {
@@ -17,6 +17,7 @@ public:
 private:
 	int procesarAnimacion(int animacion);
 
+	std::pair<int, int> tileActual;
 	model::PersonajeModelo modelo;
 	std::vector<Sprite*> sprites;
 	float velocidad;
