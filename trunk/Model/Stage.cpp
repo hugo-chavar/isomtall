@@ -105,6 +105,6 @@ void Stage::destino(int x,int y,float cameraX,float cameraY)
 		pixelCoordinates.first=x;
 		pixelCoordinates.second=y;
 		std::pair<int,int> destino=pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-
-		Game::instance().personaje()->setDestino(destino.first,destino.second);
+		if(destino.first>=0&&destino.first<=_tileWidth&&destino.second>=0&&destino.second<=_tileHeight)
+			Game::instance().personaje()->setDestino(destino.first,destino.second);
 	}
