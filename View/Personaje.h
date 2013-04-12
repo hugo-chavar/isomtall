@@ -17,12 +17,15 @@ public:
 private:
 	int procesarAnimacion(int animacion);
 	int estadoModelo(int estado);
+	void velocidadRelativa(std::pair<float, float>& factor);
+	void resolverSerrucho();
 
 	std::pair<int, int> tileActual;
 	model::PersonajeModelo* modelo;
 	std::vector<Sprite*> sprites;
 	float velocidad;
 	int estado;
-	std::pair<float, float> delta;
+	std::pair<int, int> delta;
+	std::pair<float, float> ePot;
 };
 #endif
