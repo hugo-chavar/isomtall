@@ -39,7 +39,7 @@ vector <MainCharacter> Stage::vMainCharacters() {
 	return _vMainCharacters;
 }
 
-map <KeyPair, EntityObject*> Stage::entityMap() {
+map <KeyPair, EntityObject*>* Stage::entityMap() {
 	return _entityMap;
 }
 
@@ -58,6 +58,14 @@ void Stage::tileHeight(unsigned int value){
 
 void Stage::tileWidth(unsigned int value){
 	_tileWidth = value;
+}
+
+int Stage::mainCharacter_speed() {
+	return _mainCharacter_speed;
+}
+
+void Stage::mainCharacter_speed(int value) {
+	_mainCharacter_speed = value;
 }
 
 

@@ -57,6 +57,7 @@ bool DirList::createFromDirectory(string dir) {
 
 string DirList::next() {
 	string sigte = *iterador;
+	//iteratorPrev=iterator;
 	iterador++;
 	_currentPosition++;
 
@@ -66,6 +67,7 @@ string DirList::next() {
 
 string DirList::nextFullPath() {
 	string sigte = directory + "/" + (*iterador);
+	//iteratorPrev=iterator;
 	iterador++;
 	_currentPosition++;
 
@@ -74,6 +76,10 @@ string DirList::nextFullPath() {
 }
 bool DirList::hasNext() {
 	return (_currentPosition < _count);
+}
+
+bool DirList::empty() {
+	return (_count == 0);
 }
 
 void DirList::clean() {
@@ -88,6 +94,7 @@ bool DirList::seek(unsigned pos) {
 		_currentPosition = pos;
 		iterador = files.begin();
 		for (unsigned i = 0; i < pos; i++) {
+			//iteratorPrev=iterator;
 			iterador++;
 		}
 	}
@@ -102,3 +109,9 @@ unsigned DirList::currentPosition() {
 	return _currentPosition;
 }
 
+void DirList::deletePrevious() {
+	iterador--;
+	files.erase(iterador);
+	seek(_currentPosition-1);
+	_count--;
+}

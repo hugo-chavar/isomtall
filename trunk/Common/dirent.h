@@ -95,6 +95,8 @@
 #if !defined(_68K_) && !defined(_MPPC_) && !defined(_X86_) && !defined(_IA64_) && !defined(_AMD64_) && defined(_M_IX86)
 #   define _X86_
 #endif
+
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <windef.h>
@@ -106,6 +108,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <errno.h>
+
 
 /* Indicates that d_type field is available in dirent structure */
 #define _DIRENT_HAVE_D_TYPE

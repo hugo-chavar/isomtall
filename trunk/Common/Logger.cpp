@@ -34,3 +34,17 @@ void Logger::log(string line)
 		fd << line << std::endl; 
 	}
 }
+
+void Logger::logUnexpected(string line)
+{
+	string message = "Parser error: Unexpected error ocurred described by: \n";
+	message.append(line);
+	this->log(message);
+}
+
+void Logger::logSyntaxError(string file, string line)
+{
+	string message = "Parser error: Unable to load '"+file+"' Parser returned this error:\n";
+	message.append(line);
+	this->log(message);
+}
