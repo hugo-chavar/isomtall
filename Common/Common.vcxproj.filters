@@ -26,9 +26,6 @@
     <ClInclude Include="Logger.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
-    <ClInclude Include="dirent.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="DirList.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
