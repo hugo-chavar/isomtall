@@ -1,4 +1,4 @@
-//#pragma warning(disable: 4101) //Unreferenced formal parameter
+#include <windows.h>
 #include "YAMLParser.h"
 
 
@@ -10,9 +10,9 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
-	vector <AnimatedEntity>::iterator it;
-	for(it = entities.vAnimatedEntities.begin(); it != entities.vAnimatedEntities.end();it++)
-		it->destroy();
+	//vector <AnimatedEntity>::iterator it;
+	//for(it = entities.vAnimatedEntities.begin(); it != entities.vAnimatedEntities.end();it++)
+	//	it->destroy();
 }
 
 void operator >> (const Node& node, Screen& screen) {
@@ -49,7 +49,9 @@ void operator >> (const Node& node, Screen& screen) {
 			Logger::instance().logInvalidValueInConfiguration("pantalla",field,"a positive integer");
 			screen.height = DEFAULT_SCREEN_HEIGHT;
 		}
-		catch (Exception& ) { }; //parserException
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 	}
 
 	if (!widthFound) {
@@ -111,24 +113,37 @@ void operator >> (const Node& node, Configuration& configuration) {
 	}
 }
 
+bool canOpenFile(string file){
+	DWORD fileAttr = GetFileAttributesA(file.c_str());
+	if((INVALID_FILE_ATTRIBUTES == fileAttr)|| (fileAttr & FILE_ATTRIBUTE_DIRECTORY) )
+	{
+		return false;
+	}
+	return true;
+}
+
 bool validateImagePath(string imagePath) {
-	if ((imagePath[imagePath.size()-1]!='/') && (imagePath[imagePath.size()-1]!='\\')) { // Si no es un directorio.
+	//if ((imagePath[imagePath.size()-1]!='/') && (imagePath[imagePath.size()-1]!='\\'))// Si no es un directorio.
+	if (canOpenFile(imagePath)) //aca se valida si es directorio
+	{ 
 		if (imagePath.find(IMAGES_EXTENSION)==string::npos) { // Veo que sea '.png'.
 			Logger::instance().log("Parser Error: '"+imagePath+"' does not have a valid extension.");
 			return false;
 		}
+		return true;
 
-		ifstream file;
-		file.open(imagePath);
-		if (!file.is_open()) { // Veo que exista.
-			Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
-			return false;
-		}
-		else {
-			file.close();
-			return true;
-		}
+		//ifstream file;
+		//file.open(imagePath);
+		//if (canOpenFile(imagePath)) { // Veo que exista. //!file.is_open() metodo muy lento
+		//	Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
+		//	return false;
+		//}
+		//else {
+		//	file.close();
+		//	return true;
+		//}
 	}
+	Logger::instance().log("Parser Error: Unable to open '"+imagePath+"'.");
 	return false;
 }
 
@@ -247,26 +262,26 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	entity = entity_aux;
 }
 
-DirList* loadImagesPaths(string imageDir) {
-	DirList* dirList = new DirList();
-	if (dirList->createFromDirectory(imageDir)) {
-		while (dirList->hasNext()) {
-			string dir_aux = dirList->nextFullPath();
-			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
-				dirList->deletePrevious();
-		}
-		if (dirList->empty())
-			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
-	}
-	else
-		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
-	return dirList;
-}
+//DirList* loadImagesPaths(string imageDir) {
+//	DirList* dirList = new DirList();
+//	if (dirList->createFromDirectory(imageDir)) {
+//		while (dirList->hasNext()) {
+//			string dir_aux = dirList->nextFullPath();
+//			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+//				dirList->deletePrevious();
+//		}
+//		if (dirList->empty())
+//			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
+//	}
+//	else
+//		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+//	return dirList;
+//}
 
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 	int fps, delay;
 	string imageDir, field;
-	DirList* imagesPaths;
+	//DirList* imagesPaths;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
@@ -274,13 +289,16 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 	field = "imagen";
 	try {
 		node[field] >> imageDir;
-		imagesPaths = loadImagesPaths(imageDir);
-		if ((imageDir=="~") || (imagesPaths->empty())) {
+		//imagesPaths = loadImagesPaths(imageDir);
+		animatedEntity.loadImages(imageDir);
+		if ((imageDir=="~") || (animatedEntity.hasNoImages())) {
 			imageDir = DEFAULT_ANIMATED_DIR;
-			imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
+			animatedEntity.loadImages(DEFAULT_ANIMATED_DIR);
+			//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 		}
 	} catch (KeyNotFound) {
-		imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
+		//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
+		animatedEntity.loadImages(DEFAULT_ANIMATED_DIR);
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -326,9 +344,10 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux.name()+"'.");
 		delay = DEFAULT_DELAY;
 	}
-
-	AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
-	animatedEntity = animatedEntity_aux;
+	animatedEntity.fps(fps);
+	animatedEntity.delay(delay);
+	//AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
+	//animatedEntity = animatedEntity_aux;
 }
 
 void operator >> (const Node& node, Entities& entities) {
@@ -734,7 +753,7 @@ void YAMLParser::parse(string inputFilePath) {
 	}
 	else {
 		inputFile_aux.close();
-		ifstream inputFile(inputFilePath);
+		ifstream inputFile(inputFilePath);//porque se abre 2 veces el archivo??
 		Parser parser(inputFile);
 		
 		try {

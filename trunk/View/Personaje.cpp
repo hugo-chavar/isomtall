@@ -3,7 +3,7 @@
 
 
 Personaje::Personaje(model::PersonajeModelo* pj) {
-	MainCharacter* m_char = NULL;
+	//MainCharacter* m_char = NULL;
 	
 	pj->getCurrent(tileActual);
 	estado = procesarAnimacion(pj->getEstado());
@@ -175,7 +175,7 @@ int Personaje::procesarAnimacion(int animacion) {
 					  }
 	default: return ERROR;
 	}
-	return ERROR;
+	//return ERROR;
 }
 
 int Personaje::estadoModelo(int estado) {
@@ -198,7 +198,7 @@ int Personaje::estadoModelo(int estado) {
 	case WALK_O: return CAMINANDO_O;
 	default: return ERROR;
 	}
-	return ERROR;
+	//return ERROR;
 }
 
 Personaje::~Personaje(){

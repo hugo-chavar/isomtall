@@ -51,14 +51,13 @@ bool DirList::createFromDirectory(string dir) {
 	while(true)
 	{
 		// Si hay directorios o cosas raras las ignora
-
 		char * buf = findData.cFileName;
 		std::wstring filepath2;
 		std::string filepath1(buf);
 
 		if ( findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) // ignoro subdirectorios
 		{
-			if(!FindNextFile(findHandle, &findData) )
+			if(!FindNextFile(findHandle, &findData))
 				break;
 			continue;
 		}
@@ -66,13 +65,11 @@ bool DirList::createFromDirectory(string dir) {
 		files.push_back(filepath1);
 		_count++;
 
-		if(!FindNextFile(findHandle, &findData) )
+		if(!FindNextFile(findHandle, &findData))
 			break;
-
-
 	}
-	FindClose(findHandle);
 
+	FindClose(findHandle);
 	files.sort();
 	iterador = files.begin();
 
@@ -82,7 +79,6 @@ bool DirList::createFromDirectory(string dir) {
 
 string DirList::next() {
 	string sigte = *iterador;
-	//iteratorPrev=iterator;
 	iterador++;
 	_currentPosition++;
 
@@ -96,7 +92,6 @@ bool DirList::empty() {
 
 string DirList::nextFullPath() {
 	string sigte = directory + "/" + (*iterador);
-	//iteratorPrev=iterator;
 	iterador++;
 	_currentPosition++;
 
@@ -119,7 +114,6 @@ bool DirList::seek(unsigned pos) {
 		_currentPosition = pos;
 		iterador = files.begin();
 		for (unsigned i = 0; i < pos; i++) {
-			//iteratorPrev=iterator;
 			iterador++;
 		}
 	}
