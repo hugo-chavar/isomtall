@@ -27,8 +27,8 @@ struct Screen {
 };
 
 struct Configuration {
-	float main_character_speed;
-	float scroll_margin;
+	int main_character_speed;
+	int scroll_margin;
 };
 
 struct Entities {

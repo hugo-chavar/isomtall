@@ -40,8 +40,7 @@ PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
 	caminoSize = 0;
 	_datosPersonaje = &datosPersonaje;
 	this->estado =  PARADO_S;
-	this->velocidad =datosPersonaje.speed();
-	this->velocidad = 1.0;
+	this->velocidad = Game::instance().world().mainCharacter_speed();
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje) {

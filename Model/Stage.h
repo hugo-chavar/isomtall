@@ -15,15 +15,15 @@ class Stage {
 
 public:
 	Stage();
-	Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, const map <KeyPair, EntityObject*> entityMap, vector <MainCharacter> vMainCharacters): 
-		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _vMainCharacters(vMainCharacters) { _entityMap = entityMap; };
+	Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, map <KeyPair, EntityObject*> *entityMap, vector <MainCharacter> vMainCharacters): 
+		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _entityMap(entityMap), _vMainCharacters(vMainCharacters) { /*_entityMap = entityMap;*/ };
 		// TILEWIDTH Y TILEHEIGHT ?
 	unsigned int width(); 
 	unsigned int height();
 	string name(); 
 	vector <EntityDef> vEntitiesDef(); // Sólo para las pruebas rápidas. Las entidades están bien cargadas en el entityMap.
 	vector <MainCharacter> vMainCharacters(); 
-	map <KeyPair, EntityObject*> entityMap();
+	map <KeyPair, EntityObject*> *entityMap();
 	void width(unsigned int); 
 	void height(unsigned int);
 	unsigned int tileWidth(); 
@@ -39,6 +39,8 @@ public:
 	std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
+	int mainCharacter_speed();
+	void mainCharacter_speed(int value);
 private:
 	string _name;
 	unsigned int _width;
@@ -46,8 +48,9 @@ private:
 	unsigned int _tileWidth;
 	unsigned int _tileHeight;
 	vector <EntityDef> _vEntitiesDef;
-	map <KeyPair, EntityObject*> _entityMap;
+	map <KeyPair, EntityObject*> *_entityMap;
 	vector <MainCharacter> _vMainCharacters;
+	int _mainCharacter_speed;
 
 
 	// map <KeyPair, *Tile> scene;

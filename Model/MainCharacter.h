@@ -13,14 +13,11 @@ public:
 	AnimatedEntity *entityType();
 	int x();
 	int y();
-	int speed();
-	void speed(int value);
 
 private:
 	AnimatedEntity *_entity_type;
 	int _x;
 	int _y;
-	int _speed;
 };
 
 

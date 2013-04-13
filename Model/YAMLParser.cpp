@@ -1,4 +1,6 @@
+//#pragma warning(disable: 4101) //Unreferenced formal parameter
 #include "YAMLParser.h"
+
 
 using namespace std;
 using namespace YAML;
@@ -21,7 +23,10 @@ void operator >> (const Node& node, Screen& screen) {
 				Logger::instance().log("Parser Error: Negative value in field 'ancho' in 'pantalla'.");
 				screen.width = DEFAULT_SCREEN_WIDTH;
 			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 		try {
 			node[i]["alto"] >> screen.height;
 			heightFound = true;
@@ -29,7 +34,8 @@ void operator >> (const Node& node, Screen& screen) {
 				Logger::instance().log("Parser Error: Negative value in field 'alto' in 'pantalla'.");
 				screen.height = DEFAULT_SCREEN_HEIGHT;
 			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& ) { }; //parserException
 	}
 
 	if (!widthFound) {
@@ -53,7 +59,10 @@ void operator >> (const Node& node, Configuration& configuration) {
 				Logger::instance().log("Parser Error: Negative value in field 'vel_personaje' in 'configuracion'.");
 				configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 		try {
 			node[i]["margen_scroll"] >> configuration.scroll_margin;
 			scrollMarginFound = true;
@@ -61,7 +70,10 @@ void operator >> (const Node& node, Configuration& configuration) {
 				Logger::instance().log("Parser Error: Negative value in field 'margen_scroll' in 'configuracion'.");
 				configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 	}
 
 	if (!mainCharacterSpeedFound) {
@@ -106,6 +118,9 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 			name = "";
 	} catch (KeyNotFound) {
 		name = "";
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["imagen"] >> imagePath;
@@ -114,6 +129,9 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	} catch (KeyNotFound) {
 		Logger::instance().log("Parser Error: Field 'imagen' is not defined in entity '"+name+"'.");
 		imagePath = ERROR_IMAGE;
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["ancho_base"] >> baseWidth;
@@ -122,7 +140,10 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 			Logger::instance().log("Parser Error: Negative value in field 'ancho_base' in entity '"+name+"'.");
 			baseWidth = DEFAULT_BASE_WIDTH;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["alto_base"] >> baseHeight;
 		baseHeightFound = true;
@@ -130,7 +151,10 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 			Logger::instance().log("Parser Error: Negative value in field 'alto_base' in entity '"+name+"'.");
 			baseHeight = DEFAULT_BASE_HEIGHT;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["pixel_ref_x"] >> pixelRefX;
 		pixelRefXFound = true;
@@ -138,7 +162,10 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 			Logger::instance().log("Parser Error: Negative value in field 'pixel_ref_x' in entity '"+name+"'.");
 			pixelRefX = DEFAULT_PIXEL_REF_X;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["pixel_ref_y"] >> pixelRefY;
 		pixelRefYFound = true;
@@ -146,7 +173,10 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 			Logger::instance().log("Parser Error: Negative value in field 'pixel_ref_y' in entity '"+name+"'.");
 			pixelRefY = DEFAULT_PIXEL_REF_Y;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 
 	if (!baseWidthFound) {
 		Logger::instance().log("Parser Error: Field 'ancho_base' is not defined in entity '"+name+"'.");
@@ -169,27 +199,44 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	entity = entity_aux;
 }
 
-list <string> loadImagesPaths(string imageDir) {
-	DirList dirList;
-	list <string> imagesPaths;
-	if (dirList.createFromDirectory(imageDir)) {
-		while (dirList.hasNext()) {
-			string dir_aux = dirList.nextFullPath();
-			if (dir_aux.find(IMAGES_EXTENSION)!=string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
-				imagesPaths.push_back(dir_aux);
+//list <string> loadImagesPaths(string imageDir) {
+//	DirList dirList;
+//	list <string> imagesPaths;
+//	if (dirList.createFromDirectory(imageDir)) {
+//		while (dirList.hasNext()) {
+//			string dir_aux = dirList.nextFullPath();
+//			if (dir_aux.find(IMAGES_EXTENSION)!=string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+//				imagesPaths.push_back(dir_aux);
+//		}
+//		if (imagesPaths.empty())
+//			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
+//	}
+//	else
+//		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+//	return imagesPaths;
+//}
+
+DirList* loadImagesPaths(string imageDir) {
+	DirList* dirList = new DirList();
+	//list <string> imagesPaths;
+	if (dirList->createFromDirectory(imageDir)) {
+		while (dirList->hasNext()) {
+			string dir_aux = dirList->nextFullPath();
+			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+				dirList->deletePrevious();
 		}
-		if (imagesPaths.empty())
+		if (dirList->empty())
 			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
 	}
 	else
 		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
-	return imagesPaths;
+	return dirList;
 }
 
 void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 	int fps, delay;
 	string imageDir;
-	list <string> imagesPaths;
+	DirList* imagesPaths;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
@@ -197,11 +244,19 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 	try {
 		node["imagen"] >> imageDir;
 		imagesPaths = loadImagesPaths(imageDir);
-		if ((imageDir=="~") || (imagesPaths.empty())) {
-			imageDir = DEFAULT_ANIMATED_DIR;
+		if ((imageDir=="~") || (imagesPaths->empty())) {
+			imageDir = DEFAULT_ANIMATED_DIR; //Todo: consultar con yami (aca no se carga la lista? imagesPaths queda vacia?)
+			//hice esto para arreglarlo
+			imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
+			if (imagesPaths->empty()){
+				Logger::instance().log("Parser Error: DEFAULT_ANIMATED_DIR does not contain any file.");
+			}
 		}
 	} catch (KeyNotFound) {
 		imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["fps"] >> fps;
@@ -210,7 +265,10 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 			Logger::instance().log("Parser Error: Negative value in field 'fps' in entity '"+entity_aux.name()+"'.");
 			fps = DEFAULT_FPS;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["delay"] >> delay;
 		delayFound = true;
@@ -218,7 +276,10 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 			Logger::instance().log("Parser Error: Negative value in field 'delay' in entity '"+entity_aux.name()+"'.");
 			delay = DEFAULT_DELAY;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 
 	if (!fpsFound) {
 		Logger::instance().log("Parser Error: Field 'fps' is not defined in entity '"+entity_aux.name()+"'.");
@@ -242,11 +303,17 @@ void operator >> (const Node& node, Entities& entities) {
 		try {
 			node[i]["fps"] >> fps;
 			isAnimated = true;
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 		try {
 			node[i]["delay"] >> delay;
 			isAnimated = true;
-		} catch (KeyNotFound) {	} catch (InvalidScalar) { };
+		} catch (KeyNotFound) {	} catch (InvalidScalar) { }
+		catch (Exception& parserException ) {
+			Logger::instance().logUnexpected(parserException.what());
+		};
 
 		if (isAnimated) {
 			AnimatedEntity entity;
@@ -272,19 +339,27 @@ void operator >> (const Node& node, EntityDef& entityDef) {
 			entityDef.entity = "";
 	} catch (KeyNotFound) {
 		entityDef.entity = "";
+	} catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["x"] >> entityDef.x;
 		xFound = true;
 		if (entityDef.x<0)
 			Logger::instance().log("Parser Error: Negative value in field 'x' in one of the entities '"+entityDef.entity+"'.");
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["y"] >> entityDef.y;
 		yFound = true;
 		if (entityDef.y<0)
 			Logger::instance().log("Parser Error: Negative value in field 'y' in one of the entities '"+entityDef.entity+"'.");
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 
 	if (!xFound) {
 		Logger::instance().log("Parser Error: Field 'x' is not defined in one of the entities '"+entityDef.entity+"'.");
@@ -303,6 +378,9 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 			mainCharacter.entityType = "";
 	} catch (KeyNotFound) {
 		mainCharacter.entityType = "";
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["x"] >> mainCharacter.x;
@@ -311,7 +389,10 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 			Logger::instance().log("Parser Error: Negative value in field 'x' in main character '"+mainCharacter.entityType+"'.");
 			mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		node["y"] >> mainCharacter.y;
 		yFound = true;
@@ -319,7 +400,10 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 			Logger::instance().log("Parser Error: Negative value in field 'y' in main character '"+mainCharacter.entityType+"'.");
 			mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 
 	if (!xFound) {
 		Logger::instance().log("Parser Error: Field 'x' is not defined in main character '"+mainCharacter.entityType+"'.");
@@ -340,6 +424,9 @@ void operator >> (const Node& node, sStage& stage) {
 			stage.name = "";
 	} catch (KeyNotFound) {
 		stage.name = "";
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
 	};
 	try {
 		node["size_x"] >> stage.size_x;
@@ -348,7 +435,10 @@ void operator >> (const Node& node, sStage& stage) {
 			Logger::instance().log("Parser Error: Negative value in field 'size_x' in stage '"+stage.name+"'.");
 			stage.size_x = DEFAULT_STAGE_SIZE_X;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	if (!sizeXFound) {
 		Logger::instance().log("Parser Error: Field 'size_x' is not defined in stage '"+stage.name+"'.");
 		stage.size_x = DEFAULT_STAGE_SIZE_X;
@@ -360,7 +450,10 @@ void operator >> (const Node& node, sStage& stage) {
 			Logger::instance().log("Parser Error: Negative value in field 'size_y' in stage '"+stage.name+"'.");
 			stage.size_y = DEFAULT_STAGE_SIZE_Y;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { };
+	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	if (!sizeYFound) {
 		Logger::instance().log("Parser Error: Field 'size_y' is not defined in stage '"+stage.name+"'.");
 		stage.size_y = DEFAULT_STAGE_SIZE_Y;
@@ -377,7 +470,10 @@ void operator >> (const Node& node, sStage& stage) {
 				if ((entityDef.entity.size()>0) && (entityDef.x>=0) && (entityDef.y>=0)) // Si tiene nombre de entidad y posición válida se guarda.
 					stage.vEntitiesDef.push_back(entityDef);
 		}
-	} catch (KeyNotFound) { };
+	} catch (KeyNotFound) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	try {
 		const Node& node_aux = node["protagonista"];
 		for(unsigned int i=0; i<node_aux.size(); i++) {
@@ -392,7 +488,10 @@ void operator >> (const Node& node, sStage& stage) {
 				stage.vMainCharacters_aux.push_back(mainCharacter);
 			}
 		}
-	} catch (KeyNotFound) {	};
+	} catch (KeyNotFound) {	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 }
 
 void operator >> (const Node& node, Stages& stages) {
@@ -434,11 +533,11 @@ MainCharacter YAMLParser::generateDefaultMainCharacter() {
 Stage YAMLParser::generateDefaultStage() {
 	vector <EntityDef> vEntitiesDef;
 	vector <MainCharacter> vMainCharacters;
-	map <KeyPair, EntityObject*> entityMap;
+	map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
 	for(int i=0; i<DEFAULT_STAGE_SIZE_X; i++) // Cargo el mapa con entidad objeto default guardada en la primera posición.
 		for(int j=0; j<DEFAULT_STAGE_SIZE_Y; j++) {
 			KeyPair key(i, j);
-			entityMap.insert(make_pair(key, &entities.vEntitiesObject[0]));
+			(*entityMap).insert(make_pair(key, &entities.vEntitiesObject[0]));
 		}
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
 	Stage stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, entityMap, vMainCharacters);
@@ -475,15 +574,19 @@ EntityObject* YAMLParser::findEntityObjectType(string name) {
 
 void YAMLParser::loadEntitiesToMap(int stage_index) {
 	sStage stage_aux = stages.vStages_aux[stage_index];
-	map <KeyPair, EntityObject*> entityMap;
+	map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
 	for(unsigned int i=0; i<stage_aux.vEntitiesDef.size(); i++) {
 		KeyPair key(stage_aux.vEntitiesDef[i].x, stage_aux.vEntitiesDef[i].y);
 		EntityObject *entityObjectType = findEntityObjectType(stage_aux.vEntitiesDef[i].entity);
-		if (!entityObjectType)
+		AnimatedEntity *animatedEntityType = findAnimatedEntityType(stage_aux.vEntitiesDef[i].entity);
+		if ((!entityObjectType) && (!animatedEntityType)){
 			Logger::instance().log("Parser Error: Entity type '"+stage_aux.vEntitiesDef[i].entity+"' defined in stage '"+stage_aux.name+"' not found.");
+			stage_aux.vEntitiesDef.erase (stage_aux.vEntitiesDef.begin()+i);
+			i--;
+		}
 		else {
 			pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
-			ret = entityMap.insert(make_pair(key, entityObjectType));
+			ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
 			if (!ret.second) {
 				string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
 				string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
@@ -494,7 +597,7 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 	for(int i=0; i<stage_aux.size_x; i++) // Completo el mapa con entidad objeto default guardada en la primera posición.
 		for(int j=0; j<stage_aux.size_y; j++) {
 			KeyPair key(i, j);
-			entityMap.insert(make_pair(key, &entities.vEntitiesObject[0]));
+			(*entityMap).insert(make_pair(key, &entities.vEntitiesObject[0]));
 		}
 	Stage stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, entityMap, stage_aux.vMainCharacters);
 	stages.vStages.push_back(stage);
@@ -569,7 +672,10 @@ void YAMLParser::parse(string inputFilePath) {
 			try {
 				doc["pantalla"] >> screen;
 				screenFound = true;
-			} catch (KeyNotFound) { };
+			} catch (KeyNotFound) { }
+			catch (Exception& parserException ) {
+				Logger::instance().logUnexpected(parserException.what());
+			};
 			if (!screenFound) {
 				Logger::instance().log("Parser Error: Field 'pantalla' is not defined.");
 				screen = generateDefaultScreen();
@@ -578,7 +684,10 @@ void YAMLParser::parse(string inputFilePath) {
 			try {
 				doc["configuracion"] >> configuration;
 				configurationFound = true;
-			} catch (KeyNotFound) { };
+			} catch (KeyNotFound) { }
+			catch (Exception& parserException ) {
+				Logger::instance().logUnexpected(parserException.what());
+			};
 			if (!configurationFound) {
 				Logger::instance().log("Parser Error: Field 'configuracion' is not defined.");
 				configuration = generateDefaultConfiguration();
@@ -588,7 +697,10 @@ void YAMLParser::parse(string inputFilePath) {
 				doc["entidades"] >> entities;
 				manageEntityCase();
 				entitiesFound = true;
-			} catch (KeyNotFound) { };
+			} catch (KeyNotFound) { }
+			catch (Exception& parserException ) {
+				Logger::instance().logUnexpected(parserException.what());
+			};
 			if (!entitiesFound) {
 				Logger::instance().log("Parser Error: Field 'entidades' is not defined.");
 				manageEntityCase();
@@ -598,22 +710,23 @@ void YAMLParser::parse(string inputFilePath) {
 				doc["escenarios"] >> stages;
 				manageStageCase();
 				stagesFound = true;
-			} catch (KeyNotFound) { };
+			} catch (KeyNotFound) { }
+			catch (Exception& parserException ) {
+				Logger::instance().logUnexpected(parserException.what());
+			};
 			if (!stagesFound) {
 				Logger::instance().log("Parser Error: Field 'escenarios' is not defined.");
 				manageStageCase();
 			}
 		
 		} catch (Exception& parserException) { // Error de sintaxis.
-			Logger::instance().log(parserException.what());
-			cout << parserException.what() << endl;
+			Logger::instance().logSyntaxError(inputFilePath,parserException.what());
 			loadEverythingByDefault();
 		};
 	}
 
-	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad en los personajes.
-		for(unsigned int j=0; j<stages.vStages[i].vMainCharacters().size(); j++)
-			stages.vStages[i].vMainCharacters()[j].speed(configuration.main_character_speed);
+	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad de los personajes.
+		stages.vStages[i].mainCharacter_speed(configuration.main_character_speed);
 }
 
 vector <Stage> YAMLParser::vStages() {

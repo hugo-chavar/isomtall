@@ -11,18 +11,19 @@ class AnimatedEntity: public EntityObject {
 public:
 	AnimatedEntity();
 	~AnimatedEntity();
-	AnimatedEntity(string name, string imagePath, int baseWidth, int baseHeight, int pixelRefX, int pixelRefY, list <string> imagesPaths, int fps, int delay): 
+	AnimatedEntity(string name, string imagePath, int baseWidth, int baseHeight, int pixelRefX, int pixelRefY, DirList* imagesPaths, int fps, int delay): 
 		EntityObject(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY), _imagesPaths(imagesPaths), _fps(fps), _delay(delay) { };
 	int fps();
 	void fps(int);
+	void destroy(); //llamar en algun lado
 	int delay();
 	void delay(int);
-	list <string> imagesPaths();
+	DirList* imagesPaths();
 
 private:
 	int _fps;
 	int _delay;
-	list <string> _imagesPaths;
+	DirList* _imagesPaths;
 };
 
 
