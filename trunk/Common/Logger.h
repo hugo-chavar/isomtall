@@ -18,6 +18,7 @@ namespace common
 		void log(string line);
 		void logUnexpected(string line);
 		void logSyntaxError(string file,string line);
+		void logInvalidValue(string entity,string field,string expected);
 		void setFile(string path);
 		
 	private:
