@@ -81,7 +81,20 @@ void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigne
 //
 //}
 
-std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates,float cameraX,float cameraY) {
+std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
+	float tileX = 0;
+	float tileY = 0;
+	float aux = static_cast<float>(pixelCoordinates.first + cameraX)/2;
+
+	tileX = floor(static_cast<float>((pixelCoordinates.second + cameraY + aux) / this->tileHeight()));
+
+	tileY = floor(static_cast<float>((pixelCoordinates.second + cameraY - aux) / this->tileHeight()));
+
+	return std::make_pair<int,int>(static_cast<int>(tileX),static_cast<int>(tileY));
+
+
+
+	/*
 	float a = 0;
 	float b = 0;
 	int c = 0;
@@ -91,7 +104,7 @@ std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixel
 	a = ((static_cast<float>(pixelCoordinates.second)+cameraY) / this->tileHeight());
 	b = ((static_cast<float>(c)+cameraX+tileWidth()/ 2) / this->tileWidth());
 
-	return std::make_pair<int,int>(a + b,a - b);
+	return std::make_pair<int,int>(a + b,a - b);*/
 }
 
 std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
