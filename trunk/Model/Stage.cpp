@@ -69,11 +69,6 @@ void Stage::mainCharacter_speed(int value) {
 }
 
 
-//void Stage::addTile(unsigned int x, unsigned int y, Tile* tile) {
-//	Key position(x,y);
-//	scene.insert(make_pair(position, tile)); //se podria chequear errores aca.. que no vengan repetidas las posiciones
-//}
-
 unsigned int Stage::cost(unsigned int x, unsigned int y){
 	return 1;
 }
@@ -118,6 +113,10 @@ std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixel
 std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
 
 	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
+}
+
+bool Stage::isInsideWorld(std::pair<int,int> tileCoordinates) {
+	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first <= static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second <= static_cast<int>(this->height())) );
 }
 
 void Stage::destino(int x,int y,float cameraX,float cameraY)

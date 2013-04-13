@@ -63,7 +63,7 @@ void Camera::initialize(unsigned int width, unsigned int height, unsigned int bp
 	this->setOffsetX(offsetX); 
 	this->setOffsetY(offsetY);
 	this->cameraSurface = SDL_SetVideoMode(width,height,bpp,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	SDL_WarpMouse(width/2,height/2);
+	SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
 }
 
 void Camera::update() {
@@ -72,44 +72,45 @@ void Camera::update() {
 	float newOffset = 0;
 	float scrollFactor = 0;
 	std::pair<int,int> cameraCenterInTiles;
+	//std::pair<int,int> cameraCenterInTiles = std::make_pair<int,int>(0,0);
 
 	SDL_GetMouseState(&x,&y);
 
-	if (x > this->getWidth() - this->getScrollBoxSize()) {
+	if (x > static_cast<int>(this->getWidth() - this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getWidth() - x)) / this->getScrollBoxSize();
 		newOffset = this->getOffsetX() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
+		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
 	}
 
-	if (x < this->getScrollBoxSize()) {
+	if (x < static_cast<int>(this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - x) / this->getScrollBoxSize();
 		newOffset = this->getOffsetX() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
+				if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
 	}
 
-	if (y > this->getHeight() - this->getScrollBoxSize()) {
+	if (y > static_cast<int>(this->getHeight() - this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getHeight() - y)) / this->getScrollBoxSize();
 		newOffset = this->getOffsetY() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
+		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
 	}
 
-	if (y < this->getScrollBoxSize()) {
+	if (y < static_cast<int>(this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - y) / this->getScrollBoxSize();
 		newOffset = this->getOffsetY() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
-		if ( (cameraCenterInTiles.first < 0) || (cameraCenterInTiles.first > Game::instance().world().width()) || (cameraCenterInTiles.second < 0) || (cameraCenterInTiles.second > Game::instance().world().height()) ) {
+		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
@@ -127,8 +128,8 @@ if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(sprite
 	
 	{
 	SDL_Rect rectangulo;
-	rectangulo.x=spriteRec.x-offsetX;
-	rectangulo.y=spriteRec.y-offsetY;
+	rectangulo.x = spriteRec.x - static_cast<Sint16>(offsetX);
+	rectangulo.y = spriteRec.y - static_cast<Sint16>(offsetY);
 	SDL_BlitSurface(surface, NULL,cameraSurface,&rectangulo);
 	}
 }
