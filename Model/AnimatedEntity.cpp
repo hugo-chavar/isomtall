@@ -2,17 +2,12 @@
 
 
 AnimatedEntity::AnimatedEntity() {
-	//DirList dirList;
-	//dirList.createFromDirectory(DEFAULT_ANIMATED_DIR);
-	//while (dirList.hasNext()) {
-	//	_imagesPaths.push_back(dirList.nextFullPath());
-	//}
 	_fps = DEFAULT_FPS;
 	_delay = DEFAULT_DELAY;
-	//imagePath("");
 }
 
 AnimatedEntity::~AnimatedEntity() {
+	
 }
 
 int AnimatedEntity::fps()

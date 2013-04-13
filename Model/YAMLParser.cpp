@@ -111,12 +111,12 @@ bool validateImagePath(string imagePath) {
 }
 
 void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOMBRES IGUALES
-	string name, imagePath;
+	string name, imagePath, field;
 	int baseWidth, baseHeight, pixelRefX, pixelRefY;
 	bool baseWidthFound = false, baseHeightFound = false, pixelRefXFound = false, pixelRefYFound = false;
-
+	field = "nombre";
 	try {
-		node["nombre"] >> name;
+		node[field] >> name;
 		if (name=="~")
 			name = "";
 	} catch (KeyNotFound) {
@@ -127,31 +127,38 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 	};
 	try {
 		node["imagen"] >> imagePath;
-		if ((imagePath=="~") || (!validateImagePath(imagePath)))
+		if ((imagePath=="~") || (!validateImagePath(imagePath))){
 			imagePath = ERROR_IMAGE;
+		}
 	} catch (KeyNotFound) {
-		Logger::instance().log("Parser Error: Field 'imagen' is not defined in entity '"+name+"'.");
+		Logger::instance().log("Parser Error: Field '"+field+"' is not defined in entity '"+name+"'.");
 		imagePath = ERROR_IMAGE;
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
+	field = "ancho_base";
 	try {
-		node["ancho_base"] >> baseWidth;
+		node[field] >> baseWidth;
 		baseWidthFound = true;
 		if (baseWidth<0) {
-			Logger::instance().log("Parser Error: Negative value in field 'ancho_base' in entity '"+name+"'.");
+			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
 			baseWidth = DEFAULT_BASE_WIDTH;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) { }
+	} catch (KeyNotFound) { }
+	catch (InvalidScalar) {
+		baseWidthFound = true;
+		Logger::instance().logInvalidValue(name,field,"a positive integer");
+	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
+	field = "alto_base";
 	try {
 		node["alto_base"] >> baseHeight;
 		baseHeightFound = true;
 		if (baseHeight<0) {
-			Logger::instance().log("Parser Error: Negative value in field 'alto_base' in entity '"+name+"'.");
+			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
 			baseHeight = DEFAULT_BASE_HEIGHT;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) { }
@@ -248,12 +255,8 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		node["imagen"] >> imageDir;
 		imagesPaths = loadImagesPaths(imageDir);
 		if ((imageDir=="~") || (imagesPaths->empty())) {
-			imageDir = DEFAULT_ANIMATED_DIR; //Todo: consultar con yami (aca no se carga la lista? imagesPaths queda vacia?)
-			//hice esto para arreglarlo
+			imageDir = DEFAULT_ANIMATED_DIR;
 			imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
-			if (imagesPaths->empty()){
-				Logger::instance().log("Parser Error: DEFAULT_ANIMATED_DIR does not contain any file.");
-			}
 		}
 	} catch (KeyNotFound) {
 		imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);

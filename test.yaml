@@ -18,7 +18,7 @@ entidades:
        
     - nombre: castillo
       imagen: ../Images/cubo.png
-      ancho_base: 2 
+      ancho_base: holamundo 
       alto_base: 2 
       pixel_ref_x: 30 
       pixel_ref_y: 40 

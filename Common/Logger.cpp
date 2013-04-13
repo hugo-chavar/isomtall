@@ -20,7 +20,7 @@ Logger& Logger::instance()
 
 void Logger::setFile(string path)
 {
-	fd.open (path.c_str(), std::ios::out);
+	fd.open (path.c_str(), std::ios::trunc|std::ios::out);
 	if (!fd)
 	{
 		std::cerr<<"No se pudo abrir el archivo de log."<<std::endl;
@@ -46,5 +46,12 @@ void Logger::logSyntaxError(string file, string line)
 {
 	string message = "Parser error: Unable to load '"+file+"' Parser returned this error:\n";
 	message.append(line);
+	this->log(message);
+}
+
+void Logger::logInvalidValue(string entity,string field, string expected)
+{
+	string message = "Parser Error: Invalid value in field '"+field+"' in entity '"+entity+"' "+expected+" was expected.";
+	//message.append(line);
 	this->log(message);
 }
