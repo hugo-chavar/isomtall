@@ -85,7 +85,7 @@ void view::Stage::initialize()
 	
 	//worldModel = Game::instance().world();
 	//worldModel.initialize(100,100,62,31);//metodo harcodeado
-	Game::instance().world().initialize(100,100,32,64);//metodo harcodeado
+	Game::instance().world().initialize(50,50,32,64);//metodo harcodeado
 	//EntityObject entity = Game::instance().vEntitiesObject()[1];
 	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 
@@ -117,7 +117,7 @@ void view::Stage::initialize()
 	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingO", 8, 32, 40, 0, 30.0));
 	//Harcodeo la carga de entidades. debera venir del modelo
 	for(int i=0;i<50;i++)
-		for(int j=0; j<25;j++){
+		for(int j=0; j<50;j++){
 			entityList.push_back(new Entity(i,j,spriteArray[0]));
 		}
 
