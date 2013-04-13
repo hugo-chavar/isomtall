@@ -49,9 +49,37 @@ void Logger::logSyntaxError(string file, string line)
 	this->log(message);
 }
 
-void Logger::logInvalidValue(string entity,string field, string expected)
+void Logger::logInvalidValueInEntity(string entity,string field, string expected)
 {
 	string message = "Parser Error: Invalid value in field '"+field+"' in entity '"+entity+"' "+expected+" was expected.";
+	//message.append(line);
+	this->log(message);
+}
+
+void Logger::logInvalidValueInEntityDef(string entityDef,string field,string expected)
+{
+	string message = "Parser Error: Invalid value in field '"+field+"' in one of the entitiesDef '"+entityDef+"' "+expected+" was expected.";
+	//message.append(line);
+	this->log(message);
+}
+
+void Logger::logInvalidValueInMainCharacter(string mainCharacter,string field,string expected)
+{
+	string message = "Parser Error: Invalid value in field '"+field+"' in main character '"+mainCharacter+"' "+expected+" was expected.";
+	//message.append(line);
+	this->log(message);
+}
+
+void Logger::logInvalidValueInStage(string stage,string field,string expected)
+{
+	string message = "Parser Error: Invalid value in field '"+field+"' in stage '"+stage+"' "+expected+" was expected.";
+	//message.append(line);
+	this->log(message);
+}
+
+void Logger::logInvalidValueInConfiguration(string configuration,string field,string expected)
+{
+	string message = "Parser Error: Invalid value in field '"+field+"' in '"+configuration+"' "+expected+" was expected.";
 	//message.append(line);
 	this->log(message);
 }
