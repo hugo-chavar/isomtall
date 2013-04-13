@@ -10,6 +10,9 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
+	vector <AnimatedEntity>::iterator it;
+	for(it = entities.vAnimatedEntities.begin(); it != entities.vAnimatedEntities.end();it++)
+		it->destroy();
 }
 
 void operator >> (const Node& node, Screen& screen) {
