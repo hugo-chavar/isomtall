@@ -36,6 +36,7 @@ public:
 	//void update();
 	std::pair<int,int> pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates,float cameraX,float cameraY);
 	std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
+	bool isInsideWorld(std::pair<int,int> tileCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
 	int mainCharacter_speed();
