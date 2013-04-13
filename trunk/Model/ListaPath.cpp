@@ -67,7 +67,7 @@ Nodo* ListaPath::getNodo() {
 		}
 		it++;
 	}
-	nodoDevuelto = new Nodo(0,0);
+	nodoDevuelto = new Nodo(-1,-1);
 	*nodoDevuelto = *nodo;
 	it = nodeList.begin();
 	for (int i=0; i < (count); ++i) {
