@@ -17,10 +17,10 @@ string EntityObject::name() {
 	return _name;
 }
 
-//int EntityObject::positionX() {
-//	return _positionX;
-//}
-//
+bool EntityObject::isAnimated() {
+	return false;
+}
+
 //int EntityObject::positionY() {
 //	return _positionY;
 //}

@@ -21,6 +21,7 @@ namespace view {
 		//Se cargan una vez solamente los sprites
 		vector<Sprite*> spriteArray;
 		Personaje* pj;
+		map<string,int> mapEntityToSprite;
 
 		//std::vector<model::Tile*> tileArray;
 		std::vector<TileView*> tileArray;

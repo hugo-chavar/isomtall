@@ -63,6 +63,18 @@ Sprite::Sprite(std::list<std::string> imagesPaths,int relatx,int relaty,float De
 	
 }
 
+Sprite::Sprite(AnimatedEntity* ae)
+{
+	comienzo_frame = SDL_GetTicks();
+	estado = 0;
+	delay = ae->delay();
+	fps = ae->fps();
+	relx = ae->pixelRefX(); //relatx; relatx es el pixel de referencia?
+	rely = ae->pixelRefY();
+	//nroFrames = imagesPaths.size();
+	//this->cargarFrames(imagesPaths);	
+}
+
 Sprite::~Sprite(void)
 {
 	for(unsigned i=0;i<nroFrames;i++)

@@ -10,6 +10,15 @@ AnimatedEntity::~AnimatedEntity() {
 	
 }
 
+bool AnimatedEntity::isAnimated() {
+	return true;
+}
+
+bool AnimatedEntity::hasNoImages() {
+	return _images.empty();
+}
+
+
 int AnimatedEntity::fps()
 {
 	return _fps;
@@ -30,10 +39,24 @@ void AnimatedEntity::delay(int value)
 	_delay = value;
 }
 
-DirList* AnimatedEntity::imagesPaths() {
-	return _imagesPaths;
-}
+//DirList* AnimatedEntity::imagesPaths() {
+//	return _imagesPaths;
+//}
 
-void AnimatedEntity::destroy(){
-	delete _imagesPaths;
+//void AnimatedEntity::destroy(){
+//	delete _imagesPaths;
+//}
+
+void AnimatedEntity::loadImages(string imageDir) {
+	if (this->_images.createFromDirectory(imageDir)) {
+		while (this->_images.hasNext()) {
+			string dir_aux = this->_images.nextFullPath();
+			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+				this->_images.deletePrevious();
+		}
+		if (this->_images.empty())
+			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
+	}
+	else
+		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
 }
