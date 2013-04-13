@@ -103,7 +103,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 			continue;
 		}
 		posExplorar->setPos(explorarX, explorarY);
-		if (((explorarX < 0)||(explorarX > ancho))||((explorarY < 0)||(explorarY > alto))) {
+		if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			continue;
 		}
 		coste = Game::instance().world().cost(explorarX, explorarY);
