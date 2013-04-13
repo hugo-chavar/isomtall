@@ -16,6 +16,15 @@ entidades:
       fps: 15
       delay: 1000
        
+    - nombre: molino
+      imagen: ../Images/molino/
+      ancho_base: 2
+      alto_base: 2 
+      pixel_ref_x: 64
+      pixel_ref_y: 120
+      fps: 15
+      delay: 3000
+
     - nombre: castillo
       imagen: ../Images/cubo.png
       ancho_base: holamundo 

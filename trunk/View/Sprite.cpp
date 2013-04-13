@@ -1,4 +1,6 @@
 #include "Sprite.h"
+#include "AnimatedEntity.h"
+#include "DirList.h"
 #include <sstream> 
 #define ppty 32 //pixels por tile en y
 #define pptx 64 //pixels por tile en x

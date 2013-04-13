@@ -1,19 +1,19 @@
 /*
  * DirList.cpp
  *
- *  Created on: 05/09/2012
+ *  Created on: 13/04/2013
  *      Author: Hugo Chavar
  */
 #include <algorithm>
+#include <windows.h>
 #include "DirList.h"
 
 using namespace std;
 
+
 DirList::DirList() {
 	_count = 0;
 	_currentPosition = 0;
-	maxFileNameLength = 0;
-
 }
 
 DirList::~DirList() {
@@ -21,35 +21,60 @@ DirList::~DirList() {
 
 bool DirList::createFromDirectory(string dir) {
 	string filepath, filename;
-	DIR *dp;
-	struct dirent *dirp;
-	struct stat filestat;
-	dp = opendir(dir.c_str());
-	if (dp == NULL) {
-		cerr << "Se produjo un error al abrir el directorio " << dir << endl;
+
+	DWORD attr = GetFileAttributesA(dir.c_str());
+	if (attr == INVALID_FILE_ATTRIBUTES){
+		cerr << "Error al acceder a " << dir << endl;
+		return false; 
+	}
+
+	if (!(attr & FILE_ATTRIBUTE_DIRECTORY)){
+		cerr << "No existe el directorio " << dir << endl;
 		return false;
 	}
+
 	this->directory = dir;
 
-	while ((dirp = readdir(dp))) {
-		filepath = dir + "/" + dirp->d_name;
+	if (dir[dir.size()-1] != '/'){
+		dir.append("/*.*");
+	} else {
+		dir.append("*.*");
+	}
 
+	WIN32_FIND_DATA findData;
+	HANDLE findHandle;
+
+	findHandle = FindFirstFile(dir.c_str(), &findData);
+
+	this->directory = dir;
+
+	while(true)
+	{
 		// Si hay directorios o cosas raras las ignora
-		if (stat(filepath.c_str(), &filestat))
+
+		char * buf = findData.cFileName;
+		std::wstring filepath2;
+		std::string filepath1(buf);
+
+		if ( findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) // ignoro subdirectorios
+		{
+			if(!FindNextFile(findHandle, &findData) )
+				break;
 			continue;
-		if (S_ISDIR( filestat.st_mode ))
-			continue;
-		filename = dirp->d_name;
-		if (maxFileNameLength < filename.length())
-			maxFileNameLength = filename.length();
-		files.push_back(filename);
+		}
+
+		files.push_back(filepath1);
 		_count++;
 
+		if(!FindNextFile(findHandle, &findData) )
+			break;
+
+
 	}
+	FindClose(findHandle);
+
 	files.sort();
 	iterador = files.begin();
-
-	closedir(dp);
 
 	return true;
 
@@ -65,6 +90,10 @@ string DirList::next() {
 
 }
 
+bool DirList::empty() {
+        return (_count == 0);
+}
+
 string DirList::nextFullPath() {
 	string sigte = directory + "/" + (*iterador);
 	//iteratorPrev=iterator;
@@ -76,10 +105,6 @@ string DirList::nextFullPath() {
 }
 bool DirList::hasNext() {
 	return (_currentPosition < _count);
-}
-
-bool DirList::empty() {
-	return (_count == 0);
 }
 
 void DirList::clean() {

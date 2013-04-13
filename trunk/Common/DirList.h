@@ -8,16 +8,16 @@
 #ifndef DIRLIST_H_
 #define DIRLIST_H_
 
-#pragma warning(disable: 4505) // deshabilito warning molesto
-#include "dirent.h"
-
 #include <iostream>
+#include <string>
+#include <list>
 
 //#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <string>
-#include <list>
+
+//#include "dirent.h"
+
 //#include "Archivo.h"
 //#include "TermFile.h"
 
@@ -29,7 +29,6 @@ private:
 	list<string>::iterator iterador;
 	list<string>::iterator iteradorPrev;
 	unsigned _count;
-	unsigned maxFileNameLength;
 	unsigned _currentPosition;
 	string directory;
 public:
@@ -37,7 +36,6 @@ public:
 	~DirList();
 	bool createFromDirectory(string);
 	bool hasNext();
-	bool empty();
 	string next();
 	string nextFullPath();
 	bool seek(unsigned);
@@ -45,7 +43,7 @@ public:
 	unsigned count() const;
 	void clean();
 	void deletePrevious();
-	/*void writeToFile(string);*/
+	bool empty();
 
 };
 
