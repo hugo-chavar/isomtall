@@ -27,5 +27,6 @@ private:
 	int estado;
 	std::pair<int, int> delta;
 	std::pair<float, float> ePot;
+	int serr;
 };
 #endif
