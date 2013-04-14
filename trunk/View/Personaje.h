@@ -14,6 +14,8 @@ public:
 	void render(Camera& camera);
 	void setDestino(int xTile, int yTile);
 	~Personaje();
+	std::pair<int,int> posicion();
+
 private:
 	int procesarAnimacion(int animacion);
 	int estadoModelo(int estado);
