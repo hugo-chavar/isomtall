@@ -145,22 +145,22 @@ void view::Stage::initialize()
 	pj = new Personaje(Game::instance().personaje());
 
 	//pj->setDestino(5,5);
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedNE", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedNO", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedS", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedSE", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedSO", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedE", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "stoppedO", 1, 32, 40));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingN", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingNE", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingNO", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingS", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingSE", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingSO", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingE", 8, 32, 40, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personaje/", "walkingO", 8, 32, 40, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedN", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNE", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNO", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedS", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSE", 1,76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSO", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedE", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedO", 1, 76, 80));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/8walkingN/", "walkingN", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/9walkingNE/", "walkingNE", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/10walkingNO/", "walkingNO", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/11walkingS/", "walkingS", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/12walkingSE/", "walkingSE", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/13walkingSO/", "walkingSO", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/14walkingE/", "walkingE", 12, 76, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/15walkingO/", "walkingO",12, 76, 80, 0, 30.0));
 	//Harcodeo la carga de entidades. debera venir del modelo
 	for(int i=0;i<50;i++)
 		for(int j=0; j<25;j++){
