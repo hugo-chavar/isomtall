@@ -8,7 +8,6 @@ EntityObject::EntityObject() {
 	_base_height = DEFAULT_BASE_HEIGHT;
 	_pixel_ref_x = DEFAULT_PIXEL_REF_X;
 	_pixel_ref_y = DEFAULT_PIXEL_REF_Y;
-	// DEFINIR _positionX, _positionY DEFAULT
 }
 
 EntityObject::~EntityObject() { }
@@ -20,15 +19,6 @@ string EntityObject::name() {
 bool EntityObject::isAnimated() {
 	return false;
 }
-
-//int EntityObject::positionY() {
-//	return _positionY;
-//}
-
-//void EntityObject::position(int valueX, int valueY) {
-//	_positionX = valueX;
-//	_positionY = valueY;
-//}
 
 void EntityObject::imagePath(string value) {
 	_image_path = value;

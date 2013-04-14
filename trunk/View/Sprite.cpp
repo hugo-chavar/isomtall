@@ -67,8 +67,8 @@ Sprite::Sprite(AnimatedEntity* ae)
 {
 	comienzo_frame = SDL_GetTicks();
 	estado = 0;
-	delay = ae->delay();
-	fps = ae->fps();
+	delay = static_cast<float>(ae->delay()); 
+	fps = static_cast<float>(ae->fps());
 	relx = ae->pixelRefX(); //relatx; relatx es el pixel de referencia?
 	rely = ae->pixelRefY();
 	//nroFrames = imagesPaths.size();

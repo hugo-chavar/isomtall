@@ -113,9 +113,18 @@ void operator >> (const Node& node, Configuration& configuration) {
 	}
 }
 
+bool isNotDirectory(string file){
+	DWORD fileAttr = GetFileAttributesA(file.c_str());
+	if (fileAttr & FILE_ATTRIBUTE_DIRECTORY) 
+	{
+		return false;
+	}
+	return true;
+}
+
 bool canOpenFile(string file){
 	DWORD fileAttr = GetFileAttributesA(file.c_str());
-	if((INVALID_FILE_ATTRIBUTES == fileAttr)|| (fileAttr & FILE_ATTRIBUTE_DIRECTORY) )
+	if(INVALID_FILE_ATTRIBUTES == fileAttr)
 	{
 		return false;
 	}
@@ -124,13 +133,19 @@ bool canOpenFile(string file){
 
 bool validateImagePath(string imagePath) {
 	//if ((imagePath[imagePath.size()-1]!='/') && (imagePath[imagePath.size()-1]!='\\'))// Si no es un directorio.
-	if (canOpenFile(imagePath)) //aca se valida si es directorio
+	if (isNotDirectory(imagePath)) //aca se valida si es directorio
 	{ 
 		if (imagePath.find(IMAGES_EXTENSION)==string::npos) { // Veo que sea '.png'.
 			Logger::instance().log("Parser Error: '"+imagePath+"' does not have a valid extension.");
 			return false;
 		}
-		return true;
+
+		if (canOpenFile(imagePath)){
+			return true;
+		}
+		
+		Logger::instance().log("Parser Error: Unable to open '"+imagePath+"'.");
+		return false;
 
 		//ifstream file;
 		//file.open(imagePath);
@@ -143,7 +158,6 @@ bool validateImagePath(string imagePath) {
 		//	return true;
 		//}
 	}
-	Logger::instance().log("Parser Error: Unable to open '"+imagePath+"'.");
 	return false;
 }
 

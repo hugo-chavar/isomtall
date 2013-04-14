@@ -39,14 +39,6 @@ void AnimatedEntity::delay(int value)
 	_delay = value;
 }
 
-//DirList* AnimatedEntity::imagesPaths() {
-//	return _imagesPaths;
-//}
-
-//void AnimatedEntity::destroy(){
-//	delete _imagesPaths;
-//}
-
 void AnimatedEntity::loadImages(string imageDir) {
 	if (this->_images.createFromDirectory(imageDir)) {
 		while (this->_images.hasNext()) {
@@ -59,4 +51,9 @@ void AnimatedEntity::loadImages(string imageDir) {
 	}
 	else
 		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+}
+
+int AnimatedEntity::imagesCount()
+{
+	return _images.count();
 }

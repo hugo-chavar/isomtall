@@ -25,7 +25,7 @@ private:
 	EntityObject* eo;
 
 	unsigned estado; 
-	std::vector<Frame *> frames;
+	std::vector<Frame*> frames;
 	int comienzo_frame;
 
 	void cargarFrames(std::string path,std::string nombre,std::string formato,int nro);

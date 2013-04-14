@@ -25,6 +25,7 @@ public:
 	int delay();
 	void delay(int);
 	void loadImages(string);
+	unsigned imagesCount();
 	bool isAnimated();
 	bool hasNoImages();
 	//DirList* imagesPaths();
