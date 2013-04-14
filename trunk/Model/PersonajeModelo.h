@@ -6,6 +6,7 @@
 
 #include <utility>
 #include "Constants.h"
+#include "DirList.h"
 #include "MainCharacter.h"
 
 namespace model {
@@ -24,6 +25,8 @@ public:
 	float getVelocidad();
 	int mover(std::pair<int, int>& destino, float &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
+	void loadSprites();
+	void setDirectory(DirList*);
 private:
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);
@@ -36,6 +39,8 @@ private:
 	int estado;
 	float velocidad;
 	MainCharacter *_datosPersonaje;
+
+	DirList spritesDir;
 };
 }
 

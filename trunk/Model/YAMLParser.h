@@ -1,3 +1,4 @@
+#pragma warning(disable: 4146)
 #ifndef __YAMLPARSER_H__
 #define __YAMLPARSER_H__
 
@@ -12,6 +13,8 @@
 #include "DataTypes.h"
 #include "Stage.h"
 #include "DirList.h"
+#include "PersonajeModelo.h"
+#include "CameraModel.h"
 
 using namespace std;
 using namespace YAML;
@@ -33,7 +36,7 @@ struct Configuration {
 
 struct Entities {
 	vector <EntityObject> vEntitiesObject;
-	vector <AnimatedEntity> vAnimatedEntities;
+	vector <AnimatedEntity*> vAnimatedEntities;
 };
 
 struct sMainCharacter {
@@ -49,6 +52,7 @@ struct sStage {
 	vector <EntityDef> vEntitiesDef;
 	vector <sMainCharacter> vMainCharacters_aux;
 	vector <MainCharacter> vMainCharacters;
+	vector <PersonajeModelo*> vModelPersonajes;
 };
 
 struct Stages {
@@ -63,6 +67,7 @@ class YAMLParser {
 
 private:
 	Screen screen;
+	CameraModel* camera;
 	Configuration configuration;
 	Entities entities;
 	Stages stages;
@@ -77,21 +82,26 @@ private:
 	void manageEntityCase();
 	void manageStageCase();
 
+
 public:
 	YAMLParser();
 	~YAMLParser();
 
 	void parse(string inputFilePath);
 
-	int screenWidth();
-	int screenHeight();
-	int scrollMargin();
+	//int screenWidth();
+	//int screenHeight();
+	//int scrollMargin();
 	vector <Stage> vStages();
 	vector <EntityObject> vEntitiesObject();
-	vector <AnimatedEntity> vAnimatedEntities();
+	vector <AnimatedEntity*>* vAnimatedEntities();
 
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);
+	//conexion con el modelo logico
+	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
+	CameraModel* cameraModel();
+
 };
 
 

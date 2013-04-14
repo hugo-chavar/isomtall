@@ -116,15 +116,25 @@ std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordin
 }
 
 bool Stage::isInsideWorld(std::pair<int,int> tileCoordinates) {
-	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first <= static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second <= static_cast<int>(this->height())) );
+	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first < static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second < static_cast<int>(this->height())) );
 }
 
-void Stage::destino(int x,int y,float cameraX,float cameraY)
-	{
-		std::pair<int,int> pixelCoordinates;
-		pixelCoordinates.first=x;
-		pixelCoordinates.second=y;
-		std::pair<int,int> destino=pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-		if(destino.first>=0&&destino.first<int(_width)&&destino.second>=0&&destino.second<int(_height))
-			Game::instance().personaje()->setDestino(destino.first,destino.second);
-	}
+void Stage::destino(int x,int y,float cameraX,float cameraY){
+	std::pair<int,int> pixelCoordinates;
+	pixelCoordinates.first = x;
+	pixelCoordinates.second = y;
+	std::pair<int,int> destino = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
+	//ver el siguiente if.. por favor simplifiquen su codigo!!!! no dejen un choclazo dentro del if xq no se entiende
+	if(isInsideWorld(destino)) //destino.first>=0&&destino.first<int(_width)&&destino.second>=0&&destino.second<int(_height)
+		Game::instance().personaje()->setDestino(destino.first,destino.second);
+}
+
+void Stage::insertMainCharacter(PersonajeModelo* pm){
+	_modelMainCharacters.push_back(pm);
+}
+
+PersonajeModelo* Stage::modelMainCharacters(unsigned pos){
+	if (_modelMainCharacters.size() > pos)
+		return _modelMainCharacters[pos];
+	return NULL;
+}

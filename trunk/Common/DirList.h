@@ -34,10 +34,13 @@ private:
 	unsigned _countDir;
 	unsigned _currentPositionDir;
 	string directory;
+	bool testExtension;
+	string extension;
 public:
 	DirList();
 	~DirList();
 	bool createFromDirectory(string);
+	void setExtensionRequired(string);
 	bool hasNext();
 	bool hasNextDir();
 	string next();

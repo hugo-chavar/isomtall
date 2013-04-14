@@ -23,6 +23,8 @@ namespace common
 		void logInvalidValueInMainCharacter(string mainCharacter,string field,string expected);
 		void logInvalidValueInStage(string stage,string field,string expected);
 		void logInvalidValueInConfiguration(string configuration,string field,string expected);
+		void logFatalError(string line);
+		void nullPointer(string line);
 		void setFile(string path);
 		
 	private:

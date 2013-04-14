@@ -10,6 +10,9 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
+
+	if (camera)
+		delete camera;
 	//vector <AnimatedEntity>::iterator it;
 	//for(it = entities.vAnimatedEntities.begin(); it != entities.vAnimatedEntities.end();it++)
 	//	it->destroy();
@@ -292,27 +295,27 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 //	return dirList;
 //}
 
-void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
+void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	int fps, delay;
 	string imageDir, field;
 	//DirList* imagesPaths;
 	bool fpsFound = false, delayFound = false;
 	EntityObject entity_aux;
 	node >> entity_aux;
-
+	animatedEntity = new AnimatedEntity();
 	field = "imagen";
 	try {
 		node[field] >> imageDir;
 		//imagesPaths = loadImagesPaths(imageDir);
-		animatedEntity.loadImages(imageDir);
-		if ((imageDir=="~") || (animatedEntity.hasNoImages())) {
+		animatedEntity->loadImages(imageDir);
+		if ((imageDir=="~") || (animatedEntity->hasNoImages())) {
 			imageDir = DEFAULT_ANIMATED_DIR;
-			animatedEntity.loadImages(DEFAULT_ANIMATED_DIR);
+			animatedEntity->loadImages(DEFAULT_ANIMATED_DIR);
 			//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 		}
 	} catch (KeyNotFound) {
 		//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
-		animatedEntity.loadImages(DEFAULT_ANIMATED_DIR);
+		animatedEntity->loadImages(DEFAULT_ANIMATED_DIR);
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -358,8 +361,8 @@ void operator >> (const Node& node, AnimatedEntity& animatedEntity) {
 		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux.name()+"'.");
 		delay = DEFAULT_DELAY;
 	}
-	animatedEntity.fps(fps);
-	animatedEntity.delay(delay);
+	animatedEntity->fps(fps);
+	animatedEntity->delay(delay);
 	//AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
 	//animatedEntity = animatedEntity_aux;
 }
@@ -386,15 +389,15 @@ void operator >> (const Node& node, Entities& entities) {
 		};
 
 		if (isAnimated) {
-			AnimatedEntity entity;
+			AnimatedEntity* entity;
 			node[i] >> entity;
-			if (entity.name().size()>0) // Si tiene nombre se guarda.
+			if (entity->name().size() > 0) // Si tiene nombre se guarda.
 				entities.vAnimatedEntities.push_back(entity);
 		}
 		else {
 			EntityObject entity;
 			node[i] >> entity;
-			if (entity.name().size()>0) // Si tiene nombre se guarda.
+			if (entity.name().size() > 0) // Si tiene nombre se guarda. PASAR A PUNTERO
 				entities.vEntitiesObject.push_back(entity);
 		}
 	}
@@ -472,7 +475,9 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in main character '"+mainCharacter.entityType+"'.");
 			mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
+	} 
+	catch (KeyNotFound) { }
+	catch (InvalidScalar) {
 		xFound = true;
 		Logger::instance().logInvalidValueInMainCharacter(mainCharacter.entityType,field,"a positive integer");
 		mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
@@ -625,12 +630,13 @@ Screen YAMLParser::generateDefaultScreen() {
 	return screen;
 }
 
-MainCharacter YAMLParser::generateDefaultMainCharacter() {
+MainCharacter YAMLParser::generateDefaultMainCharacter() { //
 	if (entities.vAnimatedEntities.size()<=0) {
-		AnimatedEntity animatedEntity_default;
+		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
+
 		entities.vAnimatedEntities.push_back(animatedEntity_default);
 	}
-	MainCharacter mainCharacter(&entities.vAnimatedEntities[0], DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
+	MainCharacter mainCharacter(entities.vAnimatedEntities[0], DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
 	return mainCharacter;
 }
 
@@ -644,6 +650,7 @@ Stage YAMLParser::generateDefaultStage() {
 			(*entityMap).insert(make_pair(key, &entities.vEntitiesObject[0]));
 		}
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
+
 	Stage stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, entityMap, vMainCharacters);
 	return stage;
 }
@@ -652,13 +659,13 @@ AnimatedEntity* YAMLParser::findAnimatedEntityType(string name) {
 	unsigned int i = 0;
 	bool found = false;
 	while ((i<entities.vAnimatedEntities.size()) && (!found)) {
-		if (entities.vAnimatedEntities[i].name()==name)
+		if (entities.vAnimatedEntities[i]->name()==name)
 			found = true;
 		else
 			i++;
 	}
 	if (found)
-		return &entities.vAnimatedEntities[i];
+		return entities.vAnimatedEntities[i];
 	return NULL;
 }
 
@@ -729,7 +736,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 void YAMLParser::manageEntityCase() {
 	if (entities.vAnimatedEntities.size()<=0) { // Verifico que exista al menos una entidad animada.	
 		Logger::instance().log("Parser Error: No animated entities found.");
-		AnimatedEntity animatedEntity;
+		AnimatedEntity* animatedEntity = new AnimatedEntity();
 		entities.vAnimatedEntities.push_back(animatedEntity);
 	}
 }
@@ -754,8 +761,10 @@ void YAMLParser::loadEverythingByDefault() {
 
 void YAMLParser::parse(string inputFilePath) {
 	Node doc;
+	
 	bool screenFound = false, stagesFound = false, entitiesFound = false, configurationFound = false;
 	ifstream inputFile_aux;
+	camera = new CameraModel();//se carga x default
 
 	EntityObject entity_default;
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
@@ -773,6 +782,7 @@ void YAMLParser::parse(string inputFilePath) {
 		try {
 			parser.GetNextDocument(doc);
 
+			
 			try {
 				doc["pantalla"] >> screen;
 				screenFound = true;
@@ -827,6 +837,7 @@ void YAMLParser::parse(string inputFilePath) {
 			Logger::instance().logSyntaxError(inputFilePath,parserException.what());
 			loadEverythingByDefault();
 		};
+		camera->initialize(screen.width,screen.height,configuration.scroll_margin);
 	}
 
 	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad de los personajes.
@@ -841,18 +852,29 @@ vector <EntityObject> YAMLParser::vEntitiesObject() {
 	return entities.vEntitiesObject;
 }
 
-vector <AnimatedEntity> YAMLParser::vAnimatedEntities() {
-	return entities.vAnimatedEntities;
+vector <AnimatedEntity*>* YAMLParser::vAnimatedEntities() {
+	return &(entities.vAnimatedEntities);
+}
+//
+//int YAMLParser::screenWidth() {
+//	return screen.width;
+//}
+//
+//int YAMLParser::screenHeight() {
+//	return screen.height;
+//}
+//
+//int YAMLParser::scrollMargin() {
+//	return configuration.scroll_margin;
+//}
+//conexion con el modelo logico
+PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
+	if (stages.vStages[stage].modelMainCharacters(pers) == NULL)
+		Logger::instance().nullPointer("function PersonajeModelo* YAMLParser::modelMainCharacters");
+	return stages.vStages[stage].modelMainCharacters(pers);
 }
 
-int YAMLParser::screenWidth() {
-	return screen.width;
+CameraModel* YAMLParser::cameraModel(){
+	return camera;
 }
 
-int YAMLParser::screenHeight() {
-	return screen.height;
-}
-
-int YAMLParser::scrollMargin() {
-	return configuration.scroll_margin;
-}

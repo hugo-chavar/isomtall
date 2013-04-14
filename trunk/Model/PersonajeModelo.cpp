@@ -28,22 +28,22 @@ PersonajeModelo::PersonajeModelo() {
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
-PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
-{
-	current.first = datosPersonaje.x();
-	current.second = datosPersonaje.y();
-	target.first = current.first;
-	target.second = current.second;
-	xPath = NULL;
-	yPath = NULL;
-	posMov = 0;
-	caminoSize = 0;
-	_datosPersonaje = &datosPersonaje;
-	this->estado =  PARADO_S;
-	this->velocidad = Game::instance().world().mainCharacter_speed();
-}
+//PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
+//{
+//	current.first = datosPersonaje.x();
+//	current.second = datosPersonaje.y();
+//	target.first = current.first;
+//	target.second = current.second;
+//	xPath = NULL;
+//	yPath = NULL;
+//	posMov = 0;
+//	caminoSize = 0;
+//	_datosPersonaje = &datosPersonaje;
+//	this->estado =  PARADO_S;
+//	this->velocidad = Game::instance().world().mainCharacter_speed();
+//}
 
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje) {
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	current.first = ActualX;
 	current.second = ActualY;
 	target.first = current.first;
@@ -52,9 +52,22 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY, int estado, float vel
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
-	_datosPersonaje = datosPersonaje;
-	this->estado = estado;
-	this->velocidad = velocidad;
+	//_datosPersonaje = datosPersonaje;
+	this->estado = PARADO_S;;
+	//this->velocidad = velocidad;
+}
+
+void PersonajeModelo::loadSprites(){
+
+}
+
+void PersonajeModelo::setDirectory(DirList* dir){
+
+}
+
+void PersonajeModelo::setCurrent(int x, int y) {
+	current.first = x;
+	current.second = y;
 }
 
 void PersonajeModelo::setCurrent(int x, int y) {

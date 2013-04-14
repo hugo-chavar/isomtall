@@ -5,12 +5,13 @@
 Personaje::Personaje(model::PersonajeModelo* pj) {
 	//MainCharacter* m_char = NULL;
 	
+	modelo = pj;
 	pj->getCurrent(tileActual);
 	estado = procesarAnimacion(pj->getEstado());
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
 	delta.second = 0;
-	modelo = pj;
+	
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;

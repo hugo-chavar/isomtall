@@ -50,11 +50,10 @@ void Engine::initialize() {
 	SDL_WM_GrabInput(SDL_GRAB_ON);
 
 	//TODO: center camera on player or default tile.
+	//this->camera.initialize(800,600,32,200,60,-100,-100);
 
-	
-	this->camera.initialize(800,600,32,200,60);
-
-	worldView.initialize();
+	if ((!worldView.initialize()) ||(!this->camera.initialize()))
+		running = false; //si hubo errores de inicializacion salgo
 
 	std:pair<int,int> posPersonaje=worldView.personaje()->posicion();
 	this->camera.setOffsetX(posPersonaje.first-332);

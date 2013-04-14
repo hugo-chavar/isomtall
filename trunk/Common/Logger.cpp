@@ -83,3 +83,18 @@ void Logger::logInvalidValueInConfiguration(string configuration,string field,st
 	//message.append(line);
 	this->log(message);
 }
+
+
+void Logger::logFatalError(string line)
+{
+	string message = "Fatal aplication error: ";
+	message.append(line);
+	this->log(message);
+}
+
+void Logger::nullPointer(string line)
+{
+	string message = line;
+	message.append(" returned a NULL pointer.");
+	this->logFatalError(message);
+}
