@@ -60,11 +60,11 @@ void Stage::tileWidth(unsigned int value){
 	_tileWidth = value;
 }
 
-int Stage::mainCharacter_speed() {
+float Stage::mainCharacter_speed() {
 	return _mainCharacter_speed;
 }
 
-void Stage::mainCharacter_speed(int value) {
+void Stage::mainCharacter_speed(float value) {
 	_mainCharacter_speed = value;
 }
 

@@ -39,8 +39,8 @@ public:
 	bool isInsideWorld(std::pair<int,int> tileCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
-	int mainCharacter_speed();
-	void mainCharacter_speed(int value);
+	float mainCharacter_speed();
+	void mainCharacter_speed(float value);
 private:
 	string _name;
 	unsigned int _width;
@@ -50,7 +50,7 @@ private:
 	vector <EntityDef> _vEntitiesDef;
 	map <KeyPair, EntityObject*> *_entityMap;
 	vector <MainCharacter> _vMainCharacters;
-	int _mainCharacter_speed;
+	float _mainCharacter_speed;
 
 
 	// map <KeyPair, *Tile> scene;

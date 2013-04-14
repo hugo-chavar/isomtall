@@ -53,7 +53,7 @@ void AnimatedEntity::loadImages(string imageDir) {
 		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
 }
 
-int AnimatedEntity::imagesCount()
+unsigned AnimatedEntity::imagesCount()
 {
 	return _images.count();
 }

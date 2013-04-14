@@ -27,7 +27,7 @@ struct Screen {
 };
 
 struct Configuration {
-	int main_character_speed;
+	float main_character_speed;
 	int scroll_margin;
 };
 
