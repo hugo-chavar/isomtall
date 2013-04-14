@@ -57,10 +57,22 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	//this->velocidad = velocidad;
 }
 
-void PersonajeModelo::loadSprites(){
-	while (spritesDir.hasNextDir()) {
-		string dir_aux = spritesDir.nextFullPathDir();
-		this->agregarSprite(new Sprite(dir_aux, 74, 80, 0, 30.0));
+void PersonajeModelo::addRefToSprite(string dir){
+	DirList* dl = new DirList();
+	dl->setExtensionRequired(IMAGES_EXTENSION);
+	dl->createFromDirectory(dir);
+	if (!dl->emptyDir()){
+		spritesRefs.push_back(dl);
+	} else {
+		Logger::instance().log("Parser Error: Loading 'personaje' no '.png' images found in the directory '"+dir+"'.");
+	}
+}
+
+void PersonajeModelo::loadSpritesDir(){
+	while (spritesMainDir.hasNextDir()) {
+		string dir_aux = spritesMainDir.nextFullPathDir();
+		this->addRefToSprite(dir_aux);
+		//this->agregarSprite(new Sprite(dir_aux, 74, 80, 0, 30.0));
 		//if (dir_aux.find(IMAGES_EXTENSION)==string::npos)
 		//	spritesDir.deletePrevious();
 	}
@@ -68,17 +80,13 @@ void PersonajeModelo::loadSprites(){
 }
 
 void PersonajeModelo::setDirectory(string imageDir){
-	if (spritesDir.createFromDirectory(imageDir)) {
-		while (this->_images.hasNext()) {
-			string dir_aux = this->_images.nextFullPath();
-			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
-				this->_images.deletePrevious();
-		}
-		if (this->_images.emptyDir())
-			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
+	if (spritesMainDir.createFromDirectory(imageDir)) {
+		loadSpritesDir();
+		if (spritesMainDir.countDir() < 16)
+			Logger::instance().log("Parser Error: Loading 'personaje' folder '"+imageDir+"' does not have enough subfolders.");
 	}
 	else
-		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
+		Logger::instance().log("Parser Error: Loading 'personaje' directory '"+imageDir+"' not found.");
 }
 
 void PersonajeModelo::setCurrent(int x, int y) {
@@ -86,10 +94,10 @@ void PersonajeModelo::setCurrent(int x, int y) {
 	current.second = y;
 }
 
-void PersonajeModelo::setCurrent(int x, int y) {
-	current.first = x;
-	current.second = y;
-}
+//void PersonajeModelo::setCurrent(int x, int y) {
+//	current.first = x;
+//	current.second = y;
+//}
 
 void PersonajeModelo::setDestino(int x, int y) {
 	target.first = x;

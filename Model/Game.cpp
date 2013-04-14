@@ -37,7 +37,7 @@ void Game::initialize()
 	YAMLParser yParser;
 	yParser.parse(CONFIGFILE);
 	_world = yParser.vStages()[0];
-	_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
+	//_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage

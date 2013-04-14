@@ -14,8 +14,8 @@ class PersonajeModelo {
 
 public:
 	PersonajeModelo();
-	PersonajeModelo(MainCharacter& datosPersonaje);
-	PersonajeModelo(int ActualX, int ActualY, int estado, float velocidad, MainCharacter *datosPersonaje);
+	//PersonajeModelo(MainCharacter& datosPersonaje);
+	PersonajeModelo(int ActualX, int ActualY);//, int estado, float velocidad, MainCharacter *datosPersonaje
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
@@ -25,7 +25,8 @@ public:
 	float getVelocidad();
 	int mover(std::pair<int, int>& destino, float &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
-	void loadSprites();
+	void loadSpritesDir();
+	void addRefToSprite(string);
 	void setDirectory(string);
 private:
 	int cambiarEstado(int x, int y, int cambio);
@@ -40,7 +41,8 @@ private:
 	float velocidad;
 	MainCharacter *_datosPersonaje;
 
-	DirList spritesDir;
+	DirList spritesMainDir;
+	list <DirList*> spritesRefs ;
 };
 }
 
