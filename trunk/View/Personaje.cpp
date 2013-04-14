@@ -128,7 +128,7 @@ int Personaje::procesarAnimacion(int animacion) {
 	case PARADO_NE: return STOP_NE;
 	case PARADO_NOE: return STOP_NOE;
 	case PARADO_S: return STOP_S;
-	case PARADO_SE: return STOP_S;
+	case PARADO_SE: return STOP_SE;
 	case PARADO_SOE: return STOP_SOE;
 	case PARADO_E: return STOP_E;
 	case PARADO_O: return STOP_O;
