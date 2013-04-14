@@ -1,9 +1,9 @@
 /*
- * DirList.cpp
- *
- *  Created on: 13/04/2013
- *      Author: Hugo Chavar
- */
+* DirList.cpp
+*
+*  Created on: 13/04/2013
+*      Author: Hugo Chavar
+*/
 #include <algorithm>
 #include <windows.h>
 #include "DirList.h"
@@ -14,13 +14,14 @@ using namespace std;
 DirList::DirList() {
 	_count = 0;
 	_currentPosition = 0;
+	_countDir = 0;
+	_currentPositionDir = 0;
 }
 
 DirList::~DirList() {
 }
 
 bool DirList::createFromDirectory(string dir) {
-	string filepath, filename;
 
 	DWORD attr = GetFileAttributesA(dir.c_str());
 	if (attr == INVALID_FILE_ATTRIBUTES){
@@ -46,24 +47,24 @@ bool DirList::createFromDirectory(string dir) {
 
 	findHandle = FindFirstFile(dir.c_str(), &findData);
 
-	this->directory = dir;
-
 	while(true)
 	{
 		// Si hay directorios o cosas raras las ignora
 		char * buf = findData.cFileName;
-		std::wstring filepath2;
 		std::string filepath1(buf);
 
-		if ( findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) // ignoro subdirectorios
+		if ( findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) // podria ser subdirectorio
 		{
-			if(!FindNextFile(findHandle, &findData))
-				break;
-			continue;
+			// saltear carpeta raiz (..) y actual (.)
+			if ( strcmp(findData.cFileName,".") && strcmp(findData.cFileName,"..") ) 
+			{
+				directories.push_back(filepath1); // es subdirectorio
+				_countDir++;
+			}
+		} else { //es archivo
+			files.push_back(filepath1);
+			_count++;
 		}
-
-		files.push_back(filepath1);
-		_count++;
 
 		if(!FindNextFile(findHandle, &findData))
 			break;
@@ -71,41 +72,43 @@ bool DirList::createFromDirectory(string dir) {
 
 	FindClose(findHandle);
 	files.sort();
+	directories.sort();
 	iterador = files.begin();
-
+	iteradorDir = directories.begin();
 	return true;
-
 }
 
-string DirList::next() {
-	string sigte = *iterador;
-	iterador++;
-	_currentPosition++;
+string DirList::nextDir() {
+	string sigte = *iteradorDir;
+	iteradorDir++;
+	_currentPositionDir++;
+
+	return sigte;
+}
+
+bool DirList::emptyDir() {
+	return (_countDir == 0);
+}
+
+string DirList::nextFullPathDir() {
+	string sigte = directory + "/" + (*iteradorDir);
+	iteradorDir++;
+	_currentPositionDir++;
 
 	return sigte;
 
 }
-
-bool DirList::empty() {
-        return (_count == 0);
-}
-
-string DirList::nextFullPath() {
-	string sigte = directory + "/" + (*iterador);
-	iterador++;
-	_currentPosition++;
-
-	return sigte;
-
-}
-bool DirList::hasNext() {
-	return (_currentPosition < _count);
+bool DirList::hasNextDir() {
+	return (_currentPositionDir < _countDir);
 }
 
 void DirList::clean() {
 	files.clear();
 	_count = 0;
 	_currentPosition = 0;
+	directories.clear();
+	_countDir = 0;
+	_currentPositionDir = 0;
 }
 
 bool DirList::seek(unsigned pos) {
@@ -120,12 +123,12 @@ bool DirList::seek(unsigned pos) {
 	return status;
 }
 
-unsigned DirList::count() const {
-	return _count;
+unsigned DirList::countDir() const {
+	return _countDir;
 }
 
-unsigned DirList::currentPosition() {
-	return _currentPosition;
+unsigned DirList::currentPositionDir() {
+	return _currentPositionDir;
 }
 
 void DirList::deletePrevious() {
@@ -134,3 +137,29 @@ void DirList::deletePrevious() {
 	seek(_currentPosition-1);
 	_count--;
 }
+
+string DirList::next() {
+	string sigte = *iterador;
+	iterador++;
+	_currentPosition++;
+
+	return sigte;
+
+}
+
+bool DirList::empty() {
+	return (_count == 0);
+}
+
+string DirList::nextFullPath() {
+	string sigte = directory + "/" + (*iterador);
+	iterador++;
+	_currentPosition++;
+
+	return sigte;
+
+}
+bool DirList::hasNext() {
+	return (_currentPosition < _count);
+}
+

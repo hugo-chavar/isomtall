@@ -26,24 +26,33 @@ using namespace std;
 class DirList {
 private:
 	list<string> files;
+	list<string> directories;
 	list<string>::iterator iterador;
-	list<string>::iterator iteradorPrev;
+	list<string>::iterator iteradorDir;
 	unsigned _count;
 	unsigned _currentPosition;
+	unsigned _countDir;
+	unsigned _currentPositionDir;
 	string directory;
 public:
 	DirList();
 	~DirList();
 	bool createFromDirectory(string);
 	bool hasNext();
+	bool hasNextDir();
 	string next();
 	string nextFullPath();
+	string nextDir();
+	string nextFullPathDir();
 	bool seek(unsigned);
 	unsigned currentPosition();
+	unsigned currentPositionDir();
 	unsigned count() const;
+	unsigned countDir() const;
 	void clean();
 	void deletePrevious();
 	bool empty();
+	bool emptyDir();
 
 };
 
