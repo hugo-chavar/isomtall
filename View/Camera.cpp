@@ -57,11 +57,13 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	return this->cameraSurface->h;
 }
 
-void Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, float offsetX, float offsetY) {
+void Camera::initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize){ //float offsetX, float offsetY) {
 	this->setScrollSpeed(scrollSpeed);
 	this->setScrollBoxSize(scrollBoxSize);
-	this->setOffsetX(offsetX); 
-	this->setOffsetY(offsetY);
+	this->setOffsetX(0);
+	this->setOffsetY(0);
+	//this->setOffsetX(offsetX); 
+	//this->setOffsetY(offsetY);
 	this->cameraSurface = SDL_SetVideoMode(width,height,bpp,SDL_HWSURFACE | SDL_DOUBLEBUF);
 	SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
 }

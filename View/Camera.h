@@ -15,12 +15,12 @@ namespace view {
 		unsigned int scrollSpeed;
 		//Camera scroll box size
 		unsigned int scrollBoxSize;
-		void setOffsetX(float offsetX);
-		void setOffsetY(float offsetY);
 		void setScrollSpeed(unsigned int scrollSpeed);
 		void setScrollBoxSize(unsigned int scrollBoxSize);
 	public:
 		Camera();
+		void setOffsetX(float offsetX);
+		void setOffsetY(float offsetY);
 		//TODO: make getter.
 		SDL_Surface* cameraSurface;
 		float getOffsetX();
@@ -29,7 +29,7 @@ namespace view {
 		unsigned int getScrollBoxSize();
 		int getWidth();
 		int getHeight();
-		void initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize, float offsetX, float offsetY);
+		void initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize); //,float offsetX, float offsetY);
 		void update();
 		void cleanUp();
 		void render(SDL_Rect spriteRec,SDL_Surface* surface);

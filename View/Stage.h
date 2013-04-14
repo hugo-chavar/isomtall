@@ -51,6 +51,8 @@ namespace view {
 		void initialize();
 
 		~Stage();
+
+		Personaje* personaje();
 	};
 
 } // namespace view

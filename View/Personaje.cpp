@@ -233,3 +233,11 @@ int Personaje::estadoModelo(int estado) {
 
 Personaje::~Personaje(){
 }
+
+std::pair<int,int> Personaje::posicion()
+{
+	std::pair<int,int> pos;
+	pos.first=spriteRect.x;
+	pos.second=spriteRect.y;
+	return pos;
+}
