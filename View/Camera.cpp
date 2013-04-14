@@ -68,6 +68,26 @@ void Camera::initialize(unsigned int width, unsigned int height, unsigned int bp
 	SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
 }
 
+bool Camera::initialize() {  
+	unsigned speed,scrollm,width,height;
+	if (!Game::instance().cameraModel()){
+		return false;
+	}
+	scrollm = Game::instance().cameraModel()->scroll();
+	speed = Game::instance().cameraModel()->speed();
+	width = Game::instance().cameraModel()->width();
+	height = Game::instance().cameraModel()->height();
+	this->setScrollSpeed(150);
+	this->setScrollBoxSize(scrollm);
+	//traer la posicion relativa del personaje
+	//asi se centra la camara al principio
+	this->setOffsetX(-100); 
+	this->setOffsetY(-100);
+	this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
+	return true;
+}
+
 void Camera::update() {
 	int x;
 	int y;

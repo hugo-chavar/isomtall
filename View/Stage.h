@@ -48,7 +48,7 @@ namespace view {
 
 		//std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
 
-		void initialize();
+		bool initialize();
 
 		~Stage();
 

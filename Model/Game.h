@@ -22,17 +22,18 @@ namespace model
 		TimeManager& time();
 		void initialize();
 		vector <EntityObject> vEntitiesObject();
-		vector <AnimatedEntity> vAnimatedEntities();
+		AnimatedEntity* animatedEntityAt(unsigned pos);
 		PersonajeModelo * personaje();
-		//void setFile(string path);
+		CameraModel* cameraModel();
 		
 	private:
 		Game();
 		Stage _world;
+		CameraModel* _cameraModel;
 		TimeManager _time;
 		PersonajeModelo * _personaje; // CAMBIAR POR PERSONAJE MODELO
 		vector <EntityObject> _vEntitiesObject;
-		vector <AnimatedEntity> _vAnimatedEntities;
+		vector <AnimatedEntity*>* _vAnimatedEntities;
 		//ofstream fd;
 	};
 };

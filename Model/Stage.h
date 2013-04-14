@@ -7,6 +7,7 @@
 #include <utility>
 #include "DataTypes.h"
 #include "MainCharacter.h"
+#include "PersonajeModelo.h"
 
 using namespace std;
 
@@ -22,6 +23,7 @@ public:
 	string name(); 
 	vector <EntityDef> vEntitiesDef();
 	vector <MainCharacter> vMainCharacters(); 
+	
 	map <KeyPair, EntityObject*> *entityMap();
 	void width(unsigned int); 
 	void height(unsigned int);
@@ -41,6 +43,10 @@ public:
 
 	float mainCharacter_speed();
 	void mainCharacter_speed(float value);
+
+	//cambios Hugo
+	PersonajeModelo* modelMainCharacters(unsigned);
+	void insertMainCharacter(PersonajeModelo*);
 private:
 	string _name;
 	unsigned int _width;
@@ -52,6 +58,8 @@ private:
 	vector <MainCharacter> _vMainCharacters;
 	float _mainCharacter_speed;
 
+	//cambios Hugo
+	vector <PersonajeModelo*> _modelMainCharacters;
 
 	// map <KeyPair, *Tile> scene;
 

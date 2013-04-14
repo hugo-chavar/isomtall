@@ -80,7 +80,7 @@ void view::Stage::addTile(TileView* tile) {
 	this->getTileArray().push_back(tile);
 }
 
-void view::Stage::initialize()
+bool view::Stage::initialize()
 {
 	
 	//worldModel = Game::instance().world();
@@ -135,13 +135,19 @@ void view::Stage::initialize()
 	//}
 
 	//inicia harcodeo
-	AnimatedEntity entity = Game::instance().vAnimatedEntities()[0]; // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
-	
+	AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
+	if (entity){
+		spriteArray.push_back(new Sprite(entity->imagePath(),entity->name(),23,entity->pixelRefX(),entity->pixelRefY(),entity->delay(),entity->fps()));
+	}
 
 	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
-	//spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),entity.nFrames(),entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
+
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
+	if (!Game::instance().personaje()){
+		//ver una maneta elegante de salir en todos los lugares que pincharia
+		return false;
+	}
 	pj = new Personaje(Game::instance().personaje());
 
 	//pj->setDestino(5,5);
@@ -173,6 +179,7 @@ void view::Stage::initialize()
 	//entityList.push_back(new Entity(15,5,spriteArray[2]));
 	//entityList.push_back(new Entity(15,10,spriteArray[2]));vpj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
 	entityList.push_back(pj);
+	return true;
 }
 
 void view::Stage::update() {

@@ -16,6 +16,7 @@ DirList::DirList() {
 	_currentPosition = 0;
 	_countDir = 0;
 	_currentPositionDir = 0;
+	testExtension = false;
 }
 
 DirList::~DirList() {
@@ -49,7 +50,6 @@ bool DirList::createFromDirectory(string dir) {
 
 	while(true)
 	{
-		// Si hay directorios o cosas raras las ignora
 		char * buf = findData.cFileName;
 		std::string filepath1(buf);
 
@@ -165,5 +165,10 @@ string DirList::nextFullPath() {
 }
 bool DirList::hasNext() {
 	return (_currentPosition < _count);
+}
+
+void DirList::setExtensionRequired(string ext){
+	testExtension = true;
+	extension = ext;
 }
 
