@@ -79,7 +79,7 @@ void operator >> (const Node& node, Configuration& configuration) {
 			}
 		} catch (KeyNotFound) {	} catch (InvalidScalar) {
 			mainCharacterSpeedFound = true;
-			Logger::instance().logInvalidValueInConfiguration("configuracion",field,"a positive integer");
+			Logger::instance().logInvalidValueInConfiguration("configuracion",field,"a positive float");
 			configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 		}
 		catch (Exception& parserException ) {

@@ -127,6 +127,10 @@ unsigned DirList::countDir() const {
 	return _countDir;
 }
 
+unsigned DirList::count() const {
+	return _count;
+}
+
 unsigned DirList::currentPositionDir() {
 	return _currentPositionDir;
 }
