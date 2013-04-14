@@ -13,6 +13,7 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	modelo = pj;
 	ePot.first = 0;
 	ePot.second = 0;
+	serr = 0;
 }
 
 void Personaje::update(){
@@ -23,16 +24,19 @@ void Personaje::update(){
 	std::pair<float, float> factor;
 	factor.first = 0;
 	factor.second = 0;
-	std::pair<bool, bool> serrucho;
+	float factorT = 0;
+	int estadoAc = estado;
 
 	if (((delta.first) == 0)&&((delta.second) == 0)) {
+		serr = 0;
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
-		if (velocidad == 0) {
+		if (estadoAc != estado) {
 			ePot.first = 0;
 			ePot.second = 0;
-		} else {
+		} 
+		if (velocidad != 0) {
 			modelo->setCurrent(tile.first, tile.second);
 		}
 	}
@@ -40,28 +44,54 @@ void Personaje::update(){
 	if (estado != ERROR) {
 		sprites[estado]->actualizarFrame();
 		if (delta.first != 0) {
+			if (delta.second != 0) {
+				serr++;
+			}
 			ePot.first = ePot.first + factor.first;
 			if (ePot.first >= 1) {
-				ePot.first --;
+				factorT = std::floor(ePot.first);
+				ePot.first -= factorT;
 				if (delta.first < 0) {
-					spriteRect.x --;
-					delta.first ++;
+					delta.first += factorT;
+					if (delta.first > 0) {
+						spriteRect.x -= (factorT - delta.first);
+						delta.first = 0;
+					} else {
+						spriteRect.x -= factorT;
+					}
 				} else {
-					spriteRect.x ++;
-					delta.first --;
+					delta.first -= factorT;
+					if (delta.first < 0) {
+						spriteRect.x += (factorT + delta.first);
+						delta.first = 0;
+					} else {
+						spriteRect.x += factorT;
+					}
 				}
 			}
 		}
-		if (delta.second != 0) {
+		if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) {
+			serr = 0;
 			ePot.second = ePot.second + factor.second;
 			if (ePot.second >= 1) {
-				ePot.second --;
+				factorT = std::floor(ePot.second);
+				ePot.second -= factorT;
 				if (delta.second < 0) {
-					spriteRect.y --;
-					delta.second ++;
+					delta.second += factorT;
+					if (delta.second > 0) {
+						spriteRect.y -= (factorT - delta.second);
+						delta.second = 0;
+					} else {
+						spriteRect.y -= factorT;
+					}
 				} else {
-					spriteRect.y ++;
-					delta.second --;
+					delta.second -= factorT;
+					if (delta.second < 0) {
+						spriteRect.y += (factorT + delta.second);
+						delta.second = 0;
+					} else {
+						spriteRect.y += factorT;
+					}
 				}
 			}
 		}
@@ -94,12 +124,12 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//Velocidades Relativas Hacia el NorOeste y NorEste
 	if ((delta.first != 0)&&(delta.second < 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad/2;
+		factor.second = velocidad;
 	}
 	//Velocidades Relativas Hacia el SudOeste y SudEste
 	if ((delta.first != 0)&&(delta.second > 0)) {
 		factor.first = velocidad;
-		factor.second = velocidad/2;
+		factor.second = velocidad;
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
