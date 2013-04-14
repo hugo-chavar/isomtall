@@ -26,7 +26,7 @@ public:
 	int mover(std::pair<int, int>& destino, float &velocidad);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
 	void loadSprites();
-	void setDirectory(DirList*);
+	void setDirectory(string);
 private:
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);
