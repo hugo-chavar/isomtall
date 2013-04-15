@@ -114,7 +114,10 @@ void Sprite::actualizarFrame()
 	{
 		if((SDL_GetTicks()-comienzo_frame)>=(1000/fps)+delay)
 			{
-				//estado++;
+				if(estado>=nroFrames-1)
+					estado=0;
+				else
+					estado=estado++;
 				comienzo_frame=SDL_GetTicks();
 			}
 	}
