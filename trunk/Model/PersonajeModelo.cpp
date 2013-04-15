@@ -1,5 +1,5 @@
-#include "PersonajeModelo.h"
 #include <cstdlib>
+#include "PersonajeModelo.h"
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
 #include "Game.h"
@@ -94,10 +94,14 @@ void PersonajeModelo::setCurrent(int x, int y) {
 	current.second = y;
 }
 
-//void PersonajeModelo::setCurrent(int x, int y) {
-//	current.first = x;
-//	current.second = y;
-//}
+void PersonajeModelo::animation(AnimatedEntity* ae) {
+	_animation = ae;
+}
+
+AnimatedEntity* PersonajeModelo::animation() {
+	return _animation;
+}
+
 
 void PersonajeModelo::setDestino(int x, int y) {
 	target.first = x;

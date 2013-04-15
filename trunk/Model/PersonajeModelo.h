@@ -8,6 +8,7 @@
 #include "Constants.h"
 #include "DirList.h"
 #include "MainCharacter.h"
+#include "AnimatedEntity.h"
 
 namespace model {
 class PersonajeModelo {
@@ -28,6 +29,8 @@ public:
 	void loadSpritesDir();
 	void addRefToSprite(string);
 	void setDirectory(string);
+	void animation(AnimatedEntity*);
+	AnimatedEntity* animation();
 private:
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);
@@ -43,6 +46,8 @@ private:
 
 	DirList spritesMainDir;
 	list <DirList*> spritesRefs ;
+	AnimatedEntity * _animation;
+
 };
 }
 

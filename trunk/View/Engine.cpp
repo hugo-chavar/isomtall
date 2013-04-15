@@ -55,7 +55,7 @@ void Engine::initialize() {
 	if ((!worldView.initialize()) ||(!this->camera.initialize()))
 		running = false; //si hubo errores de inicializacion salgo
 
-	std:pair<int,int> posPersonaje=worldView.personaje()->posicion();
+	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
 	this->camera.setOffsetX(posPersonaje.first-332);
 	this->camera.setOffsetY(posPersonaje.second-204);
 }

@@ -21,7 +21,6 @@ public:
 	//	EntityObject(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY), _imagesPaths(imagesPaths), _fps(fps), _delay(delay) { };
 	int fps();
 	void fps(int);
-	/*void destroy();*/
 	int delay();
 	void delay(int);
 	void loadImages(string);
