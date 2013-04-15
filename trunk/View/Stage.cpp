@@ -81,7 +81,7 @@ bool view::Stage::initialize()
 		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
 		//enlazo Sprites con los nombres de las entidades estaticas en el modelo
 		mapEntityToSprite[entity->name()] = int(a);
-		//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
+		//genero los Sprites
 		spriteArray.push_back(new Sprite(entity));
 	}
 	
@@ -92,7 +92,7 @@ bool view::Stage::initialize()
 		AnimatedEntity *entity = Game::instance().allEntities.vAnimatedEntities[a];
 		//enlazo Sprites con los nombres de las entidades animadas en el modelo
 		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
-		//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
+		//genero los Sprites
 		spriteArray.push_back(new Sprite(entity));
 	}
 
@@ -116,9 +116,7 @@ bool view::Stage::initialize()
 	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 	unsigned defCount = vEntitiesDef.size();
 	int posSpriteEntity;
-	staticEntitiesModelCount = 1; //solo para evitar errores
 	for (unsigned a = 0; a < defCount; a++){
-
 		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
 		entityList[vEntitiesDef[a].x+vEntitiesDef[a].y*worldModel.width()].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
 

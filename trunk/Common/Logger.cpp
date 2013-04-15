@@ -7,7 +7,6 @@ Logger::Logger()
    
 }
 
-
 Logger::~Logger()
 {
 	fd.close();

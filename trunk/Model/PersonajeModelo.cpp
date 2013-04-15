@@ -28,21 +28,6 @@ PersonajeModelo::PersonajeModelo() {
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
-//PersonajeModelo::PersonajeModelo(MainCharacter& datosPersonaje)
-//{
-//	current.first = datosPersonaje.x();
-//	current.second = datosPersonaje.y();
-//	target.first = current.first;
-//	target.second = current.second;
-//	xPath = NULL;
-//	yPath = NULL;
-//	posMov = 0;
-//	caminoSize = 0;
-//	_datosPersonaje = &datosPersonaje;
-//	this->estado =  PARADO_S;
-//	this->velocidad = Game::instance().world().mainCharacter_speed();
-//}
-
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	current.first = ActualX;
 	current.second = ActualY;
