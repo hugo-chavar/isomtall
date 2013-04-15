@@ -3,7 +3,7 @@ pantalla:
     - alto: rivercampeon
  
 configuracion: 
-    - vel_personaje: 2
+    - vel_personaje: 0.5
     - margen_scroll: 30 
      
 entidades:
@@ -49,8 +49,8 @@ entidades:
        
 escenarios: 
     - nombre: bosque_encantado 
-      size_x: 100
-      size_y: 100 
+      size_x: 50
+      size_y: 50 
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
          - {x: 10, y: 15, entidad: tierra} 

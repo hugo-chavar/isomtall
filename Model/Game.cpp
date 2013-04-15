@@ -36,25 +36,21 @@ void Game::initialize()
 {
 	yParser.parse(CONFIGFILE);
 	_world = yParser.vStages()[0];
-	//_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
 	_cameraModel = yParser.cameraModel();
-	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
+	//selecciono el primero del primer stage
+	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
 
 	this->_time.initializeTime();
 	
 
 }
-//
-//vector <EntityObject*>* Game::vEntitiesObject(){
-//	return allEntities.vEntitiesObject;
-//}
+
 
 EntityObject* Game::entityObjectAt(unsigned pos) {
 	if (allEntities.vEntitiesObject.size() > pos)
-	//if (_vAnimatedEntities->size() > pos)
 		return allEntities.vEntitiesObject.at(pos);
 	Logger::instance().nullPointer("function EntityObject* Game::animatedEntityAt");
 	return NULL;
@@ -63,7 +59,6 @@ EntityObject* Game::entityObjectAt(unsigned pos) {
 
 AnimatedEntity* Game::animatedEntityAt(unsigned pos) {
 	if (allEntities.vAnimatedEntities.size() > pos)
-	//if (_vAnimatedEntities->size() > pos)
 		return allEntities.vAnimatedEntities.at(pos);
 	Logger::instance().nullPointer("function AnimatedEntity* Game::animatedEntityAt");
 	return NULL;
@@ -78,7 +73,6 @@ PersonajeModelo * Game::personaje()
 }
 
 CameraModel* Game::cameraModel(){
-	//return _cameraModel;
 	if (_cameraModel)
 			return _cameraModel;
 	Logger::instance().nullPointer("function CameraModel* Game::cameraModel");

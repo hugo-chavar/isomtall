@@ -16,10 +16,6 @@ AnimatedEntity::~AnimatedEntity() {
 	
 }
 
-//AnimatedEntity::AnimatedEntity(const AnimatedEntity& a){
-//
-//}
-
 bool AnimatedEntity::isAnimated() {
 	return true;
 }
@@ -54,7 +50,8 @@ void AnimatedEntity::loadImages(string imageDir) {
 	if (this->_images.createFromDirectory(imageDir)) {
 		while (this->_images.hasNext()) {
 			string dir_aux = this->_images.nextFullPath();
-			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
+			// Las imágenes de las entidades animadas deben tener la extensión '.png'.
+			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) 
 				this->_images.deletePrevious();
 		}
 		if (this->_images.empty())
