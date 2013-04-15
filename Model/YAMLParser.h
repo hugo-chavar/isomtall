@@ -71,7 +71,7 @@ private:
 	//Entities entities;
 	EntLists entities;
 	Stages stages;
-	EntLists _allLists;
+	//EntLists _allLists;
 
 	Screen generateDefaultScreen();
 	Configuration generateDefaultConfiguration();

@@ -23,8 +23,9 @@ namespace model
 		TimeManager& time();
 		void initialize();
 		EntLists allEntities;
-		vector <EntityObject*>* vEntitiesObject();
+		//vector <EntityObject*>* vEntitiesObject();
 		AnimatedEntity* animatedEntityAt(unsigned pos);
+		EntityObject* entityObjectAt(unsigned pos);
 		PersonajeModelo * personaje();
 		CameraModel* cameraModel();
 		
@@ -34,8 +35,8 @@ namespace model
 		CameraModel* _cameraModel;
 		TimeManager _time;
 		PersonajeModelo * _personaje;
-		vector <EntityObject*>* _vEntitiesObject;
-		vector <AnimatedEntity*>* _vAnimatedEntities;
+		//vector <EntityObject*>* _vEntitiesObject;
+		//vector <AnimatedEntity*>* _vAnimatedEntities;
 		//ofstream fd;
 	};
 };

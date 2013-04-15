@@ -41,17 +41,26 @@ void Game::initialize()
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
-	_vAnimatedEntities = yParser.vAnimatedEntities();
-	_vEntitiesObject = yParser.vEntitiesObject();
+	//_vAnimatedEntities = yParser.vAnimatedEntities();
+	//_vEntitiesObject = yParser.vEntitiesObject();
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
 	
 	
 
 }
+//
+//vector <EntityObject*>* Game::vEntitiesObject(){
+//	return allEntities.vEntitiesObject;
+//}
 
-vector <EntityObject*>* Game::vEntitiesObject(){
-	return _vEntitiesObject;
+EntityObject* Game::entityObjectAt(unsigned pos) {
+	if (allEntities.vEntitiesObject.size() > pos)
+	//if (_vAnimatedEntities->size() > pos)
+		return allEntities.vEntitiesObject.at(pos);
+	Logger::instance().nullPointer("function EntityObject* Game::animatedEntityAt");
+	return NULL;
 }
+
 
 AnimatedEntity* Game::animatedEntityAt(unsigned pos) {
 	if (allEntities.vAnimatedEntities.size() > pos)
