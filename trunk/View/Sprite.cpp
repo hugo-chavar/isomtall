@@ -51,7 +51,7 @@ Sprite::Sprite(EntityObject *entity)
 	estado=0;
 	relx=entity->pixelRefX();
 	rely=entity->pixelRefY();
-	nroFrames=entity->imagePath().size();
+	nroFrames = 1; //entity->imagePath().size();
 	cargarFrames(entity->imagePath());
 }
 
