@@ -73,10 +73,6 @@ bool view::Stage::initialize()
 {
 	
 	worldModel = Game::instance().world();
-	//worldModel.initialize(100,100,62,31);//metodo harcodeado
-	//Game::instance().world().initialize(100,100,32,64);//metodo harcodeado
-	//EntityObject entity = Game::instance().vEntitiesObject()[1];
-	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 
 	//carga de sprites estaticos
 	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
@@ -109,7 +105,8 @@ bool view::Stage::initialize()
 	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
 	unsigned w = Game::instance().world().width();
 	unsigned h = Game::instance().world().height();
-	for(unsigned i=0; i < w; i++){ //TODO: esta bien width() aca y height() en el for interno?
+
+	for(unsigned i=0; i < w; i++){ 
 		for(unsigned j=0; j < h; j++){
 			entityList[i+j*worldModel.width()].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
 		}

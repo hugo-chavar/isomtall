@@ -6,8 +6,6 @@ using namespace std;
 using namespace model;
 
 
-//info del escenario
-
 Stage::Stage(){
 }
 
@@ -79,10 +77,6 @@ void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigne
 	tileWidth(tWidth);
 	tileHeight(tHeight);
 }
-//
-//void Stage::update(){
-//
-//}
 
 std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
 	float tileX = 0;
@@ -94,20 +88,6 @@ std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixel
 	tileY = floor(static_cast<float>((pixelCoordinates.second + cameraY - aux) / this->tileHeight()));
 
 	return std::make_pair<int,int>(static_cast<int>(tileX),static_cast<int>(tileY));
-
-
-
-	/*
-	float a = 0;
-	float b = 0;
-	int c = 0;
-
-	//c = pixelCoordinates.first - ((this->height() * this->tileWidth()) / 2);
-	c = pixelCoordinates.first - (this->tileWidth()/ 2);//275
-	a = ((static_cast<float>(pixelCoordinates.second)+cameraY) / this->tileHeight());
-	b = ((static_cast<float>(c)+cameraX+tileWidth()/ 2) / this->tileWidth());
-
-	return std::make_pair<int,int>(a + b,a - b);*/
 }
 
 std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
@@ -124,8 +104,8 @@ void Stage::destino(int x,int y,float cameraX,float cameraY){
 	pixelCoordinates.first = x;
 	pixelCoordinates.second = y;
 	std::pair<int,int> destino = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-	//ver el siguiente if.. por favor simplifiquen su codigo!!!! no dejen un choclazo dentro del if xq no se entiende
-	if(isInsideWorld(destino)) //destino.first>=0&&destino.first<int(_width)&&destino.second>=0&&destino.second<int(_height)
+
+	if(isInsideWorld(destino)) 
 		Game::instance().personaje()->setDestino(destino.first,destino.second);
 }
 

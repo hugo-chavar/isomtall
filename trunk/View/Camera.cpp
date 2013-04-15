@@ -1,10 +1,8 @@
-#include "Camera.h"
-
 #include <cmath>
-
+#include "Game.h"
+#include "Camera.h"
 #include "World.h"
 #include "TimeManager.h"
-#include "Game.h"
 
 using namespace view;
 
@@ -58,31 +56,31 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 }
 
 
-bool Camera::initialize() {  
-	unsigned speed,scrollm,width,height;
-	if (!Game::instance().cameraModel()){
-		return false;
-	}
-	scrollm = Game::instance().cameraModel()->scroll();
-	speed = Game::instance().cameraModel()->speed();
-	width = Game::instance().cameraModel()->width();
-	height = Game::instance().cameraModel()->height();
-	this->setScrollSpeed(150);
-	this->setScrollBoxSize(scrollm);
-	//traer la posicion relativa del personaje
-	//asi se centra la camara al principio
-	this->setOffsetX(0);
-	this->setOffsetY(0);
-	this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	if(this->cameraSurface==NULL)
-		{
-			width=DEFAULT_SCREEN_WIDTH;
-			height=DEFAULT_SCREEN_HEIGHT;
-			this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-		}
-	SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
-	return true;
-}
+ bool Camera::initialize() {  
+	 unsigned speed,scrollm,width,height;
+	 if (!Game::instance().cameraModel()){
+		 return false;
+	 }
+	 scrollm = Game::instance().cameraModel()->scroll();
+	 speed = Game::instance().cameraModel()->speed();
+	 width = Game::instance().cameraModel()->width();
+	 height = Game::instance().cameraModel()->height();
+	 this->setScrollSpeed(150);
+	 this->setScrollBoxSize(scrollm);
+	 //traer la posicion relativa del personaje
+	 //asi se centra la camara al principio
+	 this->setOffsetX(0);
+	 this->setOffsetY(0);
+	 this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	 if(this->cameraSurface==NULL)
+	 {
+		 width = DEFAULT_SCREEN_WIDTH;
+		 height = DEFAULT_SCREEN_HEIGHT;
+		 this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	 }
+	 SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
+	 return true;
+ }
 
 void Camera::update() {
 	int x;

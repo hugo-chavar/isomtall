@@ -24,7 +24,6 @@ namespace model
 		void initialize();
 		EntLists allEntities;
 		YAMLParser yParser;
-		//vector <EntityObject*>* vEntitiesObject();
 		AnimatedEntity* animatedEntityAt(unsigned pos);
 		EntityObject* entityObjectAt(unsigned pos);
 		PersonajeModelo * personaje();
@@ -36,7 +35,6 @@ namespace model
 		CameraModel* _cameraModel;
 		TimeManager _time;
 		PersonajeModelo * _personaje;
-		//ofstream fd;
 	};
 };
 

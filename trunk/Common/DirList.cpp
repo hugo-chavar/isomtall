@@ -174,7 +174,7 @@ void DirList::setExtensionRequired(string ext){
 	extension = ext;
 }
 
-void DirList::restartCurrentPosition() { // SE DEBERIA REINICIAR TANTO CURRENTPOSITION COMO EL ITERADOR PORQUE CUANDO SE VAN CARGANDO LAS IMAGENES SE QUEDA AL FINAL
+void DirList::restartCurrentPosition() {
 	_currentPosition = 0;
 	iterador = files.begin();
 }
