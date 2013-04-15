@@ -24,10 +24,10 @@ public:
 	int delay();
 	void delay(int);
 	void loadImages(string);
+	DirList* imagesPaths();
 	unsigned imagesCount();
 	bool isAnimated();
 	bool hasNoImages();
-	//DirList* imagesPaths();
 
 private:
 	int _fps;

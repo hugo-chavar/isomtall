@@ -90,49 +90,48 @@ bool view::Stage::initialize()
 	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 
 	//carga de sprites estaticos
-	//unsigned staticEntitiesModelCount = Game::instance().vEntitiesObject().size();
-	//vector<EntityObject> l = Game::instance().vEntitiesObject();
-	//
-	//for (unsigned a = 0; a < staticEntitiesModelCount; a++){
-	//	EntityObject entity = Game::instance().vEntitiesObject()[a];
-	//	//enlazo Sprites con los nombres de las entidades estaticas en el modelo
-	//	mapEntityToSprite[entity.name()] = int(a);
-	//	//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
-	//	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,entity.pixelRefX(),entity.pixelRefY(),0,0));
-	//}
+	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
+	
+	for (unsigned a = 0; a < staticEntitiesModelCount; a++){
+		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
+		//enlazo Sprites con los nombres de las entidades estaticas en el modelo
+		mapEntityToSprite[entity->name()] = int(a);
+		//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
+		spriteArray.push_back(new Sprite(entity));
+	}
+	
+	//carga de sprites animados
+	unsigned animatedEntitiesModelCount = Game::instance().allEntities.vAnimatedEntities.size();
 
-	////carga de sprites animados
-	//unsigned animatedEntitiesModelCount = Game::instance().vAnimatedEntities().size();
+	for (unsigned a = 0; a < animatedEntitiesModelCount; a++){
+		AnimatedEntity *entity = Game::instance().allEntities.vAnimatedEntities[a];
+		//enlazo Sprites con los nombres de las entidades animadas en el modelo
+		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
+		//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
+		spriteArray.push_back(new Sprite(entity));
+	}
 
-	//for (unsigned a = 0; a < animatedEntitiesModelCount; a++){
-	//	AnimatedEntity entity = Game::instance().vAnimatedEntities()[a];
-	//	//enlazo Sprites con los nombres de las entidades animadas en el modelo
-	//	mapEntityToSprite[entity.name()] = int(a + staticEntitiesModelCount);
-	//	//genero los Sprites (TODO: diferenciar animados de estaticos usando el constructor de Sprite adecuado)
-	//	spriteArray.push_back(new Sprite(entity.imagePath(),entity.name(),1,entity.pixelRefX(),entity.pixelRefY(),entity.delay(),entity.fps()));
-	//}
+	//Carga del piso x default
+	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
+	unsigned w = Game::instance().world().width();
+	unsigned h = Game::instance().world().height();
+	for(unsigned i=0; i < w; i++){ //TODO: esta bien width() aca y height() en el for interno?
+		for(unsigned j=0; j < h; j++){
+			entityList.push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
+		}
+	}
 
-	////Carga del piso x default
-	//unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
-	//unsigned w = Game::instance().world().width();
-	//unsigned h = Game::instance().world().height();
-	//for(unsigned i=0; i < w; i++){ //TODO: esta bien width() aca y height() en el for interno?
-	//	for(unsigned j=0; j < h; j++){
-	//		entityList.push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
-	//	}
-	//}
+	//genero entitades de la vista estaticas
+	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
+	unsigned defCount = vEntitiesDef.size();
+	int posSpriteEntity;
+	staticEntitiesModelCount = 1; //solo para evitar errores
+	for (unsigned a = 0; a < defCount; a++){
 
-	////genero entitades de la vista estaticas
-	//vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
-	//unsigned defCount = vEntitiesDef.size();
-	//int posSpriteEntity;
-	////staticEntitiesModelCount = 1; //solo para evitar errores
-	//for (unsigned a = 0; a < defCount; a++){
+		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
+		entityList.push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
 
-	//	posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
-	//	entityList.push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
-
-	//}
+	}
 
 	//inicia harcodeo
 	AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
@@ -144,12 +143,14 @@ bool view::Stage::initialize()
 
 	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
 	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
+
+	
 	if (!Game::instance().personaje()){
 		//ver una maneta elegante de salir en todos los lugares que pincharia
 		return false;
 	}
 	pj = new Personaje(Game::instance().personaje());
-
+	
 	//pj->setDestino(5,5);
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedN", 1, 74, 80));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNE", 1, 74, 80));
@@ -167,6 +168,7 @@ bool view::Stage::initialize()
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/13walkingSO/", "walkingSO", 12, 74, 80, 0, 30.0));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/14walkingE/", "walkingE", 12, 74, 80, 0, 30.0));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/15walkingO/", "walkingO",12, 74, 80, 0, 30.0));
+
 	//Harcodeo la carga de entidades. debera venir del modelo
 	for(int i=0;i<50;i++)
 		for(int j=0; j<25;j++){
