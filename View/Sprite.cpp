@@ -93,6 +93,7 @@ void Sprite::cargarFrames(std::string imagePath)
 {
 	frames.push_back(new Frame());
 	frames[0]->cargar(imagePath);
+	nroFrames = 1;
 }
 
 void Sprite::cargarFrames(DirList *imagesPaths)
@@ -104,6 +105,7 @@ void Sprite::cargarFrames(DirList *imagesPaths)
 		frames[i]->cargar(imagesPaths->nextFullPath());
 		i++;
 	}
+	nroFrames = imagesPaths->count();
 }
 
 void Sprite::actualizarFrame()
@@ -112,7 +114,7 @@ void Sprite::actualizarFrame()
 	{
 		if((SDL_GetTicks()-comienzo_frame)>=(1000/fps)+delay)
 			{
-				estado++;
+				//estado++;
 				comienzo_frame=SDL_GetTicks();
 			}
 	}
