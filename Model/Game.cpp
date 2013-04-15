@@ -34,7 +34,6 @@ TimeManager& Game::time() {
 
 void Game::initialize()
 {
-	YAMLParser yParser;
 	yParser.parse(CONFIGFILE);
 	_world = yParser.vStages()[0];
 	//_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
@@ -43,8 +42,8 @@ void Game::initialize()
 	allEntities = yParser.allLists();
 	_cameraModel = yParser.cameraModel();
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
-	_cameraModel=yParser.cameraModel();
-	
+
+	this->_time.initializeTime();
 	
 
 }
@@ -79,7 +78,7 @@ PersonajeModelo * Game::personaje()
 }
 
 CameraModel* Game::cameraModel(){
-	return _cameraModel;
+	//return _cameraModel;
 	if (_cameraModel)
 			return _cameraModel;
 	Logger::instance().nullPointer("function CameraModel* Game::cameraModel");
