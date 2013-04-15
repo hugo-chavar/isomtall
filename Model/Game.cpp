@@ -40,9 +40,11 @@ void Game::initialize()
 	//_personaje = new PersonajeModelo(_world.vMainCharacters()[0]);
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
-	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
-	_vEntitiesObject = yParser.vEntitiesObject();
 	_vAnimatedEntities = yParser.vAnimatedEntities();
+	_vEntitiesObject = yParser.vEntitiesObject();
+	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
+	
+	
 
 }
 

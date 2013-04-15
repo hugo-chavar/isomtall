@@ -7,7 +7,6 @@
 #include <utility>
 #include "Constants.h"
 #include "DirList.h"
-#include "MainCharacter.h"
 #include "AnimatedEntity.h"
 
 namespace model {
@@ -31,6 +30,8 @@ public:
 	void setDirectory(string);
 	void animation(AnimatedEntity*);
 	AnimatedEntity* animation();
+	int fps();
+	int delay();
 private:
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);
