@@ -16,9 +16,9 @@ AnimatedEntity::~AnimatedEntity() {
 	
 }
 
-AnimatedEntity::AnimatedEntity(const AnimatedEntity& a){
-
-}
+//AnimatedEntity::AnimatedEntity(const AnimatedEntity& a){
+//
+//}
 
 bool AnimatedEntity::isAnimated() {
 	return true;
