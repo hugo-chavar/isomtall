@@ -49,18 +49,6 @@ std::pair<int,int> view::Stage::pixelToTileCoordinates(std::pair<int,int> pixelC
 view::Stage::Stage() {
 }
 
-void view::Stage::render(Camera& camera) {
-	
-	list<Entity*>::iterator iterador= entityList.begin();
-	for (unsigned i=0;i<entityList.size();i++)
-	{
-						//if (i==1254) {
-						//	i = 1254;
-						//}
-						(*iterador)->render(camera);
-                        iterador++;
-	}
-}
 
 view::Stage::~Stage() {
 		for (unsigned int i = 0; i < spriteArray.size(); i++)
@@ -68,11 +56,12 @@ view::Stage::~Stage() {
 		delete spriteArray[i];
 	}
 
-	list<Entity*>::iterator iterador= entityList.begin();
-	for (unsigned i=0;i<entityList.size();i++)
+	for(unsigned j=0;j<entityList.size();j++)
 	{
-						delete(*iterador);
-                        iterador++;
+		for (unsigned i=0;i<entityList[j].size();i++)
+		{
+						delete(entityList[j][i]);
+		}
 	}
 }
 
@@ -111,13 +100,14 @@ bool view::Stage::initialize()
 		spriteArray.push_back(new Sprite(entity));
 	}
 
+	entityList.resize(worldModel.width()*worldModel.height());
 	//Carga del piso x default
 	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
 	unsigned w = Game::instance().world().width();
 	unsigned h = Game::instance().world().height();
 	for(unsigned i=0; i < w; i++){ //TODO: esta bien width() aca y height() en el for interno?
 		for(unsigned j=0; j < h; j++){
-			entityList.push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
+			entityList[i+j*worldModel.width()].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
 		}
 	}
 
@@ -129,20 +119,20 @@ bool view::Stage::initialize()
 	for (unsigned a = 0; a < defCount; a++){
 
 		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
-		entityList.push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
+		entityList[vEntitiesDef[a].x+vEntitiesDef[a].y*worldModel.width()].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
 
 	}
 
 	//inicia harcodeo
-	AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
-	if (entity){
-		spriteArray.push_back(new Sprite(entity->imagePath(),entity->name(),23,entity->pixelRefX(),entity->pixelRefY(),entity->delay(),entity->fps()));
-	}
+	//AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
+	//if (entity){
+	//	spriteArray.push_back(new Sprite(entity->imagePath(),entity->name(),23,entity->pixelRefX(),entity->pixelRefY(),entity->delay(),entity->fps()));
+	//}
 
-	spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
+	//spriteArray.push_back(new Sprite("../Images/","piso",1,32,0,0,0));
 
-	spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
-	spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
+	//spriteArray.push_back(new Sprite("../Images/","cubo",1,32,40,0,0));
+	//spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 
 	
 	if (!Game::instance().personaje()){
@@ -170,17 +160,25 @@ bool view::Stage::initialize()
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/15walkingO/", "walkingO",12, 74, 80, 0, 30.0));
 
 	//Harcodeo la carga de entidades. debera venir del modelo
-	for(int i=0;i<50;i++)
-		for(int j=0; j<25;j++){
-			entityList.push_back(new Entity(i,j,spriteArray[0]));
-		}
+
+	/*entityList.resize(worldModel.width()*worldModel.height());
+	for(int i=0;i<worldModel.width();i++)
+		for(int j=0; j<worldModel.height();j++){
+			entityList[i+j*worldModel.width()].push_back(new Entity(i,j,spriteArray[0]));
+		}*/
 
 	// entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1])); Para entidades no animadas (vienen las posiciones en vEntitiesDev
-	entityList.push_back(new Entity(3,2,spriteArray[1]));
+	
+		entityList[3+2*worldModel.width()].push_back(new Entity(3,2,spriteArray[1]));
 	//entityList.push_back(new Entity(15,2,spriteArray[2]));
 	//entityList.push_back(new Entity(15,5,spriteArray[2]));
 	//entityList.push_back(new Entity(15,10,spriteArray[2]));vpj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
-	entityList.push_back(pj);
+	
+	//Saco el personaje de la lista de entidades. Se dibuja aparte solo
+
+	//std::pair<int,int> posicionPersonaje;
+	//pj->personajeModelo()->getCurrent(posicionPersonaje);
+	//entityList[posicionPersonaje.first+posicionPersonaje.second*worldModel.width()].push_back(pj);
 	return true;
 }
 
@@ -189,10 +187,76 @@ void view::Stage::update() {
 	{
 		spriteArray[i]->actualizarFrame();
 	}
+	/*std::pair<int,int> posicionAnterior;
+	pj->personajeModelo()->getCurrent(posicionAnterior);*/
 	pj->update();
+	//std::pair<int,int> posicionPersonaje;
+	//pj->personajeModelo()->getCurrent(posicionPersonaje);
+	//if(posicionPersonaje!=posicionAnterior)
+	//{
+	//	int indiceAnterior=posicionAnterior.first+posicionAnterior.second*worldModel.width();
+	//	int indice=posicionPersonaje.first+posicionPersonaje.second*worldModel.width();
+	//	entityList[indiceAnterior].erase(entityList[indiceAnterior].end()-1);
+	//	entityList[indice].push_back(pj);
+	//}
+
 }
 
 Personaje* view::Stage::personaje()
 {
 	return pj;
 }
+
+void view::Stage::render(Camera& camera) {
+
+	unsigned int horizontalTilesInCamera = ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH);
+       unsigned int verticalTilesInCamera = ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT);
+       std::pair<int,int> cameraReferenceTile = this->worldModel.pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+       int Xt = 0;
+       int Yt = 0;
+
+       //Crappy way to avoid not drawing partial tiles
+       cameraReferenceTile.first -= 2;
+       horizontalTilesInCamera += 2;
+       verticalTilesInCamera += 2;
+for(int l=0;l<5;l++)//Harcodeo un maximo de 5 entidades por Tile
+{
+	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+		Xt = cameraReferenceTile.first + i;
+		Yt = cameraReferenceTile.second + i;
+
+		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+			int indice=Xt+Yt*worldModel.width();
+			if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
+			{	
+				if(l<entityList[indice].size())
+				entityList[indice][l]->render(camera);	
+			}
+				indice++;
+			if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
+			{
+				if(l<entityList[indice].size())
+				entityList[indice][l]->render(camera);
+			}
+				Xt++;
+			Yt--;
+		}
+	}
+	}
+pj->render(camera);
+}
+
+
+//void view::Stage::render(Camera& camera) {
+//	
+//	list<Entity*>::iterator iterador= entityList.begin();
+//
+//	for (unsigned i=0;i<entityList.size();i++)
+//	{
+//						//if (i==1254) {
+//						//	i = 1254;
+//						//}
+//						(*iterador)->render(camera);
+//                        iterador++;
+//	}
+//}

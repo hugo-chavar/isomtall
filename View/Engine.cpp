@@ -51,8 +51,9 @@ void Engine::initialize() {
 
 	//TODO: center camera on player or default tile.
 	//this->camera.initialize(800,600,32,200,60,-100,-100);
+	int inicializacionCamara=this->camera.initialize();
 
-	if ((!worldView.initialize()) ||(!this->camera.initialize()))
+	if ((!worldView.initialize()) ||(!inicializacionCamara))
 		running = false; //si hubo errores de inicializacion salgo
 
 	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();

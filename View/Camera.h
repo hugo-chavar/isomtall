@@ -30,7 +30,6 @@ namespace view {
 		int getWidth();
 		int getHeight();
 		bool initialize();
-		void initialize(unsigned int width, unsigned int height, unsigned int bpp, unsigned int scrollSpeed, unsigned int scrollBoxSize); //,float offsetX, float offsetY);
 		void update();
 		void cleanUp();
 		void render(SDL_Rect spriteRec,SDL_Surface* surface);

@@ -15,6 +15,7 @@ public:
 	void setDestino(int xTile, int yTile);
 	~Personaje();
 	std::pair<int,int> posicion();
+	model::PersonajeModelo* Personaje::personajeModelo();
 
 private:
 	int procesarAnimacion(int animacion);
