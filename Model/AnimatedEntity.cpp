@@ -67,3 +67,7 @@ unsigned AnimatedEntity::imagesCount()
 {
 	return _images.count();
 }
+
+DirList* AnimatedEntity::imagesPaths() {
+	return &_images;
+}

@@ -45,34 +45,25 @@ Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int rela
 	
 }
 
-//Para que funcione por ahora
-Sprite::Sprite(std::list<std::string> imagesPaths,int relatx,int relaty,float Delay,float Fps)
+Sprite::Sprite(EntityObject *entity)
 {
-
-	
 	comienzo_frame=SDL_GetTicks();
 	estado=0;
-
-
-	delay=Delay;
-	fps=Fps;
-	relx=relatx;
-	rely=relaty;
-	nroFrames=imagesPaths.size();
-	cargarFrames(imagesPaths);
-	
+	relx=entity->pixelRefX();
+	rely=entity->pixelRefY();
+	nroFrames=entity->imagePath().size();
+	cargarFrames(entity->imagePath());
 }
 
-Sprite::Sprite(AnimatedEntity* ae)
+Sprite::Sprite(AnimatedEntity* entity)
 {
 	comienzo_frame = SDL_GetTicks();
 	estado = 0;
-	delay = static_cast<float>(ae->delay()); 
-	fps = static_cast<float>(ae->fps());
-	relx = ae->pixelRefX(); //relatx; relatx es el pixel de referencia?
-	rely = ae->pixelRefY();
-	//nroFrames = imagesPaths.size();
-	//this->cargarFrames(imagesPaths);	
+	delay = static_cast<float>(entity->delay()); 
+	fps = static_cast<float>(entity->fps());
+	relx = entity->pixelRefX();
+	rely = entity->pixelRefY();
+	this->cargarFrames(entity->imagesPaths());	
 }
 
 Sprite::~Sprite(void)
@@ -98,16 +89,18 @@ void Sprite::cargarFrames(std::string path,std::string nombre,std::string format
 	}
 }
 
-// Para que funcione por ahora
-void Sprite::cargarFrames(std::list<std::string> imagesPaths)
+void Sprite::cargarFrames(std::string imagePath)
 {
-	int i = 0;
-	std::list<std::string>::iterator iter;
-	iter = imagesPaths.begin();
-	while (iter!=imagesPaths.end()) {
+	frames.push_back(new Frame());
+	frames[0]->cargar(imagePath);
+}
+
+void Sprite::cargarFrames(DirList *imagesPaths)
+{
+	unsigned i = 0;
+	while (imagesPaths->hasNext()) {
 		frames.push_back(new Frame());
-		frames[i]->cargar(*iter);
-		iter++;
+		frames[i]->cargar(imagesPaths->nextFullPath());
 		i++;
 	}
 }
