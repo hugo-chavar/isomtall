@@ -31,7 +31,7 @@ namespace model
 		Stage _world;
 		CameraModel* _cameraModel;
 		TimeManager _time;
-		PersonajeModelo * _personaje; // CAMBIAR POR PERSONAJE MODELO
+		PersonajeModelo * _personaje;
 		vector <EntityObject*>* _vEntitiesObject;
 		vector <AnimatedEntity*>* _vAnimatedEntities;
 		//ofstream fd;

@@ -35,8 +35,8 @@ vector <EntityDef> Stage::vEntitiesDef() {
 	return _vEntitiesDef;
 }
 
-vector <MainCharacter> Stage::vMainCharacters() {
-	return _vMainCharacters;
+vector <PersonajeModelo*>* Stage::vMainCharacters() {
+	return &_vMainCharacters;
 }
 
 map <KeyPair, EntityObject*>* Stage::entityMap() {
@@ -130,11 +130,11 @@ void Stage::destino(int x,int y,float cameraX,float cameraY){
 }
 
 void Stage::insertMainCharacter(PersonajeModelo* pm){
-	_modelMainCharacters.push_back(pm);
+	_vMainCharacters.push_back(pm);
 }
 
 PersonajeModelo* Stage::modelMainCharacters(unsigned pos){
-	if (_modelMainCharacters.size() > pos)
-		return _modelMainCharacters[pos];
+	if (_vMainCharacters.size() > pos)
+		return _vMainCharacters[pos];
 	return NULL;
 }

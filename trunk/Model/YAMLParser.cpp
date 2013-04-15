@@ -636,18 +636,20 @@ Screen YAMLParser::generateDefaultScreen() {
 	return screen;
 }
 
-MainCharacter YAMLParser::generateDefaultMainCharacter() { //
+PersonajeModelo* YAMLParser::generateDefaultMainCharacter() { //
 	if (entities.vAnimatedEntities.size()<=0) {
 		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
 		entities.vAnimatedEntities.push_back(animatedEntity_default);
 	}
-	MainCharacter mainCharacter(entities.vAnimatedEntities[0], DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
+	PersonajeModelo *mainCharacter = new PersonajeModelo();
+	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
+	mainCharacter->animation(entities.vAnimatedEntities[0]); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
 	return mainCharacter;
 }
 
 Stage YAMLParser::generateDefaultStage() {
 	vector <EntityDef> vEntitiesDef;
-	vector <MainCharacter> vMainCharacters;
+	vector <PersonajeModelo*> vMainCharacters;
 	map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
 	for(int i=0; i<DEFAULT_STAGE_SIZE_X; i++) // Cargo el mapa con entidad objeto default guardada en la primera posición.
 		for(int j=0; j<DEFAULT_STAGE_SIZE_Y; j++) {
@@ -727,7 +729,9 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		if (!animatedEntityType)
 			Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' not found.");
 		else {
-			MainCharacter mainCharacter(animatedEntityType, mainCharacter_aux.x, mainCharacter_aux.y);
+			PersonajeModelo* mainCharacter = new PersonajeModelo();
+			mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
+			mainCharacter->animation(animatedEntityType);
 			stage_aux.vMainCharacters.push_back(mainCharacter);
 		}
 	}
@@ -872,6 +876,7 @@ vector <AnimatedEntity*>* YAMLParser::vAnimatedEntities() {
 //int YAMLParser::scrollMargin() {
 //	return configuration.scroll_margin;
 //}
+
 //conexion con el modelo logico
 PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
 	if (stages.vStages[stage].modelMainCharacters(pers) == NULL)

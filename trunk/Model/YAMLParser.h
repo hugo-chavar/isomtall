@@ -51,8 +51,7 @@ struct sStage {
 	int size_y;
 	vector <EntityDef> vEntitiesDef;
 	vector <sMainCharacter> vMainCharacters_aux;
-	vector <MainCharacter> vMainCharacters;
-	vector <PersonajeModelo*> vModelPersonajes;
+	vector <PersonajeModelo*> vMainCharacters;
 };
 
 struct Stages {
@@ -74,7 +73,7 @@ private:
 
 	Screen generateDefaultScreen();
 	Configuration generateDefaultConfiguration();
-	MainCharacter generateDefaultMainCharacter();
+	PersonajeModelo* generateDefaultMainCharacter();
 	Stage generateDefaultStage();
 	void loadEverythingByDefault();
 	void loadEntitiesToMap(int stage_index);
