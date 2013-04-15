@@ -68,8 +68,10 @@ private:
 	Screen screen;
 	CameraModel* camera;
 	Configuration configuration;
-	Entities entities;
+	//Entities entities;
+	EntLists entities;
 	Stages stages;
+	EntLists _allLists;
 
 	Screen generateDefaultScreen();
 	Configuration generateDefaultConfiguration();
@@ -94,6 +96,8 @@ public:
 	vector <Stage> vStages();
 	vector <EntityObject*>* vEntitiesObject();
 	vector <AnimatedEntity*>* vAnimatedEntities();
+
+	EntLists allLists();
 
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);

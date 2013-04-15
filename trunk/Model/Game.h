@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+#include "DataTypes.h"
 #include "PersonajeModelo.h"
 #include "Stage.h"
 #include "..\View\TimeManager.h"
@@ -21,6 +22,7 @@ namespace model
 		Stage& world();
 		TimeManager& time();
 		void initialize();
+		EntLists allEntities;
 		vector <EntityObject*>* vEntitiesObject();
 		AnimatedEntity* animatedEntityAt(unsigned pos);
 		PersonajeModelo * personaje();
