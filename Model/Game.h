@@ -21,7 +21,7 @@ namespace model
 		Stage& world();
 		TimeManager& time();
 		void initialize();
-		vector <EntityObject> vEntitiesObject();
+		vector <EntityObject*>* vEntitiesObject();
 		AnimatedEntity* animatedEntityAt(unsigned pos);
 		PersonajeModelo * personaje();
 		CameraModel* cameraModel();
@@ -32,7 +32,7 @@ namespace model
 		CameraModel* _cameraModel;
 		TimeManager _time;
 		PersonajeModelo * _personaje; // CAMBIAR POR PERSONAJE MODELO
-		vector <EntityObject> _vEntitiesObject;
+		vector <EntityObject*>* _vEntitiesObject;
 		vector <AnimatedEntity*>* _vAnimatedEntities;
 		//ofstream fd;
 	};

@@ -2,6 +2,12 @@
 
 
 AnimatedEntity::AnimatedEntity() {
+	this->name("DEFAULT");
+	this->loadImages(DEFAULT_ANIMATED_DIR);
+	this->baseWidth(DEFAULT_BASE_WIDTH);
+	this->baseHeight(DEFAULT_BASE_HEIGHT);
+	this->pixelRefX(DEFAULT_PIXEL_REF_X);
+	this->pixelRefY(DEFAULT_PIXEL_REF_Y);
 	_fps = DEFAULT_FPS;
 	_delay = DEFAULT_DELAY;
 }

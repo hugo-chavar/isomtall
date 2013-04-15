@@ -46,7 +46,7 @@ void Game::initialize()
 
 }
 
-vector <EntityObject> Game::vEntitiesObject(){
+vector <EntityObject*>* Game::vEntitiesObject(){
 	return _vEntitiesObject;
 }
 
