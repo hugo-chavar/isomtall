@@ -235,6 +235,9 @@ int Personaje::estadoModelo(int estado) {
 Personaje::~Personaje(){
 }
 
+model::PersonajeModelo* Personaje::personajeModelo()
+{return modelo;}
+
 std::pair<int,int> Personaje::posicion()
 {
 	std::pair<int,int> pos;

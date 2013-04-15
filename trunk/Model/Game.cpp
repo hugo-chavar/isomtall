@@ -43,6 +43,7 @@ void Game::initialize()
 	allEntities = yParser.allLists();
 	_cameraModel = yParser.cameraModel();
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
+	_cameraModel=yParser.cameraModel();
 	
 	
 

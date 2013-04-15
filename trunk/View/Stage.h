@@ -22,9 +22,12 @@ namespace view {
 		vector<Sprite*> spriteArray;
 		Personaje* pj;
 		map<string,int> mapEntityToSprite;
-
+		//list<Entity *> entityList;
+		vector<vector<Entity*>> entityList;
 		//std::vector<model::Tile*> tileArray;
 		std::vector<TileView*> tileArray;
+
+		void view::Stage::renderTile(int Xt, int Yt,Camera& camera);
 
 	public:
 		Stage();
@@ -36,7 +39,6 @@ namespace view {
 		model::Stage worldModel;
 		
 
-		list<Entity *> entityList;
 		//TODO: the camera should be retrieved from the model.
 		void render(Camera& camera);
 
