@@ -101,6 +101,15 @@ AnimatedEntity* PersonajeModelo::animation() {
 	return _animation;
 }
 
+int PersonajeModelo::fps()
+{
+	return _animation->fps();
+}
+
+int PersonajeModelo::delay()
+{
+	return _animation->delay();
+}
 
 void PersonajeModelo::setDestino(int x, int y) {
 	target.first = x;
