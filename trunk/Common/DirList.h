@@ -56,6 +56,7 @@ public:
 	void deletePrevious();
 	bool empty();
 	bool emptyDir();
+	void restartCurrentPosition();
 
 };
 
