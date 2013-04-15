@@ -23,6 +23,7 @@ namespace model
 		TimeManager& time();
 		void initialize();
 		EntLists allEntities;
+		YAMLParser yParser;
 		//vector <EntityObject*>* vEntitiesObject();
 		AnimatedEntity* animatedEntityAt(unsigned pos);
 		EntityObject* entityObjectAt(unsigned pos);

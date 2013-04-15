@@ -14,7 +14,9 @@ int Frame::cargar(std::string path){
 	SDL_Surface * superficie1=IMG_Load(path.c_str());
 	if(superficie1==NULL)
 	{
-		Logger::instance().log(path);
+		Logger::instance().log("Aplication error: superficie1=IMG_Load(path.c_str()) loading "+ path + " ocurred this error:");
+		std::string error(SDL_GetError());
+		Logger::instance().log("SDL error "+ error);
 		return 1;
 	}
 	

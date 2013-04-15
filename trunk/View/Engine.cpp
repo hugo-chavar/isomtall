@@ -24,7 +24,7 @@ int Engine::execute() {
 
 	this->initialize();
  
-	Game::instance().time().initializeTime();
+	
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
 		Game::instance().time().updateTime();
@@ -51,10 +51,14 @@ void Engine::initialize() {
 
 	//TODO: center camera on player or default tile.
 	//this->camera.initialize(800,600,32,200,60,-100,-100);
-	int inicializacionCamara=this->camera.initialize();
+	//Game::instance().time().initializeTime();
+	//Game::instance().initialize();
+	bool cameraInitialized = this->camera.initialize();
 
-	if ((!worldView.initialize()) ||(!inicializacionCamara))
-		running = false; //si hubo errores de inicializacion salgo
+	if (cameraInitialized){
+		bool mapInitialized = worldView.initialize();
+		running = mapInitialized; //si hubo errores de inicializacion salgo
+	}
 
 	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
 	this->camera.setOffsetX(posPersonaje.first-332);
