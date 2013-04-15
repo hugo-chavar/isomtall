@@ -864,18 +864,6 @@ vector <EntityObject*>* YAMLParser::vEntitiesObject() {
 vector <AnimatedEntity*>* YAMLParser::vAnimatedEntities() {
 	return &(entities.vAnimatedEntities);
 }
-//
-//int YAMLParser::screenWidth() {
-//	return screen.width;
-//}
-//
-//int YAMLParser::screenHeight() {
-//	return screen.height;
-//}
-//
-//int YAMLParser::scrollMargin() {
-//	return configuration.scroll_margin;
-//}
 
 //conexion con el modelo logico
 PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
