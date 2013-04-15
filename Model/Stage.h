@@ -6,7 +6,6 @@
 #include <iostream>
 #include <utility>
 #include "DataTypes.h"
-#include "MainCharacter.h"
 #include "PersonajeModelo.h"
 
 using namespace std;
@@ -16,13 +15,13 @@ class Stage {
 
 public:
 	Stage();
-	Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, map <KeyPair, EntityObject*> *entityMap, vector <MainCharacter> vMainCharacters): 
+	Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, map <KeyPair, EntityObject*> *entityMap, vector <PersonajeModelo*> vMainCharacters): 
 		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _entityMap(entityMap), _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; };
 	unsigned int width(); 
 	unsigned int height();
 	string name(); 
 	vector <EntityDef> vEntitiesDef();
-	vector <MainCharacter> vMainCharacters(); 
+	vector <PersonajeModelo*>* vMainCharacters(); 
 	
 	map <KeyPair, EntityObject*> *entityMap();
 	void width(unsigned int); 
@@ -55,11 +54,10 @@ private:
 	unsigned int _tileHeight;
 	vector <EntityDef> _vEntitiesDef;
 	map <KeyPair, EntityObject*> *_entityMap;
-	vector <MainCharacter> _vMainCharacters;
 	float _mainCharacter_speed;
 
 	//cambios Hugo
-	vector <PersonajeModelo*> _modelMainCharacters;
+	vector <PersonajeModelo*> _vMainCharacters;
 
 	// map <KeyPair, *Tile> scene;
 

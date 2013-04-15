@@ -52,7 +52,6 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
-	//_datosPersonaje = datosPersonaje;
 	this->estado = PARADO_S;;
 	//this->velocidad = velocidad;
 }
@@ -242,9 +241,5 @@ PersonajeModelo::~PersonajeModelo(){
 	if (yPath != NULL) {
 		delete [] yPath;
 		yPath = NULL;
-	}
-
-	if(_datosPersonaje != NULL) {
-		delete _datosPersonaje;
 	}
 }

@@ -42,7 +42,6 @@ private:
 	int caminoSize;
 	int estado;
 	float velocidad;
-	MainCharacter *_datosPersonaje;
 
 	DirList spritesMainDir;
 	list <DirList*> spritesRefs ;

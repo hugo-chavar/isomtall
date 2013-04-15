@@ -71,7 +71,6 @@
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ListaPath.cpp" />
-    <ClCompile Include="MainCharacter.cpp" />
     <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="Par.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
@@ -88,7 +87,6 @@
     <ClInclude Include="EntityObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="ListaPath.h" />
-    <ClInclude Include="MainCharacter.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
     <ClInclude Include="Pathfinder.h" />
