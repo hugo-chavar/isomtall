@@ -22,8 +22,10 @@ int Frame::cargar(std::string path){
 	SDL_FreeSurface(superficie1);
 	if ( superficie == NULL)
 	{
-		Logger::instance().nullPointer("DL_DisplayFormat(superficie1) loading "+ path);
-		return 1
+		Logger::instance().log("in DL_DisplayFormat(superficie1) loading "+ path + " ocurred this error:");
+		std::string error(SDL_GetError());
+		Logger::instance().log("SDL error "+ error);
+		return 1;
 	}
 	// Asignamos el color transparente al color rojo.
 	SDL_SetColorKey(superficie,SDL_SRCCOLORKEY|SDL_RLEACCEL, SDL_MapRGB(superficie->format,255,0,255));
