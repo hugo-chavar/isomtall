@@ -142,6 +142,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
 	double coste;
+	float costeF = 0;
 
 	if (target == current) {
 		if ((estado<10) || (estado>19)) {
@@ -176,7 +177,8 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
 		coste = Game::instance().world().cost(xPath[posMov], yPath[posMov]);
-		velocidad = ((this->velocidad)*coste);
+		costeF = (float) coste;
+		velocidad = ((this->velocidad)*costeF);
 		posMov++;
 	} else {
 		if ((estado<10) || (estado>19)) {

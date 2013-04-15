@@ -25,8 +25,8 @@ bool Surface::draw(SDL_Surface* source, SDL_Surface* destination, unsigned int d
 	}
 
 	SDL_Rect destinationRectangle;
-	destinationRectangle.x = destinationOffsetX;
-	destinationRectangle.y = destinationOffsetY;
+	destinationRectangle.x = (Sint16) destinationOffsetX;
+	destinationRectangle.y = (Sint16) destinationOffsetY;
 
 	SDL_BlitSurface(source,NULL,destination,&destinationRectangle);
 
@@ -39,14 +39,14 @@ bool Surface::draw(SDL_Surface* source, unsigned int sourceOffsetX, unsigned int
 	}
 
 	SDL_Rect destinationRectangle;
-	destinationRectangle.x = destinationOffsetX;
-	destinationRectangle.y = destinationOffsetY;
+	destinationRectangle.x = (Sint16) destinationOffsetX;
+	destinationRectangle.y = (Sint16) destinationOffsetY;
 
 	SDL_Rect sourceRectangle;
-	sourceRectangle.x = sourceOffsetX;
-	sourceRectangle.y = sourceOffsetY;
-	sourceRectangle.h = sourceHeight;
-	sourceRectangle.w = sourceWidth;
+	sourceRectangle.x = (Sint16) sourceOffsetX;
+	sourceRectangle.y = (Sint16) sourceOffsetY;
+	sourceRectangle.h = (Uint16) sourceHeight;
+	sourceRectangle.w = (Uint16) sourceWidth;
 
 	SDL_BlitSurface(source,&sourceRectangle,destination,&destinationRectangle);
 

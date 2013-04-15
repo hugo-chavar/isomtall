@@ -10,15 +10,15 @@ Entity::Entity(int tileX,int tileY,Sprite* spriteCargado)//(int tileX,int tileY,
 {
 	sprite= spriteCargado;
 	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
-	spriteRect.w=sprite->getFrameActual()->getSuperficie()->w;
-	spriteRect.h=sprite->getFrameActual()->getSuperficie()->h;
+	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+	spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
 }
 
 SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite)
 {
 	SDL_Rect rectangulo;
-	rectangulo.x= pptx*tileX/2-pptx*tileY/2-sprite->relatx();
-	rectangulo.y= ppty*tileX/2+ppty*tileY/2-sprite->relaty();
+	rectangulo.x= (Sint16)(pptx*tileX/2-pptx*tileY/2-sprite->relatx());
+	rectangulo.y= (Sint16)(ppty*tileX/2+ppty*tileY/2-sprite->relaty());
 	return rectangulo;
 }
 

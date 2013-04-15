@@ -55,18 +55,20 @@ void Personaje::update(){
 				if (delta.first < 0) {
 					delta.first += factorT;
 					if (delta.first > 0) {
-						spriteRect.x -= (factorT - delta.first);
+						spriteRect.x -= (Sint16) (factorT - delta.first);
+						ePot.first += delta.first;
 						delta.first = 0;
 					} else {
-						spriteRect.x -= factorT;
+						spriteRect.x -= (Sint16) factorT;
 					}
 				} else {
 					delta.first -= factorT;
 					if (delta.first < 0) {
-						spriteRect.x += (factorT + delta.first);
+						spriteRect.x += (Sint16)(factorT + delta.first);
+						ePot.first -= delta.first;
 						delta.first = 0;
 					} else {
-						spriteRect.x += factorT;
+						spriteRect.x += (Sint16)factorT;
 					}
 				}
 			}
@@ -80,18 +82,20 @@ void Personaje::update(){
 				if (delta.second < 0) {
 					delta.second += factorT;
 					if (delta.second > 0) {
-						spriteRect.y -= (factorT - delta.second);
+						spriteRect.y -= (Sint16)(factorT - delta.second);
+						ePot.second += delta.second;
 						delta.second = 0;
 					} else {
-						spriteRect.y -= factorT;
+						spriteRect.y -= (Sint16)factorT;
 					}
 				} else {
 					delta.second -= factorT;
 					if (delta.second < 0) {
-						spriteRect.y += (factorT + delta.second);
+						spriteRect.y += (Sint16)(factorT + delta.second);
+						ePot.second -= delta.second;
 						delta.second = 0;
 					} else {
-						spriteRect.y += factorT;
+						spriteRect.y += (Sint16)factorT;
 					}
 				}
 			}
@@ -112,11 +116,11 @@ void Personaje::setDestino(int xTile, int yTile){
 void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//Velocidad Relativa Hacia el Norte
 	if ((delta.second < 0)&&(delta.first == 0)) {
-		factor.second = velocidad;
+		factor.second = velocidad/2;
 	}
 	//Velocidad Relativa Hacia el Sur
 	if ((delta.second > 0)&&(delta.first == 0)) {
-		factor.second = velocidad;
+		factor.second = velocidad*2;
 	}
 	//Velocidad Relativa Hacia el Este y el Oeste
 	if ((delta.first != 0)&&(delta.second == 0)) {
@@ -124,13 +128,13 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	}
 	//Velocidades Relativas Hacia el NorOeste y NorEste
 	if ((delta.first != 0)&&(delta.second < 0)) {
-		factor.first = velocidad;
-		factor.second = velocidad;
+		factor.first = (float)(velocidad/(1.5));
+		factor.second = (float)(velocidad/(1.5));
 	}
 	//Velocidades Relativas Hacia el SudOeste y SudEste
 	if ((delta.first != 0)&&(delta.second > 0)) {
-		factor.first = velocidad;
-		factor.second = velocidad;
+		factor.first = (float)(velocidad*(1.5));
+		factor.second = (float)(velocidad*(1.5));
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
@@ -142,8 +146,8 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 void Personaje::agregarSprite(Sprite* sprite) {
 	if (sprites.empty()) {
 		spriteRect=posicionIsometricaPorTiles(tileActual.first, tileActual.second,sprite);
-		spriteRect.w=sprite->getFrameActual()->getSuperficie()->w;
-		spriteRect.h=sprite->getFrameActual()->getSuperficie()->h;
+		spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+		spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
 	}
 	sprites.push_back(sprite);
 }

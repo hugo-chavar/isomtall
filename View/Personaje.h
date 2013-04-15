@@ -28,7 +28,7 @@ private:
 	std::vector<Sprite*> sprites;
 	float velocidad;
 	int estado;
-	std::pair<int, int> delta;
+	std::pair<float, float> delta;
 	std::pair<float, float> ePot;
 	int serr;
 };
