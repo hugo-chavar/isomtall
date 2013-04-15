@@ -35,7 +35,7 @@ struct Configuration {
 };
 
 struct Entities {
-	vector <EntityObject> vEntitiesObject;
+	vector <EntityObject*> vEntitiesObject;
 	vector <AnimatedEntity*> vAnimatedEntities;
 };
 
@@ -93,7 +93,7 @@ public:
 	//int screenHeight();
 	//int scrollMargin();
 	vector <Stage> vStages();
-	vector <EntityObject> vEntitiesObject();
+	vector <EntityObject*>* vEntitiesObject();
 	vector <AnimatedEntity*>* vAnimatedEntities();
 
 	AnimatedEntity* findAnimatedEntityType(string name);

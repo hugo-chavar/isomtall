@@ -149,25 +149,16 @@ bool validateImagePath(string imagePath) {
 		
 		Logger::instance().log("Parser Error: Unable to open '"+imagePath+"'.");
 		return false;
-
-		//ifstream file;
-		//file.open(imagePath);
-		//if (canOpenFile(imagePath)) { // Veo que exista. //!file.is_open() metodo muy lento
-		//	Logger::instance().log("Parser Error: Image path '"+imagePath+"' not found.");
-		//	return false;
-		//}
-		//else {
-		//	file.close();
-		//	return true;
-		//}
 	}
 	return false;
 }
 
-void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOMBRES IGUALES
+void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NOMBRES IGUALES
 	string name, imagePath, field;
 	int baseWidth, baseHeight, pixelRefX, pixelRefY;
 	bool baseWidthFound = false, baseHeightFound = false, pixelRefXFound = false, pixelRefYFound = false;
+
+	entity = new EntityObject();
 	field = "nombre";
 	try {
 		node[field] >> name;
@@ -275,8 +266,14 @@ void operator >> (const Node& node, EntityObject& entity) { // ENTIDADES CON NOM
 		pixelRefY = DEFAULT_PIXEL_REF_Y;
 	}
 
-	EntityObject entity_aux(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY);
-	entity = entity_aux;
+	entity->name(name);
+	entity->imagePath(imagePath);
+	entity->baseWidth(baseWidth);
+	entity->baseHeight(baseHeight);
+	entity->pixelRefX(pixelRefX);
+	entity->pixelRefY(pixelRefY);
+	//EntityObject entity_aux(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY);
+	//entity = entity_aux;
 }
 
 //DirList* loadImagesPaths(string imageDir) {
@@ -300,7 +297,8 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	string imageDir, field;
 	//DirList* imagesPaths;
 	bool fpsFound = false, delayFound = false;
-	EntityObject entity_aux;
+
+	EntityObject *entity_aux;
 	node >> entity_aux;
 	animatedEntity = new AnimatedEntity();
 	field = "imagen";
@@ -310,12 +308,13 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		animatedEntity->loadImages(imageDir);
 		if ((imageDir=="~") || (animatedEntity->hasNoImages())) {
 			imageDir = DEFAULT_ANIMATED_DIR;
-			animatedEntity->loadImages(DEFAULT_ANIMATED_DIR);
+			animatedEntity->loadImages(imageDir);
 			//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 		}
 	} catch (KeyNotFound) {
 		//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
-		animatedEntity->loadImages(DEFAULT_ANIMATED_DIR);
+		imageDir = DEFAULT_ANIMATED_DIR;
+		animatedEntity->loadImages(imageDir);
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -325,12 +324,12 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		node[field] >> fps;
 		fpsFound = true;
 		if (fps<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux.name()+"'.");
+			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux->name()+"'.");
 			fps = DEFAULT_FPS;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		fpsFound = true;
-		Logger::instance().logInvalidValueInEntity(entity_aux.name(),field,"a positive integer");
+		Logger::instance().logInvalidValueInEntity(entity_aux->name(),field,"a positive integer");
 		fps = DEFAULT_FPS;
 	}
 	catch (Exception& parserException ) {
@@ -341,12 +340,12 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		node[field] >> delay;
 		delayFound = true;
 		if (delay<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux.name()+"'.");
+			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux->name()+"'.");
 			delay = DEFAULT_DELAY;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		delayFound = true;
-		Logger::instance().logInvalidValueInEntity(entity_aux.name(),field,"a positive integer");
+		Logger::instance().logInvalidValueInEntity(entity_aux->name(),field,"a positive integer");
 		delay = DEFAULT_DELAY;
 	}
 	catch (Exception& parserException ) {
@@ -354,15 +353,22 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	};
 
 	if (!fpsFound) {
-		Logger::instance().log("Parser Error: Field 'fps' is not defined in entity '"+entity_aux.name()+"'.");
+		Logger::instance().log("Parser Error: Field 'fps' is not defined in entity '"+entity_aux->name()+"'.");
 		fps = DEFAULT_FPS;
 	}
 	if (!delayFound) {
-		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux.name()+"'.");
+		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux->name()+"'.");
 		delay = DEFAULT_DELAY;
 	}
+
+	animatedEntity->name(entity_aux->name());
+	animatedEntity->baseWidth(entity_aux->baseWidth());
+	animatedEntity->baseHeight(entity_aux->baseHeight());
+	animatedEntity->pixelRefX(entity_aux->pixelRefX());
+	animatedEntity->pixelRefY(entity_aux->pixelRefY());
 	animatedEntity->fps(fps);
 	animatedEntity->delay(delay);
+	delete entity_aux;
 	//AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
 	//animatedEntity = animatedEntity_aux;
 }
@@ -395,9 +401,9 @@ void operator >> (const Node& node, Entities& entities) {
 				entities.vAnimatedEntities.push_back(entity);
 		}
 		else {
-			EntityObject entity;
+			EntityObject* entity;
 			node[i] >> entity;
-			if (entity.name().size() > 0) // Si tiene nombre se guarda. PASAR A PUNTERO
+			if (entity->name().size() > 0) // Si tiene nombre se guarda.
 				entities.vEntitiesObject.push_back(entity);
 		}
 	}
@@ -633,7 +639,6 @@ Screen YAMLParser::generateDefaultScreen() {
 MainCharacter YAMLParser::generateDefaultMainCharacter() { //
 	if (entities.vAnimatedEntities.size()<=0) {
 		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
-
 		entities.vAnimatedEntities.push_back(animatedEntity_default);
 	}
 	MainCharacter mainCharacter(entities.vAnimatedEntities[0], DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
@@ -647,7 +652,7 @@ Stage YAMLParser::generateDefaultStage() {
 	for(int i=0; i<DEFAULT_STAGE_SIZE_X; i++) // Cargo el mapa con entidad objeto default guardada en la primera posición.
 		for(int j=0; j<DEFAULT_STAGE_SIZE_Y; j++) {
 			KeyPair key(i, j);
-			(*entityMap).insert(make_pair(key, &entities.vEntitiesObject[0]));
+			(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
 		}
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
 
@@ -673,13 +678,13 @@ EntityObject* YAMLParser::findEntityObjectType(string name) {
 	unsigned int i = 0;
 	bool found = false;
 	while ((i<entities.vEntitiesObject.size()) && (!found)) {
-		if (entities.vEntitiesObject[i].name()==name)
+		if (entities.vEntitiesObject[i]->name()==name)
 			found = true;
 		else
 			i++;
 	}
 	if (found)
-		return &entities.vEntitiesObject[i];
+		return entities.vEntitiesObject[i];
 	return NULL;
 }
 
@@ -708,7 +713,7 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 	for(int i=0; i<stage_aux.size_x; i++) // Completo el mapa con entidad objeto default guardada en la primera posición.
 		for(int j=0; j<stage_aux.size_y; j++) {
 			KeyPair key(i, j);
-			(*entityMap).insert(make_pair(key, &entities.vEntitiesObject[0]));
+			(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
 		}
 	Stage stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, entityMap, stage_aux.vMainCharacters);
 	stages.vStages.push_back(stage);
@@ -766,7 +771,7 @@ void YAMLParser::parse(string inputFilePath) {
 	ifstream inputFile_aux;
 	camera = new CameraModel();//se carga x default
 
-	EntityObject entity_default;
+	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
 	
 	inputFile_aux.open(inputFilePath);
@@ -848,8 +853,8 @@ vector <Stage> YAMLParser::vStages() {
 	return stages.vStages;
 }
 
-vector <EntityObject> YAMLParser::vEntitiesObject() {
-	return entities.vEntitiesObject;
+vector <EntityObject*>* YAMLParser::vEntitiesObject() {
+	return &(entities.vEntitiesObject);
 }
 
 vector <AnimatedEntity*>* YAMLParser::vAnimatedEntities() {
