@@ -72,7 +72,7 @@ void view::Stage::addTile(TileView* tile) {
 bool view::Stage::initialize()
 {
 	
-	//worldModel = Game::instance().world();
+	worldModel = Game::instance().world();
 	//worldModel.initialize(100,100,62,31);//metodo harcodeado
 	//Game::instance().world().initialize(100,100,32,64);//metodo harcodeado
 	//EntityObject entity = Game::instance().vEntitiesObject()[1];
@@ -101,6 +101,10 @@ bool view::Stage::initialize()
 	}
 
 	entityList.resize(worldModel.width()*worldModel.height());
+	//entityList.resize(worldModel.width());
+	//for (int i = 0; i < worldModel.width(); i++)
+	//	entityList[i].resize(worldModel.height());
+	
 	//Carga del piso x default
 	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
 	unsigned w = Game::instance().world().width();
@@ -111,7 +115,7 @@ bool view::Stage::initialize()
 		}
 	}
 
-	//genero entitades de la vista estaticas
+	//genero entidades de la vista estaticas
 	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
 	unsigned defCount = vEntitiesDef.size();
 	int posSpriteEntity;

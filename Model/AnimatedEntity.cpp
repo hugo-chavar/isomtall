@@ -50,6 +50,7 @@ void AnimatedEntity::delay(int value)
 }
 
 void AnimatedEntity::loadImages(string imageDir) {
+	_images.clean();
 	if (this->_images.createFromDirectory(imageDir)) {
 		while (this->_images.hasNext()) {
 			string dir_aux = this->_images.nextFullPath();
