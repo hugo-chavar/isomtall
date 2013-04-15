@@ -373,7 +373,7 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	//animatedEntity = animatedEntity_aux;
 }
 
-void operator >> (const Node& node, Entities& entities) {
+void operator >> (const Node& node, EntLists& entities) {
 	for(unsigned int i=0; i<node.size(); i++) {
 		bool isAnimated = false;
 		int fps, delay;
@@ -886,5 +886,9 @@ PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
 
 CameraModel* YAMLParser::cameraModel(){
 	return camera;
+}
+
+EntLists YAMLParser::allLists(){
+	return entities;
 }
 
