@@ -97,9 +97,6 @@ bool view::Stage::initialize()
 	}
 
 	entityList.resize(worldModel.width()*worldModel.height());
-	//entityList.resize(worldModel.width());
-	//for (int i = 0; i < worldModel.width(); i++)
-	//	entityList[i].resize(worldModel.height());
 	
 	//Carga del piso x default
 	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];

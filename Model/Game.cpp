@@ -42,6 +42,7 @@ void Game::initialize()
 	_cameraModel = yParser.cameraModel();
 	//selecciono el primero del primer stage
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
+	//setear velocidad personaje
 
 	this->_time.initializeTime();
 	
@@ -66,8 +67,10 @@ AnimatedEntity* Game::animatedEntityAt(unsigned pos) {
 
 PersonajeModelo * Game::personaje()
 {
-	if (this->_personaje)
-			return this->_personaje;
+	if (this->_personaje){
+		return this->_personaje;
+		//string a = this->_personaje.animation
+	}
 	Logger::instance().nullPointer("function PersonajeModelo * Game::personaje");
 	return NULL;
 }

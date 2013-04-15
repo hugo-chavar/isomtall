@@ -38,7 +38,7 @@ entidades:
       delay: 5 
        
     - nombre: frodo 
-      imagen: path/a/imagen/
+      imagen: ../Images/personajeVampiro/
       fps: 10 
        
     - nombre: tierra 
