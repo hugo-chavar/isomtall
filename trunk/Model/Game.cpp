@@ -41,8 +41,7 @@ void Game::initialize()
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
-	//_vAnimatedEntities = yParser.vAnimatedEntities();
-	//_vEntitiesObject = yParser.vEntitiesObject();
+	_cameraModel = yParser.cameraModel();
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); //selecciono el primero del primer stage
 	
 	
