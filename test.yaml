@@ -18,11 +18,29 @@ entidades:
        
     - nombre: molino
       imagen: ../Images/molino/
-      ancho_base: 2
-      alto_base: 2 
+      ancho_base: 4
+      alto_base: 4 
       pixel_ref_x: 64
-      pixel_ref_y: 120
+      pixel_ref_y: 64
       fps: 15
+      delay: 3000
+
+    - nombre: fuente
+      imagen: ../Images/fuente/
+      ancho_base: 3
+      alto_base: 3 
+      pixel_ref_x: 64
+      pixel_ref_y: 64
+      fps: 15
+      delay: 3000
+
+    - nombre: bandera
+      imagen: ../Images/bandera/
+      ancho_base: 1
+      alto_base: 1 
+      pixel_ref_x: 64
+      pixel_ref_y: 96
+      fps: 30
       delay: 3000
 
     - nombre: castillo
@@ -57,7 +75,9 @@ escenarios:
          - {x: 10, y: 15, entidad: agua} 
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra} 
-         - {x: 10, y: 10, entidad: molino} 
+         - {x: 10, y: 10, entidad: molino}
+         - {x: 15, y: 15, entidad: bandera}
+         - {x: 20, y: 20, entidad: fuente} 
       protagonista: 
          - tipoEntidad: frodo 
            x: 5 
