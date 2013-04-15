@@ -35,8 +35,6 @@ namespace model
 		CameraModel* _cameraModel;
 		TimeManager _time;
 		PersonajeModelo * _personaje;
-		//vector <EntityObject*>* _vEntitiesObject;
-		//vector <AnimatedEntity*>* _vAnimatedEntities;
 		//ofstream fd;
 	};
 };

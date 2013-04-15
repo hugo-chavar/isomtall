@@ -44,7 +44,7 @@ unsigned int CameraModel::scroll(){
 
 void CameraModel::scroll(int value){
 	if (value >= MIN_SCROLL_MARGIN){
-		_height = static_cast<unsigned>(value); //value;
+		_scroll = static_cast<unsigned>(value); //value;
 	} else {
 		Logger::instance().log("Game warning: Field 'margen_scroll' is too low, defaulted.");
 		_scroll = DEFAULT_SCROLL_MARGIN;
