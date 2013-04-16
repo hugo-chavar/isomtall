@@ -6,8 +6,8 @@ AnimatedEntity::AnimatedEntity() {
 	//this->loadImages(DEFAULT_ANIMATED_DIR); 
 	this->baseWidth(DEFAULT_BASE_WIDTH);
 	this->baseHeight(DEFAULT_BASE_HEIGHT);
-	this->pixelRefX(DEFAULT_PIXEL_REF_X);
-	this->pixelRefY(DEFAULT_PIXEL_REF_Y);
+	this->pixelRefX(DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X);
+	this->pixelRefY(DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y);
 	this->fps(DEFAULT_FPS);
 	this->delay(DEFAULT_DELAY);
 }

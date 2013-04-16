@@ -6,8 +6,8 @@ EntityObject::EntityObject() {
 	_image_path = DEFAULT_TILE_IMAGE;
 	_base_width = DEFAULT_BASE_WIDTH;
 	_base_height = DEFAULT_BASE_HEIGHT;
-	_pixel_ref_x = DEFAULT_PIXEL_REF_X;
-	_pixel_ref_y = DEFAULT_PIXEL_REF_Y;
+	_pixel_ref_x = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
+	_pixel_ref_y = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 }
 
 EntityObject::~EntityObject() { }
