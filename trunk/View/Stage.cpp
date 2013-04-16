@@ -212,8 +212,8 @@ Personaje* view::Stage::personaje()
 
 void view::Stage::render(Camera& camera) {
 
-	unsigned int horizontalTilesInCamera = ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH);
-	unsigned int verticalTilesInCamera = ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT);
+	unsigned int horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH));
+	unsigned int verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT));
 	std::pair<int,int> cameraReferenceTile = this->worldModel.pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
 	int Xt = 0;
 	int Yt = 0;

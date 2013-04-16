@@ -60,8 +60,8 @@ void Engine::initialize() {
 	running = mapInitialized & cameraInitialized; 
 
 	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
-	this->camera.setOffsetX(posPersonaje.first-332);
-	this->camera.setOffsetY(posPersonaje.second-204);
+	this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
+	this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
