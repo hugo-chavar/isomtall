@@ -87,7 +87,7 @@ public:
 	YAMLParser();
 	~YAMLParser();
 
-	void parse(string inputFilePath);
+	void parse();
 	vector <Stage> vStages();
 	EntLists allLists();
 

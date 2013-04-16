@@ -772,23 +772,26 @@ void YAMLParser::loadEverythingByDefault() {
 	manageStageCase();
 }
 
-void YAMLParser::parse(string inputFilePath) {
+void YAMLParser::parse() {
+	bool yamlFilesFound = false,screenFound = false, stagesFound = false, entitiesFound = false, configurationFound = false;
 	Node doc;
-	
-	bool screenFound = false, stagesFound = false, entitiesFound = false, configurationFound = false;
-	ifstream inputFile_aux;
-	camera = new CameraModel();//se carga x default
+	DirList yamlFiles;
+	yamlFiles.setExtensionRequired(CONFIGFILE_EXTENSION);
+	if (yamlFiles.createFromDirectory("../")) {
+		if (yamlFiles.empty())
+			Logger::instance().log("Parser Error: No '.yaml' files found.");
+		else
+			yamlFilesFound = true;
+	}
 
+	camera = new CameraModel();//se carga x default
 	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
 	
-	inputFile_aux.open(inputFilePath);
-	if (!inputFile_aux.is_open()) {
-		Logger::instance().log("Parser Error: No se pudo abrir el archivo '"+inputFilePath+"'.");
+	if (!yamlFilesFound)
 		loadEverythingByDefault();
-	}
 	else {
-		inputFile_aux.close();
+		string inputFilePath = yamlFiles.nextFullPath();
 		ifstream inputFile(inputFilePath);
 		Parser parser(inputFile);
 		

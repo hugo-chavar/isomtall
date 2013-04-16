@@ -57,7 +57,7 @@ entidades:
       pixel_ref_x: 30 
       pixel_ref_y: 40 
 
-     - nombre: medieval
+    - nombre: medieval
       imagen: ../Images/medieval.png
       ancho_base: 3 
       alto_base: 3 

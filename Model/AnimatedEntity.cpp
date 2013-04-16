@@ -2,7 +2,7 @@
 
 
 AnimatedEntity::AnimatedEntity() {
-	this->name("DEFAULT");
+	this->name("DEFAULT ANIMATED ENTITY");
 	//this->loadImages(DEFAULT_ANIMATED_DIR); 
 	this->baseWidth(DEFAULT_BASE_WIDTH);
 	this->baseHeight(DEFAULT_BASE_HEIGHT);

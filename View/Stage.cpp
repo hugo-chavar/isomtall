@@ -99,7 +99,7 @@ bool view::Stage::initialize()
 	entityList.resize(worldModel.width()*worldModel.height());
 	
 	//Carga del piso x default
-	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
+	unsigned posEntityDefault = mapEntityToSprite["DEFAULT ENTITY OBJECT"];
 	unsigned w = Game::instance().world().width();
 	unsigned h = Game::instance().world().height();
 
@@ -167,7 +167,7 @@ bool view::Stage::initialize()
 
 	// entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1])); Para entidades no animadas (vienen las posiciones en vEntitiesDev
 	
-		entityList[3+2*worldModel.width()].push_back(new Entity(3,2,spriteArray[1]));
+		/*entityList[3+2*worldModel.width()].push_back(new Entity(3,2,spriteArray[1]));*/
 	//entityList.push_back(new Entity(15,2,spriteArray[2]));
 	//entityList.push_back(new Entity(15,5,spriteArray[2]));
 	//entityList.push_back(new Entity(15,10,spriteArray[2]));vpj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));

@@ -34,7 +34,7 @@ TimeManager& Game::time() {
 
 void Game::initialize()
 {
-	yParser.parse(CONFIGFILE);
+	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
