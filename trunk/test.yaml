@@ -25,6 +25,13 @@ entidades:
       fps: 15
       delay: 3000
 
+    - nombre: test1		
+      imagen: ../Images/CapillaRoja0.png		
+      ancho_base: 5		
+      alto_base: 5		
+      pixel_ref_x: 196		
+      pixel_ref_y: 107
+
     - nombre: fuente
       imagen: ../Images/fuente/
       ancho_base: 3
@@ -90,6 +97,7 @@ escenarios:
          - {x: 10, y: 10, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 20, entidad: fuente} 
+         - {x: 30, y: 30, entidad: test1}
       protagonista: 
          - tipoEntidad: frodo
            x: 5 
