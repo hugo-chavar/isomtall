@@ -71,6 +71,8 @@ entidades:
        
     - nombre: frodo 
       imagen: ../Images/personajeVampiro/
+      pixel_ref_x: 48
+      pixel_ref_y: 64
       fps: 30 
        
     - nombre: caballo
