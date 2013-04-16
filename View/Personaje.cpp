@@ -114,6 +114,7 @@ void Personaje::setDestino(int xTile, int yTile){
 }
 
 void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
+
 	//Velocidad Relativa Vertical
 	if ((delta.second != 0)&&(delta.first == 0)) {
 		factor.second = velocidad/2;
@@ -138,8 +139,8 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//}
 	//Velocidades Relativas Diagonal
 	if ((delta.first != 0)&&(delta.second != 0)) {
-		factor.first = velocidad / 2;
-		factor.second = velocidad / 2;
+		factor.first = (float)(velocidad*(0.8944)); //moltiplico x coseno de 26,565 grados
+		factor.second = (float)(velocidad*(0.8944));
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
