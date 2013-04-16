@@ -135,7 +135,6 @@ bool canOpenFile(string file){
 }
 
 bool validateImagePath(string imagePath) {
-	//if ((imagePath[imagePath.size()-1]!='/') && (imagePath[imagePath.size()-1]!='\\'))// Si no es un directorio.
 	if (isNotDirectory(imagePath)) //aca se valida si es directorio
 	{ 
 		if (imagePath.find(IMAGES_EXTENSION)==string::npos) { // Veo que sea '.png'.
@@ -272,30 +271,11 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	entity->baseHeight(baseHeight);
 	entity->pixelRefX(pixelRefX);
 	entity->pixelRefY(pixelRefY);
-	//EntityObject entity_aux(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY);
-	//entity = entity_aux;
 }
-
-//DirList* loadImagesPaths(string imageDir) {
-//	DirList* dirList = new DirList();
-//	if (dirList->createFromDirectory(imageDir)) {
-//		while (dirList->hasNext()) {
-//			string dir_aux = dirList->nextFullPath();
-//			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) // Las imágenes de las entidades animadas deben tener la extensión '.png'.
-//				dirList->deletePrevious();
-//		}
-//		if (dirList->empty())
-//			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
-//	}
-//	else
-//		Logger::instance().log("Parser Error: Image directory '"+imageDir+"' not found.");
-//	return dirList;
-//}
 
 void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	int fps, delay;
 	string imageDir, field;
-	//DirList* imagesPaths;
 	bool fpsFound = false, delayFound = false;
 
 	EntityObject *entity_aux;
@@ -304,15 +284,12 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	field = "imagen";
 	try {
 		node[field] >> imageDir;
-		//imagesPaths = loadImagesPaths(imageDir);
 		animatedEntity->loadImages(imageDir);
 		if ((imageDir=="~") || (animatedEntity->hasNoImages())) {
 			imageDir = DEFAULT_ANIMATED_DIR;
 			animatedEntity->loadImages(imageDir);
-			//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 		}
 	} catch (KeyNotFound) {
-		//imagesPaths = loadImagesPaths(DEFAULT_ANIMATED_DIR);
 		imageDir = DEFAULT_ANIMATED_DIR;
 		animatedEntity->loadImages(imageDir);
 	}
@@ -369,8 +346,6 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	animatedEntity->fps(fps);
 	animatedEntity->delay(delay);
 	delete entity_aux;
-	//AnimatedEntity animatedEntity_aux(entity_aux.name(), "", entity_aux.baseWidth(), entity_aux.baseHeight(), entity_aux.pixelRefX(), entity_aux.pixelRefY(), imagesPaths, fps, delay);
-	//animatedEntity = animatedEntity_aux;
 }
 
 void operator >> (const Node& node, EntLists& entities) {
@@ -636,7 +611,7 @@ Screen YAMLParser::generateDefaultScreen() {
 	return screen;
 }
 
-PersonajeModelo* YAMLParser::generateDefaultMainCharacter() { //
+PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 	if (entities.vAnimatedEntities.size()<=0) {
 		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
 		entities.vAnimatedEntities.push_back(animatedEntity_default);
@@ -793,7 +768,7 @@ void YAMLParser::parse(string inputFilePath) {
 	}
 	else {
 		inputFile_aux.close();
-		ifstream inputFile(inputFilePath);//porque se abre 2 veces el archivo??
+		ifstream inputFile(inputFilePath);
 		Parser parser(inputFile);
 		
 		try {
@@ -865,15 +840,9 @@ vector <Stage> YAMLParser::vStages() {
 	return stages.vStages;
 }
 
-vector <EntityObject*>* YAMLParser::vEntitiesObject() {
-	return &(entities.vEntitiesObject);
-}
-
-vector <AnimatedEntity*>* YAMLParser::vAnimatedEntities() {
-	return &(entities.vAnimatedEntities);
-}
 
 //conexion con el modelo logico
+
 PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
 	if (stages.vStages[stage].modelMainCharacters(pers) == NULL)
 		Logger::instance().nullPointer("function PersonajeModelo* YAMLParser::modelMainCharacters");
