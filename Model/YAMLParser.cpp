@@ -314,7 +314,9 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		pixelRefXFound = true;
 		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
 	}
-	catch (Exception& parserException ) { };
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	field = "pixel_ref_y";
 	try {
 		node[field] >> pixelRefY;
@@ -325,7 +327,9 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		pixelRefYFound = true;
 		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
 	}
-	catch (Exception& parserException ) { };
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 	field = "fps";
 	try {
 		node[field] >> fps;
