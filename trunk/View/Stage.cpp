@@ -222,7 +222,7 @@ void view::Stage::render(Camera& camera) {
 	cameraReferenceTile.first -= 10;
 	horizontalTilesInCamera += 10;
 	verticalTilesInCamera += 10;
-	for(int l = 0; l < 5; l++)//Harcodeo un maximo de 5 entidades por Tile
+	for(unsigned int l = 0; l < 5; l++)//Harcodeo un maximo de 5 entidades por Tile
 	{
 		for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
 			Xt = cameraReferenceTile.first + i;
@@ -230,13 +230,16 @@ void view::Stage::render(Camera& camera) {
 
 			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
 				int indice=Xt+Yt*worldModel.width();
-				if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
+
+				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+				//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
 				{	
 					if(l<entityList[indice].size())
 						entityList[indice][l]->render(camera);	
 				}
 				indice++;
-				if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
+				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+				//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
 				{
 					if(l<entityList[indice].size())
 						entityList[indice][l]->render(camera);
