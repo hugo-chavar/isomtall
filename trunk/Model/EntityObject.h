@@ -27,7 +27,7 @@ public:
 	int pixelRefY();
 	void pixelRefY(int value);
 	void imagePath(string);
-	virtual bool isAnimated();
+	//virtual bool isAnimated();
 
 private:
 	string _name;

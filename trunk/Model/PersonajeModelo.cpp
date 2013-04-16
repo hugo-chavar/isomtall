@@ -41,37 +41,37 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	//this->velocidad = velocidad;
 }
 
-void PersonajeModelo::addRefToSprite(string dir){
-	DirList* dl = new DirList();
-	dl->setExtensionRequired(IMAGES_EXTENSION);
-	dl->createFromDirectory(dir);
-	if (!dl->emptyDir()){
-		spritesRefs.push_back(dl);
-	} else {
-		Logger::instance().log("Parser Error: Loading 'personaje' no '.png' images found in the directory '"+dir+"'.");
-	}
-}
-
-void PersonajeModelo::loadSpritesDir(){
-	while (spritesMainDir.hasNextDir()) {
-		string dir_aux = spritesMainDir.nextFullPathDir();
-		this->addRefToSprite(dir_aux);
-		//this->agregarSprite(new Sprite(dir_aux, 74, 80, 0, 30.0));
-		//if (dir_aux.find(IMAGES_EXTENSION)==string::npos)
-		//	spritesDir.deletePrevious();
-	}
-
-}
-
-void PersonajeModelo::setDirectory(string imageDir){
-	if (spritesMainDir.createFromDirectory(imageDir)) {
-		loadSpritesDir();
-		if (spritesMainDir.countDir() < 16)
-			Logger::instance().log("Parser Error: Loading 'personaje' folder '"+imageDir+"' does not have enough subfolders.");
-	}
-	else
-		Logger::instance().log("Parser Error: Loading 'personaje' directory '"+imageDir+"' not found.");
-}
+//void PersonajeModelo::addRefToSprite(string dir){
+//	DirList* dl = new DirList();
+//	dl->setExtensionRequired(IMAGES_EXTENSION);
+//	dl->createFromDirectory(dir);
+//	if (!dl->emptyDir()){
+//		spritesRefs.push_back(dl);
+//	} else {
+//		Logger::instance().log("Parser Error: Loading 'personaje' no '.png' images found in the directory '"+dir+"'.");
+//	}
+//}
+//
+//void PersonajeModelo::loadSpritesDir(){
+//	while (spritesMainDir.hasNextDir()) {
+//		string dir_aux = spritesMainDir.nextFullPathDir();
+//		this->addRefToSprite(dir_aux);
+//		//this->agregarSprite(new Sprite(dir_aux, 74, 80, 0, 30.0));
+//		//if (dir_aux.find(IMAGES_EXTENSION)==string::npos)
+//		//	spritesDir.deletePrevious();
+//	}
+//
+//}
+//
+//void PersonajeModelo::setDirectory(string imageDir){
+//	if (spritesMainDir.createFromDirectory(imageDir)) {
+//		loadSpritesDir();
+//		if (spritesMainDir.countDir() < 16)
+//			Logger::instance().log("Parser Error: Loading 'personaje' folder '"+imageDir+"' does not have enough subfolders.");
+//	}
+//	else
+//		Logger::instance().log("Parser Error: Loading 'personaje' directory '"+imageDir+"' not found.");
+//}
 
 void PersonajeModelo::setCurrent(int x, int y) {
 	current.first = x;
@@ -82,8 +82,16 @@ void PersonajeModelo::animation(AnimatedEntity* ae) {
 	_animation = ae;
 }
 
+bool PersonajeModelo::hasDirectoryRemaining(){
+	return _animation->hasNextDir();
+}
+
 AnimatedEntity* PersonajeModelo::animation() {
 	return _animation;
+}
+
+string PersonajeModelo::nextDirectory() {
+	return _animation->nextDirectory();
 }
 
 int PersonajeModelo::fps()

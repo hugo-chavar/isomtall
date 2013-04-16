@@ -19,10 +19,10 @@ string EntityObject::name() {
 void EntityObject::name(string value) {
 	_name = value;
 }
-
-bool EntityObject::isAnimated() {
-	return false;
-}
+//
+//bool EntityObject::isAnimated() {
+//	return false;
+//}
 
 void EntityObject::imagePath(string value) {
 	_image_path = value;

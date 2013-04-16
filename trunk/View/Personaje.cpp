@@ -11,10 +11,46 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
 	delta.second = 0;
-	
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
+}
+
+void Personaje::loadSprites() {
+	AnimatedEntity* animatedEntity;
+	animatedEntity = new AnimatedEntity();
+	animatedEntity->copy(modelo->animation());
+	animatedEntity->loadImages(modelo->nextDirectory());
+	this->addFirstSprite(animatedEntity);
+
+	while (modelo->hasDirectoryRemaining()) {
+		animatedEntity->loadImages(modelo->nextDirectory());
+		this->addNextSprite(animatedEntity);
+		animatedEntity->clearImages();
+	}
+
+	delete animatedEntity;
+	animatedEntity = NULL;
+}
+
+void Personaje::clearSprites() {
+	vector<Sprite*>::iterator it;
+	for (it = sprites.begin(); it != sprites.end(); it++){
+      delete *it;
+   }
+}
+
+void Personaje::addNextSprite(AnimatedEntity* entity) {
+	Sprite* newSprite = new Sprite(entity);
+	sprites.push_back(newSprite);
+}
+
+void Personaje::addFirstSprite(AnimatedEntity* entity) {
+	Sprite* newSprite = new Sprite(entity);
+	sprites.push_back(newSprite);
+	spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
+	spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);
 }
 
 void Personaje::update(){
@@ -139,8 +175,9 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//}
 	//Velocidades Relativas Diagonal
 	if ((delta.first != 0)&&(delta.second != 0)) {
-		factor.first = (float)(velocidad)*(0.707); //*(0.8944)multiplico x coseno de 26,565 grados
-		factor.second = (float)(velocidad)*(0.707);//multiplico x coseno de 26,565 grados
+		//factor.first = (float)(velocidad)*(0.707); //*(0.8944)multiplico x coseno de 26,565 grados
+		factor.first = static_cast<float>(velocidad *0.707); //*(0.8944)multiplico x coseno de 26,565 grados
+		factor.second = static_cast<float>(velocidad *0.707);//multiplico x coseno de 26,565 grados
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
@@ -243,6 +280,7 @@ int Personaje::estadoModelo(int estado) {
 }
 
 Personaje::~Personaje(){
+	clearSprites();
 }
 
 model::PersonajeModelo* Personaje::personajeModelo()
