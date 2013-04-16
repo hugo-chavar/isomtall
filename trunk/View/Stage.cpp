@@ -212,9 +212,9 @@ void view::Stage::render(Camera& camera) {
        int Yt = 0;
 
        //Crappy way to avoid not drawing partial tiles
-       cameraReferenceTile.first -= 2;
-       horizontalTilesInCamera += 2;
-       verticalTilesInCamera += 2;
+       cameraReferenceTile.first -= 10;
+       horizontalTilesInCamera += 10;
+       verticalTilesInCamera += 10;
 for(int l=0;l<5;l++)//Harcodeo un maximo de 5 entidades por Tile
 {
 	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
