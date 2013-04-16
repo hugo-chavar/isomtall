@@ -68,10 +68,8 @@ private:
 	Screen screen;
 	CameraModel* camera;
 	Configuration configuration;
-	//Entities entities;
 	EntLists entities;
 	Stages stages;
-	//EntLists _allLists;
 
 	Screen generateDefaultScreen();
 	Configuration generateDefaultConfiguration();
@@ -89,18 +87,12 @@ public:
 	~YAMLParser();
 
 	void parse(string inputFilePath);
-
-	//int screenWidth();
-	//int screenHeight();
-	//int scrollMargin();
 	vector <Stage> vStages();
-	vector <EntityObject*>* vEntitiesObject();
-	vector <AnimatedEntity*>* vAnimatedEntities();
-
 	EntLists allLists();
 
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);
+
 	//conexion con el modelo logico
 	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
 	CameraModel* cameraModel();

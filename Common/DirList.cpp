@@ -62,7 +62,7 @@ bool DirList::createFromDirectory(string dir) {
 				_countDir++;
 			}
 		} else { //es archivo
-			if (!(testExtension)||(filepath1.find(extension)==string::npos)){
+			if (!(testExtension)||(filepath1.find(extension)!=string::npos)){
 				files.push_back(filepath1);
 				_count++;
 			}

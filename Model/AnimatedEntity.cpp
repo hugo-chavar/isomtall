@@ -47,13 +47,8 @@ void AnimatedEntity::delay(int value)
 
 void AnimatedEntity::loadImages(string imageDir) {
 	_images.clean();
+	_images.setExtensionRequired(IMAGES_EXTENSION);
 	if (this->_images.createFromDirectory(imageDir)) {
-		while (this->_images.hasNext()) {
-			string dir_aux = this->_images.nextFullPath();
-			// Las imágenes de las entidades animadas deben tener la extensión '.png'.
-			if (dir_aux.find(IMAGES_EXTENSION)==string::npos) 
-				this->_images.deletePrevious();
-		}
 		if (this->_images.empty())
 			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
 	}
