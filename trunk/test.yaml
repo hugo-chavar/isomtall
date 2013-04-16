@@ -104,7 +104,7 @@ escenarios:
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 25, entidad: medieval}
          - {x: 20, y: 20, entidad: fuente} 
-         - {x: 30, y: 30, entidad: test1}
+         - {x: 3, y: 2, entidad: test1}
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 20, entidad: piso2921}
       protagonista: 

@@ -93,7 +93,7 @@ bool DirList::emptyDir() {
 }
 
 string DirList::nextFullPathDir() {
-	string sigte = directory + "/" + (*iteradorDir) + "/";
+	string sigte = directory + (*iteradorDir) + "/";
 	iteradorDir++;
 	_currentPositionDir++;
 
@@ -158,7 +158,7 @@ bool DirList::empty() {
 }
 
 string DirList::nextFullPath() {
-	string sigte = directory + "/" + (*iterador);
+	string sigte = directory + (*iterador);
 	iterador++;
 	_currentPosition++;
 
