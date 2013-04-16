@@ -94,7 +94,7 @@ escenarios:
          - {x: 10, y: 15, entidad: agua} 
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra} 
-         - {x: 10, y: 10, entidad: molino}
+         - {x: 59, y: 1, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 20, entidad: fuente} 
          - {x: 30, y: 30, entidad: test1}
