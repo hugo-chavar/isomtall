@@ -187,7 +187,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 }
 
 int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
-	if (cambio==SIN_CAMBIO) {
+	if (cambio == SIN_CAMBIO) {
 		return estado;
 	}
 	if((x==current.first)&&(y==current.second)&&(cambio==ESTADO_MOVIMIENTO)){

@@ -20,7 +20,7 @@ namespace view {
 	
 		//Se cargan una vez solamente los sprites
 		vector<Sprite*> spriteArray;
-		Personaje* pj;
+		Personaje* _personaje;
 		map<string,int> mapEntityToSprite;
 		//list<Entity *> entityList;
 		vector<vector<Entity*>> entityList;

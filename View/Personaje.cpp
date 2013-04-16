@@ -3,8 +3,6 @@
 
 
 Personaje::Personaje(model::PersonajeModelo* pj) {
-	//MainCharacter* m_char = NULL;
-	
 	modelo = pj;
 	pj->getCurrent(tileActual);
 	estado = procesarAnimacion(pj->getEstado());
@@ -36,8 +34,10 @@ void Personaje::loadSprites() {
 void Personaje::clearSprites() {
 	vector<Sprite*>::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); it++){
-      delete *it;
-   }
+		delete *it;
+	}
+	sprites.clear();
+
 }
 
 void Personaje::addNextSprite(AnimatedEntity* entity) {
@@ -49,8 +49,8 @@ void Personaje::addFirstSprite(AnimatedEntity* entity) {
 	Sprite* newSprite = new Sprite(entity);
 	sprites.push_back(newSprite);
 	spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
-	spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);
+	spriteRect.w = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->w);
+	spriteRect.h = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->h);
 }
 
 void Personaje::update(){
@@ -151,46 +151,49 @@ void Personaje::setDestino(int xTile, int yTile){
 
 void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 
-	//Velocidad Relativa Vertical
-	if ((delta.second != 0)&&(delta.first == 0)) {
-		factor.second = velocidad/2;
+	if (delta.first != 0){ //Hay movimiento en x
+		if (delta.second != 0) { //Diagonal
+			factor.first = static_cast<float>(velocidad *0.707);
+			factor.second = static_cast<float>(velocidad *0.707);
+		} else { //Horizontal
+			factor.first = velocidad;
+		}
+	} else { //No hay movimiento en x
+		if (delta.second != 0){ //Vertical
+			factor.second = velocidad/2;
+		} else {//Quieto
+			factor.first = 0;
+			factor.second = 0;
+		}
+
 	}
-	////Velocidad Relativa Hacia el Sur
-	//if ((delta.second > 0)&&(delta.first == 0)) {
+	////Velocidad Relativa Vertical
+	//if ((delta.first == 0) && (delta.second != 0)) {
 	//	factor.second = velocidad/2;
+	//} else
+	////Velocidad Relativa Horizontal
+	//if ((delta.first != 0) && (delta.second == 0)) {
+	//	factor.first = velocidad;
+	//} else
+	////Velocidades Relativas Diagonal
+	//if ((delta.first != 0) && (delta.second != 0)) {
+	//	//factor.first = (float)(velocidad)*(0.707); //*(0.8944)multiplico x coseno de 26,565 grados
+	//	factor.first = static_cast<float>(velocidad *0.707); //*(0.8944)multiplico x coseno de 26,565 grados
+	//	factor.second = static_cast<float>(velocidad *0.707);//multiplico x coseno de 26,565 grados
+	//} else // No se Mueve //if ((delta.first == 0)&&(delta.second == 0))
+	//{
+	//	factor.first = 0;
+	//	factor.second = 0;
 	//}
-	//Velocidad Relativa Horizontal
-	if ((delta.first != 0)&&(delta.second == 0)) {
-		factor.first = velocidad;
-	}
-	////Velocidades Relativas Hacia el NorOeste y NorEste
-	//if ((delta.first != 0)&&(delta.second < 0)) {
-	//	factor.first = (float)(velocidad*(1.5));
-	//	factor.second = (float)(velocidad*(1.5));
-	//}
-	////Velocidades Relativas Hacia el SudOeste y SudEste
-	//if ((delta.first != 0)&&(delta.second > 0)) {
-	//	factor.first = (float)(velocidad/(1.5));
-	//	factor.second = (float)(velocidad/(1.5));
-	//}
-	//Velocidades Relativas Diagonal
-	if ((delta.first != 0)&&(delta.second != 0)) {
-		//factor.first = (float)(velocidad)*(0.707); //*(0.8944)multiplico x coseno de 26,565 grados
-		factor.first = static_cast<float>(velocidad *0.707); //*(0.8944)multiplico x coseno de 26,565 grados
-		factor.second = static_cast<float>(velocidad *0.707);//multiplico x coseno de 26,565 grados
-	}
-	//Velocidad Cuando No se Mueve
-	if ((delta.first == 0)&&(delta.second == 0)){
-		factor.first = 0;
-		factor.second = 0;
-	}
 }
 
 void Personaje::agregarSprite(Sprite* sprite) {
 	if (sprites.empty()) {
 		spriteRect=posicionIsometricaPorTiles(tileActual.first, tileActual.second,sprite);
-		spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-		spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
+		//spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+		spriteRect.w = static_cast<Uint16>(sprite->getFrameActual()->getSuperficie()->w);
+		//spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
+		spriteRect.h = static_cast<Uint16>(sprite->getFrameActual()->getSuperficie()->h);
 	}
 	sprites.push_back(sprite);
 }

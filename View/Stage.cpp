@@ -63,6 +63,8 @@ view::Stage::~Stage() {
 						delete(entityList[j][i]);
 		}
 	}
+	_personaje->clearSprites();
+	delete _personaje;
 }
 
 void view::Stage::addTile(TileView* tile) {
@@ -99,7 +101,7 @@ bool view::Stage::initialize()
 	entityList.resize(worldModel.width()*worldModel.height());
 	
 	//Carga del piso x default
-	unsigned posEntityDefault = mapEntityToSprite["DEFAULT ENTITY OBJECT"];
+	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
 	unsigned w = Game::instance().world().width();
 	unsigned h = Game::instance().world().height();
 
@@ -123,7 +125,8 @@ bool view::Stage::initialize()
 		//ver una maneta elegante de salir en todos los lugares que pincharia
 		return false;
 	}
-	pj = new Personaje(Game::instance().personaje());
+	_personaje = new Personaje(Game::instance().personaje());
+	_personaje->loadSprites();
 
 	//inicia harcodeo
 	//AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
@@ -139,23 +142,23 @@ bool view::Stage::initialize()
 	
 
 	
-	//pj->setDestino(5,5);
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedN", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNE", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNO", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedS", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSE", 1,74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSO", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedE", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedO", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/08walkingN/", "walkingN", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/09walkingNE/", "walkingNE", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/10walkingNO/", "walkingNO", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/11walkingS/", "walkingS", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/12walkingSE/", "walkingSE", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/13walkingSO/", "walkingSO", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/14walkingE/", "walkingE", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/15walkingO/", "walkingO",12, 74, 80, 0, 30.0));
+	//_personaje->setDestino(5,5);
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedN", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNE", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedNO", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedS", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSE", 1,74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSO", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedE", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedO", 1, 74, 80));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/08walkingN/", "walkingN", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/09walkingNE/", "walkingNE", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/10walkingNO/", "walkingNO", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/11walkingS/", "walkingS", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/12walkingSE/", "walkingSE", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/13walkingSO/", "walkingSO", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/14walkingE/", "walkingE", 12, 74, 80, 0, 30.0));
+	//_personaje->agregarSprite(new Sprite("../Images/personajeCaballo/15walkingO/", "walkingO",12, 74, 80, 0, 30.0));
 
 	//Harcodeo la carga de entidades. debera venir del modelo
 
@@ -167,7 +170,7 @@ bool view::Stage::initialize()
 
 	// entityList.push_back(new Entity(vEntitiesDef[0].x,vEntitiesDef[0].y,spriteArray[1])); Para entidades no animadas (vienen las posiciones en vEntitiesDev
 	
-		/*entityList[3+2*worldModel.width()].push_back(new Entity(3,2,spriteArray[1]));*/
+		//entityList[3+2*worldModel.width()].push_back(new Entity(3,2,spriteArray[1]));
 	//entityList.push_back(new Entity(15,2,spriteArray[2]));
 	//entityList.push_back(new Entity(15,5,spriteArray[2]));
 	//entityList.push_back(new Entity(15,10,spriteArray[2]));vpj->agregarSprite(new Sprite("../Images/personaje/", "stoppedN", 1, 32, 40));
@@ -185,9 +188,11 @@ void view::Stage::update() {
 	{
 		spriteArray[i]->actualizarFrame();
 	}
+
+	_personaje->update();
 	/*std::pair<int,int> posicionAnterior;
 	pj->personajeModelo()->getCurrent(posicionAnterior);*/
-	pj->update();
+	
 	//std::pair<int,int> posicionPersonaje;
 	//pj->personajeModelo()->getCurrent(posicionPersonaje);
 	//if(posicionPersonaje!=posicionAnterior)
@@ -202,46 +207,46 @@ void view::Stage::update() {
 
 Personaje* view::Stage::personaje()
 {
-	return pj;
+	return _personaje;
 }
 
 void view::Stage::render(Camera& camera) {
 
 	unsigned int horizontalTilesInCamera = ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH);
-       unsigned int verticalTilesInCamera = ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT);
-       std::pair<int,int> cameraReferenceTile = this->worldModel.pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
-       int Xt = 0;
-       int Yt = 0;
+	unsigned int verticalTilesInCamera = ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT);
+	std::pair<int,int> cameraReferenceTile = this->worldModel.pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+	int Xt = 0;
+	int Yt = 0;
 
-       //Crappy way to avoid not drawing partial tiles
-       cameraReferenceTile.first -= 10;
-       horizontalTilesInCamera += 10;
-       verticalTilesInCamera += 10;
-for(int l=0;l<5;l++)//Harcodeo un maximo de 5 entidades por Tile
-{
-	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
-		Xt = cameraReferenceTile.first + i;
-		Yt = cameraReferenceTile.second + i;
+	//Crappy way to avoid not drawing partial tiles
+	cameraReferenceTile.first -= 10;
+	horizontalTilesInCamera += 10;
+	verticalTilesInCamera += 10;
+	for(int l = 0; l < 5; l++)//Harcodeo un maximo de 5 entidades por Tile
+	{
+		for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+			Xt = cameraReferenceTile.first + i;
+			Yt = cameraReferenceTile.second + i;
 
-		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
-			int indice=Xt+Yt*worldModel.width();
-			if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
-			{	
-				if(l<entityList[indice].size())
-				entityList[indice][l]->render(camera);	
-			}
+			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+				int indice=Xt+Yt*worldModel.width();
+				if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
+				{	
+					if(l<entityList[indice].size())
+						entityList[indice][l]->render(camera);	
+				}
 				indice++;
-			if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
-			{
-				if(l<entityList[indice].size())
-				entityList[indice][l]->render(camera);
-			}
+				if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
+				{
+					if(l<entityList[indice].size())
+						entityList[indice][l]->render(camera);
+				}
 				Xt++;
-			Yt--;
+				Yt--;
+			}
 		}
 	}
-	}
-pj->render(camera);
+	_personaje->render(camera);
 }
 
 
