@@ -40,6 +40,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 		agregarVecinos(*actual, DestinoX, DestinoY, closeList, openList); //, Tiles
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
+		delete actual;
 	}
 	if (!(found)) {
 		XPath = NULL;
@@ -68,6 +69,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 		YPath[i] = actualY;
 	}
 	delete posActual;
+	delete actual;
 	return tamano;
 }
 
