@@ -2,7 +2,7 @@
 
 
 EntityObject::EntityObject() {
-	_name = "DEFAULT";
+	_name = "DEFAULT ENTITY OBJECT";
 	_image_path = DEFAULT_TILE_IMAGE;
 	_base_width = DEFAULT_BASE_WIDTH;
 	_base_height = DEFAULT_BASE_HEIGHT;

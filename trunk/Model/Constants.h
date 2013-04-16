@@ -3,6 +3,7 @@
 
 #define LOGFILE "../game.log"
 #define CONFIGFILE "../test.yaml"
+#define CONFIGFILE_EXTENSION ".yaml"
 
 #define IMAGES_EXTENSION ".png"
 #define IMAGES_DIR "../Images/"
