@@ -73,6 +73,10 @@ entidades:
       imagen: ../Images/personajeVampiro/
       fps: 10 
        
+    - nombre: caballo
+      imagen: ../Images/personajeCaballo/
+      fps: 10 
+
     - nombre: tierra 
       imagen: path/a/imagen.png 
    
@@ -103,6 +107,7 @@ escenarios:
          - {x: 10, y: 10, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 25, entidad: medieval}
+         - {x: 10, y: 1, entidad: caballo} 
          - {x: 20, y: 20, entidad: fuente} 
          - {x: 3, y: 2, entidad: test1}
          - {x: 58, y: 58, entidad: molino}
