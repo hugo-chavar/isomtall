@@ -138,8 +138,8 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 	//}
 	//Velocidades Relativas Diagonal
 	if ((delta.first != 0)&&(delta.second != 0)) {
-		factor.first = (float)(velocidad*(0.707));
-		factor.second = (float)(velocidad*(0.707));
+		factor.first = velocidad / 2;
+		factor.second = velocidad / 2;
 	}
 	//Velocidad Cuando No se Mueve
 	if ((delta.first == 0)&&(delta.second == 0)){
