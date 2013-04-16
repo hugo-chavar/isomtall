@@ -36,12 +36,12 @@ void operator >> (const Node& node, Screen& screen) {
 			node[i][field] >> screen.width;
 			widthFound = true;
 			if (screen.width<0) {
-				Logger::instance().log("Parser Error: Negative value in field '"+field+"' in 'pantalla'.");
+				Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
 				screen.width = DEFAULT_SCREEN_WIDTH;
 			}
 		} catch (KeyNotFound) {	} catch (InvalidScalar) {
 			widthFound = true;
-			Logger::instance().logInvalidValueInConfiguration("pantalla",field,"a positive integer");
+			Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
 			screen.width = DEFAULT_SCREEN_WIDTH;
 		}
 		catch (Exception& parserException ) {
@@ -52,12 +52,12 @@ void operator >> (const Node& node, Screen& screen) {
 			node[i][field] >> screen.height;
 			heightFound = true;
 			if (screen.height<0) {
-				Logger::instance().log("Parser Error: Negative value in field '"+field+"' in 'pantalla'.");
+				Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
 				screen.height = DEFAULT_SCREEN_HEIGHT;
 			}
 		} catch (KeyNotFound) {	} catch (InvalidScalar) {
 			heightFound = true;
-			Logger::instance().logInvalidValueInConfiguration("pantalla",field,"a positive integer");
+			Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
 			screen.height = DEFAULT_SCREEN_HEIGHT;
 		}
 		catch (Exception& parserException ) {
@@ -66,11 +66,11 @@ void operator >> (const Node& node, Screen& screen) {
 	}
 
 	if (!widthFound) {
-		Logger::instance().log("Parser Error: Field 'ancho' is not defined in 'pantalla'.");
+		Logger::instance().logFieldNotDefined("pantalla", "ancho", "");
 		screen.width = DEFAULT_SCREEN_WIDTH;
 	}
 	if (!heightFound) {
-		Logger::instance().log("Parser Error: Field 'alto' is not defined in 'pantalla'.");
+		Logger::instance().logFieldNotDefined("pantalla", "alto", "");
 		screen.height = DEFAULT_SCREEN_HEIGHT;
 	}
 }
@@ -85,12 +85,12 @@ void operator >> (const Node& node, Configuration& configuration) {
 			node[i][field] >> configuration.main_character_speed;
 			mainCharacterSpeedFound = true;
 			if (configuration.main_character_speed<0) {
-				Logger::instance().log("Parser Error: Negative value in field '"+field+"' in 'configuracion'.");
+				Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
 				configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 			}
 		} catch (KeyNotFound) {	} catch (InvalidScalar) {
 			mainCharacterSpeedFound = true;
-			Logger::instance().logInvalidValueInConfiguration("configuracion",field,"a positive float");
+			Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
 			configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 		}
 		catch (Exception& parserException ) {
@@ -101,12 +101,12 @@ void operator >> (const Node& node, Configuration& configuration) {
 			node[i][field] >> configuration.scroll_margin;
 			scrollMarginFound = true;
 			if (configuration.scroll_margin<0) {
-				Logger::instance().log("Parser Error: Negative value in field '"+field+"' in 'configuracion'.");
+				Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
 				configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 			}
 		} catch (KeyNotFound) {	} catch (InvalidScalar) {
 			scrollMarginFound = true;
-			Logger::instance().logInvalidValueInConfiguration("configuracion",field,"a positive integer");
+			Logger::instance().logInvalidValue("configuracion", field, "", "a positive integer");
 			configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 		}
 		catch (Exception& parserException ) {
@@ -115,11 +115,11 @@ void operator >> (const Node& node, Configuration& configuration) {
 	}
 
 	if (!mainCharacterSpeedFound) {
-		Logger::instance().log("Parser Error: Field 'vel_personaje' is not defined in 'configuracion'.");
+		Logger::instance().logFieldNotDefined("configuración", "vel_personaje", "");
 		configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 	}
 	if (!scrollMarginFound) {
-		Logger::instance().log("Parser Error: Field 'margen_scroll' is not defined in 'configuracion'.");
+		Logger::instance().logFieldNotDefined("configuración", "margen_scroll", "");
 		configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 	}
 }
@@ -184,7 +184,7 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 			imagePath = ERROR_IMAGE;
 		}
 	} catch (KeyNotFound) {
-		Logger::instance().log("Parser Error: Field '"+field+"' is not defined in entity '"+name+"'.");
+		Logger::instance().logFieldNotDefined(name, field, "entity");
 		imagePath = ERROR_IMAGE;
 	}
 	catch (Exception& parserException ) {
@@ -195,13 +195,13 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		node[field] >> baseWidth;
 		baseWidthFound = true;
 		if (baseWidth<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
+			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 			baseWidth = DEFAULT_BASE_WIDTH;
 		}
 	} catch (KeyNotFound) { }
 	catch (InvalidScalar) {
 		baseWidthFound = true;
-		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
+		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 		baseWidth = DEFAULT_BASE_WIDTH;
 	}
 	catch (Exception& parserException ) {
@@ -212,12 +212,12 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		node[field] >> baseHeight;
 		baseHeightFound = true;
 		if (baseHeight<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
+			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 			baseHeight = DEFAULT_BASE_HEIGHT;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		baseHeightFound = true;
-		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
+		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 		baseHeight = DEFAULT_BASE_HEIGHT;
 	}
 	catch (Exception& parserException ) {
@@ -228,12 +228,12 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		node[field] >> pixelRefX;
 		pixelRefXFound = true;
 		if (pixelRefX<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
+			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 			pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		pixelRefXFound = true;
-		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
+		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 	}
 	catch (Exception& parserException ) {
@@ -244,12 +244,12 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		node[field] >> pixelRefY;
 		pixelRefYFound = true;
 		if (pixelRefY<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
+			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 			pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		pixelRefYFound = true;
-		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
+		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
 		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 	}
 	catch (Exception& parserException ) {
@@ -257,19 +257,19 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	};
 
 	if (!baseWidthFound) {
-		Logger::instance().log("Parser Error: Field 'ancho_base' is not defined in entity '"+name+"'.");
+		Logger::instance().logFieldNotDefined(name, "ancho_base", "entity");
 		baseWidth = DEFAULT_BASE_WIDTH;
 	}
 	if (!baseHeightFound) {
-		Logger::instance().log("Parser Error: Field 'alto_base' is not defined in entity '"+name+"'.");
+		Logger::instance().logFieldNotDefined(name, "alto_base", "entity");
 		baseHeight = DEFAULT_BASE_WIDTH;
 	}
 	if (!pixelRefXFound) {
-		Logger::instance().log("Parser Error: Field 'pixel_ref_x' is not defined in entity '"+name+"'.");
+		Logger::instance().logFieldNotDefined(name, "pixel_ref_x", "entity");
 		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 	}
 	if (!pixelRefYFound) {
-		Logger::instance().log("Parser Error: Field 'pixel_ref_y' is not defined in entity '"+name+"'.");
+		Logger::instance().logFieldNotDefined(name, "pixel_ref_y", "entity");
 		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 	}
 
@@ -331,12 +331,12 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		node[field] >> fps;
 		fpsFound = true;
 		if (fps<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux->name()+"'.");
+			Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
 			fps = DEFAULT_FPS;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		fpsFound = true;
-		Logger::instance().logInvalidValueInEntity(entity_aux->name(),field,"a positive integer");
+		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
 		fps = DEFAULT_FPS;
 	}
 	catch (Exception& parserException ) {
@@ -347,12 +347,12 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		node[field] >> delay;
 		delayFound = true;
 		if (delay<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+entity_aux->name()+"'.");
+			Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
 			delay = DEFAULT_DELAY;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		delayFound = true;
-		Logger::instance().logInvalidValueInEntity(entity_aux->name(),field,"a positive integer");
+		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
 		delay = DEFAULT_DELAY;
 	}
 	catch (Exception& parserException ) {
@@ -360,11 +360,11 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	};
 
 	if (!fpsFound) {
-		Logger::instance().log("Parser Error: Field 'fps' is not defined in entity '"+entity_aux->name()+"'.");
+		Logger::instance().logFieldNotDefined(entity_aux->name(), "fps", "entity");
 		fps = DEFAULT_FPS;
 	}
 	if (!delayFound) {
-		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux->name()+"'.");
+		Logger::instance().logFieldNotDefined(entity_aux->name(), "delay", "entity");
 		delay = DEFAULT_DELAY;
 	}
 	if (!pixelRefXFound)
@@ -437,10 +437,10 @@ void operator >> (const Node& node, EntityDef& entityDef) {
 		node[field] >> entityDef.x;
 		xFound = true;
 		if (entityDef.x<0)
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in one of the entities '"+entityDef.entity+"'.");
+			Logger::instance().logInvalidValue(entityDef.entity, field, "one of the entities", "a positive integer");
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		xFound = true;
-		Logger::instance().logInvalidValueInEntityDef(entityDef.entity,field,"a positive integer");
+		Logger::instance().logInvalidValue(entityDef.entity, field, "one of the entities", "a positive integer");
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -450,21 +450,19 @@ void operator >> (const Node& node, EntityDef& entityDef) {
 		node[field] >> entityDef.y;
 		yFound = true;
 		if (entityDef.y<0)
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in one of the entities '"+entityDef.entity+"'.");
+			Logger::instance().logInvalidValue(entityDef.entity, field, "one of the entities", "a positive integer");
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		yFound = true;
-		Logger::instance().logInvalidValueInEntityDef(entityDef.entity,field,"a positive integer");
+		Logger::instance().logInvalidValue(entityDef.entity, field, "one of the entities", "a positive integer");
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
 
-	if (!xFound) {
-		Logger::instance().log("Parser Error: Field 'x' is not defined in one of the entities '"+entityDef.entity+"'.");
-	}
-	if (!yFound) {
-		Logger::instance().log("Parser Error: Field 'y' is not defined in one of the entities '"+entityDef.entity+"'.");
-	}
+	if (!xFound)
+		Logger::instance().logFieldNotDefined(entityDef.entity, "x", "one of the entities");
+	if (!yFound)
+		Logger::instance().logFieldNotDefined(entityDef.entity, "y", "one of the entities");
 }
 
 void operator >> (const Node& node, sMainCharacter& mainCharacter) {
@@ -487,14 +485,14 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 		node[field] >> mainCharacter.x;
 		xFound = true;
 		if (mainCharacter.x<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in main character '"+mainCharacter.entityType+"'.");
+			Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
 			mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 		}
 	} 
 	catch (KeyNotFound) { }
 	catch (InvalidScalar) {
 		xFound = true;
-		Logger::instance().logInvalidValueInMainCharacter(mainCharacter.entityType,field,"a positive integer");
+		Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
 		mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 	}
 	catch (Exception& parserException ) {
@@ -505,12 +503,12 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 		node[field] >> mainCharacter.y;
 		yFound = true;
 		if (mainCharacter.y<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in main character '"+mainCharacter.entityType+"'.");
+			Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
 			mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		yFound = true;
-		Logger::instance().logInvalidValueInMainCharacter(mainCharacter.entityType,field,"a positive integer");
+		Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
 		mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
 	}
 	catch (Exception& parserException ) {
@@ -518,11 +516,11 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 	};
 
 	if (!xFound) {
-		Logger::instance().log("Parser Error: Field 'x' is not defined in main character '"+mainCharacter.entityType+"'.");
+		Logger::instance().logFieldNotDefined(mainCharacter.entityType, "x", "main character");
 		mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 	}
 	if (!yFound) {
-		Logger::instance().log("Parser Error: Field 'y' is not defined in main character '"+mainCharacter.entityType+"'.");
+		Logger::instance().logFieldNotDefined(mainCharacter.entityType, "y", "main character");
 		mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
 	}
 }
@@ -547,19 +545,19 @@ void operator >> (const Node& node, sStage& stage) {
 		node[field] >> stage.size_x;
 		sizeXFound = true;
 		if (stage.size_x<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in stage '"+stage.name+"'.");
+			Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
 			stage.size_x = DEFAULT_STAGE_SIZE_X;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		sizeXFound = true;
-		Logger::instance().logInvalidValueInStage(stage.name,field,"a positive integer");
+		Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
 		stage.size_x = DEFAULT_STAGE_SIZE_X;
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
 	if (!sizeXFound) {
-		Logger::instance().log("Parser Error: Field '"+field+"' is not defined in stage '"+stage.name+"'.");
+		Logger::instance().logFieldNotDefined(stage.name, field, "stage");
 		stage.size_x = DEFAULT_STAGE_SIZE_X;
 	}
 	field = "size_y";
@@ -567,19 +565,19 @@ void operator >> (const Node& node, sStage& stage) {
 		node[field] >> stage.size_y;
 		sizeYFound = true;
 		if (stage.size_y<0) {
-			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in stage '"+stage.name+"'.");
+			Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
 			stage.size_y = DEFAULT_STAGE_SIZE_Y;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		sizeYFound = true;
-		Logger::instance().logInvalidValueInStage(stage.name,field,"a positive integer");
+		Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
 		stage.size_y = DEFAULT_STAGE_SIZE_Y;
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
 	if (!sizeYFound) {
-		Logger::instance().log("Parser Error: Field '"+field+"' is not defined in stage '"+stage.name+"'.");
+		Logger::instance().logFieldNotDefined(stage.name, field, "stage");
 		stage.size_y = DEFAULT_STAGE_SIZE_Y;
 	}
 
@@ -626,7 +624,7 @@ void operator >> (const Node& node, Stages& stages) {
 			stages.vStages_aux.push_back(stage);
 		else {
 			string str_i = static_cast<std::ostringstream*>(&(ostringstream() << i+1))->str();
-			Logger::instance().log("Parser Error: Field 'nombre' is not defined in stage number "+str_i+".");
+			Logger::instance().logFieldNotDefined(str_i, "nombre", "stage number");
 		}
 	}
 }
@@ -774,7 +772,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		}
 	}
 	if (stage_aux.vMainCharacters.size()<=0) { // Verifico que para cada escenario exista al menos un protagonista.
-		Logger::instance().log("Parser Error: Field 'protagonista' is not defined in stage '"+stage_aux.name+"'.");
+		Logger::instance().logFieldNotDefined(stage_aux.name, "protagonista", "stage");
 		stage_aux.vMainCharacters.push_back(generateDefaultMainCharacter());
 	}
 	stages.vStages_aux[stage_index] = stage_aux;

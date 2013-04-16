@@ -18,11 +18,8 @@ namespace common
 		void log(string line);
 		void logUnexpected(string line);
 		void logSyntaxError(string file,string line);
-		void logInvalidValueInEntity(string entity,string field,string expected);
-		void logInvalidValueInEntityDef(string entityDef,string field,string expected);
-		void logInvalidValueInMainCharacter(string mainCharacter,string field,string expected);
-		void logInvalidValueInStage(string stage,string field,string expected);
-		void logInvalidValueInConfiguration(string configuration,string field,string expected);
+		void logInvalidValue(string entity,string field, string affectedConfig, string expected);
+		void logFieldNotDefined(string entity, string field, string affectedConfig);
 		void logFatalError(string line);
 		void nullPointer(string line);
 		void setFile(string path);
