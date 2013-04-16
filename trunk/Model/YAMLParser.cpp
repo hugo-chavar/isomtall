@@ -643,6 +643,7 @@ PersonajeModelo* YAMLParser::generateDefaultMainCharacter() { //
 	}
 	PersonajeModelo *mainCharacter = new PersonajeModelo();
 	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
+	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->animation(entities.vAnimatedEntities[0]); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
 	return mainCharacter;
 }
@@ -731,6 +732,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		else {
 			PersonajeModelo* mainCharacter = new PersonajeModelo();
 			mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
+			mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
 			mainCharacter->animation(animatedEntityType);
 			stage_aux.vMainCharacters.push_back(mainCharacter);
 		}
