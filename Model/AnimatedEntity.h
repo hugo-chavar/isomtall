@@ -17,8 +17,6 @@ class AnimatedEntity: public EntityObject {
 public:
 	AnimatedEntity();
 	~AnimatedEntity();
-	//AnimatedEntity(string name, string imagePath, int baseWidth, int baseHeight, int pixelRefX, int pixelRefY, DirList* imagesPaths, int fps, int delay): 
-	//	EntityObject(name, imagePath, baseWidth, baseHeight, pixelRefX, pixelRefY), _imagesPaths(imagesPaths), _fps(fps), _delay(delay) { };
 	int fps();
 	void fps(int);
 	int delay();
@@ -26,8 +24,12 @@ public:
 	void loadImages(string);
 	DirList* imagesPaths();
 	unsigned imagesCount();
-	bool isAnimated();
+	/*bool isAnimated();*/
 	bool hasNoImages();
+	bool hasNextDir();
+	string nextDirectory();
+	void clearImages();
+	void copy(AnimatedEntity*);
 
 private:
 	int _fps;

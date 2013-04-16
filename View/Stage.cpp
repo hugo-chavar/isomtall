@@ -119,6 +119,12 @@ bool view::Stage::initialize()
 
 	}
 
+	if (!Game::instance().personaje()){
+		//ver una maneta elegante de salir en todos los lugares que pincharia
+		return false;
+	}
+	pj = new Personaje(Game::instance().personaje());
+
 	//inicia harcodeo
 	//AnimatedEntity* entity = Game::instance().animatedEntityAt(0); // Las animadas no vienen en vEntitiesDef porque el archivo de configuración no las especifica.
 	//if (entity){
@@ -131,11 +137,7 @@ bool view::Stage::initialize()
 	//spriteArray.push_back(new Sprite("../Images/","molino/molino",23,64,120,3000,15));
 
 	
-	if (!Game::instance().personaje()){
-		//ver una maneta elegante de salir en todos los lugares que pincharia
-		return false;
-	}
-	pj = new Personaje(Game::instance().personaje());
+
 	
 	//pj->setDestino(5,5);
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedN", 1, 74, 80));
@@ -146,8 +148,8 @@ bool view::Stage::initialize()
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedSO", 1, 74, 80));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedE", 1, 74, 80));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/", "stoppedO", 1, 74, 80));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/8walkingN/", "walkingN", 12, 74, 80, 0, 30.0));
-	pj->agregarSprite(new Sprite("../Images/personajeCaballo/9walkingNE/", "walkingNE", 12, 74, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/08walkingN/", "walkingN", 12, 74, 80, 0, 30.0));
+	pj->agregarSprite(new Sprite("../Images/personajeCaballo/09walkingNE/", "walkingNE", 12, 74, 80, 0, 30.0));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/10walkingNO/", "walkingNO", 12, 74, 80, 0, 30.0));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/11walkingS/", "walkingS", 12, 74, 80, 0, 30.0));
 	pj->agregarSprite(new Sprite("../Images/personajeCaballo/12walkingSE/", "walkingSE", 12, 74, 80, 0, 30.0));

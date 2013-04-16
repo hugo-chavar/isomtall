@@ -3,27 +3,39 @@
 
 AnimatedEntity::AnimatedEntity() {
 	this->name("DEFAULT");
-	this->loadImages(DEFAULT_ANIMATED_DIR);
+	//this->loadImages(DEFAULT_ANIMATED_DIR); 
 	this->baseWidth(DEFAULT_BASE_WIDTH);
 	this->baseHeight(DEFAULT_BASE_HEIGHT);
 	this->pixelRefX(DEFAULT_PIXEL_REF_X);
 	this->pixelRefY(DEFAULT_PIXEL_REF_Y);
-	_fps = DEFAULT_FPS;
-	_delay = DEFAULT_DELAY;
+	this->fps(DEFAULT_FPS);
+	this->delay(DEFAULT_DELAY);
 }
 
 AnimatedEntity::~AnimatedEntity() {
 	
 }
+//
+//bool AnimatedEntity::isAnimated() {
+//	return true;
+//}
 
-bool AnimatedEntity::isAnimated() {
-	return true;
+void AnimatedEntity::copy(AnimatedEntity* entity){
+	this->baseWidth(entity->baseWidth());
+	this->baseHeight(entity->baseHeight());
+	this->pixelRefX(entity->pixelRefX());
+	this->pixelRefY(entity->pixelRefY());
+	this->fps(entity->fps());
+	this->delay(entity->delay());
 }
 
 bool AnimatedEntity::hasNoImages() {
 	return _images.empty();
 }
 
+bool AnimatedEntity::hasNextDir() {
+	return _images.hasNextDir();
+}
 
 int AnimatedEntity::fps()
 {
@@ -63,4 +75,12 @@ unsigned AnimatedEntity::imagesCount()
 
 DirList* AnimatedEntity::imagesPaths() {
 	return &_images;
+}
+
+void AnimatedEntity::clearImages(){
+	_images.clean();
+}
+
+string AnimatedEntity::nextDirectory(){
+	return _images.nextFullPathDir();
 }

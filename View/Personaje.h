@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "Sprite.h"
-#include "../Model/PersonajeModelo.h"
+#include "PersonajeModelo.h"
 #include "Entity.h"
 
 class Personaje : public Entity {
@@ -15,8 +15,12 @@ public:
 	void setDestino(int xTile, int yTile);
 	~Personaje();
 	std::pair<int,int> posicion();
-	model::PersonajeModelo* Personaje::personajeModelo();
-
+	model::PersonajeModelo* personajeModelo();
+	void loadSprites();
+	void clearSprites() ;
+	void addNextSprite(AnimatedEntity*);
+	void addFirstSprite(AnimatedEntity*);
+	
 private:
 	int procesarAnimacion(int animacion);
 	int estadoModelo(int estado);
