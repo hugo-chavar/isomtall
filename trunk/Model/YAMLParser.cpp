@@ -15,13 +15,15 @@ YAMLParser::~YAMLParser() {
 
 	for (unsigned i=0; i<entities.vEntitiesObject.size(); i++)
 		delete entities.vEntitiesObject[i];
-
+	entities.vEntitiesObject.clear();
 	for (unsigned i=0; i<entities.vAnimatedEntities.size(); i++)
 		delete entities.vAnimatedEntities[i];
-
-	//for (unsigned i=0; i<stages.vStages_aux.size(); i++)
-	//	for (unsigned j=0; i<stages.vStages_aux[i].vMainCharacters.size(); j++)
-	//		delete stages.vStages_aux[i].vMainCharacters[j];
+	entities.vAnimatedEntities.clear();
+	for (unsigned i=0; i<stages.vStages_aux.size(); i++){
+		for (unsigned j=0; j<stages.vStages_aux[i].vMainCharacters.size(); j++)
+			delete stages.vStages_aux[i].vMainCharacters[j];
+		stages.vStages_aux[i].vMainCharacters.clear();
+	}
 }
 
 void operator >> (const Node& node, Screen& screen) {

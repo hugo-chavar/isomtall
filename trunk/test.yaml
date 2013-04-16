@@ -71,10 +71,16 @@ entidades:
        
     - nombre: frodo 
       imagen: ../Images/personajeVampiro/
-      fps: 10 
+      fps: 30 
        
     - nombre: caballo
       imagen: ../Images/personajeCaballo/
+      fps: 10 
+
+    - nombre: personajedefault
+      imagen: ../Images/personaje/
+      pixel_ref_x: 32
+      pixel_ref_y: 32 
       fps: 10 
 
     - nombre: tierra 
@@ -112,6 +118,7 @@ escenarios:
          - {x: 3, y: 2, entidad: test1}
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 20, entidad: piso2921}
+         - {x: 4, y: 8, entidad: personajedefault}
       protagonista: 
          - tipoEntidad: frodo
            x: 5 
