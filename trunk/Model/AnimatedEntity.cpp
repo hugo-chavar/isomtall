@@ -15,10 +15,6 @@ AnimatedEntity::AnimatedEntity() {
 AnimatedEntity::~AnimatedEntity() {
 	
 }
-//
-//bool AnimatedEntity::isAnimated() {
-//	return true;
-//}
 
 void AnimatedEntity::copy(AnimatedEntity* entity){
 	this->baseWidth(entity->baseWidth());

@@ -10,10 +10,7 @@
 
 using namespace common;
 
-
-
 class AnimatedEntity: public EntityObject {
-
 public:
 	AnimatedEntity();
 	~AnimatedEntity();
@@ -24,7 +21,6 @@ public:
 	void loadImages(string);
 	DirList* imagesPaths();
 	unsigned imagesCount();
-	/*bool isAnimated();*/
 	bool hasNoImages();
 	bool hasNextDir();
 	string nextDirectory();
