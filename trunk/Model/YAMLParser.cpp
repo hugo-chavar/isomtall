@@ -10,12 +10,18 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
-
 	if (camera)
 		delete camera;
-	//vector <AnimatedEntity>::iterator it;
-	//for(it = entities.vAnimatedEntities.begin(); it != entities.vAnimatedEntities.end();it++)
-	//	it->destroy();
+
+	for (unsigned i=0; i<entities.vEntitiesObject.size(); i++)
+		delete entities.vEntitiesObject[i];
+
+	for (unsigned i=0; i<entities.vAnimatedEntities.size(); i++)
+		delete entities.vAnimatedEntities[i];
+
+	//for (unsigned i=0; i<stages.vStages_aux.size(); i++)
+	//	for (unsigned j=0; i<stages.vStages_aux[i].vMainCharacters.size(); j++)
+	//		delete stages.vStages_aux[i].vMainCharacters[j];
 }
 
 void operator >> (const Node& node, Screen& screen) {
@@ -221,12 +227,12 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		pixelRefXFound = true;
 		if (pixelRefX<0) {
 			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
-			pixelRefX = DEFAULT_PIXEL_REF_X;
+			pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		pixelRefXFound = true;
 		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
-		pixelRefX = DEFAULT_PIXEL_REF_X;
+		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -237,12 +243,12 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 		pixelRefYFound = true;
 		if (pixelRefY<0) {
 			Logger::instance().log("Parser Error: Negative value in field '"+field+"' in entity '"+name+"'.");
-			pixelRefY = DEFAULT_PIXEL_REF_Y;
+			pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 		}
 	} catch (KeyNotFound) { } catch (InvalidScalar) {
 		pixelRefYFound = true;
 		Logger::instance().logInvalidValueInEntity(name,field,"a positive integer");
-		pixelRefY = DEFAULT_PIXEL_REF_Y;
+		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
@@ -258,11 +264,11 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	}
 	if (!pixelRefXFound) {
 		Logger::instance().log("Parser Error: Field 'pixel_ref_x' is not defined in entity '"+name+"'.");
-		pixelRefX = DEFAULT_PIXEL_REF_X;
+		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 	}
 	if (!pixelRefYFound) {
 		Logger::instance().log("Parser Error: Field 'pixel_ref_y' is not defined in entity '"+name+"'.");
-		pixelRefY = DEFAULT_PIXEL_REF_Y;
+		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
 	}
 
 	entity->name(name);
@@ -274,9 +280,9 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 }
 
 void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
-	int fps, delay;
+	int pixelRefX, pixelRefY, fps, delay;
 	string imageDir, field;
-	bool fpsFound = false, delayFound = false;
+	bool pixelRefXFound = false, pixelRefYFound = false, fpsFound = false, delayFound = false;
 
 	EntityObject *entity_aux;
 	node >> entity_aux;
@@ -296,6 +302,28 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
+	field = "pixel_ref_x";
+	try {
+		node[field] >> pixelRefX;
+		pixelRefXFound = true;
+		if (pixelRefX<0)
+			pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	} catch (KeyNotFound) { } catch (InvalidScalar) {
+		pixelRefXFound = true;
+		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	}
+	catch (Exception& parserException ) { };
+	field = "pixel_ref_y";
+	try {
+		node[field] >> pixelRefY;
+		pixelRefYFound = true;
+		if (pixelRefY<0)
+			pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	} catch (KeyNotFound) { } catch (InvalidScalar) {
+		pixelRefYFound = true;
+		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	}
+	catch (Exception& parserException ) { };
 	field = "fps";
 	try {
 		node[field] >> fps;
@@ -337,12 +365,16 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		Logger::instance().log("Parser Error: Field 'delay' is not defined in entity '"+entity_aux->name()+"'.");
 		delay = DEFAULT_DELAY;
 	}
+	if (!pixelRefXFound)
+		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	if (!pixelRefYFound)
+		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
 
 	animatedEntity->name(entity_aux->name());
 	animatedEntity->baseWidth(entity_aux->baseWidth());
 	animatedEntity->baseHeight(entity_aux->baseHeight());
-	animatedEntity->pixelRefX(entity_aux->pixelRefX());
-	animatedEntity->pixelRefY(entity_aux->pixelRefY());
+	animatedEntity->pixelRefX(pixelRefX);
+	animatedEntity->pixelRefY(pixelRefY);
 	animatedEntity->fps(fps);
 	animatedEntity->delay(delay);
 	delete entity_aux;
