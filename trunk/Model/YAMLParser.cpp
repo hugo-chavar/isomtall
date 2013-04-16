@@ -813,7 +813,7 @@ void YAMLParser::parse() {
 	Node doc;
 	DirList yamlFiles;
 	yamlFiles.setExtensionRequired(CONFIGFILE_EXTENSION);
-	if (yamlFiles.createFromDirectory("../")) {
+	if (yamlFiles.createFromDirectory(CONFIGFILE_DIRECTORY)) {
 		if (yamlFiles.empty())
 			Logger::instance().log("Parser Error: No '.yaml' files found.");
 		else

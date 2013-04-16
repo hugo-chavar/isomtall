@@ -2,7 +2,7 @@
 #define _CONSTANTS_H_
 
 #define LOGFILE "../game.log"
-#define CONFIGFILE "../test.yaml"
+#define CONFIGFILE_DIRECTORY "../Configuration/"
 #define CONFIGFILE_EXTENSION ".yaml"
 
 #define IMAGES_EXTENSION ".png"
