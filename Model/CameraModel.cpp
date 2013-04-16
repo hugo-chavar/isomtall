@@ -22,7 +22,7 @@ unsigned int CameraModel::height(){
 
 void CameraModel::height(int value){
 	if (value >= MIN_SCREEN_HEIGHT){
-		_height = static_cast<unsigned>(value); //value;
+		_height = static_cast<unsigned>(value);
 	} else {
 		Logger::instance().log("Game warning: Field 'alto pantalla' is too low, defaulted.");
 		_height = DEFAULT_SCREEN_HEIGHT;
@@ -31,7 +31,7 @@ void CameraModel::height(int value){
 
 void CameraModel::width(int value){
 	if (value >= MIN_SCREEN_WIDTH){
-		_width = static_cast<unsigned>(value); //value;
+		_width = static_cast<unsigned>(value);
 	} else {
 		Logger::instance().log("Game warning: Field 'ancho pantalla' is too low, defaulted.");
 		_width = DEFAULT_SCREEN_WIDTH;
@@ -43,11 +43,14 @@ unsigned int CameraModel::scroll(){
 }
 
 void CameraModel::scroll(int value){
-	if (value >= MIN_SCROLL_MARGIN){
-		_scroll = static_cast<unsigned>(value); //value;
-	} else {
-		Logger::instance().log("Game warning: Field 'margen_scroll' is too low, defaulted.");
-		_scroll = DEFAULT_SCROLL_MARGIN;
+	if ((value >= MIN_SCROLL_MARGIN) && (value <= MAX_SCROLL_MARGIN)){
+		_scroll = static_cast<unsigned>(value);
+	} else if (value < MIN_SCROLL_MARGIN) {
+		Logger::instance().log("Game warning: Field 'margen_scroll' is too low, setted to minimun.");
+		_scroll = MIN_SCROLL_MARGIN;
+	} else if (value > MAX_SCROLL_MARGIN) {
+		Logger::instance().log("Game warning: Field 'margen_scroll' is too high, setted to maximun.");
+		_scroll = MAX_SCROLL_MARGIN;
 	}
 }
 
