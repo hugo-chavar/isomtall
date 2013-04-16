@@ -42,7 +42,7 @@ void Game::initialize()
 	_cameraModel = yParser.cameraModel();
 	//selecciono el primero del primer stage
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
-	//setear velocidad personaje
+	_personaje->setVelocidad(_world.mainCharacter_speed());
 
 	this->_time.initializeTime();
 	

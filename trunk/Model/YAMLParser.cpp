@@ -730,11 +730,17 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		if (!animatedEntityType)
 			Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' not found.");
 		else {
-			PersonajeModelo* mainCharacter = new PersonajeModelo();
-			mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
-			mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
-			mainCharacter->animation(animatedEntityType);
-			stage_aux.vMainCharacters.push_back(mainCharacter);
+			if (animatedEntityType->imagesPaths()->countDir()==NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER) {
+				PersonajeModelo* mainCharacter = new PersonajeModelo();
+				mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
+				mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
+				mainCharacter->animation(animatedEntityType);
+				stage_aux.vMainCharacters.push_back(mainCharacter);
+			}
+			else {
+				string str_nro = static_cast<std::ostringstream*>(&(ostringstream() << NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER))->str();
+				Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' does not have the "+str_nro+" image directories needed.");
+			}
 		}
 	}
 	if (stage_aux.vMainCharacters.size()<=0) { // Verifico que para cada escenario exista al menos un protagonista.
