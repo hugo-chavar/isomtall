@@ -63,7 +63,15 @@ float Stage::mainCharacter_speed() {
 }
 
 void Stage::mainCharacter_speed(float value) {
-	_mainCharacter_speed = value;
+	if ((value >= MIN_MAIN_CHARACTER_SPEED) && (value <= MAX_MAIN_CHARACTER_SPEED)){
+		_mainCharacter_speed = value;
+	} else if (value > MAX_MAIN_CHARACTER_SPEED) {
+		Logger::instance().log("Game warning: Field 'vel_personaje' is too high, setted to maximun.");
+		_mainCharacter_speed = MAX_MAIN_CHARACTER_SPEED;
+	} else {
+		Logger::instance().log("Game warning: Field 'vel_personaje' is too low, setted to minimun.");
+		_mainCharacter_speed = MIN_MAIN_CHARACTER_SPEED;
+	}
 }
 
 

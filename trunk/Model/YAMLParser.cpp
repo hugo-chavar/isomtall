@@ -84,7 +84,7 @@ void operator >> (const Node& node, Configuration& configuration) {
 		try {
 			node[i][field] >> configuration.main_character_speed;
 			mainCharacterSpeedFound = true;
-			if (configuration.main_character_speed<0) {
+			if (configuration.main_character_speed <= 0) {
 				Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
 				configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 			}

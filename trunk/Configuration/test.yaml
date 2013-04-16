@@ -1,10 +1,10 @@
 pantalla:
     - ancho: 800 
-    - alto: boquitaPerdio6a1jaja
+    - alto: xxxx
 
 configuracion: 
-    - vel_personaje: 2.0
-    - margen_scroll: 30 
+    - vel_personaje: 0.098
+    - margen_scroll: 600
      
 entidades:
     - nombre: arbol 
@@ -68,6 +68,11 @@ entidades:
       imagen: path/a/imagen/
       fps: 10 
       delay: 5 
+
+    - nombre: pelota 
+      imagen: ../Images/pelota/
+      fps: 10 
+      delay: 5 
        
     - nombre: frodo 
       imagen: ../Images/personajeVampiro/
@@ -117,6 +122,7 @@ escenarios:
          - {x: 10, y: 15, entidad: agua}
          - {x: 11, y: 15, entidad: agua}
          - {x: 0, y: 12, entidad: dado}
+         - {x: 0, y: 12, entidad: televisor}
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra} 
          - {x: 10, y: 10, entidad: molino}
