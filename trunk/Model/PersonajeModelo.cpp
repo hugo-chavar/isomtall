@@ -37,7 +37,7 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
-	this->estado = PARADO_S;;
+	this->estado = PARADO_S;
 	//this->velocidad = velocidad;
 }
 
