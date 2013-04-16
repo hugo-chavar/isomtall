@@ -3,7 +3,7 @@ pantalla:
     - alto: rivercampeon
  
 configuracion: 
-    - vel_personaje: 0.5
+    - vel_personaje: 3
     - margen_scroll: 30 
      
 entidades:
@@ -79,6 +79,6 @@ escenarios:
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 20, entidad: fuente} 
       protagonista: 
-         - tipoEntidad: frodo 
+         - tipoEntidad: frodo
            x: 5 
            y: 3 

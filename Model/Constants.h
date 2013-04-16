@@ -9,6 +9,7 @@
 #define DEFAULT_TILE_IMAGE "../Images/pisoPasto0.png"
 #define ERROR_IMAGE "../Images/error.png"
 #define DEFAULT_ANIMATED_DIR "../Images/default/"
+#define NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER 16
 
 #define DIR_PERS_STP_01 "/0stoppedN/"
 #define DIR_PERS_STP_02 "/1stoppedNE/"
@@ -39,7 +40,7 @@
 #define DEFAULT_VIDEO_BPP 32
 
 
-#define DEFAULT_MAIN_CHARACTER_SPEED 1.5
+#define DEFAULT_MAIN_CHARACTER_SPEED 5
 #define DEFAULT_MAIN_CHARACTER_X 5
 #define DEFAULT_MAIN_CHARACTER_Y 5
 
