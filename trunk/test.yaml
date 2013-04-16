@@ -3,7 +3,7 @@ pantalla:
     - alto: rivercampeon
  
 configuracion: 
-    - vel_personaje: 3
+    - vel_personaje: 1.0
     - margen_scroll: 30 
      
 entidades:
@@ -50,13 +50,6 @@ entidades:
       pixel_ref_x: 30 
       pixel_ref_y: 40 
 
-    - nombre: test1
-      imagen: ../Images/CapillaRoja0.png
-      ancho_base: 5 
-      alto_base: 5 
-      pixel_ref_x: 196 
-      pixel_ref_y: 107 
-
     - nombre: orco 
       imagen: path/a/imagen/
       fps: 10 
@@ -71,13 +64,25 @@ entidades:
    
     - nombre: agua 
       imagen: path/a/imagen.png 
+
+    - nombre: piso2921 
+      imagen: ../Images/piso2921.png
+
+    - nombre: piso041 
+      imagen: ../Images/piso041.png
+
+    - nombre: piso5050 
+      imagen: ../Images/piso050.png
        
 escenarios: 
     - nombre: bosque_encantado 
-      size_x: 100 
-      size_y: 100 
+      size_x: 60
+      size_y: 60 
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
+         - {x: 29, y: 21, entidad: piso2921}
+         - {x: 0, y: 41, entidad: piso041}
+         - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 10, y: 15, entidad: agua} 
          - {x: 30, y: 55, entidad: tierra} 
@@ -85,7 +90,6 @@ escenarios:
          - {x: 10, y: 10, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
          - {x: 20, y: 20, entidad: fuente} 
-         - {x: 30, y: 30, entidad: test1} 
       protagonista: 
          - tipoEntidad: frodo
            x: 5 
