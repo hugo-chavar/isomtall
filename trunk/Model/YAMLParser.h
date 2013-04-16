@@ -80,6 +80,7 @@ private:
 	void loadMainCharacters(int stage_index);
 	void manageEntityCase();
 	void manageStageCase();
+	bool entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, EntityObject* entityObjectType, AnimatedEntity* animatedEntityType);
 
 
 public:

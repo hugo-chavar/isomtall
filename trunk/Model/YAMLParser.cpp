@@ -666,6 +666,20 @@ EntityObject* YAMLParser::findEntityObjectType(string name) {
 	return NULL;
 }
 
+bool YAMLParser::entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, EntityObject *entityObjectType, AnimatedEntity *animatedEntityType) {
+	EntityDef entityDef = stage_aux.vEntitiesDef[entityDef_index];
+	if (entityObjectType) {
+		if (((entityDef.x+entityObjectType->baseWidth()-1)<stage_aux.size_x) && ((entityDef.y+entityObjectType->baseHeight()-1)<stage_aux.size_y))
+			return true;
+	}
+	else
+		if (animatedEntityType) {
+			if (((entityDef.x+animatedEntityType->baseWidth()-1)<stage_aux.size_x) && ((entityDef.y+animatedEntityType->baseHeight()-1)<stage_aux.size_y))
+				return true;
+		}
+	return false;
+}
+
 void YAMLParser::loadEntitiesToMap(int stage_index) {
 	sStage stage_aux = stages.vStages_aux[stage_index];
 	map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
@@ -675,16 +689,23 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 		AnimatedEntity *animatedEntityType = findAnimatedEntityType(stage_aux.vEntitiesDef[i].entity);
 		if ((!entityObjectType) && (!animatedEntityType)){
 			Logger::instance().log("Parser Error: Entity type '"+stage_aux.vEntitiesDef[i].entity+"' defined in stage '"+stage_aux.name+"' not found.");
-			stage_aux.vEntitiesDef.erase (stage_aux.vEntitiesDef.begin()+i);
+			stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
 			i--;
 		}
 		else {
-			pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
-			ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
-			if (!ret.second) {
-				string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
-				string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
-				Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
+			if (entityBaseIsInMapRange(i, stage_aux, entityObjectType, animatedEntityType)) {
+				pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
+				ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
+				if (!ret.second) {
+					string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
+					string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
+					Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
+				}
+			}
+			else {
+				Logger::instance().log("Parser Error: Entity '"+stage_aux.vEntitiesDef[i].entity+"''s base is out of map range.");
+				stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
+				i--;
 			}
 		}
 	}
