@@ -19,6 +19,7 @@ void ListaPath::agregar(Nodo* nuevo) {
 			pos = new Par(xValue, yValue);
 			nodeList.insert(it, std::pair<Par, Nodo>(*pos, *nuevo));
 			insert = false;
+			delete pos;
 			break;
 		}
 		it++;
@@ -27,6 +28,7 @@ void ListaPath::agregar(Nodo* nuevo) {
 		nuevo->getPos(xValue, yValue);
 		pos = new Par(xValue, yValue);
 		nodeList.insert(it, std::pair<Par, Nodo>(*pos, *nuevo));
+		delete pos;
 	}
 }
 
@@ -39,11 +41,13 @@ Nodo* ListaPath::getNodo(int X, int Y) {
 	pos = new Par(X, Y);
 	it = nodeList.find(*pos);
 	if (it == nodeList.end()) {
+		delete pos;
 		return nodoDevuelto;
 	}
 	nodoDevuelto = new Nodo(0,0);
 	*nodoDevuelto = it->second;
 	nodeList.erase(it);
+	delete pos;
 	return nodoDevuelto;
 }
 
