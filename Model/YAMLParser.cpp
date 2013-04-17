@@ -266,11 +266,11 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	}
 	if (!pixelRefXFound) {
 		Logger::instance().logFieldNotDefined(name, "pixel_ref_x", "entity");
-		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
+		pixelRefX = ERROR_IMAGE_PIXEL_REF_X;
 	}
 	if (!pixelRefYFound) {
 		Logger::instance().logFieldNotDefined(name, "pixel_ref_y", "entity");
-		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
+		pixelRefY = ERROR_IMAGE_PIXEL_REF_Y;
 	}
 
 	entity->name(name);
