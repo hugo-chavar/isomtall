@@ -163,7 +163,7 @@ bool validateImagePath(string imagePath) {
 void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NOMBRES IGUALES
 	string name, imagePath, field;
 	int baseWidth, baseHeight, pixelRefX, pixelRefY;
-	bool baseWidthFound = false, baseHeightFound = false, pixelRefXFound = false, pixelRefYFound = false;
+	bool baseWidthFound = false, baseHeightFound = false, pixelRefXFound = false, pixelRefYFound = false, imagePathFound = false;
 
 	entity = new EntityObject();
 	field = "nombre";
@@ -180,7 +180,9 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	field = "imagen";
 	try {
 		node[field] >> imagePath;
+		imagePathFound = true;
 		if ((imagePath=="~") || (!validateImagePath(imagePath))){
+			imagePathFound = false;
 			imagePath = ERROR_IMAGE;
 		}
 	} catch (KeyNotFound) {
@@ -266,10 +268,14 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	}
 	if (!pixelRefXFound) {
 		Logger::instance().logFieldNotDefined(name, "pixel_ref_x", "entity");
-		pixelRefX = ERROR_IMAGE_PIXEL_REF_X;
+		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
 	}
 	if (!pixelRefYFound) {
 		Logger::instance().logFieldNotDefined(name, "pixel_ref_y", "entity");
+		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
+	}
+	if (!imagePathFound) {
+		pixelRefX = ERROR_IMAGE_PIXEL_REF_X;
 		pixelRefY = ERROR_IMAGE_PIXEL_REF_Y;
 	}
 
