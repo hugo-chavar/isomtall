@@ -1,6 +1,8 @@
 #include "Personaje.h"
 #include "../Model/PersonajeConstantes.h"
 
+#include "Game.h"
+
 
 Personaje::Personaje(model::PersonajeModelo* pj) {
 	modelo = pj;
@@ -12,6 +14,8 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
+
+	this->modelo->animation()->fps(this->modelo->animation()->fps() * (this->modelo->getVelocidad() / 2));
 }
 
 void Personaje::loadSprites() {
@@ -150,7 +154,6 @@ void Personaje::setDestino(int xTile, int yTile){
 }
 
 void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
-
 	if (delta.first != 0){ //Hay movimiento en x
 		if (delta.second != 0) { //Diagonal
 			factor.first = static_cast<float>(velocidad *0.707);
@@ -160,7 +163,7 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 		}
 	} else { //No hay movimiento en x
 		if (delta.second != 0){ //Vertical
-			factor.second = velocidad/2;
+			factor.second = (velocidad/2);
 		} else {//Quieto
 			factor.first = 0;
 			factor.second = 0;
