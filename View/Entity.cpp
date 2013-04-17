@@ -2,7 +2,12 @@
 
 
 
-
+bool comparador (Entity* entity1, Entity* entity2) {
+	if ((entity1->order()) < (entity2->order())) {
+		return true;
+	}
+	return false;
+}
 
 Entity::Entity() {}
 
