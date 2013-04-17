@@ -40,6 +40,9 @@ Sprite::Sprite(EntityObject *entity)
 	_baseHeight = entity->baseHeight();
 	nroFrames = 1;
 	cargarFrames(entity->imagePath());
+	//usar herencia para resolver esto
+	delay = 0;
+	fps = 0;
 }
 
 Sprite::Sprite(AnimatedEntity* entity)
@@ -97,8 +100,14 @@ void Sprite::cargarFrames(DirList *imagesPaths)
 	nroFrames = imagesPaths->count();
 }
 
+bool Sprite::isAnimated(){
+	return (fps > 0);
+}
+
 void Sprite::actualizarFrame()
 {
+	if (!isAnimated())
+		return;
 	if(estado == 0)
 	{
 		if((SDL_GetTicks()-comienzo_frame)>=(1000/fps)+delay)
