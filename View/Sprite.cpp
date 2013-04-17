@@ -36,6 +36,8 @@ Sprite::Sprite(EntityObject *entity)
 	estado = 0;
 	relx = entity->pixelRefX();
 	rely = entity->pixelRefY();
+	_baseWidth = entity->baseWidth();
+	_baseHeight = entity->baseHeight();
 	nroFrames = 1;
 	cargarFrames(entity->imagePath());
 }
@@ -48,6 +50,8 @@ Sprite::Sprite(AnimatedEntity* entity)
 	fps = static_cast<float>(entity->fps());
 	relx = entity->pixelRefX();
 	rely = entity->pixelRefY();
+	_baseWidth = entity->baseWidth();
+	_baseHeight = entity->baseHeight();
 	this->cargarFrames(entity->imagesPaths());	
 }
 
@@ -128,7 +132,17 @@ int Sprite::relatx()
 {
 	return relx;
 }
+
 int Sprite::relaty()
 {
 	return rely;
+}
+
+int Sprite::baseWidth()
+{
+	return _baseWidth;
+}
+int Sprite::baseHeight()
+{
+	return _baseHeight;
 }

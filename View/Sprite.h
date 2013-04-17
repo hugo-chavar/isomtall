@@ -17,16 +17,18 @@ class Sprite
 
 private:
 
-	// lo siguiente va al modelo y se obtienen con getters
-	int relx,rely; //Posicion relativa del Tile de referencia de la base respecto imagen
+	int relx,rely,_baseWidth,_baseHeight; //Posicion relativa del Tile de referencia de la base respecto imagen
 	float delay;
 	float fps;
 	unsigned nroFrames;
-	EntityObject* eo;
+	//EntityObject* eo;
 
 	unsigned estado; 
 	std::vector<Frame*> frames;
 	int comienzo_frame;
+
+	int baseWidth();
+	int baseHeight();
 
 	void cargarFrames(std::string path,std::string nombre,std::string formato,int nro);
 	void cargarFrames(string imagePath);
