@@ -33,6 +33,7 @@ private:
 	void cargarFrames(std::string path,std::string nombre,std::string formato,int nro);
 	void cargarFrames(string imagePath);
 	void cargarFrames(DirList *imagesPaths);
+	bool isAnimated();
 
 public:
 	Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty);
