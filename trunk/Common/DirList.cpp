@@ -17,9 +17,25 @@ DirList::DirList() {
 	_countDir = 0;
 	_currentPositionDir = 0;
 	testExtension = false;
+	_defaulted = false;
 }
 
 DirList::~DirList() {
+}
+
+void  DirList::add(string dir){
+	defaultim = dir;
+	_defaulted = true;
+
+}
+
+bool DirList::defaulted()
+{return _defaulted;
+}
+
+string  DirList::getDefault(){
+	return defaultim;
+
 }
 
 bool DirList::createFromDirectory(string dir) {

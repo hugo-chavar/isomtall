@@ -1,5 +1,4 @@
 #include "Stage.h"
-
 #include "Surface.h"
 #include "EntityObject.h"
 #include "DataTypes.h"
@@ -97,7 +96,7 @@ bool view::Stage::initialize()
 	unsigned defCount = vEntitiesDef.size();
 	int posSpriteEntity;
 	for (unsigned a = 0; a < defCount; a++){
-		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
+		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];
 		int baseh=spriteArray[posSpriteEntity]->baseHeight();
 		int basew=spriteArray[posSpriteEntity]->baseWidth();
 		int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*worldModel.width();
@@ -106,7 +105,6 @@ bool view::Stage::initialize()
 	}
 
 	if (!Game::instance().personaje()){
-		//ver una maneta elegante de salir en todos los lugares que pincharia
 		return false;
 	}
 	_personaje = new Personaje(Game::instance().personaje());

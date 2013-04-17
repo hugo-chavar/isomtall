@@ -290,7 +290,7 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	int pixelRefX, pixelRefY, fps, delay;
 	string imageDir, field;
-	bool pixelRefXFound = false, pixelRefYFound = false, fpsFound = false, delayFound = false;
+	bool pixelRefXFound = false, pixelRefYFound = false, fpsFound = false, delayFound = false, imageDirFound = false;
 
 	EntityObject *entity_aux;
 	node >> entity_aux;
@@ -298,13 +298,24 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	field = "imagen";
 	try {
 		node[field] >> imageDir;
-		animatedEntity->loadImages(imageDir);
-		if ((imageDir=="~") || (animatedEntity->hasNoImages())) {
-			imageDir = DEFAULT_ANIMATED_DIR;
+		if (!(imageDir=="~")) {
+			animatedEntity->loadImages(imageDir);
+			imageDirFound = true;
+			if ((animatedEntity->hasNoDir()) && (animatedEntity->hasNoImages())) {
+				imageDirFound = false;
+				imageDir = ERROR_ANIMATED_DIR;
+				animatedEntity->loadImages(imageDir);
+			} 
+			if (animatedEntity->hasNoImages()){
+				animatedEntity->imagesPaths()->add(ERROR_IMAGE); //TODO:corregir
+			}
+		}
+		else {
+			imageDir = ERROR_ANIMATED_DIR;
 			animatedEntity->loadImages(imageDir);
 		}
 	} catch (KeyNotFound) {
-		imageDir = DEFAULT_ANIMATED_DIR;
+		imageDir = ERROR_ANIMATED_DIR;
 		animatedEntity->loadImages(imageDir);
 	}
 	catch (Exception& parserException ) {
@@ -381,6 +392,10 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
 	if (!pixelRefYFound)
 		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	if (!imageDirFound) {
+		pixelRefX = ERROR_ANIMATED_PIXEL_REF_X;
+		pixelRefY = ERROR_ANIMATED_PIXEL_REF_Y;
+	}
 
 	animatedEntity->name(entity_aux->name());
 	animatedEntity->baseWidth(entity_aux->baseWidth());
@@ -654,10 +669,10 @@ Screen YAMLParser::generateDefaultScreen() {
 }
 
 PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
-	if (entities.vAnimatedEntities.size()<=0) {
-		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
-		entities.vAnimatedEntities.push_back(animatedEntity_default);
-	}
+	//if (entities.vAnimatedEntities.size()<=0) {
+	//	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
+	//	entities.vAnimatedEntities.push_back(animatedEntity_default);
+	//}
 	PersonajeModelo *mainCharacter = new PersonajeModelo();
 	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
@@ -738,11 +753,11 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 			if (entityBaseIsInMapRange(i, stage_aux, entityObjectType, animatedEntityType)) {
 				pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
 				ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
-				if (!ret.second) {
-					string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
-					string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
-					Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
-				}
+				//if (!ret.second) {
+				//	string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
+				//	string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
+				//	Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
+				//}
 			}
 			else {
 				Logger::instance().log("Parser Error: Entity '"+stage_aux.vEntitiesDef[i].entity+"''s base is out of map range.");
@@ -829,6 +844,8 @@ void YAMLParser::parse() {
 	camera = new CameraModel();//se carga x default
 	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
+	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
+	entities.vAnimatedEntities.push_back(animatedEntity_default);
 	
 	if (!yamlFilesFound)
 		loadEverythingByDefault();

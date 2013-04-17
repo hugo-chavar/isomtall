@@ -142,14 +142,15 @@ escenarios:
          - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 50, y: 50, entidad: agua}
+         - {x: 0, y: 12, entidad: agua}
+         - {x: 0, y: 12, entidad: arbol}
          - {x: 50, y: 51, entidad: agua}
+         - {x: 50, y: 52, entidad: agua}
          - {x: 50, y: 52, entidad: agua}
          - {x: 51, y: 50, entidad: agua}
          - {x: 51, y: 51, entidad: agua}
-         - {x: 51, y: 52, entidad: agua}
          - {x: 0, y: 5, entidad: dado}
          - {x: 0, y: 9, entidad: pelota}
-         - {x: 1, y: 11, entidad: caballo}
          - {x: 0, y: 12, entidad: televisor}
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra}
@@ -199,6 +200,6 @@ escenarios:
          - {x: 25, y: 1, entidad: caballoR}
          - {x: 20, y: 20, entidad: piso2921}
       protagonista: 
-         - tipoEntidad: frodo
+         - tipoEntidad: caballo
            x: 5 
            y: 3 
