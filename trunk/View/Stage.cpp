@@ -8,6 +8,13 @@ std::vector<TileView*>& view::Stage::getTileArray() {
 	return this->tileArray;
 }
 
+bool comparador (Entity* entity1, Entity* entity2) {
+	if ((entity1->order()) < (entity2->order())) {
+		return true;
+	}
+	return false;
+}
+
 
 //void model::World::cleanUp() {
 //	for (unsigned int i = 0; i < this->getTileArray().size(); i++) {
@@ -81,7 +88,7 @@ bool view::Stage::initialize()
 
 	for(unsigned i=0; i < w; i++){ 
 		for(unsigned j=0; j < h; j++){
-			entityList[i+j*worldModel.width()].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault]));
+			entityList[i+j*worldModel.width()].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
 		}
 	}
 
@@ -91,7 +98,10 @@ bool view::Stage::initialize()
 	int posSpriteEntity;
 	for (unsigned a = 0; a < defCount; a++){
 		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];// find.. it.end()
-		entityList[vEntitiesDef[a].x+vEntitiesDef[a].y*worldModel.width()].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity]));
+		int baseh=spriteArray[posSpriteEntity]->baseHeight();
+		int basew=spriteArray[posSpriteEntity]->baseWidth();
+		int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*worldModel.width();
+		entityList[posArray].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity],int(a)));
 
 	}
 
@@ -132,32 +142,64 @@ void view::Stage::render(Camera& camera) {
 	cameraReferenceTile.first -= 10;
 	horizontalTilesInCamera += 10;
 	verticalTilesInCamera += 10;
-	for(unsigned int l = 0; l < 5; l++)//Harcodeo un maximo de 5 entidades por Tile
-	{
-		for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+
+	list<Entity*> ordenada;
+	//Dibujo primero el piso por defecto
+	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
 			Xt = cameraReferenceTile.first + i;
 			Yt = cameraReferenceTile.second + i;
-
 			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+	
 				int indice=Xt+Yt*worldModel.width();
-
 				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
-				//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
-				{	
-					if(l<entityList[indice].size())
-						entityList[indice][l]->render(camera);	
+				{
+						entityList[indice][0]->render(camera);	
 				}
 				indice++;
 				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
-				//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
 				{
-					if(l<entityList[indice].size())
-						entityList[indice][l]->render(camera);
+						entityList[indice][0]->render(camera);
+				}
+				Xt++;
+				Yt--;
+			}
+			}
+	//Dibujo el resto de las entidades
+
+	
+		for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+			Xt = cameraReferenceTile.first + i;
+			Yt = cameraReferenceTile.second + i;
+			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+	
+				int indice=Xt+Yt*worldModel.width();
+				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+				{
+				for(unsigned l=1;l<entityList[indice].size();l++)
+				{
+				//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
+						ordenada.push_back(entityList[indice][l]);	
+				}
+				}
+				indice++;
+				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+				{
+				for(unsigned l=1;l<entityList[indice].size();l++)
+				{
+					//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
+						ordenada.push_back(entityList[indice][l]);
+				}
 				}
 				Xt++;
 				Yt--;
 			}
 		}
-	}
+		list<Entity*>::iterator it;
+		ordenada.sort(comparador);
+		for(it=ordenada.begin();it!=ordenada.end();it++)
+		{
+			(*it)->render(camera);
+		
+		}
 	_personaje->render(camera);
 }

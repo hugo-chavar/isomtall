@@ -27,9 +27,6 @@ private:
 	std::vector<Frame*> frames;
 	int comienzo_frame;
 
-	int baseWidth();
-	int baseHeight();
-
 	void cargarFrames(std::string path,std::string nombre,std::string formato,int nro);
 	void cargarFrames(string imagePath);
 	void cargarFrames(DirList *imagesPaths);
@@ -46,6 +43,9 @@ public:
 	void actualizarFrame();
 	int relatx();
 	int relaty();
+	int baseWidth();
+	int baseHeight();
+
 };
 
 #endif

@@ -121,8 +121,8 @@ entidades:
        
 escenarios: 
     - nombre: bosque_encantado 
-      size_x: 100
-      size_y: 100 
+      size_x: 1000
+      size_y: 1000 
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
          - {x: 0, y: 41, entidad: piso041}
@@ -142,6 +142,15 @@ escenarios:
          - {x: -30, y: 55, entidad: tierra} 
          - {x: 10, y: 10, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
+         - {x: 20, y: 26, entidad: agua}
+         - {x: 20, y: 27, entidad: agua}
+         - {x: 20, y: 28, entidad: agua}
+         - {x: 21, y: 26, entidad: agua}
+         - {x: 21, y: 27, entidad: agua}
+         - {x: 21, y: 28, entidad: agua}
+         - {x: 22, y: 26, entidad: agua}
+         - {x: 22, y: 27, entidad: agua}
+         - {x: 22, y: 28, entidad: agua}  
          - {x: 20, y: 25, entidad: medieval} 
          - {x: 20, y: 16, entidad: fuente} 
          - {x: 3, y: 2, entidad: test1}
