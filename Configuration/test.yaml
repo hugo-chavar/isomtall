@@ -3,7 +3,7 @@ pantalla:
     - alto: xxxx
 
 configuracion: 
-    - vel_personaje: 0.098
+    - vel_personaje: 1
     - margen_scroll: 600
      
 entidades:
@@ -26,7 +26,7 @@ entidades:
       delay: 3000
 
     - nombre: test1		
-      imagen: ../Images/CapillaRoja0.png		
+      imagen: ../Images/Capilla Roja0.png		
       ancho_base: 5		
       alto_base: 5		
       pixel_ref_x: 196		
@@ -41,12 +41,21 @@ entidades:
       fps: 15
       delay: 3000
 
+    - nombre: watermill
+      imagen: ../Images/watermill/
+      ancho_base: 5
+      alto_base: 5 
+      pixel_ref_x: 124
+      pixel_ref_y: 106
+      fps: 15
+      delay: 0
+
     - nombre: bandera
       imagen: ../Images/bandera/
       ancho_base: 1
       alto_base: 1 
-      pixel_ref_x: 64
-      pixel_ref_y: 96
+      pixel_ref_x: 18
+      pixel_ref_y: 72
       fps: 30
       delay: 3000
 
@@ -94,7 +103,7 @@ entidades:
       imagen: path/a/imagen.png 
    
     - nombre: agua 
-      imagen: path/a/imagen.png 
+      imagen: ../Images/pisoAgua0.png 
 
     - nombre: piso2921 
       imagen: ../Images/piso2921.png
@@ -112,28 +121,30 @@ entidades:
        
 escenarios: 
     - nombre: bosque_encantado 
-      size_x: 60
-      size_y: 60 
+      size_x: 100
+      size_y: 100 
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
          - {x: 0, y: 41, entidad: piso041}
          - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
-         - {x: 10, y: 15, entidad: agua}
-         - {x: 11, y: 15, entidad: agua}
-         - {x: 0, y: 12, entidad: dado}
+         - {x: 50, y: 50, entidad: agua}
+         - {x: 50, y: 51, entidad: agua}
+         - {x: 50, y: 52, entidad: agua}
+         - {x: 51, y: 50, entidad: agua}
+         - {x: 51, y: 51, entidad: agua}
+         - {x: 51, y: 52, entidad: agua}
+         - {x: 0, y: 5, entidad: dado}
          - {x: 0, y: 12, entidad: televisor}
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra} 
          - {x: 10, y: 10, entidad: molino}
          - {x: 15, y: 15, entidad: bandera}
-         - {x: 20, y: 25, entidad: medieval}
-         - {x: 10, y: 1, entidad: caballo} 
+         - {x: 20, y: 25, entidad: medieval} 
          - {x: 20, y: 16, entidad: fuente} 
          - {x: 3, y: 2, entidad: test1}
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 20, entidad: piso2921}
-         - {x: 4, y: 8, entidad: personajedefault}
       protagonista: 
          - tipoEntidad: frodo
            x: 5 
