@@ -15,7 +15,7 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	ePot.second = 0;
 	serr = 0;
 
-	this->modelo->animation()->fps(this->modelo->animation()->fps() * static_cast<int>((this->modelo->getVelocidad() / 2)));
+	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
 
 void Personaje::loadSprites() {
