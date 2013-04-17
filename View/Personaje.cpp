@@ -167,36 +167,8 @@ void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
 		}
 
 	}
-	////Velocidad Relativa Vertical
-	//if ((delta.first == 0) && (delta.second != 0)) {
-	//	factor.second = velocidad/2;
-	//} else
-	////Velocidad Relativa Horizontal
-	//if ((delta.first != 0) && (delta.second == 0)) {
-	//	factor.first = velocidad;
-	//} else
-	////Velocidades Relativas Diagonal
-	//if ((delta.first != 0) && (delta.second != 0)) {
-	//	//factor.first = (float)(velocidad)*(0.707); //*(0.8944)multiplico x coseno de 26,565 grados
-	//	factor.first = static_cast<float>(velocidad *0.707); //*(0.8944)multiplico x coseno de 26,565 grados
-	//	factor.second = static_cast<float>(velocidad *0.707);//multiplico x coseno de 26,565 grados
-	//} else // No se Mueve //if ((delta.first == 0)&&(delta.second == 0))
-	//{
-	//	factor.first = 0;
-	//	factor.second = 0;
-	//}
 }
 
-void Personaje::agregarSprite(Sprite* sprite) {
-	if (sprites.empty()) {
-		spriteRect=posicionIsometricaPorTiles(tileActual.first, tileActual.second,sprite);
-		//spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-		spriteRect.w = static_cast<Uint16>(sprite->getFrameActual()->getSuperficie()->w);
-		//spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
-		spriteRect.h = static_cast<Uint16>(sprite->getFrameActual()->getSuperficie()->h);
-	}
-	sprites.push_back(sprite);
-}
 
 int Personaje::procesarAnimacion(int animacion) {
 	if ((animacion < MOVIMIENTO)||(animacion >= (MOVIMIENTO + FACTOR_ORIENTACION))) {
@@ -256,7 +228,6 @@ int Personaje::procesarAnimacion(int animacion) {
 					  }
 	default: return ERROR;
 	}
-	//return ERROR;
 }
 
 int Personaje::estadoModelo(int estado) {
@@ -279,7 +250,6 @@ int Personaje::estadoModelo(int estado) {
 	case WALK_O: return CAMINANDO_O;
 	default: return ERROR;
 	}
-	//return ERROR;
 }
 
 Personaje::~Personaje(){
