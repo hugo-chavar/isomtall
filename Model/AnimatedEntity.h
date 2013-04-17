@@ -26,6 +26,7 @@ public:
 	string nextDirectory();
 	void clearImages();
 	void copy(AnimatedEntity*);
+	bool hasNoDir();
 
 private:
 	int _fps;

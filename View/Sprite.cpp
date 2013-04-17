@@ -92,8 +92,13 @@ void Sprite::cargarFrames(DirList *imagesPaths)
 {
 	unsigned i = 0;
 	imagesPaths->restartCurrentPosition();
+	//if (imagesPaths->defaulted()){
+	//	frames[0]->cargar(imagesPaths->getDefault());
+	//	return;
+	//}
 	while (imagesPaths->hasNext()) {
 		frames.push_back(new Frame());
+		
 		frames[i]->cargar(imagesPaths->nextFullPath());
 		i++;
 	}

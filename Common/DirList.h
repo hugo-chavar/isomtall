@@ -34,7 +34,9 @@ private:
 	unsigned _countDir;
 	unsigned _currentPositionDir;
 	string directory;
+	string defaultim;
 	bool testExtension;
+	bool _defaulted;
 	string extension;
 public:
 	DirList();
@@ -43,7 +45,10 @@ public:
 	void setExtensionRequired(string);
 	bool hasNext();
 	bool hasNextDir();
+	void add(string);
 	string next();
+	string getDefault();
+	bool defaulted();
 	string nextFullPath();
 	string nextDir();
 	string nextFullPathDir();

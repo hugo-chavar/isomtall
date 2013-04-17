@@ -26,7 +26,11 @@ void AnimatedEntity::copy(AnimatedEntity* entity){
 }
 
 bool AnimatedEntity::hasNoImages() {
-	return _images.empty();
+	return _images.empty();// && (_images.emptyDir())
+}
+
+bool AnimatedEntity::hasNoDir() {
+	return _images.emptyDir();
 }
 
 bool AnimatedEntity::hasNextDir() {
@@ -57,7 +61,7 @@ void AnimatedEntity::loadImages(string imageDir) {
 	_images.clean();
 	_images.setExtensionRequired(IMAGES_EXTENSION);
 	if (this->_images.createFromDirectory(imageDir)) {
-		if (this->_images.empty())
+		if ((this->_images.empty())&&(this->_images.emptyDir()))
 			Logger::instance().log("Parser Error: No '.png' images found in the directory '"+imageDir+"'.");
 	}
 	else
