@@ -1,22 +1,15 @@
 #include "Entity.h"
 
 
-
-bool comparador (Entity* entity1, Entity* entity2) {
-	if ((entity1->order()) < (entity2->order())) {
-		return true;
-	}
-	return false;
-}
-
 Entity::Entity() {}
 
-Entity::Entity(int tileX,int tileY,Sprite* spriteCargado)//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely)
+Entity::Entity(int tileX,int tileY,Sprite* spriteCargado,int order)//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely)
 {
 	sprite= spriteCargado;
 	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
 	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
 	spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
+	orden=order;
 }
 
 SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite)
@@ -39,4 +32,9 @@ camera.render(spriteRect,sprite->getFrameActual()->getSuperficie());
 
 Entity::~Entity(void)
 {
+}
+
+int Entity::order()
+{
+	return orden;
 }
