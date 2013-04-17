@@ -2,8 +2,8 @@
 #include "Sprite.h"
 #include "AnimatedEntity.h"
 #include "DirList.h"
-#define ppty 32 //pixels por tile en y
-#define pptx 64 //pixels por tile en x
+//#define ppty 32 //pixels por tile en y
+//#define pptx 64 //pixels por tile en x
 
 
 Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty)
