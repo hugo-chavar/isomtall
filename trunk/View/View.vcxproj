@@ -75,6 +75,7 @@
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="SpriteAnimado.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="TileView.cpp" />
     <ClCompile Include="TimeManager.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Frame.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Sprite.h" />
+    <ClInclude Include="SpriteAnimado.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="TileView.h" />
     <ClInclude Include="Stage.h" />

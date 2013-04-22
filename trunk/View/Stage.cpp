@@ -75,7 +75,7 @@ bool view::Stage::initialize()
 		//enlazo Sprites con los nombres de las entidades animadas en el modelo
 		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
 		//genero los Sprites
-		spriteArray.push_back(new Sprite(entity));
+		spriteArray.push_back(new SpriteAnimado(entity));
 	}
 
 	entityList.resize(worldModel.width()*worldModel.height());

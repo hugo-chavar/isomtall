@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Game.h"
 #include "Personaje.h"
+#include "SpriteAnimado.h"
 #include <list>
 
 using namespace std;

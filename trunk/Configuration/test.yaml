@@ -3,7 +3,7 @@ pantalla:
     - alto: xxxx
 
 configuracion: 
-    - vel_personaje: 1.5
+    - vel_personaje: 2.5
     - margen_scroll: 600
      
 entidades:
@@ -91,6 +91,8 @@ entidades:
        
     - nombre: caballo
       imagen: ../Images/personajeCaballo/
+      pixel_ref_x: 74
+      pixel_ref_y: 80
       fps: 10 
 
     - nombre: caballoC

@@ -2,139 +2,57 @@
 #include "Sprite.h"
 #include "AnimatedEntity.h"
 #include "DirList.h"
-//#define ppty 32 //pixels por tile en y
-//#define pptx 64 //pixels por tile en x
-
-
-Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty)
-{
-	comienzo_frame = 0;
-	estado = 0;
-	delay = 0;
-	fps = 0;
-	relx = relatx;
-	rely = relaty;
-	nroFrames = nroFr;
-	cargarFrames(path, nombre, "png", nroFr);
-}
-
-Sprite::Sprite(std::string path,std::string nombre,int nroFr,int relatx,int relaty,float Delay,float Fps)
-{
-	comienzo_frame = SDL_GetTicks();
-	estado = 0;
-	delay = Delay;
-	fps = Fps;
-	relx = relatx;
-	rely = relaty;
-	nroFrames = nroFr;
-	cargarFrames(path,nombre,"png",nroFr);
-}
 
 Sprite::Sprite(EntityObject *entity)
 {
-	comienzo_frame = SDL_GetTicks();
-	estado = 0;
-	relx = entity->pixelRefX();
-	rely = entity->pixelRefY();
-	_baseWidth = entity->baseWidth();
-	_baseHeight = entity->baseHeight();
-	nroFrames = 1;
-	cargarFrames(entity->imagePath());
-	//usar herencia para resolver esto
-	delay = 0;
-	fps = 0;
+	this->inicializar(entity->pixelRefX(),entity->pixelRefY(),entity->baseWidth(),entity->baseHeight());
+	cargarFrame(entity);//->imagePath());
 }
 
-Sprite::Sprite(AnimatedEntity* entity)
+void Sprite::inicializar(int refX,int refY,int baseWidth,int baseHeight)
 {
-	comienzo_frame = SDL_GetTicks();
 	estado = 0;
-	delay = static_cast<float>(entity->delay()); 
-	fps = static_cast<float>(entity->fps());
-	relx = entity->pixelRefX();
-	rely = entity->pixelRefY();
-	_baseWidth = entity->baseWidth();
-	_baseHeight = entity->baseHeight();
-	this->cargarFrames(entity->imagesPaths());	
+	relx = refX;
+	rely = refY;
+	_baseWidth = baseWidth;
+	_baseHeight = baseHeight;
 }
 
-Sprite::~Sprite(void)
+Sprite::Sprite()
 {
-	for(unsigned i=0;i<nroFrames;i++)
+}
+
+Sprite::~Sprite()
+{
+	for(unsigned i=0;i<frames.size();i++)
 	{
 		frames[i]->liberar();
 		delete frames[i];
 	}
-
 }
 
 	
-void Sprite::cargarFrames(std::string path,std::string nombre,std::string formato,int nro)
-{
-	for (int i = 0; i < nro; i++)
-	{
-		std::stringstream string_num;
-		string_num << i;
-		std::string pathCompleto = path+nombre+string_num.str()+"."+formato;
-		frames.push_back(new Frame());
-		frames[i]->cargar(pathCompleto);
-	}
-}
+//void Sprite::cargarFrames(std::string path,std::string nombre,std::string formato,int nro)
+//{
+//	for (int i = 0; i < nro; i++)
+//	{
+//		std::stringstream string_num;
+//		string_num << i;
+//		std::string pathCompleto = path+nombre+string_num.str()+"."+formato;
+//		frames.push_back(new Frame());
+//		frames[i]->cargar(pathCompleto);
+//	}
+//}
 
-void Sprite::cargarFrames(std::string imagePath)
+void Sprite::cargarFrame(EntityObject * entity)
 {
 	frames.push_back(new Frame());
-	frames[0]->cargar(imagePath);
-	nroFrames = 1;
+	frames[0]->cargar(entity->imagePath());
 }
 
-void Sprite::cargarFrames(DirList *imagesPaths)
-{
-	unsigned i = 0;
-	imagesPaths->restartCurrentPosition();
-	//if (imagesPaths->defaulted()){
-	//	frames[0]->cargar(imagesPaths->getDefault());
-	//	return;
-	//}
-	while (imagesPaths->hasNext()) {
-		frames.push_back(new Frame());
-		
-		frames[i]->cargar(imagesPaths->nextFullPath());
-		i++;
-	}
-	nroFrames = imagesPaths->count();
-}
-
-bool Sprite::isAnimated(){
-	return (fps > 0);
-}
 
 void Sprite::actualizarFrame()
 {
-	if (!isAnimated())
-		return;
-	if(estado == 0)
-	{
-		if((SDL_GetTicks()-comienzo_frame)>=(1000/fps)+delay)
-			{
-				if(estado >= nroFrames-1)
-					estado = 0;
-				else
-					estado=estado++;
-				comienzo_frame=SDL_GetTicks();
-			}
-	}
-	else
-	{
-	if((SDL_GetTicks()-comienzo_frame) >= (1000/fps))
-		{
-		comienzo_frame=SDL_GetTicks();
-		if(estado >= nroFrames-1)
-			estado = 0;
-		else
-			estado = estado++;
-		}
-	}
 }
 
 Frame* Sprite::getFrameActual()
