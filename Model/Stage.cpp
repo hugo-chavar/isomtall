@@ -1,10 +1,8 @@
 #include "Stage.h"
 #include "Game.h"
 
-
 using namespace std;
 using namespace model;
-
 
 Stage::Stage(){
 }
@@ -116,6 +114,7 @@ void Stage::destino(int x,int y,float cameraX,float cameraY){
 	if(isInsideWorld(destino)) 
 		Game::instance().personaje()->setDestino(destino.first,destino.second);
 }
+
 
 void Stage::insertMainCharacter(PersonajeModelo* pm){
 	_vMainCharacters.push_back(pm);

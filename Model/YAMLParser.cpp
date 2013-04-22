@@ -783,7 +783,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		if (!animatedEntityType)
 			Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' not found.");
 		else {
-			if (animatedEntityType->imagesPaths()->countDir()==NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER) {
+			if (animatedEntityType->imagesPaths()->countDir() >= NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER) {
 				PersonajeModelo* mainCharacter = new PersonajeModelo();
 				mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
 				mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);

@@ -30,6 +30,8 @@ namespace model {
 		AnimatedEntity* animation();
 		int fps();
 		int delay();
+
+		void animar();
 	private:
 		int cambiarEstado(int x, int y, int cambio);
 		int comparadorOctario(int x, int y);

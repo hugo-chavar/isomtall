@@ -55,6 +55,15 @@
 #define CAMINANDO_E 26
 #define CAMINANDO_O 27
 
+//Animacion
+#define ANIMACION_N 30
+#define ANIMACION_NE 31
+#define ANIMACION_NOE 22
+#define ANIMACION_S 33
+#define ANIMACION_SE 34
+#define ANIMACION_SOE 35
+#define ANIMACION_E 36
+#define ANIMACION_O 37
 
 
 #endif
