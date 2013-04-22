@@ -75,22 +75,31 @@ void Personaje::update(){
 }
 
 void Personaje::mover(){
-	std::pair<int, int> tile;
-	tile.first = 0;
-	tile.second = 0;
-	int animacion = 0;
-	std::pair<float, float> factor;
+	std::pair<float, float> factor;	//Cuantos pixels se mueve por ciclo
 	factor.first = 0;
 	factor.second = 0;
-	float factorT = 0;
-	int estadoAc = estado;
+	
+
+	calcularSigTileAMover();
+	velocidadRelativa(factor);
+	if (estado != ERROR) {
+		sprites[estado]->actualizarFrame();
+		moverSprite(factor);
+	}
+}
+
+
+void Personaje::calcularSigTileAMover(){
+	int animacion = 0;	//animacion del personaje en el sistema de PersonajeModelo
+	std::pair<int, int> tile;	//Un tile
+	int estadoAnterior = estado;
 
 	if (this->isCenteredInTile()) {
 		serr = 0;
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
-		if (estadoAc != estado) {
+		if (estadoAnterior != estado) {
 			ePot.first = 0;
 			ePot.second = 0;
 		} 
@@ -98,68 +107,67 @@ void Personaje::mover(){
 			modelo->setCurrent(tile.first, tile.second);
 		}
 	}
-	velocidadRelativa(factor);
-	if (estado != ERROR) {
-		sprites[estado]->actualizarFrame();
-		if (delta.first != 0) {
-			if (delta.second != 0) {
-				serr++;
-			}
-			ePot.first = ePot.first + factor.first;
-			if (ePot.first >= 1) {
-				factorT = std::floor(ePot.first);
-				ePot.first -= factorT;
-				if (delta.first < 0) {
-					delta.first += factorT;
-					if (delta.first > 0) {
-						spriteRect.x -= (Sint16) (factorT - delta.first);
-						ePot.first += delta.first;
-						delta.first = 0;
-					} else {
-						spriteRect.x -= (Sint16) factorT;
-					}
+}
+
+void Personaje::moverSprite(std::pair<float, float>& factor){
+	float factorT = 0;	//El truncamiento de la variable factor
+	if (delta.first != 0) {
+		if (delta.second != 0) {
+			serr++;
+		}
+		ePot.first = ePot.first + factor.first;
+		if (ePot.first >= 1) {
+			factorT = std::floor(ePot.first);
+			ePot.first -= factorT;
+			if (delta.first < 0) {
+				delta.first += factorT;
+				if (delta.first > 0) {
+					spriteRect.x -= (Sint16) (factorT - delta.first);
+					ePot.first += delta.first;
+					delta.first = 0;
 				} else {
-					delta.first -= factorT;
-					if (delta.first < 0) {
-						spriteRect.x += (Sint16)(factorT + delta.first);
-						ePot.first -= delta.first;
-						delta.first = 0;
-					} else {
-						spriteRect.x += (Sint16)factorT;
-					}
+					spriteRect.x -= (Sint16) factorT;
+				}
+			} else {
+				delta.first -= factorT;
+				if (delta.first < 0) {
+					spriteRect.x += (Sint16)(factorT + delta.first);
+					ePot.first -= delta.first;
+					delta.first = 0;
+				} else {
+					spriteRect.x += (Sint16)factorT;
 				}
 			}
 		}
-		if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) {
-			serr = 0;
-			ePot.second = ePot.second + factor.second;
-			if (ePot.second >= 1) {
-				factorT = std::floor(ePot.second);
-				ePot.second -= factorT;
-				if (delta.second < 0) {
-					delta.second += factorT;
-					if (delta.second > 0) {
-						spriteRect.y -= (Sint16)(factorT - delta.second);
-						ePot.second += delta.second;
-						delta.second = 0;
-					} else {
-						spriteRect.y -= (Sint16)factorT;
-					}
+	}
+	if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) {
+		serr = 0;
+		ePot.second = ePot.second + factor.second;
+		if (ePot.second >= 1) {
+			factorT = std::floor(ePot.second);
+			ePot.second -= factorT;
+			if (delta.second < 0) {
+				delta.second += factorT;
+				if (delta.second > 0) {
+					spriteRect.y -= (Sint16)(factorT - delta.second);
+					ePot.second += delta.second;
+					delta.second = 0;
 				} else {
-					delta.second -= factorT;
-					if (delta.second < 0) {
-						spriteRect.y += (Sint16)(factorT + delta.second);
-						ePot.second -= delta.second;
-						delta.second = 0;
-					} else {
-						spriteRect.y += (Sint16)factorT;
-					}
+					spriteRect.y -= (Sint16)factorT;
+				}
+			} else {
+				delta.second -= factorT;
+				if (delta.second < 0) {
+					spriteRect.y += (Sint16)(factorT + delta.second);
+					ePot.second -= delta.second;
+					delta.second = 0;
+				} else {
+					spriteRect.y += (Sint16)factorT;
 				}
 			}
 		}
 	}
 }
-
 
 void Personaje::render(Camera& camera) {
 	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie());
@@ -246,28 +254,6 @@ int Personaje::procesarAnimacion(int animacion) {
 						delta.second = 0;
 						return WALK_E;
 					  }
-	default: return ERROR;
-	}
-}
-
-int Personaje::estadoModelo(int estado) {
-	switch(estado) {
-	case STOP_N: return PARADO_N;
-	case STOP_NE: return PARADO_NE;
-	case STOP_NOE: return PARADO_NOE;
-	case STOP_S: return PARADO_S;
-	case STOP_SE: return PARADO_SE;
-	case STOP_SOE: return PARADO_SOE;
-	case STOP_E: return PARADO_E;
-	case STOP_O: return PARADO_O;
-	case WALK_N: return CAMINANDO_N;
-	case WALK_NE: return CAMINANDO_NE;
-	case WALK_NOE: return CAMINANDO_NOE;
-	case WALK_S: return CAMINANDO_S;
-	case WALK_SE: return CAMINANDO_SE;
-	case WALK_SOE: return CAMINANDO_SOE;
-	case WALK_E: return CAMINANDO_E;
-	case WALK_O: return CAMINANDO_O;
 	default: return ERROR;
 	}
 }

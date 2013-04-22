@@ -47,7 +47,7 @@ int Engine::execute() {
 
 void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	SDL_WM_GrabInput(SDL_GRAB_ON);
+	//SDL_WM_GrabInput(SDL_GRAB_ON);
 
 	bool cameraInitialized = this->camera.initialize();
 	bool mapInitialized = false;
