@@ -25,10 +25,10 @@ public:
 	
 private:
 	int procesarAnimacion(int animacion);
-	int estadoModelo(int estado);
 	void velocidadRelativa(std::pair<float, float>& factor);
-	void resolverSerrucho();
 	void mover();
+	void calcularSigTileAMover();
+	void moverSprite(std::pair<float, float>& factor);
 	bool isCenteredInTile();
 	std::pair<int, int> tileActual;
 	model::PersonajeModelo* modelo;
