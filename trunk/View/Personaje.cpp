@@ -15,6 +15,8 @@ Personaje::Personaje(model::PersonajeModelo* pj) {
 	ePot.second = 0;
 	serr = 0;
 
+	gralStatus = 0;
+
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
 
@@ -57,7 +59,22 @@ void Personaje::addFirstSprite(AnimatedEntity* entity) {
 	spriteRect.h = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->h);
 }
 
+bool Personaje::isCenteredInTile(){
+	return ((delta.first == 0) && (delta.second == 0));
+}
+
 void Personaje::update(){
+	if (gralStatus == 0){ // mover gralStatus al modelo // modelo->moviendose();
+		this->mover();
+	} else {
+		if (this->isCenteredInTile()) {
+			//this->animate(); //
+		}
+
+	}
+}
+
+void Personaje::mover(){
 	std::pair<int, int> tile;
 	tile.first = 0;
 	tile.second = 0;
@@ -68,7 +85,7 @@ void Personaje::update(){
 	float factorT = 0;
 	int estadoAc = estado;
 
-	if (((delta.first) == 0)&&((delta.second) == 0)) {
+	if (this->isCenteredInTile()) {
 		serr = 0;
 		modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);

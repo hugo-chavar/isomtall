@@ -80,18 +80,25 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			break;
 		}
 		case SDL_KEYDOWN: {
-			switch(sdlEvent->key.keysym.sym) {
-				case SDLK_ESCAPE: {
+			switch(sdlEvent->key.keysym.sym)
+			{
+			case SDLK_ESCAPE: 
+				{
 					running = false;
 					break;
 				}
+			case SDLK_w:
+				{
+					Game::instance().personaje()->animar();
+					break;
+				}
+			default:
+				break;
 			}
-			break;
 		}
 		case SDL_MOUSEBUTTONDOWN: {
             switch(sdlEvent->button.button) {
                 case SDL_BUTTON_LEFT: {
-
 					Game::instance().world().
 						destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
                     //TODO: add event handling;
