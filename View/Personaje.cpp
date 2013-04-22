@@ -36,7 +36,7 @@ void Personaje::loadSprites() {
 }
 
 void Personaje::clearSprites() {
-	vector<Sprite*>::iterator it;
+	vector<SpriteAnimado*>::iterator it;
 	for (it = sprites.begin(); it != sprites.end(); it++){
 		delete *it;
 	}
@@ -45,12 +45,12 @@ void Personaje::clearSprites() {
 }
 
 void Personaje::addNextSprite(AnimatedEntity* entity) {
-	Sprite* newSprite = new Sprite(entity);
+	SpriteAnimado* newSprite = new SpriteAnimado(entity);
 	sprites.push_back(newSprite);
 }
 
 void Personaje::addFirstSprite(AnimatedEntity* entity) {
-	Sprite* newSprite = new Sprite(entity);
+	SpriteAnimado* newSprite = new SpriteAnimado(entity);
 	sprites.push_back(newSprite);
 	spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
 	spriteRect.w = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->w);

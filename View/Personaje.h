@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Sprite.h"
+#include "SpriteAnimado.h"
 #include "PersonajeModelo.h"
 #include "Entity.h"
 
@@ -29,7 +30,7 @@ private:
 
 	std::pair<int, int> tileActual;
 	model::PersonajeModelo* modelo;
-	std::vector<Sprite*> sprites;
+	std::vector<SpriteAnimado*> sprites;
 	float velocidad;
 	int estado;
 	std::pair<float, float> delta;
