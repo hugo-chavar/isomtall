@@ -23,18 +23,23 @@ DirList::DirList() {
 DirList::~DirList() {
 }
 
-void  DirList::add(string dir){
-	defaultim = dir;
+void  DirList::addFile(string filename){
+	files.push_back(filename);
+	_count++;
+}
+
+void  DirList::addDir(string dirname){
+	directories.push_back(dirname);
+	_countDir++;
+}
+
+void  DirList::loadFromDir(string dir){
+	DirList aux;
+	aux.createFromDirectory(dir);
+	while (aux.hasNext()){
+		this->addFile(aux.nextFullPath());
+	}
 	_defaulted = true;
-
-}
-
-bool DirList::defaulted()
-{return _defaulted;
-}
-
-string  DirList::getDefault(){
-	return defaultim;
 
 }
 
@@ -74,13 +79,12 @@ bool DirList::createFromDirectory(string dir) {
 			// saltear carpeta raiz (..) y actual (.)
 			if ( strcmp(findData.cFileName,".") && strcmp(findData.cFileName,"..") ) 
 			{
-				directories.push_back(filepath1); // es subdirectorio
-				_countDir++;
+				this->addDir(filepath1); // es subdirectorio
 			}
 		} else { //es archivo
 			if (!(testExtension)||(filepath1.find(extension)!=string::npos)){
-				files.push_back(filepath1);
-				_count++;
+				this->addFile(filepath1);
+				
 			}
 		}
 
@@ -174,6 +178,9 @@ bool DirList::empty() {
 }
 
 string DirList::nextFullPath() {
+	if ( _defaulted ){
+		return this->next();
+	}
 	string sigte = directory + (*iterador);
 	iterador++;
 	_currentPosition++;

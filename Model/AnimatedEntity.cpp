@@ -58,7 +58,7 @@ void AnimatedEntity::delay(int value)
 }
 
 void AnimatedEntity::loadImages(string imageDir) {
-	_images.clean();
+	this->clearImages();
 	_images.setExtensionRequired(IMAGES_EXTENSION);
 	if (this->_images.createFromDirectory(imageDir)) {
 		if ((this->_images.empty())&&(this->_images.emptyDir()))

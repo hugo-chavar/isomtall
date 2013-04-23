@@ -307,7 +307,7 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 				animatedEntity->loadImages(imageDir);
 			} 
 			if (animatedEntity->hasNoImages()){
-				animatedEntity->imagesPaths()->add(ERROR_IMAGE); //TODO:corregir
+				animatedEntity->imagesPaths()->loadFromDir(DEFAULT_ANIMATED_DIR);
 			}
 		}
 		else {
