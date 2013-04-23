@@ -141,6 +141,7 @@ escenarios:
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
          - {x: 0, y: 41, entidad: piso041}
+         - {x: 8, y: 8, entidad: caballo}
          - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 50, y: 50, entidad: agua}

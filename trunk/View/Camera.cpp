@@ -1,7 +1,7 @@
 #include <cmath>
 #include "Game.h"
 #include "Camera.h"
-#include "World.h"
+#include "Stage.h"
 #include "TimeManager.h"
 
 using namespace view;

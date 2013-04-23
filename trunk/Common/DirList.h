@@ -12,14 +12,9 @@
 #include <string>
 #include <list>
 
-//#include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 
-//#include "dirent.h"
-
-//#include "Archivo.h"
-//#include "TermFile.h"
 
 using namespace std;
 
@@ -34,7 +29,6 @@ private:
 	unsigned _countDir;
 	unsigned _currentPositionDir;
 	string directory;
-	string defaultim;
 	bool testExtension;
 	bool _defaulted;
 	string extension;
@@ -45,7 +39,9 @@ public:
 	void setExtensionRequired(string);
 	bool hasNext();
 	bool hasNextDir();
-	void add(string);
+	void addFile(string);
+	void addDir(string);
+	void loadFromDir(string);
 	string next();
 	string getDefault();
 	bool defaulted();
