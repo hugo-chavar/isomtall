@@ -1,6 +1,3 @@
-//Representación del personaje en el modelo
-
-
 #ifndef PERSONAJEMODELO_H
 #define PERSONAJEMODELO_H
 
@@ -14,7 +11,7 @@ namespace model {
 
 	public:
 		PersonajeModelo();
-		PersonajeModelo(int ActualX, int ActualY);//, int estado, float velocidad, MainCharacter *datosPersonaje
+		PersonajeModelo(int ActualX, int ActualY);
 		void setEstado(int state);
 		void setCurrent(int x, int y);
 		void setDestino(int x, int y);

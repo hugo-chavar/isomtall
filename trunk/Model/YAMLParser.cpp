@@ -19,10 +19,13 @@ YAMLParser::~YAMLParser() {
 	for (unsigned i=0; i<entities.vAnimatedEntities.size(); i++)
 		delete entities.vAnimatedEntities[i];
 	entities.vAnimatedEntities.clear();
-	for (unsigned i=0; i<stages.vStages_aux.size(); i++){
-		for (unsigned j=0; j<stages.vStages_aux[i].vMainCharacters.size(); j++)
-			delete stages.vStages_aux[i].vMainCharacters[j];
+	for (unsigned i=0; i < stages.vStages.size(); i++){
+		stages.vStages[i].clearStage();
+		stages.vStages_aux[i].vEntitiesDef.clear();
 		stages.vStages_aux[i].vMainCharacters.clear();
+		stages.vStages_aux[i].vMainCharacters_aux.clear();
+		stages.vStages.clear();
+		stages.vStages_aux.clear();
 	}
 }
 

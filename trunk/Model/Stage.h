@@ -17,16 +17,19 @@ namespace model{
 		Stage();
 		Stage(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, map <KeyPair, EntityObject*> *entityMap, vector <PersonajeModelo*> vMainCharacters): 
 		_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _entityMap(entityMap), _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; };
-		unsigned int width(); 
-		unsigned int height();
-		string name(); 
+		Stage(const Stage&);
+		Stage& operator=(const Stage&);
+		unsigned int width() const; 
+		unsigned int height() const;
+		string name() const; 
 		vector <EntityDef> vEntitiesDef();
 		vector <PersonajeModelo*>* vMainCharacters(); 
 		map <KeyPair, EntityObject*> *entityMap();
 		void width(unsigned int); 
 		void height(unsigned int);
-		unsigned int tileWidth(); 
-		unsigned int tileHeight();
+		void name(string);
+		unsigned int tileWidth() const; 
+		unsigned int tileHeight() const;
 		void tileWidth(unsigned int);
 		void tileHeight(unsigned int);
 		//void addTile(unsigned int, unsigned int, Tile*);
@@ -37,10 +40,11 @@ namespace model{
 		bool isInsideWorld(std::pair<int,int> tileCoordinates);
 		void destino(int x,int y,float cameraX,float cameraY);
 
-		float mainCharacter_speed();
+		float mainCharacter_speed() const;
 		void mainCharacter_speed(float value);
 		PersonajeModelo* modelMainCharacters(unsigned);
 		void insertMainCharacter(PersonajeModelo*);
+		void clearStage();
 	private:
 		string _name;
 		unsigned int _width;

@@ -11,7 +11,6 @@ int main(int argc, char *argv[]) {
 	Logger::instance().log("Iniciando el juego..");
     Engine engine;
 	Game::instance().initialize();
-	
  
 	return engine.execute();
 }

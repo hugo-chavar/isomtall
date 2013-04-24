@@ -19,8 +19,8 @@ struct EntLists {
 	vector <AnimatedEntity*> vAnimatedEntities;
 
 	const EntLists& operator=(const EntLists& l){
-		vEntitiesObject = l.vEntitiesObject;
-		vAnimatedEntities = l.vAnimatedEntities;
+		vEntitiesObject.assign(l.vEntitiesObject.begin(),l.vEntitiesObject.end());
+		vAnimatedEntities.assign(l.vAnimatedEntities.begin(),l.vAnimatedEntities.end());
 		return *this;
 	}
 

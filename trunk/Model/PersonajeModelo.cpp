@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include "Logger.h"
 #include "PersonajeModelo.h"
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
@@ -14,6 +15,8 @@
 #define OESTE 7
 
 using namespace model;
+using namespace common;
+
 
 PersonajeModelo::PersonajeModelo() {
 	current.first = DEFAULT_MAIN_CHARACTER_X;

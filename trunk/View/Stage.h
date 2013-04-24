@@ -33,14 +33,9 @@ namespace view {
 	public:
 		Stage();
 
-		//model::World worldModel;
-
 		void update(); 
-		// model::World worldModel; se reemplaza por Stage
-		model::Stage worldModel;
-		
+		model::Stage worldModel; //TODO: guardar una referencia?
 
-		//TODO: the camera should be retrieved from the model.
 		void render(Camera& camera);
 
 		void addTile(TileView* tile);
