@@ -145,7 +145,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	if (posMov < caminoSize) {
 		destino.first = xPath[posMov];
 		destino.second = yPath[posMov];
-		coste = Game::instance().world().cost(xPath[posMov], yPath[posMov]);
+		coste = (Game::instance().world())->cost(xPath[posMov], yPath[posMov]);
 		costeF = (float) coste;
 		velocidad = ((this->velocidad)*costeF);
 		posMov++;

@@ -34,7 +34,7 @@ namespace view {
 		Stage();
 
 		void update(); 
-		model::Stage worldModel; //TODO: guardar una referencia?
+		model::Stage* worldModel; //TODO: guardar una referencia?
 
 		void render(Camera& camera);
 

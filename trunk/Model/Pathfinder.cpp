@@ -87,8 +87,8 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 	unsigned int GCost = 0;
 	unsigned int HCost = 0;
 
-	alto = Game::instance().world().height();
-	ancho = Game::instance().world().width();
+	alto = (Game::instance().world())->height();
+	ancho = (Game::instance().world())->width();
 	actual.getPos(actualX, actualY);
 	explorarX = explorarX + actualX;
 	explorarY = actualY + explorarY;
@@ -108,7 +108,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			continue;
 		}
-		coste = Game::instance().world().cost(explorarX, explorarY);
+		coste = (Game::instance().world())->cost(explorarX, explorarY);
 		if (coste == 0) {
 			continue;
 		}

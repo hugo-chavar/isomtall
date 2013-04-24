@@ -94,9 +94,9 @@ void Camera::update() {
 
 	if (x > static_cast<int>(this->getWidth() - this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getWidth() - x)) / this->getScrollBoxSize();
-		newOffset = this->getOffsetX() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
-		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
-		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
+		newOffset = this->getOffsetX() + this->getScrollSpeed() * (Game::instance().time())->getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
+		if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
@@ -104,9 +104,9 @@ void Camera::update() {
 
 	if (x < static_cast<int>(this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - x) / this->getScrollBoxSize();
-		newOffset = this->getOffsetX() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
-		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
-				if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
+		newOffset = this->getOffsetX() - this->getScrollSpeed() * (Game::instance().time())->getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
+				if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
@@ -114,9 +114,9 @@ void Camera::update() {
 
 	if (y > static_cast<int>(this->getHeight() - this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getHeight() - y)) / this->getScrollBoxSize();
-		newOffset = this->getOffsetY() + this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
-		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
-		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
+		newOffset = this->getOffsetY() + this->getScrollSpeed() * (Game::instance().time())->getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
+		if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
@@ -124,9 +124,9 @@ void Camera::update() {
 
 	if (y < static_cast<int>(this->getScrollBoxSize())) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - y) / this->getScrollBoxSize();
-		newOffset = this->getOffsetY() - this->getScrollSpeed() * Game::instance().time().getDeltaTime() * scrollFactor;
-		cameraCenterInTiles = Game::instance().world().pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
-		if (!Game::instance().world().isInsideWorld(cameraCenterInTiles)) {
+		newOffset = this->getOffsetY() - this->getScrollSpeed() * (Game::instance().time())->getDeltaTime() * scrollFactor;
+		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
+		if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetY();
 		}
 		this->setOffsetY(newOffset);
