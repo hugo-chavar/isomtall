@@ -259,11 +259,13 @@ int Personaje::procesarAnimacion(int animacion) {
 }
 
 Personaje::~Personaje(){
-	clearSprites();
+	if (sprites.size() > 0)
+		clearSprites();
 }
 
-model::PersonajeModelo* Personaje::personajeModelo()
-{return modelo;}
+model::PersonajeModelo* Personaje::personajeModelo(){
+	return modelo;
+}
 
 std::pair<int,int> Personaje::posicion()
 {

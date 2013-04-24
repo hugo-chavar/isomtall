@@ -69,7 +69,6 @@ PersonajeModelo * Game::personaje()
 {
 	if (this->_personaje){
 		return this->_personaje;
-		//string a = this->_personaje.animation
 	}
 	Logger::instance().nullPointer("function PersonajeModelo * Game::personaje");
 	return NULL;

@@ -29,11 +29,12 @@ bool comparador (Entity* entity1, Entity* entity2) {
 
 
 view::Stage::Stage() {
+	_personaje = NULL;
 }
 
 
 view::Stage::~Stage() {
-		for (unsigned int i = 0; i < spriteArray.size(); i++)
+	for (unsigned int i = 0; i < spriteArray.size(); i++)
 	{
 		delete spriteArray[i];
 	}
@@ -42,11 +43,17 @@ view::Stage::~Stage() {
 	{
 		for (unsigned i=0;i<entityList[j].size();i++)
 		{
-						delete(entityList[j][i]);
+			delete(entityList[j][i]);
 		}
+		entityList[j].clear();
 	}
-	_personaje->clearSprites();
-	delete _personaje;
+	spriteArray.clear();
+	entityList.clear();
+	if (_personaje){
+		delete _personaje;
+		_personaje = NULL;
+	}
+	
 }
 
 void view::Stage::addTile(TileView* tile) {
