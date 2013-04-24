@@ -19,8 +19,8 @@ namespace model
 		~Game();
 
 		static Game& instance();
-		Stage& world();
-		TimeManager& time();
+		Stage* world();
+		TimeManager* time();
 		void initialize();
 		EntLists allEntities;
 		YAMLParser yParser;

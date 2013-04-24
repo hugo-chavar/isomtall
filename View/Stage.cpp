@@ -63,6 +63,7 @@ void view::Stage::addTile(TileView* tile) {
 bool view::Stage::initialize()
 {
 	worldModel = Game::instance().world();
+
 	//carga de sprites estaticos
 	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
 	
@@ -85,28 +86,28 @@ bool view::Stage::initialize()
 		spriteArray.push_back(new SpriteAnimado(entity));
 	}
 
-	entityList.resize(worldModel.width()*worldModel.height());
+	entityList.resize((worldModel->width())*(worldModel->height()));
 	
 	//Carga del piso x default
 	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
-	unsigned w = Game::instance().world().width();
-	unsigned h = Game::instance().world().height();
+	unsigned w = (Game::instance().world())->width();
+	unsigned h = (Game::instance().world())->height();
 
 	for(unsigned i=0; i < w; i++){ 
 		for(unsigned j=0; j < h; j++){
-			entityList[i+j*worldModel.width()].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
+			entityList[i+j*(worldModel->width())].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
 		}
 	}
 
 	//genero entidades de la vista estaticas
-	vector <EntityDef> vEntitiesDef = worldModel.vEntitiesDef();
+	vector <EntityDef> vEntitiesDef = worldModel->vEntitiesDef();
 	unsigned defCount = vEntitiesDef.size();
 	int posSpriteEntity;
 	for (unsigned a = 0; a < defCount; a++){
 		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];
 		int baseh=spriteArray[posSpriteEntity]->baseHeight();
 		int basew=spriteArray[posSpriteEntity]->baseWidth();
-		int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*worldModel.width();
+		int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*(worldModel->width());
 		entityList[posArray].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity],int(a)));
 
 	}
@@ -139,7 +140,7 @@ void view::Stage::render(Camera& camera) {
 
 	unsigned int horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH));
 	unsigned int verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT));
-	std::pair<int,int> cameraReferenceTile = this->worldModel.pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
 	int Xt = 0;
 	int Yt = 0;
 
@@ -155,13 +156,13 @@ void view::Stage::render(Camera& camera) {
 			Yt = cameraReferenceTile.second + i;
 			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
 	
-				int indice=Xt+Yt*worldModel.width();
-				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+				int indice=Xt+Yt*(worldModel->width());
+				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
 				{
 						entityList[indice][0]->render(camera);	
 				}
 				indice++;
-				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
 				{
 						entityList[indice][0]->render(camera);
 				}
@@ -177,8 +178,8 @@ void view::Stage::render(Camera& camera) {
 			Yt = cameraReferenceTile.second + i;
 			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
 	
-				int indice=Xt+Yt*worldModel.width();
-				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+				int indice=Xt+Yt*(worldModel->width());
+				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
 				{
 				for(unsigned l=1;l<entityList[indice].size();l++)
 				{
@@ -187,7 +188,7 @@ void view::Stage::render(Camera& camera) {
 				}
 				}
 				indice++;
-				if (this->worldModel.isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
 				{
 				for(unsigned l=1;l<entityList[indice].size();l++)
 				{

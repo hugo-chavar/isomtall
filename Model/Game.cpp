@@ -1,17 +1,12 @@
 #include "Game.h"
 #include "Constants.h"
 
-
-#define PATH "test.yaml"
-
-
 using namespace model;
 
 Game::Game()
 {
    
 }
-
 
 Game::~Game()
 {
@@ -23,13 +18,13 @@ Game& Game::instance()
 	return singleton;
 }
 
-Stage& Game::world()
+Stage* Game::world()
 {
-	return _world;
+	return &_world;
 }
 
-TimeManager& Game::time() {
-	return this->_time;
+TimeManager* Game::time() {
+	return &_time;
 }
 
 void Game::initialize()
