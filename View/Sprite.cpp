@@ -31,19 +31,6 @@ Sprite::~Sprite()
 	}
 }
 
-	
-//void Sprite::cargarFrames(std::string path,std::string nombre,std::string formato,int nro)
-//{
-//	for (int i = 0; i < nro; i++)
-//	{
-//		std::stringstream string_num;
-//		string_num << i;
-//		std::string pathCompleto = path+nombre+string_num.str()+"."+formato;
-//		frames.push_back(new Frame());
-//		frames[i]->cargar(pathCompleto);
-//	}
-//}
-
 void Sprite::cargarFrame(EntityObject * entity)
 {
 	frames.push_back(new Frame());
@@ -74,6 +61,7 @@ int Sprite::baseWidth()
 {
 	return _baseWidth;
 }
+
 int Sprite::baseHeight()
 {
 	return _baseHeight;

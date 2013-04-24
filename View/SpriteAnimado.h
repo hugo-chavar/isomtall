@@ -9,6 +9,8 @@ private:
 	float fps;
 	int comienzo_frame;
 	void cargarFrames(AnimatedEntity * entity);
+	void avanzarFrames();
+	bool tiempoFrameCumplido(float delta);
 
 public:
 	void actualizarFrame();
