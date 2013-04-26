@@ -20,7 +20,6 @@ Stage::Stage(const Stage &origStage){
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
 	this->_entityMap = origStage._entityMap;
-	this->_mainCharacter_speed = origStage._mainCharacter_speed;
 }
 
 Stage& Stage::operator=(const Stage &origStage){
@@ -33,7 +32,6 @@ Stage& Stage::operator=(const Stage &origStage){
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
 	this->_entityMap = origStage._entityMap;
-	this->_mainCharacter_speed = origStage._mainCharacter_speed;
 	return *this;
 }
 
@@ -89,23 +87,6 @@ void Stage::tileWidth(unsigned int value){
 void Stage::name(string value){
 	_name = value;
 }
-
-float Stage::mainCharacter_speed()  const{
-	return _mainCharacter_speed;
-}
-
-void Stage::mainCharacter_speed(float value) {
-	if ((value >= MIN_MAIN_CHARACTER_SPEED) && (value <= MAX_MAIN_CHARACTER_SPEED)){
-		_mainCharacter_speed = value;
-	} else if (value > float(MAX_MAIN_CHARACTER_SPEED)) {
-		Logger::instance().log("Game warning: Field 'vel_personaje' is too high, setted to maximun.");
-		_mainCharacter_speed = float(MAX_MAIN_CHARACTER_SPEED);
-	} else {
-		Logger::instance().log("Game warning: Field 'vel_personaje' is too low, setted to minimun.");
-		_mainCharacter_speed = float(MIN_MAIN_CHARACTER_SPEED);
-	}
-}
-
 
 unsigned int Stage::cost(unsigned int x, unsigned int y){
 	return 1;

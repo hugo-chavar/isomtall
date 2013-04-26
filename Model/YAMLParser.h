@@ -14,7 +14,6 @@
 #include "Stage.h"
 #include "DirList.h"
 #include "PersonajeModelo.h"
-#include "CameraModel.h"
 #include "Configuration.h"
 
 using namespace std;
@@ -77,7 +76,6 @@ class YAMLParser {
 
 private:
 	Screen screen;
-	CameraModel* camera;
 	Configuration * config;
 	Config configuration;
 	EntLists entities;
@@ -108,7 +106,7 @@ public:
 
 	//conexion con el modelo logico
 	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
-	CameraModel* cameraModel();
+	Configuration* getConfig();
 
 };
 

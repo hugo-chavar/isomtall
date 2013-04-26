@@ -9,6 +9,7 @@ Configuration::Configuration(){
 	_cameraHeight = DEFAULT_SCREEN_HEIGHT;
 	_serverPort = DEFAULT_SERVER_PORT;
 	_visionRange = DEFAULT_VISION_RANGE;
+	_mainCharacterSpeed = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
 Configuration::~Configuration(){
@@ -86,6 +87,22 @@ void Configuration::visionRange(int value){
 	} else {
 		Logger::instance().log("Game warning: Field 'vision personaje' is not valid, defaulted.");
 		
+	}
+}
+
+float Configuration::mainCharacterSpeed(){
+	return _mainCharacterSpeed;
+}
+
+void Configuration::mainCharacterSpeed(float value){
+	if ((value >= MIN_MAIN_CHARACTER_SPEED) && (value <= MAX_MAIN_CHARACTER_SPEED)){
+		_mainCharacterSpeed = value;
+	} else if (value > float(MAX_MAIN_CHARACTER_SPEED)) {
+		Logger::instance().log("Game warning: Field 'vel_personaje' is too high, setted to maximun.");
+		_mainCharacterSpeed = float(MAX_MAIN_CHARACTER_SPEED);
+	} else {
+		Logger::instance().log("Game warning: Field 'vel_personaje' is too low, setted to minimun.");
+		_mainCharacterSpeed = float(MIN_MAIN_CHARACTER_SPEED);
 	}
 }
 

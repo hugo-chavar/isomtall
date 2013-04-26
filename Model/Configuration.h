@@ -24,6 +24,8 @@ namespace model
 		void serverPort(int);
 		unsigned int visionRange();
 		void visionRange(int);
+		float mainCharacterSpeed();
+		void mainCharacterSpeed(float value);
 	private:
 		unsigned int _serverPort;
 		unsigned int _cameraWidth;
@@ -31,6 +33,7 @@ namespace model
 		unsigned int _cameraMarginScroll;
 		unsigned int _cameraScrollSpeed;
 		unsigned int _visionRange;
+		float _mainCharacterSpeed;
 	};
 
 	
