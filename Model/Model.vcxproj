@@ -68,6 +68,7 @@
   <ItemGroup>
     <ClCompile Include="AnimatedEntity.cpp" />
     <ClCompile Include="CameraModel.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="ListaPath.cpp" />
@@ -82,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="AnimatedEntity.h" />
     <ClInclude Include="CameraModel.h" />
+    <ClInclude Include="Configuration.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="EntityObject.h" />

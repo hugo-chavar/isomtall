@@ -75,3 +75,10 @@ CameraModel* Game::cameraModel(){
 	Logger::instance().nullPointer("function CameraModel* Game::cameraModel");
 	return NULL;
 }
+
+Configuration* Game::configuration(){
+	if (_configuration)
+			return _configuration;
+	Logger::instance().nullPointer("Configuration* Game::configuration");
+	return NULL;
+}
