@@ -27,23 +27,26 @@ TimeManager* Game::time() {
 	return &_time;
 }
 
-void Game::initialize()
+bool Game::initialize()
 {
 	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
-	_cameraModel = yParser.cameraModel();
+	_configuration = yParser.getConfig();
 	//selecciono el primero del primer stage
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
-	_personaje->setVelocidad(_world.mainCharacter_speed());
+
+	//si hubieron problemas salgo
+	if( (!_configuration) || (!_personaje) )
+		return false;
+
+	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
 
 	this->_time.initializeTime();
-	
-
+	return true;
 }
-
 
 EntityObject* Game::entityObjectAt(unsigned pos) {
 	if (allEntities.vEntitiesObject.size() > pos)
@@ -66,13 +69,6 @@ PersonajeModelo * Game::personaje()
 		return this->_personaje;
 	}
 	Logger::instance().nullPointer("function PersonajeModelo * Game::personaje");
-	return NULL;
-}
-
-CameraModel* Game::cameraModel(){
-	if (_cameraModel)
-			return _cameraModel;
-	Logger::instance().nullPointer("function CameraModel* Game::cameraModel");
 	return NULL;
 }
 

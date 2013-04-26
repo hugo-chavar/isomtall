@@ -10,9 +10,6 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
-	if (camera)
-		delete camera;
-
 	if (config)
 		delete config;
 
@@ -50,15 +47,10 @@ bool managePositiveIntCase(const Node& node, int &result, string context, string
 		}
 		return false;
 	} catch (InvalidScalar) {
-		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){  //fuerzo el valor x default
 			result = defaultValue;
 			if (force == YES_IGNORE_LOG)
 				return true;
-			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive integer");
-			return true;
-		}
-		if (force == ONLY_INVALID){
-			result = defaultValue;
 			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive integer");
 			return true;
 		}
@@ -89,15 +81,10 @@ bool managePositiveFloatCase(const Node& node, float &result, string context, st
 		}
 		return false;
 	} catch (InvalidScalar) {
-		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){  //fuerzo el valor x default
 			result = defaultValue;
 			if (force == YES_IGNORE_LOG)
 				return true;
-			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive float");
-			return true;
-		}
-		if (force == ONLY_INVALID){
-			result = defaultValue;
 			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive float");
 			return true;
 		}
@@ -117,7 +104,6 @@ void operator >> (const Node& node, Screen& screen) {
 	bool widthFound = false, heightFound = false;
 
 	for(unsigned int i=0; i<node.size(); i++) {
-		//screen.width
 		if (!widthFound) {
 			widthFound = managePositiveIntCase(node[i],screen.width, "pantalla","","ancho", DEFAULT_SCREEN_WIDTH, ONLY_INVALID);
 		}
@@ -170,8 +156,8 @@ void operator >> (const Node& node, Screen& screen) {
 
 void operator >> (const Node& node, Config& configuration) {
 	string field;
-	bool mainCharacterSpeedFound = false, scrollMarginFound = false;
-
+	bool mainCharacterSpeedFound = false, scrollMarginFound = false, visionRangeFound = false, serverPortFound = false;
+	
 	for(unsigned int i=0; i<node.size(); i++) {
 		if (! mainCharacterSpeedFound){
 			mainCharacterSpeedFound = managePositiveFloatCase(node[i],configuration.main_character_speed,"configuracion","","vel_personaje",DEFAULT_MAIN_CHARACTER_SPEED, ONLY_INVALID);
@@ -192,6 +178,12 @@ void operator >> (const Node& node, Config& configuration) {
 		//catch (Exception& parserException ) {
 		//	Logger::instance().logUnexpected(parserException.what());
 		//};
+		if (!visionRangeFound){
+			visionRangeFound = managePositiveIntCase(node[i], configuration.vision_range,"configuracion", "","vision_personaje",DEFAULT_VISION_RANGE, ONLY_INVALID);
+		}
+		if (!serverPortFound){
+			serverPortFound = managePositiveIntCase(node[i], configuration.port,"configuracion", "","puerto_servidor",DEFAULT_SERVER_PORT, ONLY_INVALID);
+		}
 		if (!scrollMarginFound){
 			scrollMarginFound = managePositiveIntCase(node[i], configuration.scroll_margin,"configuracion", "","margen_scroll",DEFAULT_SCROLL_MARGIN, ONLY_INVALID);
 		}
@@ -221,6 +213,16 @@ void operator >> (const Node& node, Config& configuration) {
 		Logger::instance().logFieldNotDefined("configuración", "margen_scroll", "");
 		configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 	}
+
+	if (!visionRangeFound){
+		Logger::instance().logFieldNotDefined("configuración", "vision_personaje", "");
+		configuration.vision_range = DEFAULT_VISION_RANGE;
+	}
+	if (!serverPortFound){
+		Logger::instance().logFieldNotDefined("configuración", "puerto_servidor", "");
+		configuration.port = DEFAULT_SERVER_PORT;
+	}
+
 }
 
 bool isNotDirectory(string file){
@@ -750,11 +752,11 @@ void operator >> (const Node& node, sStage& stage) {
 	};
 	try {
 		const Node& node_aux = node["protagonista"];
-		for(unsigned int i=0; i<node_aux.size(); i++) {
+		for( unsigned int i=0 ; i < node_aux.size(); i++) {
 			sMainCharacter mainCharacter;
 			node_aux[i] >> mainCharacter;
-			if (mainCharacter.entityType.size()>0) {
-				if ((mainCharacter.x>=stage.size_x) || (mainCharacter.y>=stage.size_y)) {
+			if ( mainCharacter.entityType.size() > 0 ) {
+				if ((mainCharacter.x >= stage.size_x) || (mainCharacter.y >= stage.size_y)) {
 					Logger::instance().log("Parser Error: Main character '"+mainCharacter.entityType+"''s position is out of map range.");
 					mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
 					mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
@@ -769,10 +771,10 @@ void operator >> (const Node& node, sStage& stage) {
 }
 
 void operator >> (const Node& node, Stages& stages) {
-	for(unsigned int i=0; i<node.size(); i++) {
+	for(unsigned int i=0; i < node.size(); i++) {
 		sStage stage;
 		node[i] >> stage;
-		if (stage.name.size()>0) // Si tiene nombre se guarda.
+		if (stage.name.size() > 0) // Si tiene nombre se guarda.
 			stages.vStages_aux.push_back(stage);
 		else {
 			string str_i = static_cast<std::ostringstream*>(&(ostringstream() << i+1))->str();
@@ -785,6 +787,8 @@ Config YAMLParser::generateDefaultConfiguration() {
 	Config configuration;
 	configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 	configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
+	configuration.port = DEFAULT_SERVER_PORT;
+	configuration.vision_range = DEFAULT_VISION_RANGE;
 	return configuration;
 }
 
@@ -904,7 +908,7 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 
 void YAMLParser::loadMainCharacters(int stage_index) {
 	sStage stage_aux = stages.vStages_aux[stage_index];
-	for(unsigned int j=0; j<stage_aux.vMainCharacters_aux.size(); j++) {
+	for(unsigned int j=0; j < stage_aux.vMainCharacters_aux.size(); j++) {
 		sMainCharacter mainCharacter_aux = stage_aux.vMainCharacters_aux[j];
 		AnimatedEntity *animatedEntityType = findAnimatedEntityType(mainCharacter_aux.entityType);
 		if (!animatedEntityType)
@@ -923,7 +927,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 			}
 		}
 	}
-	if (stage_aux.vMainCharacters.size()<=0) { // Verifico que para cada escenario exista al menos un protagonista.
+	if (stage_aux.vMainCharacters.size() <= 0) { // Verifico que para cada escenario exista al menos un protagonista.
 		Logger::instance().logFieldNotDefined(stage_aux.name, "protagonista", "stage");
 		stage_aux.vMainCharacters.push_back(generateDefaultMainCharacter());
 	}
@@ -931,7 +935,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 }
 
 void YAMLParser::manageEntityCase() {
-	if (entities.vAnimatedEntities.size()<=0) { // Verifico que exista al menos una entidad animada.	
+	if (entities.vAnimatedEntities.size() <= 0) { // Verifico que exista al menos una entidad animada.	
 		Logger::instance().log("Parser Error: No animated entities found.");
 		AnimatedEntity* animatedEntity = new AnimatedEntity();
 		entities.vAnimatedEntities.push_back(animatedEntity);
@@ -939,11 +943,11 @@ void YAMLParser::manageEntityCase() {
 }
 
 void YAMLParser::manageStageCase() {
-	for(unsigned int i=0; i<stages.vStages_aux.size(); i++) {
+	for(unsigned int i=0; i < stages.vStages_aux.size(); i++) {
 		loadMainCharacters(i);
 		loadEntitiesToMap(i);
 	}
-	if (stages.vStages.size()<=0) { // Verifico que exista al menos un escenario.
+	if (stages.vStages.size() <= 0) { // Verifico que exista al menos un escenario.
 		Logger::instance().log("Parser Error: No stages found.");
 		stages.vStages.push_back(generateDefaultStage());
 	}
@@ -967,8 +971,6 @@ void YAMLParser::parse() {
 		else
 			yamlFilesFound = true;
 	}
-
-	camera = new CameraModel();
 	config = new Configuration();
 	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
@@ -1040,33 +1042,33 @@ void YAMLParser::parse() {
 			Logger::instance().logSyntaxError(inputFilePath,parserException.what());
 			loadEverythingByDefault();
 		};
-		camera->initialize(screen.width,screen.height,configuration.scroll_margin);
+		//camera->initialize(screen.width,screen.height,configuration.scroll_margin);
 		config->serverPort(configuration.port);
 		config->cameraMarginScroll(configuration.scroll_margin);
 		config->cameraWidth(screen.width);
 		config->cameraHeight(screen.height);
 		config->visionRange(configuration.vision_range);
+		config->mainCharacterSpeed(configuration.main_character_speed);
 	}
 
-	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad de los personajes.
-		stages.vStages[i].mainCharacter_speed(configuration.main_character_speed);
+	//for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad de los personajes.
+	//	stages.vStages[i].mainCharacter_speed(configuration.main_character_speed);
 }
 
 vector <Stage> YAMLParser::vStages() {
 	return stages.vStages;
 }
 
-
-//conexion con el modelo logico
-
 PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
-	if (stages.vStages[stage].modelMainCharacters(pers) == NULL)
+	if ((stage >= stages.vStages.size()) || (stages.vStages[stage].modelMainCharacters(pers) == NULL)){
 		Logger::instance().nullPointer("function PersonajeModelo* YAMLParser::modelMainCharacters");
+		return NULL;
+	}
 	return stages.vStages[stage].modelMainCharacters(pers);
 }
 
-CameraModel* YAMLParser::cameraModel(){
-	return camera;
+Configuration* YAMLParser::getConfig(){
+	return config;
 }
 
 EntLists YAMLParser::allLists(){

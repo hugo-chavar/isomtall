@@ -10,7 +10,8 @@ int main(int argc, char *argv[]) {
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");
     Engine engine;
-	Game::instance().initialize();
+	if (!Game::instance().initialize())
+		return 1;
  
 	return engine.execute();
 }

@@ -58,13 +58,13 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 
  bool Camera::initialize() {  
 	 unsigned speed,scrollm,width,height;
-	 if (!Game::instance().cameraModel()){
+	 if (!Game::instance().configuration()){
 		 return false;
 	 }
-	 scrollm = Game::instance().cameraModel()->scroll();
-	 speed = Game::instance().cameraModel()->speed();
-	 width = Game::instance().cameraModel()->width();
-	 height = Game::instance().cameraModel()->height();
+	 scrollm = Game::instance().configuration()->cameraMarginScroll();
+	 speed = Game::instance().configuration()->cameraSpeed();
+	 width = Game::instance().configuration()->cameraWidth();
+	 height = Game::instance().configuration()->cameraHeight();
 	 this->setScrollSpeed(speed);
 	 this->setScrollBoxSize(scrollm);
 	 //traer la posicion relativa del personaje
