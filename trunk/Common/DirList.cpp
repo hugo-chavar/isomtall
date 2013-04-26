@@ -82,7 +82,7 @@ bool DirList::createFromDirectory(string dir) {
 				this->addDir(filepath1); // es subdirectorio
 			}
 		} else { //es archivo
-			if (!(testExtension)||(filepath1.find(extension)!=string::npos)){
+			if (!(testExtension)||(filepath1.find(extension) != string::npos)){
 				this->addFile(filepath1);
 				
 			}

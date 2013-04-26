@@ -1,6 +1,5 @@
 #include "CameraModel.h"
 
-
 using namespace common;
 using namespace model;
 

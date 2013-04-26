@@ -15,6 +15,7 @@
 #include "DirList.h"
 #include "PersonajeModelo.h"
 #include "CameraModel.h"
+#include "Configuration.h"
 
 using namespace std;
 using namespace YAML;
@@ -24,14 +25,24 @@ using namespace model;
 
 // Data types
 
+typedef enum ForceDefault
+{
+	YES_IGNORE_LOG,
+	ONLY_INVALID,
+	YES,
+	NO
+};
+
 struct Screen {
 	int width;
 	int height;
 };
 
-struct Configuration {
+struct Config {
 	float main_character_speed;
 	int scroll_margin;
+	int port;
+	int vision_range;
 };
 
 struct Entities {
@@ -67,12 +78,13 @@ class YAMLParser {
 private:
 	Screen screen;
 	CameraModel* camera;
-	Configuration configuration;
+	Configuration * config;
+	Config configuration;
 	EntLists entities;
 	Stages stages;
 
 	Screen generateDefaultScreen();
-	Configuration generateDefaultConfiguration();
+	Config generateDefaultConfiguration();
 	PersonajeModelo* generateDefaultMainCharacter();
 	Stage generateDefaultStage();
 	void loadEverythingByDefault();

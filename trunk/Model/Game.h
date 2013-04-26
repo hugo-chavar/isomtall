@@ -5,6 +5,7 @@
 #include <string>
 #include "DataTypes.h"
 #include "PersonajeModelo.h"
+#include "Configuration.h"
 #include "Stage.h"
 #include "..\View\TimeManager.h"
 #include "..\Model\YAMLParser.h"
@@ -28,11 +29,13 @@ namespace model
 		EntityObject* entityObjectAt(unsigned pos);
 		PersonajeModelo * personaje();
 		CameraModel* cameraModel();
+		Configuration* configuration();
 		
 	private:
 		Game();
 		Stage _world;
 		CameraModel* _cameraModel;
+		Configuration* _configuration;
 		TimeManager _time;
 		PersonajeModelo * _personaje;
 	};

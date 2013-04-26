@@ -13,6 +13,9 @@ YAMLParser::~YAMLParser() {
 	if (camera)
 		delete camera;
 
+	if (config)
+		delete config;
+
 	for (unsigned i=0; i<entities.vEntitiesObject.size(); i++)
 		delete entities.vEntitiesObject[i];
 	entities.vEntitiesObject.clear();
@@ -29,12 +32,96 @@ YAMLParser::~YAMLParser() {
 	}
 }
 
+
+bool managePositiveIntCase(const Node& node, int &result, string context, string affectedConfig, string field, int defaultValue, ForceDefault force){
+	try {
+		node[field] >> result;
+		if (result < 0) {
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive integer");
+			result = defaultValue;
+		}
+	} catch (KeyNotFound) {	
+		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+			result = defaultValue;
+			if (force == YES_IGNORE_LOG)
+				return true;
+			Logger::instance().logFieldNotDefined(context, field , affectedConfig);
+			return true;
+		}
+		return false;
+	} catch (InvalidScalar) {
+		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+			result = defaultValue;
+			if (force == YES_IGNORE_LOG)
+				return true;
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive integer");
+			return true;
+		}
+		if (force == ONLY_INVALID){
+			result = defaultValue;
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive integer");
+			return true;
+		}
+		return false;
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+		return false;
+	};
+
+	return true;
+}
+
+bool managePositiveFloatCase(const Node& node, float &result, string context, string affectedConfig, string field, float defaultValue, ForceDefault force){
+	try {
+		node[field] >> result;
+		if (result < 0) {
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive float");
+			result = defaultValue;
+		}
+	} catch (KeyNotFound) {
+		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+			result = defaultValue;
+			if (force == YES_IGNORE_LOG)
+				return true;
+			Logger::instance().logFieldNotDefined(context, field , affectedConfig);
+			return true;
+		}
+		return false;
+	} catch (InvalidScalar) {
+		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+			result = defaultValue;
+			if (force == YES_IGNORE_LOG)
+				return true;
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive float");
+			return true;
+		}
+		if (force == ONLY_INVALID){
+			result = defaultValue;
+			Logger::instance().logInvalidValue(context, field, affectedConfig, "a positive float");
+			return true;
+		}
+		return false;
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+		return false;
+	};
+
+	return true;
+}
+
+
 void operator >> (const Node& node, Screen& screen) {
 	string field;
 	bool widthFound = false, heightFound = false;
 
 	for(unsigned int i=0; i<node.size(); i++) {
-		field = "ancho";
+		//screen.width
+		if (!widthFound) {
+			widthFound = managePositiveIntCase(node[i],screen.width, "pantalla","","ancho", DEFAULT_SCREEN_WIDTH, ONLY_INVALID);
+		}
+		/*field = "ancho";
 		try {
 			node[i][field] >> screen.width;
 			widthFound = true;
@@ -49,23 +136,26 @@ void operator >> (const Node& node, Screen& screen) {
 		}
 		catch (Exception& parserException ) {
 			Logger::instance().logUnexpected(parserException.what());
-		};
-		field = "alto";
-		try {
-			node[i][field] >> screen.height;
-			heightFound = true;
-			if (screen.height<0) {
-				Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
-				screen.height = DEFAULT_SCREEN_HEIGHT;
-			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) {
-			heightFound = true;
-			Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
-			screen.height = DEFAULT_SCREEN_HEIGHT;
+		};*/
+		if (!heightFound) {
+			heightFound = managePositiveIntCase(node[i],screen.height, "pantalla","","alto", DEFAULT_SCREEN_HEIGHT, ONLY_INVALID);
 		}
-		catch (Exception& parserException ) {
-			Logger::instance().logUnexpected(parserException.what());
-		};
+		//field = "alto";
+		//try {
+		//	node[i][field] >> screen.height;
+		//	heightFound = true;
+		//	if (screen.height<0) {
+		//		Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
+		//		screen.height = DEFAULT_SCREEN_HEIGHT;
+		//	}
+		//} catch (KeyNotFound) {	} catch (InvalidScalar) {
+		//	heightFound = true;
+		//	Logger::instance().logInvalidValue("pantalla", field, "", "a positive integer");
+		//	screen.height = DEFAULT_SCREEN_HEIGHT;
+		//}
+		//catch (Exception& parserException ) {
+		//	Logger::instance().logUnexpected(parserException.what());
+		//};
 	}
 
 	if (!widthFound) {
@@ -78,43 +168,49 @@ void operator >> (const Node& node, Screen& screen) {
 	}
 }
 
-void operator >> (const Node& node, Configuration& configuration) {
+void operator >> (const Node& node, Config& configuration) {
 	string field;
 	bool mainCharacterSpeedFound = false, scrollMarginFound = false;
 
 	for(unsigned int i=0; i<node.size(); i++) {
-		field = "vel_personaje";
-		try {
-			node[i][field] >> configuration.main_character_speed;
-			mainCharacterSpeedFound = true;
-			if (configuration.main_character_speed <= 0) {
-				Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
-				configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
-			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) {
-			mainCharacterSpeedFound = true;
-			Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
-			configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
+		if (! mainCharacterSpeedFound){
+			mainCharacterSpeedFound = managePositiveFloatCase(node[i],configuration.main_character_speed,"configuracion","","vel_personaje",DEFAULT_MAIN_CHARACTER_SPEED, ONLY_INVALID);
 		}
-		catch (Exception& parserException ) {
-			Logger::instance().logUnexpected(parserException.what());
-		};
-		field = "margen_scroll";
-		try {
-			node[i][field] >> configuration.scroll_margin;
-			scrollMarginFound = true;
-			if (configuration.scroll_margin<0) {
-				Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
-				configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
-			}
-		} catch (KeyNotFound) {	} catch (InvalidScalar) {
-			scrollMarginFound = true;
-			Logger::instance().logInvalidValue("configuracion", field, "", "a positive integer");
-			configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
+		//field = "vel_personaje";
+		//try {
+		//	node[i][field] >> configuration.main_character_speed;
+		//	mainCharacterSpeedFound = true;
+		//	if (configuration.main_character_speed <= 0) {
+		//		Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
+		//		configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
+		//	}
+		//} catch (KeyNotFound) {	} catch (InvalidScalar) {
+		//	mainCharacterSpeedFound = true;
+		//	Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
+		//	configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
+		//}
+		//catch (Exception& parserException ) {
+		//	Logger::instance().logUnexpected(parserException.what());
+		//};
+		if (!scrollMarginFound){
+			scrollMarginFound = managePositiveIntCase(node[i], configuration.scroll_margin,"configuracion", "","margen_scroll",DEFAULT_SCROLL_MARGIN, ONLY_INVALID);
 		}
-		catch (Exception& parserException ) {
-			Logger::instance().logUnexpected(parserException.what());
-		};
+		//field = "margen_scroll";
+		//try {
+		//	node[i][field] >> configuration.scroll_margin;
+		//	scrollMarginFound = true;
+		//	if (configuration.scroll_margin<0) {
+		//		Logger::instance().logInvalidValue("configuracion", field, "", "a positive float");
+		//		configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
+		//	}
+		//} catch (KeyNotFound) {	} catch (InvalidScalar) {
+		//	scrollMarginFound = true;
+		//	Logger::instance().logInvalidValue("configuracion", field, "", "a positive integer");
+		//	configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
+		//}
+		//catch (Exception& parserException ) {
+		//	Logger::instance().logUnexpected(parserException.what());
+		//};
 	}
 
 	if (!mainCharacterSpeedFound) {
@@ -148,7 +244,7 @@ bool canOpenFile(string file){
 bool validateImagePath(string imagePath) {
 	if (isNotDirectory(imagePath)) //aca se valida si es directorio
 	{ 
-		if (imagePath.find(IMAGES_EXTENSION)==string::npos) { // Veo que sea '.png'.
+		if (imagePath.find(IMAGES_EXTENSION) == string::npos) { // Veo que sea '.png'.
 			Logger::instance().log("Parser Error: '"+imagePath+"' does not have a valid extension.");
 			return false;
 		}
@@ -195,71 +291,81 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
-	field = "ancho_base";
-	try {
-		node[field] >> baseWidth;
-		baseWidthFound = true;
-		if (baseWidth<0) {
-			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-			baseWidth = DEFAULT_BASE_WIDTH;
-		}
-	} catch (KeyNotFound) { }
-	catch (InvalidScalar) {
-		baseWidthFound = true;
-		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-		baseWidth = DEFAULT_BASE_WIDTH;
+	baseWidthFound = managePositiveIntCase(node,baseWidth,name, "entity","ancho_base",DEFAULT_BASE_WIDTH, NO);
+	//field = "ancho_base";
+	//try {
+	//	node[field] >> baseWidth;
+	//	baseWidthFound = true;
+	//	if (baseWidth<0) {
+	//		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//		baseWidth = DEFAULT_BASE_WIDTH;
+	//	}
+	//} catch (KeyNotFound) { }
+	//catch (InvalidScalar) {
+	//	baseWidthFound = true;
+	//	Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//	baseWidth = DEFAULT_BASE_WIDTH;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	if (!baseHeightFound){
+		baseHeightFound = managePositiveIntCase(node, baseHeight, name, "entity","alto_base", DEFAULT_BASE_HEIGHT, YES);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "alto_base";
-	try {
-		node[field] >> baseHeight;
-		baseHeightFound = true;
-		if (baseHeight<0) {
-			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-			baseHeight = DEFAULT_BASE_HEIGHT;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		baseHeightFound = true;
-		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-		baseHeight = DEFAULT_BASE_HEIGHT;
+	//field = "alto_base";
+	//try {
+	//	node[field] >> baseHeight;
+	//	baseHeightFound = true;
+	//	if (baseHeight<0) {
+	//		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//		baseHeight = DEFAULT_BASE_HEIGHT;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	baseHeightFound = true;
+	//	Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//	baseHeight = DEFAULT_BASE_HEIGHT;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	if (!pixelRefXFound){
+		pixelRefXFound = managePositiveIntCase(node, pixelRefX, name, "entity","pixel_ref_x",DEFAULT_ENTITY_OBJECT_PIXEL_REF_X, YES);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "pixel_ref_x";
-	try {
-		node[field] >> pixelRefX;
-		pixelRefXFound = true;
-		if (pixelRefX<0) {
-			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-			pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		pixelRefXFound = true;
-		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
+	//field = "pixel_ref_x";
+	//try {
+	//	node[field] >> pixelRefX;
+	//	pixelRefXFound = true;
+	//	if (pixelRefX<0) {
+	//		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//		pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	pixelRefXFound = true;
+	//	Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//	pixelRefX = DEFAULT_ENTITY_OBJECT_PIXEL_REF_X;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	if (!pixelRefYFound){
+		pixelRefYFound = managePositiveIntCase(node, pixelRefY, name, "entity","pixel_ref_y",DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y, YES);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "pixel_ref_y";
-	try {
-		node[field] >> pixelRefY;
-		pixelRefYFound = true;
-		if (pixelRefY<0) {
-			Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-			pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		pixelRefYFound = true;
-		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
-		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
-	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
+	//field = "pixel_ref_y";
+	//try {
+	//	node[field] >> pixelRefY;
+	//	pixelRefYFound = true;
+	//	if (pixelRefY<0) {
+	//		Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//		pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	pixelRefYFound = true;
+	//	Logger::instance().logInvalidValue(name, field, "entity", "a positive integer");
+	//	pixelRefY = DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
 
 	if (!baseWidthFound) {
 		Logger::instance().logFieldNotDefined(name, "ancho_base", "entity");
@@ -324,64 +430,78 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
-	field = "pixel_ref_x";
-	try {
-		node[field] >> pixelRefX;
-		pixelRefXFound = true;
-		if (pixelRefX<0)
-			pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		pixelRefXFound = true;
-		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+
+	if (!pixelRefXFound){
+		pixelRefXFound = managePositiveIntCase(node, pixelRefX, entity_aux->name(), "entity","pixel_ref_x",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X, YES_IGNORE_LOG);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "pixel_ref_y";
-	try {
-		node[field] >> pixelRefY;
-		pixelRefYFound = true;
-		if (pixelRefY<0)
-			pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		pixelRefYFound = true;
-		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	//field = "pixel_ref_x";
+	//try {
+	//	node[field] >> pixelRefX;
+	//	pixelRefXFound = true;
+	//	if (pixelRefX<0)
+	//		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	pixelRefXFound = true;
+	//	pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	if (!pixelRefYFound){
+		pixelRefYFound = managePositiveIntCase(node, pixelRefY, entity_aux->name(), "entity","pixel_ref_y",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y, YES_IGNORE_LOG);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "fps";
-	try {
-		node[field] >> fps;
-		fpsFound = true;
-		if (fps<0) {
-			Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
-			fps = DEFAULT_FPS;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		fpsFound = true;
-		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
-		fps = DEFAULT_FPS;
+	//field = "pixel_ref_y";
+	//try {
+	//	node[field] >> pixelRefY;
+	//	pixelRefYFound = true;
+	//	if (pixelRefY<0)
+	//		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	pixelRefYFound = true;
+	//	pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+
+	if (!fpsFound){
+		fpsFound = managePositiveIntCase(node, fps, entity_aux->name(), "entity","fps",DEFAULT_FPS, YES);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "delay";
-	try {
-		node[field] >> delay;
-		delayFound = true;
-		if (delay<0) {
-			Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
-			delay = DEFAULT_DELAY;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		delayFound = true;
-		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
-		delay = DEFAULT_DELAY;
+	//field = "fps";
+	//try {
+	//	node[field] >> fps;
+	//	fpsFound = true;
+	//	if (fps<0) {
+	//		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
+	//		fps = DEFAULT_FPS;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	fpsFound = true;
+	//	Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
+	//	fps = DEFAULT_FPS;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	if (!delayFound){
+		delayFound = managePositiveIntCase(node, delay, entity_aux->name(), "entity","delay",DEFAULT_DELAY, YES);
 	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
+	//field = "delay";
+	//try {
+	//	node[field] >> delay;
+	//	delayFound = true;
+	//	if (delay<0) {
+	//		Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
+	//		delay = DEFAULT_DELAY;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	delayFound = true;
+	//	Logger::instance().logInvalidValue(entity_aux->name(), field, "entity", "a positive integer");
+	//	delay = DEFAULT_DELAY;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
 
 	if (!fpsFound) {
 		Logger::instance().logFieldNotDefined(entity_aux->name(), "fps", "entity");
@@ -391,10 +511,10 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 		Logger::instance().logFieldNotDefined(entity_aux->name(), "delay", "entity");
 		delay = DEFAULT_DELAY;
 	}
-	if (!pixelRefXFound)
-		pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
-	if (!pixelRefYFound)
-		pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
+	//if (!pixelRefXFound)
+	//	pixelRefX = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X;
+	//if (!pixelRefYFound)
+	//	pixelRefY = DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y;
 	if (!imageDirFound) {
 		pixelRefX = ERROR_ANIMATED_PIXEL_REF_X;
 		pixelRefY = ERROR_ANIMATED_PIXEL_REF_Y;
@@ -508,7 +628,8 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
-	field = "x";
+	xFound = managePositiveIntCase(node, mainCharacter.x, mainCharacter.entityType, "main character","x",DEFAULT_MAIN_CHARACTER_X, YES);
+	/*field = "x";
 	try {
 		node[field] >> mainCharacter.x;
 		xFound = true;
@@ -525,32 +646,33 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 	}
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
-	};
-	field = "y";
-	try {
-		node[field] >> mainCharacter.y;
-		yFound = true;
-		if (mainCharacter.y<0) {
-			Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
-			mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		yFound = true;
-		Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
-		mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
-	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
+	};*/
+	yFound = managePositiveIntCase(node,  mainCharacter.y, mainCharacter.entityType, "main character","y",DEFAULT_MAIN_CHARACTER_Y, YES);
+	//field = "y";
+	//try {
+	//	node[field] >> mainCharacter.y;
+	//	yFound = true;
+	//	if (mainCharacter.y<0) {
+	//		Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
+	//		mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	yFound = true;
+	//	Logger::instance().logInvalidValue(mainCharacter.entityType, field, "main character", "a positive integer");
+	//	mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
 
-	if (!xFound) {
-		Logger::instance().logFieldNotDefined(mainCharacter.entityType, "x", "main character");
-		mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
-	}
-	if (!yFound) {
-		Logger::instance().logFieldNotDefined(mainCharacter.entityType, "y", "main character");
-		mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
-	}
+	//if (!xFound) {
+	//	Logger::instance().logFieldNotDefined(mainCharacter.entityType, "x", "main character");
+	//	mainCharacter.x = DEFAULT_MAIN_CHARACTER_X;
+	//}
+	//if (!yFound) {
+	//	Logger::instance().logFieldNotDefined(mainCharacter.entityType, "y", "main character");
+	//	mainCharacter.y = DEFAULT_MAIN_CHARACTER_Y;
+	//}
 }
 
 void operator >> (const Node& node, sStage& stage) {
@@ -568,27 +690,29 @@ void operator >> (const Node& node, sStage& stage) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
-	field = "size_x";
-	try {
-		node[field] >> stage.size_x;
-		sizeXFound = true;
-		if (stage.size_x<0) {
-			Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
-			stage.size_x = DEFAULT_STAGE_SIZE_X;
-		}
-	} catch (KeyNotFound) { } catch (InvalidScalar) {
-		sizeXFound = true;
-		Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
-		stage.size_x = DEFAULT_STAGE_SIZE_X;
-	}
-	catch (Exception& parserException ) {
-		Logger::instance().logUnexpected(parserException.what());
-	};
-	if (!sizeXFound) {
-		Logger::instance().logFieldNotDefined(stage.name, field, "stage");
-		stage.size_x = DEFAULT_STAGE_SIZE_X;
-	}
-	field = "size_y";
+	sizeXFound = managePositiveIntCase(node, stage.size_x, stage.name, "stage","size_x",DEFAULT_STAGE_SIZE_X, YES);
+	//field = "size_x";
+	//try {
+	//	node[field] >> stage.size_x;
+	//	sizeXFound = true;
+	//	if (stage.size_x<0) {
+	//		Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
+	//		stage.size_x = DEFAULT_STAGE_SIZE_X;
+	//	}
+	//} catch (KeyNotFound) { } catch (InvalidScalar) {
+	//	sizeXFound = true;
+	//	Logger::instance().logInvalidValue(stage.name, field, "stage", "a positive integer");
+	//	stage.size_x = DEFAULT_STAGE_SIZE_X;
+	//}
+	//catch (Exception& parserException ) {
+	//	Logger::instance().logUnexpected(parserException.what());
+	//};
+	//if (!sizeXFound) {
+	//	Logger::instance().logFieldNotDefined(stage.name, field, "stage");
+	//	stage.size_x = DEFAULT_STAGE_SIZE_X;
+	//}
+	sizeYFound = managePositiveIntCase(node, stage.size_y, stage.name, "stage","size_y",DEFAULT_STAGE_SIZE_Y, YES);
+	/*field = "size_y";
 	try {
 		node[field] >> stage.size_y;
 		sizeYFound = true;
@@ -607,7 +731,7 @@ void operator >> (const Node& node, sStage& stage) {
 	if (!sizeYFound) {
 		Logger::instance().logFieldNotDefined(stage.name, field, "stage");
 		stage.size_y = DEFAULT_STAGE_SIZE_Y;
-	}
+	}*/
 
 	try {
 		const Node& node_aux = node["entidadesDef"];
@@ -657,8 +781,8 @@ void operator >> (const Node& node, Stages& stages) {
 	}
 }
 
-Configuration YAMLParser::generateDefaultConfiguration() {
-	Configuration configuration;
+Config YAMLParser::generateDefaultConfiguration() {
+	Config configuration;
 	configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 	configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 	return configuration;
@@ -702,7 +826,7 @@ AnimatedEntity* YAMLParser::findAnimatedEntityType(string name) {
 	unsigned int i = 0;
 	bool found = false;
 	while ((i<entities.vAnimatedEntities.size()) && (!found)) {
-		if (entities.vAnimatedEntities[i]->name()==name)
+		if (entities.vAnimatedEntities[i]->name() == name)
 			found = true;
 		else
 			i++;
@@ -716,7 +840,7 @@ EntityObject* YAMLParser::findEntityObjectType(string name) {
 	unsigned int i = 0;
 	bool found = false;
 	while ((i<entities.vEntitiesObject.size()) && (!found)) {
-		if (entities.vEntitiesObject[i]->name()==name)
+		if (entities.vEntitiesObject[i]->name() == name)
 			found = true;
 		else
 			i++;
@@ -844,7 +968,8 @@ void YAMLParser::parse() {
 			yamlFilesFound = true;
 	}
 
-	camera = new CameraModel();//se carga x default
+	camera = new CameraModel();
+	config = new Configuration();
 	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
 	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
@@ -916,6 +1041,11 @@ void YAMLParser::parse() {
 			loadEverythingByDefault();
 		};
 		camera->initialize(screen.width,screen.height,configuration.scroll_margin);
+		config->serverPort(configuration.port);
+		config->cameraMarginScroll(configuration.scroll_margin);
+		config->cameraWidth(screen.width);
+		config->cameraHeight(screen.height);
+		config->visionRange(configuration.vision_range);
 	}
 
 	for(unsigned int i=0; i<stages.vStages.size(); i++) // Cargo la velocidad de los personajes.

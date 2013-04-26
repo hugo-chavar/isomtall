@@ -65,7 +65,7 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	 speed = Game::instance().cameraModel()->speed();
 	 width = Game::instance().cameraModel()->width();
 	 height = Game::instance().cameraModel()->height();
-	 this->setScrollSpeed(150);
+	 this->setScrollSpeed(speed);
 	 this->setScrollBoxSize(scrollm);
 	 //traer la posicion relativa del personaje
 	 //asi se centra la camara al principio
@@ -106,7 +106,7 @@ void Camera::update() {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - x) / this->getScrollBoxSize();
 		newOffset = this->getOffsetX() - this->getScrollSpeed() * (Game::instance().time())->getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
-				if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
+		if (!(Game::instance().world())->isInsideWorld(cameraCenterInTiles)) {
 			newOffset = this->getOffsetX();
 		}
 		this->setOffsetX(newOffset);
@@ -140,15 +140,12 @@ void Camera::cleanUp() {
 
 void Camera::render(SDL_Rect spriteRec,SDL_Surface* surface)
 {
-
-
-if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(spriteRec.x<offsetX+getWidth())&&(spriteRec.y<offsetY+getHeight()))
-	
+	if((spriteRec.x>offsetX-spriteRec.w)&&(spriteRec.y>offsetY-spriteRec.h)&&(spriteRec.x<offsetX+getWidth())&&(spriteRec.y<offsetY+getHeight()))
 	{
-	SDL_Rect rectangulo;
-	rectangulo.x = spriteRec.x - static_cast<Sint16>(offsetX);
-	rectangulo.y = spriteRec.y - static_cast<Sint16>(offsetY);
-	SDL_BlitSurface(surface, NULL,cameraSurface,&rectangulo);
+		SDL_Rect rectangulo;
+		rectangulo.x = spriteRec.x - static_cast<Sint16>(offsetX);
+		rectangulo.y = spriteRec.y - static_cast<Sint16>(offsetY);
+		SDL_BlitSurface(surface, NULL,cameraSurface,&rectangulo);
 	}
 }
 

@@ -5,6 +5,8 @@ pantalla:
 configuracion: 
     - vel_personaje: 2.5
     - margen_scroll: 600
+    - vision_personaje: 3
+    - puerto_servidor: 3500
      
 entidades:
     - nombre: arbol 
@@ -192,6 +194,7 @@ escenarios:
          - {x: 21, y: 26, entidad: agua}
          - {x: 21, y: 27, entidad: agua}
          - {x: 21, y: 28, entidad: agua}
+         - {y: 1, entidad: piso2921}
          - {x: 22, y: 26, entidad: agua}
          - {x: 22, y: 27, entidad: agua}
          - {x: 22, y: 28, entidad: agua}  
