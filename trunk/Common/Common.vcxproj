@@ -68,10 +68,12 @@
   <ItemGroup>
     <ClCompile Include="DirList.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="stringUtilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirList.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="stringUtilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
