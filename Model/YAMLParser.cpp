@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "YAMLParser.h"
+#include "stringUtilities.h"
 
 
 using namespace std;
@@ -922,7 +923,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 				stage_aux.vMainCharacters.push_back(mainCharacter);
 			}
 			else {
-				string str_nro = static_cast<std::ostringstream*>(&(ostringstream() << NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER))->str();
+				string str_nro = StringUtilities::intToString(NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER);
 				Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' does not have the "+str_nro+" image directories needed.");
 			}
 		}
