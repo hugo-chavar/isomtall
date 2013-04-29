@@ -201,3 +201,22 @@ void DirList::restartCurrentPosition() {
 	_currentPosition = 0;
 	iterador = files.begin();
 }
+
+
+bool DirList::isNotDirectory(string file){
+	DWORD fileAttr = GetFileAttributesA(file.c_str());
+	if (fileAttr & FILE_ATTRIBUTE_DIRECTORY) 
+	{
+		return false;
+	}
+	return true;
+}
+
+bool DirList::canOpenFile(string file){
+	DWORD fileAttr = GetFileAttributesA(file.c_str());
+	if(INVALID_FILE_ATTRIBUTES == fileAttr)
+	{
+		return false;
+	}
+	return true;
+}

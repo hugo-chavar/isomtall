@@ -25,6 +25,9 @@ int StringToInt (const std::string Text );
 //Metodo para convertir un int a string.
 std::string intToString(int i);
 
+//Metodo para convertir un unsigned a string.
+std::string unsignedToString(unsigned i);
+
 //Metodo para convertir un float a string.
 std::string floatToString(float f);
 

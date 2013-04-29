@@ -225,34 +225,34 @@ void operator >> (const Node& node, Config& configuration) {
 	}
 
 }
+//
+//bool isNotDirectory(string file){
+//	DWORD fileAttr = GetFileAttributesA(file.c_str());
+//	if (fileAttr & FILE_ATTRIBUTE_DIRECTORY) 
+//	{
+//		return false;
+//	}
+//	return true;
+//}
 
-bool isNotDirectory(string file){
-	DWORD fileAttr = GetFileAttributesA(file.c_str());
-	if (fileAttr & FILE_ATTRIBUTE_DIRECTORY) 
-	{
-		return false;
-	}
-	return true;
-}
-
-bool canOpenFile(string file){
-	DWORD fileAttr = GetFileAttributesA(file.c_str());
-	if(INVALID_FILE_ATTRIBUTES == fileAttr)
-	{
-		return false;
-	}
-	return true;
-}
+//bool canOpenFile(string file){
+//	DWORD fileAttr = GetFileAttributesA(file.c_str());
+//	if(INVALID_FILE_ATTRIBUTES == fileAttr)
+//	{
+//		return false;
+//	}
+//	return true;
+//}
 
 bool validateImagePath(string imagePath) {
-	if (isNotDirectory(imagePath)) //aca se valida si es directorio
+	if (DirList::isNotDirectory(imagePath)) //aca se valida si es directorio
 	{ 
 		if (imagePath.find(IMAGES_EXTENSION) == string::npos) { // Veo que sea '.png'.
 			Logger::instance().log("Parser Error: '"+imagePath+"' does not have a valid extension.");
 			return false;
 		}
 
-		if (canOpenFile(imagePath)){
+		if (DirList::canOpenFile(imagePath)){
 			return true;
 		}
 		
