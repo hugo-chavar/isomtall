@@ -9,7 +9,7 @@
 
 class Personaje : public Entity {
 public:
-	Personaje(model::PersonajeModelo* pj);
+	Personaje(PersonajeModelo* pj);
 	void agregarSprite(Sprite* sprite);
 	void update();
 	
@@ -17,7 +17,7 @@ public:
 	void setDestino(int xTile, int yTile);
 	~Personaje();
 	std::pair<int,int> posicion();
-	model::PersonajeModelo* personajeModelo();
+	PersonajeModelo* personajeModelo();
 	void loadSprites();
 	void clearSprites() ;
 	void addNextSprite(AnimatedEntity*);
@@ -31,7 +31,7 @@ private:
 	void moverSprite(std::pair<float, float>& factor);
 	bool isCenteredInTile();
 	std::pair<int, int> tileActual;
-	model::PersonajeModelo* modelo;
+	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad;
 	int estado;

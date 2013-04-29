@@ -75,8 +75,8 @@
     <ClCompile Include="Par.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PersonajeModelo.cpp" />
-    <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="StageModel.cpp" />
+    <ClCompile Include="TileModel.cpp" />
     <ClCompile Include="YAMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -92,8 +92,8 @@
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PersonajeConstantes.h" />
     <ClInclude Include="PersonajeModelo.h" />
-    <ClInclude Include="Stage.h" />
-    <ClInclude Include="Tile.h" />
+    <ClInclude Include="StageModel.h" />
+    <ClInclude Include="TileModel.h" />
     <ClInclude Include="YAMLParser.h" />
   </ItemGroup>
   <ItemGroup>

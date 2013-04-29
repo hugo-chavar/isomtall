@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "Constants.h"
 
-using namespace model;
 
 Game::Game()
 {
@@ -18,7 +17,7 @@ Game& Game::instance()
 	return singleton;
 }
 
-Stage* Game::world()
+StageModel* Game::world()
 {
 	return &_world;
 }

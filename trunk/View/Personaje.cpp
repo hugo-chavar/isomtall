@@ -4,7 +4,7 @@
 #include "Game.h"
 
 
-Personaje::Personaje(model::PersonajeModelo* pj) {
+Personaje::Personaje(PersonajeModelo* pj) {
 	modelo = pj;
 	pj->getCurrent(tileActual);
 	estado = procesarAnimacion(pj->getEstado());
@@ -263,14 +263,14 @@ Personaje::~Personaje(){
 		clearSprites();
 }
 
-model::PersonajeModelo* Personaje::personajeModelo(){
+PersonajeModelo* Personaje::personajeModelo(){
 	return modelo;
 }
 
 std::pair<int,int> Personaje::posicion()
 {
 	std::pair<int,int> pos;
-	pos.first=spriteRect.x;
-	pos.second=spriteRect.y;
+	pos.first = spriteRect.x;
+	pos.second = spriteRect.y;
 	return pos;
 }

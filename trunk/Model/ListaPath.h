@@ -8,17 +8,17 @@
 #include <map>
 #include "Nodo.h"
 
-namespace model{
-	class ListaPath {
-	public:
-		ListaPath();
-		void agregar(Nodo* nuevo);
-		bool empty();
-		Nodo* getNodo();
-		Nodo* getNodo(int X, int Y);
-		~ListaPath();
-	private:
-		std::map<Par, Nodo> nodeList;
+
+class ListaPath {
+public:
+	ListaPath();
+	void agregar(Nodo* nuevo);
+	bool empty();
+	Nodo* getNodo();
+	Nodo* getNodo(int X, int Y);
+	~ListaPath();
+private:
+	std::map<Par, Nodo> nodeList;
 };
-}
+
 #endif
