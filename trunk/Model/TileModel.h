@@ -7,10 +7,17 @@ class TileModel
 {
 public:
 	TileModel();
-	EntityObject * getEntity();
-	void setEntity(EntityObject * e);
+	EntityObject * getGroundEntity();
+	EntityObject * getOtherEntity();
+	void setGroundEntity(EntityObject * e);
+	void setOtherEntity(EntityObject * e);
+	void addEntity(EntityObject * e);
+	void setPosition(unsigned, unsigned);
 private:
-	EntityObject* entity;
+	EntityObject* groundEntity;
+	EntityObject* otherEntity;
+	unsigned posx;
+	unsigned posy;
 };
 
 

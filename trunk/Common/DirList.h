@@ -35,6 +35,8 @@ private:
 public:
 	DirList();
 	~DirList();
+	static bool isNotDirectory(string);
+	static bool canOpenFile(string);
 	bool createFromDirectory(string);
 	void setExtensionRequired(string);
 	bool hasNext();

@@ -59,3 +59,12 @@ int EntityObject::pixelRefY() {
 void EntityObject::pixelRefY(int value) {
 	_pixel_ref_y = value;
 }
+
+bool EntityObject::isGround(){
+	if ( (_pixel_ref_x == DEFAULT_ENTITY_OBJECT_PIXEL_REF_X) && (_pixel_ref_y == DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y) ){
+		unsigned found = _image_path.find("piso");
+		if (found != std::string::npos) //es piso
+			return true;
+	}
+	return false;
+}
