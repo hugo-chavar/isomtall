@@ -11,7 +11,7 @@
 #include "..\Libraries\Parser YAML\include\yaml-cpp\yaml.h"
 #include "Logger.h"
 #include "DataTypes.h"
-#include "Stage.h"
+#include "StageModel.h"
 #include "DirList.h"
 #include "PersonajeModelo.h"
 #include "Configuration.h"
@@ -66,7 +66,7 @@ struct sStage {
 
 struct Stages {
 	vector <sStage> vStages_aux;
-	vector <Stage> vStages;
+	vector <StageModel> vStages;
 };
 
 
@@ -84,7 +84,7 @@ private:
 	Screen generateDefaultScreen();
 	Config generateDefaultConfiguration();
 	PersonajeModelo* generateDefaultMainCharacter();
-	Stage generateDefaultStage();
+	StageModel generateDefaultStage();
 	void loadEverythingByDefault();
 	void loadEntitiesToMap(int stage_index);
 	void loadMainCharacters(int stage_index);
@@ -98,7 +98,7 @@ public:
 	~YAMLParser();
 
 	void parse();
-	vector <Stage> vStages();
+	vector <StageModel> vStages();
 	EntLists allLists();
 
 	AnimatedEntity* findAnimatedEntityType(string name);

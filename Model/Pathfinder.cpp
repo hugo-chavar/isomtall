@@ -5,7 +5,6 @@
 #include <math.h>
 #include "Game.h"
 
-using namespace model;
 
 #define MOV_PENALTY 10
 

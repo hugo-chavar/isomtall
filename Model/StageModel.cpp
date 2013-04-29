@@ -1,16 +1,15 @@
-#include "Stage.h"
+#include "StageModel.h"
 #include "Game.h"
 
 using namespace std;
-using namespace model;
 
-Stage::Stage(){
+StageModel::StageModel(){
 	_entityMap = NULL;
 	_vMainCharacters.clear();
 	_vEntitiesDef.clear();
 }
 
-Stage::Stage(const Stage &origStage){
+StageModel::StageModel(const StageModel &origStage){
 	this->name(origStage.name());
 	this->height(origStage.height());
 	this->width(origStage.width());
@@ -22,7 +21,7 @@ Stage::Stage(const Stage &origStage){
 	this->_entityMap = origStage._entityMap;
 }
 
-Stage& Stage::operator=(const Stage &origStage){
+StageModel& StageModel::operator=(const StageModel &origStage){
 	this->name(origStage.name());
 	this->height(origStage.height());
 	this->width(origStage.width());
@@ -35,71 +34,71 @@ Stage& Stage::operator=(const Stage &origStage){
 	return *this;
 }
 
-string Stage::name() const {
+string StageModel::name() const {
 	return _name;
 }
 
-unsigned int Stage::width() const{
+unsigned int StageModel::width() const{
 	return _width;
 }
 
-unsigned int Stage::height() const{
+unsigned int StageModel::height() const{
 	return _height;
 }
 
-void Stage::height(unsigned int value){
+void StageModel::height(unsigned int value){
 	_height = value;
 }
 
-void Stage::width(unsigned int value){
+void StageModel::width(unsigned int value){
 	_width = value;
 }
 
-vector <EntityDef> Stage::vEntitiesDef() {
+vector <EntityDef> StageModel::vEntitiesDef() {
 	return _vEntitiesDef;
 }
 
-vector <PersonajeModelo*>* Stage::vMainCharacters() {
+vector <PersonajeModelo*>* StageModel::vMainCharacters() {
 	return &_vMainCharacters;
 }
 
-map <KeyPair, EntityObject*>* Stage::entityMap() {
+map <KeyPair, EntityObject*>* StageModel::entityMap() {
 	return _entityMap;
 }
 
 //info de los tiles
-unsigned int Stage::tileWidth() const{
+unsigned int StageModel::tileWidth() const{
 	return _tileWidth;
 }
 
-unsigned int Stage::tileHeight() const{
+unsigned int StageModel::tileHeight() const{
 	return _tileHeight;
 }
 
-void Stage::tileHeight(unsigned int value){
+void StageModel::tileHeight(unsigned int value){
 	_tileHeight = value;
 }
 
-void Stage::tileWidth(unsigned int value){
+void StageModel::tileWidth(unsigned int value){
 	_tileWidth = value;
 }
 
-void Stage::name(string value){
+void StageModel::name(string value){
 	_name = value;
 }
 
-unsigned int Stage::cost(unsigned int x, unsigned int y){
+unsigned int StageModel::cost(unsigned int x, unsigned int y){
 	return 1;
 }
 
-void Stage::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tHeight, unsigned int tWidth){
+void StageModel::initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tHeight, unsigned int tWidth){
 	width(dimentionX);
 	height(dimentionY);
 	tileWidth(tWidth);
 	tileHeight(tHeight);
 }
 
-std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
+std::pair<int,int> StageModel::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
 	float tileX = 0;
 	float tileY = 0;
 	float aux = static_cast<float>(pixelCoordinates.first + cameraX)/2;
@@ -111,16 +110,16 @@ std::pair<int,int> Stage::pixelToTileCoordinatesInStage(std::pair<int,int> pixel
 	return std::make_pair<int,int>(static_cast<int>(tileX),static_cast<int>(tileY));
 }
 
-std::pair<int,int> Stage::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+std::pair<int,int> StageModel::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
 
 	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
 }
 
-bool Stage::isInsideWorld(std::pair<int,int> tileCoordinates) {
+bool StageModel::isInsideWorld(std::pair<int,int> tileCoordinates) {
 	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first < static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second < static_cast<int>(this->height())) );
 }
 
-void Stage::destino(int x,int y,float cameraX,float cameraY){
+void StageModel::destino(int x,int y,float cameraX,float cameraY){
 	std::pair<int,int> pixelCoordinates;
 	pixelCoordinates.first = x;
 	pixelCoordinates.second = y;
@@ -131,17 +130,17 @@ void Stage::destino(int x,int y,float cameraX,float cameraY){
 }
 
 
-void Stage::insertMainCharacter(PersonajeModelo* pm){
+void StageModel::insertMainCharacter(PersonajeModelo* pm){
 	_vMainCharacters.push_back(pm);
 }
 
-PersonajeModelo* Stage::modelMainCharacters(unsigned pos){
+PersonajeModelo* StageModel::modelMainCharacters(unsigned pos){
 	if (_vMainCharacters.size() > pos)
 		return _vMainCharacters[pos];
 	return NULL;
 }
 
-void Stage::clearStage(){
+void StageModel::clearStage(){
 	for (unsigned j=0; j < (this->_vMainCharacters.size()); j++)
 			delete _vMainCharacters[j];
 	_vMainCharacters.clear();

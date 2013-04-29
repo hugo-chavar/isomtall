@@ -6,35 +6,32 @@
 #include "DataTypes.h"
 #include "PersonajeModelo.h"
 #include "Configuration.h"
-#include "Stage.h"
+#include "StageModel.h"
 #include "..\View\TimeManager.h"
 #include "..\Model\YAMLParser.h"
 
-namespace model
+class Game
 {
-	class Game
-	{
-	public:
-		~Game();
+public:
+	~Game();
 
-		static Game& instance();
-		Stage* world();
-		TimeManager* time();
-		bool initialize();
-		EntLists allEntities;
-		YAMLParser yParser;
-		AnimatedEntity* animatedEntityAt(unsigned pos);
-		EntityObject* entityObjectAt(unsigned pos);
-		PersonajeModelo * personaje();
-		Configuration* configuration();
-		
-	private:
-		Game();
-		Stage _world;
-		Configuration* _configuration;
-		TimeManager _time;
-		PersonajeModelo * _personaje;
-	};
+	static Game& instance();
+	StageModel* world();
+	TimeManager* time();
+	bool initialize();
+	EntLists allEntities;
+	YAMLParser yParser;
+	AnimatedEntity* animatedEntityAt(unsigned pos);
+	EntityObject* entityObjectAt(unsigned pos);
+	PersonajeModelo * personaje();
+	Configuration* configuration();
+
+private:
+	Game();
+	StageModel _world;
+	Configuration* _configuration;
+	TimeManager _time;
+	PersonajeModelo * _personaje;
 };
 
 #endif

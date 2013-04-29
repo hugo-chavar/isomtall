@@ -812,7 +812,7 @@ PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 	return mainCharacter;
 }
 
-Stage YAMLParser::generateDefaultStage() {
+StageModel YAMLParser::generateDefaultStage() {
 	vector <EntityDef> vEntitiesDef;
 	vector <PersonajeModelo*> vMainCharacters;
 	map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
@@ -823,7 +823,7 @@ Stage YAMLParser::generateDefaultStage() {
 		}
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
 
-	Stage stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, entityMap, vMainCharacters);
+	StageModel stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, entityMap, vMainCharacters);
 	return stage;
 }
 
@@ -903,7 +903,7 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 			KeyPair key(i, j);
 			(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
 		}
-	Stage stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, entityMap, stage_aux.vMainCharacters);
+	StageModel stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, entityMap, stage_aux.vMainCharacters);
 	stages.vStages.push_back(stage);
 }
 
@@ -1056,7 +1056,7 @@ void YAMLParser::parse() {
 	//	stages.vStages[i].mainCharacter_speed(configuration.main_character_speed);
 }
 
-vector <Stage> YAMLParser::vStages() {
+vector <StageModel> YAMLParser::vStages() {
 	return stages.vStages;
 }
 
