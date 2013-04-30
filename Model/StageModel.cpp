@@ -1,10 +1,12 @@
 #include "StageModel.h"
 #include "Game.h"
+#include "stringUtilities.h"
 
 using namespace std;
 
 StageModel::StageModel(){
-	_entityMap = NULL;
+	this->_tilesMap = NULL;
+	this->firstTile = NULL;
 	_vMainCharacters.clear();
 	_vEntitiesDef.clear();
 }
@@ -15,10 +17,10 @@ StageModel::StageModel(const StageModel &origStage){
 	this->width(origStage.width());
 	this->tileWidth(origStage.tileWidth());
 	this->tileHeight(origStage.tileHeight());
-	this->_entityMap = origStage._entityMap;
+	this->_tilesMap = origStage._tilesMap;
+	this->firstTile = origStage.firstTile;
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
-	this->_entityMap = origStage._entityMap;
 }
 
 StageModel& StageModel::operator=(const StageModel &origStage){
@@ -27,10 +29,11 @@ StageModel& StageModel::operator=(const StageModel &origStage){
 	this->width(origStage.width());
 	this->tileWidth(origStage.tileWidth());
 	this->tileHeight(origStage.tileHeight());
-	this->_entityMap = origStage._entityMap;
+	//this->_entityMap = origStage._entityMap;
+	this->_tilesMap = origStage._tilesMap;
+	this->firstTile = origStage.firstTile;
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
-	this->_entityMap = origStage._entityMap;
 	return *this;
 }
 
@@ -62,9 +65,9 @@ vector <PersonajeModelo*>* StageModel::vMainCharacters() {
 	return &_vMainCharacters;
 }
 
-map <KeyPair, EntityObject*>* StageModel::entityMap() {
-	return _entityMap;
-}
+//map <KeyPair, EntityObject*>* StageModel::entityMap() {
+//	return _entityMap;
+//}
 
 //info de los tiles
 unsigned int StageModel::tileWidth() const{
@@ -98,7 +101,7 @@ void StageModel::initialize(unsigned int dimentionX, unsigned int dimentionY, un
 	tileHeight(tHeight);
 }
 
-std::pair<int,int> StageModel::pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
+pair<int,int> StageModel::pixelToTileCoordinatesInStage(pair<int,int> pixelCoordinates, float cameraX, float cameraY) {
 	float tileX = 0;
 	float tileY = 0;
 	float aux = static_cast<float>(pixelCoordinates.first + cameraX)/2;
@@ -110,7 +113,7 @@ std::pair<int,int> StageModel::pixelToTileCoordinatesInStage(std::pair<int,int> 
 	return std::make_pair<int,int>(static_cast<int>(tileX),static_cast<int>(tileY));
 }
 
-std::pair<int,int> StageModel::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+pair<int,int> StageModel::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
 
 	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
 }
@@ -144,10 +147,124 @@ void StageModel::clearStage(){
 	for (unsigned j=0; j < (this->_vMainCharacters.size()); j++)
 			delete _vMainCharacters[j];
 	_vMainCharacters.clear();
-	if (_entityMap){
-		_entityMap->clear();
-		delete _entityMap;
-		_entityMap = NULL;
-	}
+	//if (_entityMap){
+	//	_entityMap->clear();
+	//	delete _entityMap;
+	//	_entityMap = NULL;
+	//}
 	_vEntitiesDef.clear();
+	this->deleteMap();
+
+}
+
+void StageModel::generateMap(){
+	unsigned currentLevel = 0;
+	KeyPair tilePos;
+	tilePos.first = 0;
+	tilePos.second = 0;
+	unsigned levels = max(this->_width, this->_height) - 1;
+	_tilesMap = new map <KeyPair, TileModel*>();
+	TileModel* currentTile  = new TileModel();
+	TileModel* prevTile;
+	firstTile = currentTile;
+	firstTile->setPosition(tilePos);
+	_tilesMap->insert(make_pair(tilePos, firstTile));
+	currentLevel++;
+	if (levels == (this->_width - 1) ){
+		while ( currentLevel <= levels ) {
+			tilePos.first = currentLevel;
+			tilePos.second = 0;
+			while (( tilePos.second <= currentLevel )&& (tilePos.second <= (this->_height -1)) ){
+				prevTile = currentTile;
+				currentTile  = new TileModel();
+				currentTile->setPosition(tilePos);
+				prevTile->setNextTile(currentTile);
+				_tilesMap->insert(make_pair(tilePos, currentTile));
+				tilePos.first--;
+				tilePos.second++;
+			} //when exit level complete
+			currentLevel++;
+
+		}
+		levels = (this->_height -1);
+		currentLevel = 1;
+		while ( currentLevel <= levels ){
+			tilePos.first = (this->_width -1);
+			tilePos.second = currentLevel;
+			while ( tilePos.second <= levels ){
+				prevTile = currentTile;
+				currentTile  = new TileModel();
+				currentTile->setPosition(tilePos);
+				prevTile->setNextTile(currentTile);
+				_tilesMap->insert(make_pair(tilePos, currentTile));
+				tilePos.first--;
+				tilePos.second++;
+			} //when exit level complete
+			currentLevel++;
+
+		}
+	} else { //height > width
+		while ( currentLevel <= levels ){
+			tilePos.first = 0;
+			tilePos.second = currentLevel;
+			while ( (tilePos.first <= currentLevel) && (tilePos.first <= (this->_width -1)) ){
+				prevTile = currentTile;
+				currentTile  = new TileModel();
+				currentTile->setPosition(tilePos);
+				prevTile->setNextTile(currentTile);
+				_tilesMap->insert(make_pair(tilePos, currentTile));
+				tilePos.second--;
+				tilePos.first++;
+			} //when exit level complete
+			currentLevel++;
+		}
+		levels = (this->_width -1);
+		currentLevel = 1;
+		while ( currentLevel <= levels ){
+			tilePos.first = currentLevel;
+			tilePos.second = (this->_height -1);
+			while ( tilePos.first <= levels ){
+				prevTile = currentTile;
+				currentTile  = new TileModel();
+				currentTile->setPosition(tilePos);
+				prevTile->setNextTile(currentTile);
+				_tilesMap->insert(make_pair(tilePos, currentTile));
+				tilePos.first++;
+				tilePos.second--;
+			} //when exit level complete
+			currentLevel++;
+
+		}
+	}
+}
+
+void StageModel::deleteMap(){
+	TileModel* aux = this->firstTile;
+	TileModel* nextAux;
+	while (aux){
+		nextAux = aux;
+		aux = nextAux->getNextTile();
+		delete nextAux;
+	}
+	if (_tilesMap){
+		_tilesMap->clear();
+		delete _tilesMap;
+	}
+}
+
+void StageModel::loadByDefault(EntityObject* e){
+	TileModel* aux = this->firstTile;
+	while (aux){
+		if (aux->getGroundEntity() == NULL)
+			aux->setGroundEntity(e);
+		aux = aux->getNextTile();
+	}
+}
+
+
+unsigned max (unsigned a, unsigned b ) {
+	unsigned result = a;
+	if ( b > a )
+		result = b;
+	return result;
 }

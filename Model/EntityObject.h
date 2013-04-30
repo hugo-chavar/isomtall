@@ -28,7 +28,7 @@ public:
 	void pixelRefY(int value);
 	void imagePath(string);
 	virtual bool isGround();
-
+	virtual bool isAnimated();
 private:
 	string _name;
 	int _base_width;

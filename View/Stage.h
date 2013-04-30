@@ -3,14 +3,18 @@
 
 #include <vector>
 #include <utility>
+#include <list>
+//del modelo
+#include "DataTypes.h"
+#include "StageModel.h"
+#include "Game.h"
+//de la vista
 #include "TileView.h"
 #include "Camera.h"
-#include "Stage.h"
 #include "Entity.h"
-#include "Game.h"
 #include "Personaje.h"
 #include "SpriteAnimado.h"
-#include <list>
+
 
 using namespace std;
 
@@ -26,15 +30,16 @@ namespace view {
 		//list<Entity *> entityList;
 		vector<vector<Entity*>> entityList;
 		//std::vector<model::Tile*> tileArray;
-		std::vector<TileView*> tileArray;
+		vector<TileView*> tileArray;
+		map<KeyPair, TileView*> tileMap;
 
-		void view::Stage::renderTile(int Xt, int Yt,Camera& camera);
+		void renderTile(int Xt, int Yt,Camera& camera);
 
 	public:
 		Stage();
 
 		void update(); 
-		StageModel* worldModel; //TODO: guardar una referencia?
+		StageModel* worldModel;
 
 		void render(Camera& camera);
 

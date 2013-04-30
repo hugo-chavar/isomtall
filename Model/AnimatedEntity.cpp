@@ -84,3 +84,11 @@ void AnimatedEntity::clearImages(){
 string AnimatedEntity::nextDirectory(){
 	return _images.nextFullPathDir();
 }
+
+bool AnimatedEntity::isGround(){
+	return false;
+}
+
+bool AnimatedEntity::isAnimated(){
+	return true;
+}
