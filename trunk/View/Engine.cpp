@@ -2,11 +2,13 @@
 
 #include "Surface.h"
 #include "Game.h"
+#include "SDL_ttf.h"
 
 Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	this->desiredFPS = 100;
+	this->typing = false;
 }
 
 bool Engine::isRunning() {
@@ -51,13 +53,20 @@ void Engine::initialize() {
 
 	bool cameraInitialized = this->camera.initialize();
 	bool mapInitialized = false;
+	bool textInitialized = true;
+	bool textboxInitialized = false;
+
+	//Initialize SDL_ttf
+	if (TTF_Init()==-1)
+		textInitialized = false;
 
 	if (cameraInitialized){
 		mapInitialized = worldView.initialize();
+		textboxInitialized = textbox.initialize(camera);
 	}
 
 	//si hubo errores de inicializacion salgo
-	running = mapInitialized & cameraInitialized; 
+	running = mapInitialized & cameraInitialized & textInitialized; 
 
 	if (running) {
 		std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
@@ -67,6 +76,14 @@ void Engine::initialize() {
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
+	if (typing) {
+		SDL_PollEvent(sdlEvent);
+		textbox.handleInput(sdlEvent);
+		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
+			// ENVIAR MENSAJE...
+			textbox.cleanTextBox();
+		}
+	}
 
 	if(sdlEvent->type == SDL_QUIT) {
 		running = false;
@@ -91,7 +108,13 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				}
 			case SDLK_w:
 				{
-					Game::instance().personaje()->animar();
+					if (!typing)
+						Game::instance().personaje()->animar();
+					break;
+				}
+			case SDLK_y:
+				{
+					typing = true;
 					break;
 				}
 			default:
@@ -99,36 +122,44 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			}
 		}
 		case SDL_MOUSEBUTTONDOWN: {
-            switch(sdlEvent->button.button) {
-                case SDL_BUTTON_LEFT: {
-					(Game::instance().world())->
-						destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
-                    //TODO: add event handling;
+			switch(sdlEvent->button.button) {
+				case SDL_BUTTON_LEFT: {
+					if (textbox.pressingClosingBox(sdlEvent->button.x+camera.getOffsetX(), sdlEvent->button.y+camera.getOffsetY()))
+						typing = false;
+					else
+						(Game::instance().world())->
+							destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
+					//TODO: add event handling;
 					//sdlEvent->button.x;
 					//sdlEvent->button.y;
-                    break;
-                }
-                case SDL_BUTTON_RIGHT: {
-                    //TODO: add event handling;
+					break;
+				}
+				case SDL_BUTTON_RIGHT: {
+					//TODO: add event handling;
 					//sdlEvent->button.x;
 					//sdlEvent->button.y;
-                    break;
-                }
-            }
-            break;
-        }
+					break;
+				}
+			}
+			break;
+		}
 	}
+	
 }
 
 void Engine::update() {
 	this->camera.update();
 	this->worldView.update();
+	this->textbox.update(camera);
 }
 
 void Engine::render() {
 	SDL_FillRect(this->camera.cameraSurface,NULL,0);
 
 	this->worldView.render(this->camera);
+
+	if (typing)
+		this->textbox.render(this->camera);
 
 	SDL_Flip(this->camera.cameraSurface);
 }
