@@ -7,6 +7,7 @@
 #include <utility>
 #include "DataTypes.h"
 #include "PersonajeModelo.h"
+#include "TileModel.h"
 
 using namespace std;
 
@@ -15,8 +16,8 @@ class StageModel {
 
 public:
 	StageModel();
-	StageModel(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, map <KeyPair, EntityObject*> *entityMap, vector <PersonajeModelo*> vMainCharacters): 
-	_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef), _entityMap(entityMap), _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; };
+	StageModel(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, vector <PersonajeModelo*> vMainCharacters): //, map <KeyPair, EntityObject*> *entityMap
+	_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef),  _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; firstTile = NULL; this->_tilesMap = NULL; }; //_entityMap(entityMap),
 	StageModel(const StageModel&);
 	StageModel& operator=(const StageModel&);
 	unsigned int width() const; 
@@ -24,7 +25,7 @@ public:
 	string name() const; 
 	vector <EntityDef> vEntitiesDef();
 	vector <PersonajeModelo*>* vMainCharacters(); 
-	map <KeyPair, EntityObject*> *entityMap();
+	//map <KeyPair, EntityObject*> *entityMap();
 	void width(unsigned int); 
 	void height(unsigned int);
 	void name(string);
@@ -45,6 +46,9 @@ public:
 	PersonajeModelo* modelMainCharacters(unsigned);
 	void insertMainCharacter(PersonajeModelo*);
 	void clearStage();
+	void generateMap();
+	void deleteMap();
+	void loadByDefault(EntityObject*);
 private:
 	string _name;
 	unsigned int _width;
@@ -52,8 +56,11 @@ private:
 	unsigned int _tileWidth;
 	unsigned int _tileHeight;
 	vector <EntityDef> _vEntitiesDef;
-	map <KeyPair, EntityObject*> *_entityMap;
-	float _mainCharacter_speed;
+	//map <KeyPair, EntityObject*> *_entityMap;
+
+	map <KeyPair, TileModel*> *_tilesMap;
+	TileModel* firstTile;
+	//float _mainCharacter_speed;
 
 	vector <PersonajeModelo*> _vMainCharacters;
 };

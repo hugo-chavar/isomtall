@@ -27,7 +27,8 @@ public:
 	void clearImages();
 	void copy(AnimatedEntity*);
 	bool hasNoDir();
-
+	bool isGround();
+	bool isAnimated();
 private:
 	int _fps;
 	int _delay;

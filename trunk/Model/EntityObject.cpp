@@ -68,3 +68,7 @@ bool EntityObject::isGround(){
 	}
 	return false;
 }
+
+bool EntityObject::isAnimated(){
+	return false;
+}

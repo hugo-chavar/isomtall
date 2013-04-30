@@ -7,22 +7,20 @@ Game::Game()
    
 }
 
-Game::~Game()
-{
+Game::~Game(){
+	//_world.deleteMap();
 }
 
-Game& Game::instance()
-{
+Game& Game::instance(){
 	static Game singleton;
 	return singleton;
 }
 
-StageModel* Game::world()
-{
+StageModel* Game::world(){
 	return &_world;
 }
 
-TimeManager* Game::time() {
+TimeManager* Game::time(){
 	return &_time;
 }
 
@@ -30,6 +28,7 @@ bool Game::initialize()
 {
 	yParser.parse();
 	_world = yParser.vStages()[0];
+	//_world.generateMap();
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
