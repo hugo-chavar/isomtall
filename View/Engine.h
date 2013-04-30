@@ -4,6 +4,7 @@
 #include "SDL.h"
 #include "Camera.h"
 #include "Stage.h"
+#include "Textbox.h"
 
 
 class Engine {
@@ -20,6 +21,10 @@ class Engine {
 
 		//TODO: Create getter/setter
 		Camera camera;
+
+		Textbox textbox;
+		
+		bool typing;
 	
 		bool isRunning();
 
