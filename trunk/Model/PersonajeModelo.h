@@ -37,6 +37,7 @@ private:
 	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
+	std::pair<int, int> targetParcial;
 	int* xPath;
 	int* yPath;
 	int posMov;

@@ -22,6 +22,8 @@ PersonajeModelo::PersonajeModelo() {
 	current.second = DEFAULT_MAIN_CHARACTER_Y;
 	target.first = current.first;
 	target.second = current.second;
+	targetParcial.first = current.first;
+	targetParcial.second = current.second;
 	xPath = NULL;
 	yPath = NULL;
 	posMov = 0;
@@ -35,6 +37,8 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	current.second = ActualY;
 	target.first = current.first;
 	target.second = current.second;
+	targetParcial.first = current.first;
+	targetParcial.second = current.second;
 	xPath = NULL;
 	yPath = NULL;
 	posMov = 0;
@@ -82,6 +86,8 @@ int PersonajeModelo::delay()
 void PersonajeModelo::setDestino(int x, int y) {
 	target.first = x;
 	target.second = y;
+	targetParcial.first = x;
+	targetParcial.second = y;
 }
 
 void PersonajeModelo::setEstado(int state) {
@@ -127,7 +133,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		velocidad = 0;
 		return estado;
 	}
-	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=target.first)||(yPath[caminoSize-1]!=target.second))) {
+	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=targetParcial.first)||(yPath[caminoSize-1]!=targetParcial.second))||((posMov==caminoSize)&&((target.first!=targetParcial.first)||(target.second!=targetParcial.second)))) {
 		posMov = 0;
 		caminoSize = 0;
 		if (xPath != NULL) {
@@ -138,7 +144,13 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 			delete [] yPath;
 			yPath = NULL;
 		}
-		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, xPath, yPath);
+		targetParcial.first = target.first;
+		targetParcial.second = target.second;
+		caminoSize = pathF.getPath(current.first, current.second, targetParcial.first, targetParcial.second, xPath, yPath);
+		if (caminoSize == 0) {
+			target.first = targetParcial.first;
+			target.second = targetParcial.second;
+		}
 		if (caminoSize <  0) {
 			cambio = this->siCaminaDetenerse();
 			estado = cambiarEstado(current.first, current.second, cambio);
@@ -155,7 +167,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		posMov++;
 	} else {
 		cambio = this->siCaminaDetenerse();
-		estado = cambiarEstado(target.first, target.second, cambio);
+		estado = cambiarEstado(targetParcial.first, targetParcial.second, cambio);
 		velocidad = 0;
 		return estado;
 	}
