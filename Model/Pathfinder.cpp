@@ -18,8 +18,8 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 	std::map<Par, Nodo> closeList;
 	ListaPath openList;
 	std::vector<Par> camino;
-	/*double controlTamano = 0;
-	double tamanoMax = (Game::instance().world()->height())*(Game::instance().world()->width());*/
+	int controlTamano = 0;
+	int tamanoMax = 100;
 	int tamano;
 
 	if ((OrigenX == DestinoX) && (OrigenY == DestinoY)) {
@@ -28,9 +28,10 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 		return 0;
 	}
 	actual = new Nodo(OrigenX, OrigenY);
+	actual->setHScore(calcularHeuristica(OrigenX, OrigenY, DestinoX, DestinoY));
 	posActual = new Par(actualX, actualY);
 	openList.agregar(actual);
-	while (!(openList.empty())/*&&(controlTamano < tamanoMax)*/) {
+	while (!(openList.empty())&&(controlTamano < tamanoMax)) {
 		actual->getPos(actualX, actualY);
 		if ((actualX==DestinoX)&&(actualY==DestinoY)) {
 			found = true;
@@ -40,16 +41,25 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
 		openList.getNodo(*actual);
-		/*controlTamano++;*/
+		controlTamano++;
 	}
 	if (!(found)) {
-		/*getNodoMasCercano(closeList, actual, actualX, actualY);
-		DestinoX = actualX;
-		DestinoY = actualY;*/
-		XPath = NULL;
-		YPath = NULL;
+		if (!tileProximo(OrigenX, OrigenY, DestinoX, DestinoY)) {
+			getNodoMasCercano(closeList, actual, actualX, actualY);
+			DestinoX = actualX;
+			DestinoY = actualY;
+		} else {
+			DestinoX=OrigenX;
+			DestinoY=OrigenY;
+			actualX=OrigenX;
+			actualY=OrigenY;
+		}
+	}
+	if ((actualX == OrigenX)&&(actualY == OrigenY)) {
+		tamano = 0;
 		delete posActual;
-		return -1;
+		delete actual;
+		return tamano;
 	}
 	while (true) {
 		posActual->setPos(actualX, actualY);
@@ -76,6 +86,15 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 	return tamano;
 }
 
+bool Pathfinder::tileProximo(int OrigenX, int OrigenY, int DestinoX, int DestinoY) {
+	int distanciaX = std::abs(OrigenX-DestinoX);
+	int distanciaY = std::abs(OrigenY-DestinoY);
+	if ((distanciaX<=1)&&(distanciaY<=1)) {
+		return true;
+	}
+	return false;
+}
+
 void Pathfinder::getNodoMasCercano(std::map<Par, Nodo>& closeList, Nodo* &actual, int& actualX, int& actualY) {
 	std::map<Par, Nodo>::iterator it;
 	actual = new Nodo(-1,-1);
@@ -99,6 +118,7 @@ void Pathfinder::getNodoMasCercano(std::map<Par, Nodo>& closeList, Nodo* &actual
 void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
 	Par posExplorar;
 	Nodo* nuevoNodo = NULL;
+	Nodo nodoAgregar;
 	int alto = 0;
 	int ancho = 0;
 	int actualX = 0;
@@ -146,16 +166,14 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 				nuevoNodo->setGScore(GCost);
 				nuevoNodo->setPosP(actualX, actualY);
 			}
-			openList.agregar(nuevoNodo);
-			delete nuevoNodo;
 			continue;
 		}
 		HCost = calcularHeuristica(explorarX, explorarY, DestinoX, DestinoY);
-		nuevoNodo = new Nodo(explorarX, explorarY);
-		nuevoNodo->setPosP(actualX, actualY);
-		nuevoNodo->setGScore(GCost);
-		nuevoNodo->setHScore(HCost);
-		openList.agregar(nuevoNodo);
+		nodoAgregar.setPos(explorarX, explorarY);
+		nodoAgregar.setPosP(actualX, actualY);
+		nodoAgregar.setGScore(GCost);
+		nodoAgregar.setHScore(HCost);
+		openList.agregar(&nodoAgregar);
 		delete nuevoNodo;
 	}
 }

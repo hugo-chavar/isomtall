@@ -18,6 +18,7 @@ private:
 	void agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::map<Par, Nodo>& closeList, ListaPath& openList); //, Foo& Tiles
 	unsigned int calcularGCost (unsigned int padre, int posX, int posY, double coste);
 	unsigned int calcularHeuristica(int posX, int posY, int DestinoX, int DestinoY); //Con metodo Manhattan
+	bool tileProximo(int OrigenX, int OrigenY, int DestinoX, int DestinoY);
 };
 
 #endif

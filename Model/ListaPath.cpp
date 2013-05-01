@@ -39,9 +39,7 @@ Nodo* ListaPath::getNodo(int X, int Y) {
 	if (it == nodeList.end()) {
 		return nodoDevuelto;
 	}
-	nodoDevuelto = new Nodo(-1,-1);
-	*nodoDevuelto = it->second;
-	nodeList.erase(it);
+	nodoDevuelto = &(it->second);
 	return nodoDevuelto;
 }
 
