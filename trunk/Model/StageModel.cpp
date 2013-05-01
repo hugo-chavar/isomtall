@@ -94,7 +94,7 @@ unsigned int StageModel::cost(unsigned int x, unsigned int y){
 	k.first = x;
 	k.second = y;
 	TileModel* tile = _tilesMap->at(k);
-	if (tile->getOtherEntity())
+	if ( (tile->getOtherEntity()) || (tile->getRelatedTile()))
 		return 0;
 	return 1;
 }
@@ -133,7 +133,7 @@ void StageModel::destino(int x,int y,float cameraX,float cameraY){
 	pixelCoordinates.second = y;
 	std::pair<int,int> destino = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
 
-	if(isInsideWorld(destino)) 
+	if((isInsideWorld(destino)) && (cost(destino.first,destino.second) != 0)) 
 		Game::instance().personaje()->setDestino(destino.first,destino.second);
 }
 
