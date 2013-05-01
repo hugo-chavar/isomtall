@@ -19,7 +19,6 @@
 using namespace std;
 using namespace YAML;
 using namespace common;
-using namespace model;
 
 
 // Data types

@@ -22,9 +22,9 @@ YAMLParser::~YAMLParser() {
 	entities.vAnimatedEntities.clear();
 	for (unsigned i=0; i < stages.vStages.size(); i++){
 		stages.vStages[i].clearStage();
-		stages.vStages_aux[i].vEntitiesDef.clear();
-		stages.vStages_aux[i].vMainCharacters.clear();
-		stages.vStages_aux[i].vMainCharacters_aux.clear();
+		//stages.vStages_aux[i].vEntitiesDef.clear();
+		//stages.vStages_aux[i].vMainCharacters.clear();
+		//stages.vStages_aux[i].vMainCharacters_aux.clear();
 		stages.vStages.clear();
 		stages.vStages_aux.clear();
 	}

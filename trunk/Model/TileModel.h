@@ -4,8 +4,8 @@
 #include "EntityObject.h"
 #include "DataTypes.h"
 
-class TileModel
-{
+class TileModel{
+
 public:
 	TileModel();
 	~TileModel();
@@ -15,13 +15,20 @@ public:
 	void setOtherEntity(EntityObject * e);
 	void addEntity(EntityObject * e);
 	void setPosition(KeyPair);
+	KeyPair getPosition();
 	void setNextTile(TileModel*);
 	TileModel* getNextTile();
+	void setRelatedTile(TileModel*);
+	TileModel* getRelatedTile();
+	void setUndrawable();
+	bool drawable();
 private:
 	EntityObject* groundEntity;
 	EntityObject* otherEntity;
 	TileModel* nextTile;
+	TileModel* relatedTile;
 	KeyPair position;
+	bool isDrawable;
 };
 
 

@@ -90,6 +90,12 @@ void StageModel::name(string value){
 }
 
 unsigned int StageModel::cost(unsigned int x, unsigned int y){
+	KeyPair k;
+	k.first = x;
+	k.second = y;
+	TileModel* tile = _tilesMap->at(k);
+	if (tile->getOtherEntity())
+		return 0;
 	return 1;
 }
 
@@ -178,12 +184,11 @@ void StageModel::generateMap(){
 				tilePos.second++;
 			} //when exit level complete
 			currentLevel++;
-
 		}
 		levels = (this->_height -1);
 		currentLevel = 1;
 		while ( currentLevel <= levels ){
-			tilePos.first = (this->_width -1);
+			tilePos.first = (this->_width - 1); //currentLevel
 			tilePos.second = currentLevel;
 			while ( tilePos.second <= levels ){
 				prevTile = currentTile;
@@ -195,7 +200,6 @@ void StageModel::generateMap(){
 				tilePos.second++;
 			} //when exit level complete
 			currentLevel++;
-
 		}
 	} else { //height > width
 		while ( currentLevel <= levels ){
@@ -227,7 +231,6 @@ void StageModel::generateMap(){
 				tilePos.second--;
 			} //when exit level complete
 			currentLevel++;
-
 		}
 	}
 }
@@ -255,9 +258,93 @@ void StageModel::loadByDefault(EntityObject* e){
 	}
 }
 
+void StageModel::resolveRelatedTiles(TileModel* tile){
+	EntityObject* entity = tile->getOtherEntity();
+	if ( (entity) && ( (entity->baseWidth() > 1) || (entity->baseHeight() > 1) ) ){
+		markRelatedTiles(tile);
+
+	}
+}
+
+void StageModel::markRelatedTiles(TileModel* tile){ //TODO:falta testear con baseHeight > baseWidth
+	EntityObject* entity = tile->getOtherEntity();
+	unsigned currentLevel = 0;
+	KeyPair tilePos, refTilePos;
+	refTilePos = tile->getPosition();
+	tilePos.first = refTilePos.first + (entity->baseWidth() - 1);
+	tilePos.second = refTilePos.second + (entity->baseHeight() - 1);
+	TileModel* prevTile  = tile;
+	TileModel* currentTile = _tilesMap->at(tilePos);
+	currentTile->setRelatedTile(tile);
+	currentTile->setUndrawable();
+	unsigned levels = max(entity->baseWidth(), entity->baseHeight()) - 1;
+	currentTile  = tile;
+	currentLevel++;
+	if (levels == (entity->baseWidth() - 1) ){
+		while ( currentLevel <= levels ) {
+			tilePos.first = refTilePos.first + currentLevel;
+			tilePos.second = refTilePos.second;
+			while ( tilePos.second <= (refTilePos.second + currentLevel) ) {
+				prevTile = currentTile;
+				currentTile  = _tilesMap->at(tilePos);
+				currentTile->setUndrawable();
+				prevTile->setRelatedTile(currentTile);
+				tilePos.first--;
+				tilePos.second++;
+			} 
+			currentLevel++;
+		}
+		levels = (entity->baseHeight() -1);
+		currentLevel = 1;
+		while ( currentLevel <= levels ){
+			tilePos.first = refTilePos.first + (entity->baseWidth() -1);
+			tilePos.second = refTilePos.second + currentLevel;
+			while ( tilePos.second <= (refTilePos.second +levels) ){
+				prevTile = currentTile;
+				currentTile  = _tilesMap->at(tilePos);
+				currentTile->setUndrawable();
+				prevTile->setRelatedTile(currentTile);
+				tilePos.first--;
+				tilePos.second++;
+			} 
+			currentLevel++;
+		}
+	} else { //height > width TODO: falta testear
+		while ( currentLevel <= levels ){
+			tilePos.first = refTilePos.first;
+			tilePos.second = refTilePos.second + currentLevel;
+			while (tilePos.first <= (refTilePos.first + currentLevel)){
+				prevTile = currentTile;
+				currentTile  = _tilesMap->at(tilePos);
+				currentTile->setUndrawable();
+				prevTile->setRelatedTile(currentTile);
+				tilePos.second--;
+				tilePos.first++;
+			} 
+			currentLevel++;
+		}
+		levels = (entity->baseWidth() -1);
+		currentLevel = 1;
+		while ( currentLevel <= levels ){
+			tilePos.first = refTilePos.first + currentLevel;
+			tilePos.second = refTilePos.second + (entity->baseHeight() - 1 );
+			while ( tilePos.first <= (refTilePos.first + currentLevel) ){
+				prevTile = currentTile;
+				currentTile  = _tilesMap->at(tilePos);
+				currentTile->setUndrawable();
+				prevTile->setRelatedTile(currentTile);
+				tilePos.first++;
+				tilePos.second--;
+			}
+			currentLevel++;
+		}
+	}
+}
+
 void StageModel::insertEntity(KeyPair k, EntityObject* e){
 	TileModel* tile = _tilesMap->at(k);
 	tile->addEntity(e);
+	resolveRelatedTiles(tile);
 }
 
 unsigned max (unsigned a, unsigned b ) {

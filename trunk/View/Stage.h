@@ -31,9 +31,10 @@ namespace view {
 		vector<vector<Entity*>> entityList;
 		//std::vector<model::Tile*> tileArray;
 		vector<TileView*> tileArray;
-		map<KeyPair, TileView*> tileMap;
+		map<KeyPair, TileView*> _tilesMap;
 
 		void renderTile(int Xt, int Yt,Camera& camera);
+		void loadGround();
 
 	public:
 		Stage();

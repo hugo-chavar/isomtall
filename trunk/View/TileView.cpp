@@ -1,51 +1,77 @@
 #include "TileView.h"
+#include "Logger.h"
+#include "stringUtilities.h"
+
+using namespace common;
 
 
-//TileView::TileView(std::string filePath, unsigned int offsetX, unsigned int offsetY, unsigned int height, unsigned int width, unsigned int speedPenalty, unsigned int centerX, unsigned int centerY) {
-//	this->speedPenalty = speedPenalty;
-//	this->centerX = centerX;
-//	this->centerY = centerY;
-//
-//	SDL_Surface* tempSurface = Surface::loadFromBMP(filePath.c_str());
-//
-//	Surface::draw(tempSurface,offsetX,offsetY,height,width,this->sdlSurface,0,0);
-//
-//	//TODO ver si se usarán transparencias.
-//	SDL_SetColorKey(this->sdlSurface,SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(this->sdlSurface->format,0,0,0));
-//
-//	SDL_FreeSurface(tempSurface);
+TileView::TileView(){
+	this->groundEntity = NULL;
+	this->otherEntity = NULL;
+	this->nextTile = NULL;
+	this->relatedTile = NULL;
+	this->isDrawable = true;
+}
+
+TileView::~TileView(){
+	//string x = StringUtilities::unsignedToString(position.first);
+	//string y = StringUtilities::unsignedToString(position.second);
+	//Logger::instance().log("Borrado tile "+ x+ ", "+y+" listo");
+}
+
+Entity * TileView::getGroundEntity(){
+	return this->groundEntity;
+}
+
+Entity * TileView::getOtherEntity(){
+	return this->otherEntity;
+}
+
+void TileView::setGroundEntity(Entity * e){
+	this->groundEntity = e;
+}
+
+void TileView::setOtherEntity(Entity * e){
+	this->otherEntity = e;
+}
+
+void TileView::setPosition(KeyPair p){
+	this->position = p;
+}
+
+KeyPair TileView::getPosition(){
+	return this->position;
+}
+
+void TileView::setNextTile(TileView* t){
+	this->nextTile = t;
+}
+
+TileView* TileView::getNextTile(){
+	return this->nextTile;
+}
+
+void TileView::setRelatedTile(TileView* t){
+	this->relatedTile = t;
+}
+
+TileView* TileView::getRelatedTile(){
+	return this->relatedTile;
+}
+
+void TileView::setUndrawable(){
+	this->isDrawable = false;
+}
+
+
+bool TileView::drawable(){
+	return this->isDrawable;
+}
+
+//void TileView::cleanUp() {
+//	SDL_FreeSurface(this->sdlSurface);
 //}
-//
-//TileView::TileView(SDL_Surface* sourceSdlSurface, unsigned int offsetX, unsigned int offsetY, unsigned int height, unsigned int width, unsigned int speedPenalty, unsigned int centerX, unsigned int centerY) {
-//	this->speedPenalty = speedPenalty;
-//	this->centerX = centerX;
-//	this->centerY = centerY;
-//
-//	this->sdlSurface = SDL_CreateRGBSurface(SDL_SWSURFACE,width,height,32,0,0,0,0);
-//
-//	Surface::draw(sourceSdlSurface,offsetX,offsetY,height,width,this->sdlSurface,0,0);
-//
-//	//TODO ver si se usarán transparencias.
-//	SDL_SetColorKey(this->sdlSurface,SDL_SRCCOLORKEY | SDL_RLEACCEL,SDL_MapRGB(this->sdlSurface->format,0,0,0));
-//}
-//
+
 //unsigned int TileView::getSpeedPenalty() {
 //	return this->speedPenalty;
 //}
-//
-//unsigned int TileView::getCenterX() {
-//	return this->centerX;
-//}
-//
-//unsigned int TileView::getCenterY() {
-//	return this->centerY;
-//}
-
-
-
-void TileView::cleanUp() {
-	//SDL_FreeSurface(this->sdlSurface);
-}
-
-TileView::~TileView() {
-}

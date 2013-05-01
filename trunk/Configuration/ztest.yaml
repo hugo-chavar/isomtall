@@ -1,0 +1,218 @@
+pantalla:
+    - ancho: 800 
+    - alto: xxxx
+
+configuracion: 
+    - vel_personaje: 2.5
+    - margen_scroll: 600
+    - vision_personaje: 3
+    - puerto_servidor: 3500
+     
+entidades:
+    - nombre: arbol 
+      imagen: ../Images/arbol/
+      ancho_base: 1 
+      alto_base: 1 
+      pixel_ref_x: 32.0 
+      pixel_ref_y: 32
+      fps: 15
+      delay: 1000
+       
+    - nombre: molino
+      imagen: ../Images/molino/
+      ancho_base: 2
+      alto_base: 2 
+      pixel_ref_x: 64
+      pixel_ref_y: 124
+      fps: 15
+      delay: 3000
+
+    - nombre: test1		
+      imagen: ../Images/Capilla Roja0.png		
+      ancho_base: 5		
+      alto_base: 5		
+      pixel_ref_x: 196		
+      pixel_ref_y: 107
+
+    - nombre: fuente
+      imagen: ../Images/fuente/
+      ancho_base: 3
+      alto_base: 3 
+      pixel_ref_x: 64
+      pixel_ref_y: 64
+      fps: 15
+      delay: 3000
+
+    - nombre: watermill
+      imagen: ../Images/watermill/
+      ancho_base: 5
+      alto_base: 5 
+      pixel_ref_x: 124
+      pixel_ref_y: 106
+      fps: 15
+      delay: 0
+
+    - nombre: bandera
+      imagen: ../Images/bandera/
+      ancho_base: 1
+      alto_base: 1 
+      pixel_ref_x: 18
+      pixel_ref_y: 72
+      fps: 30
+      delay: 3000
+
+    - nombre: castillo
+      imagen: ../Images/cubo.png
+      ancho_base: holamundo 
+      alto_base: 2 
+      pixel_ref_x: 30 
+      pixel_ref_y: 40 
+
+    - nombre: medieval
+      imagen: ../Images/medieval.png
+      ancho_base: 3 
+      alto_base: 3 
+      pixel_ref_x: 122
+      pixel_ref_y: 104 
+
+    - nombre: orco 
+      imagen: path/a/imagen/
+      fps: 10 
+      delay: 5 
+
+    - nombre: pelota 
+      imagen: ../Images/pelota/
+      fps: 10 
+      delay: 5 
+       
+    - nombre: frodo 
+      imagen: ../Images/personajeVampiro/
+      pixel_ref_x: 48
+      pixel_ref_y: 64
+      fps: 30 
+       
+    - nombre: caballo
+      imagen: ../Images/personajeCaballo/
+      pixel_ref_x: 74
+      pixel_ref_y: 80
+      fps: 10 
+
+    - nombre: caballoC
+      imagen: ../Images/caballo/
+      fps: 10
+      delay: 3000
+
+    - nombre: caballoR
+      imagen: ../Images/caballoR/
+      fps: 10
+      delay: 3000  
+
+    - nombre: personajedefault
+      imagen: ../Images/personaje/
+      pixel_ref_x: 32
+      pixel_ref_y: 32 
+      fps: 10 
+
+    - nombre: tierra 
+      imagen: path/a/imagen.png 
+   
+    - nombre: agua 
+      imagen: ../Images/pisoAgua0.png 
+
+    - nombre: piedra 
+      imagen: ../Images/pisoPiedra0.png
+
+    - nombre: piso2921 
+      imagen: ../Images/piso2921.png
+
+    - nombre: piso041 
+      imagen: ../Images/piso041.png
+
+    - nombre: piso5050 
+      imagen: ../Images/piso050.png
+
+    - nombre: dado
+      imagen: ../Images/dado0.png
+      pixel_ref_x: 32 
+      pixel_ref_y: 30 
+       
+escenarios: 
+    - nombre: bosque_encantado 
+      size_x: 10
+      size_y: 10 
+      entidadesDef:  
+         - {x: 3, y: 10, entidad: arbol}
+         - {x: 0, y: 41, entidad: piso041}
+         - {x: 99, y: 99, entidad: bandera}
+         - {x: 9, y: 9, entidad: bandera}
+         - {x: 5, y: 5, entidad: fuente} 
+         - {x: 8, y: 8, entidad: caballo}
+         - {x: 0, y: 50, entidad: piso5050}
+         - {x: 10, y: 15, entidad: tierra} 
+         - {x: 50, y: 50, entidad: agua}
+         - {x: 0, y: 12, entidad: agua}
+         - {x: 0, y: 12, entidad: arbol}
+         - {x: 50, y: 51, entidad: agua}
+         - {x: 50, y: 52, entidad: agua}
+         - {x: 50, y: 52, entidad: agua}
+         - {x: 51, y: 50, entidad: agua}
+         - {x: 51, y: 51, entidad: agua}
+         - {x: 0, y: 5, entidad: dado}
+         - {x: 0, y: 4, entidad: arbol}
+         - {x: 7, y: 0, entidad: arbol}
+         - {x: 6, y: 0, entidad: dado}
+         - {x: 5, y: 0, entidad: arbol}
+         - {x: 0, y: 9, entidad: pelota}
+         - {x: 0, y: 12, entidad: televisor}
+         - {x: 30, y: 55, entidad: tierra} 
+         - {x: -30, y: 55, entidad: tierra}
+         - {x: 0, y: 22, entidad: agua}
+         - {x: 1, y: 22, entidad: agua}
+         - {x: 2, y: 22, entidad: agua}
+         - {x: 3, y: 22, entidad: agua}
+         - {x: 5, y: 22, entidad: piedra} 
+         - {x: 0, y: 23, entidad: agua}
+         - {x: 1, y: 23, entidad: agua}
+         - {x: 2, y: 23, entidad: agua}
+         - {x: 3, y: 23, entidad: agua}
+         - {x: 5, y: 23, entidad: piedra}
+         - {x: 0, y: 24, entidad: agua}
+         - {x: 1, y: 24, entidad: agua}
+         - {x: 2, y: 24, entidad: agua}
+         - {x: 3, y: 24, entidad: agua}
+         - {x: 4, y: 24, entidad: piedra}
+         - {x: 5, y: 24, entidad: piedra}
+         - {x: 4, y: 20, entidad: piedra}
+         - {x: 4, y: 21, entidad: piedra}
+         - {x: 4, y: 22, entidad: piedra}
+         - {x: 5, y: 22, entidad: piedra}
+         - {x: 5, y: 22, entidad: piedra}
+         - {x: 5, y: 23, entidad: piedra}
+         - {x: 4, y: 23, entidad: agua}
+         - {x: 0, y: 24, entidad: piedra}
+         - {x: 1, y: 24, entidad: piedra}
+         - {x: 2, y: 24, entidad: piedra}
+         - {x: 3, y: 24, entidad: piedra}
+         - {x: 0, y: 20, entidad: watermill}
+         - {x: 15, y: 15, entidad: bandera}
+         - {x: 20, y: 26, entidad: agua}
+         - {x: 20, y: 27, entidad: agua}
+         - {x: 20, y: 28, entidad: agua}
+         - {x: 21, y: 26, entidad: agua}
+         - {x: 21, y: 27, entidad: agua}
+         - {x: 21, y: 28, entidad: agua}
+         - {y: 1, entidad: piso2921}
+         - {x: 22, y: 26, entidad: agua}
+         - {x: 22, y: 27, entidad: agua}
+         - {x: 22, y: 28, entidad: agua}  
+         - {x: 20, y: 25, entidad: medieval} 
+         - {x: 20, y: 16, entidad: fuente} 
+         - {x: 3, y: 2, entidad: test1}
+         - {x: 58, y: 58, entidad: molino}
+         - {x: 20, y: 1, entidad: caballoC}
+         - {x: 25, y: 1, entidad: caballoR}
+         - {x: 20, y: 20, entidad: piso2921}
+      protagonista: 
+         - tipoEntidad: caballo
+           x: 5 
+           y: 3 
