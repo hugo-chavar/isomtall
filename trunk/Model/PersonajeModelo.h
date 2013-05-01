@@ -30,8 +30,11 @@ public:
 
 	void animar();
 private:
+
+	int siCaminaDetenerse();
 	int cambiarEstado(int x, int y, int cambio);
 	int comparadorOctario(int x, int y);	//Obtiene el sentido según el signo de x e y
+	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
 	int* xPath;

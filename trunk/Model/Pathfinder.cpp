@@ -9,7 +9,7 @@
 #define MOV_PENALTY 10
 
 
-int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, int* &XPath, int* &YPath) { //, Foo &Tiles
+int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY, int* &XPath, int* &YPath) { //, Foo &Tiles
 	int actualX = OrigenX;
 	int actualY = OrigenY;
 	bool found = false;
@@ -18,6 +18,8 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 	std::map<Par, Nodo> closeList;
 	ListaPath openList;
 	std::vector<Par> camino;
+	/*double controlTamano = 0;
+	double tamanoMax = (Game::instance().world()->height())*(Game::instance().world()->width());*/
 	int tamano;
 
 	if ((OrigenX == DestinoX) && (OrigenY == DestinoY)) {
@@ -28,9 +30,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 	actual = new Nodo(OrigenX, OrigenY);
 	posActual = new Par(actualX, actualY);
 	openList.agregar(actual);
-	delete actual;
-	while (!(openList.empty())) {
-		actual = openList.getNodo();
+	while (!(openList.empty())/*&&(controlTamano < tamanoMax)*/) {
 		actual->getPos(actualX, actualY);
 		if ((actualX==DestinoX)&&(actualY==DestinoY)) {
 			found = true;
@@ -39,9 +39,13 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 		agregarVecinos(*actual, DestinoX, DestinoY, closeList, openList); //, Tiles
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
-		delete actual;
+		openList.getNodo(*actual);
+		/*controlTamano++;*/
 	}
 	if (!(found)) {
+		/*getNodoMasCercano(closeList, actual, actualX, actualY);
+		DestinoX = actualX;
+		DestinoY = actualY;*/
 		XPath = NULL;
 		YPath = NULL;
 		delete posActual;
@@ -72,8 +76,28 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int DestinoX, int DestinoY, i
 	return tamano;
 }
 
+void Pathfinder::getNodoMasCercano(std::map<Par, Nodo>& closeList, Nodo* &actual, int& actualX, int& actualY) {
+	std::map<Par, Nodo>::iterator it;
+	actual = new Nodo(-1,-1);
+	it = closeList.begin();
+	*actual = it->second;
+
+	for (it = closeList.begin(); it != closeList.end(); it++) {
+		if (((it->second.getHScore()) <= (actual->getHScore()))&&((it->second.getHScore()) > 0)) {
+			if ((it->second.getHScore()) == (actual->getHScore())) {
+				if ((it->second.getGScore()) < (actual->getGScore())) {
+					*actual = it->second;
+				}
+			} else {
+				*actual = it->second;
+			}
+		}
+	}
+	actual->getPos(actualX, actualY);
+}
+
 void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::map<Par, Nodo>& closeList, ListaPath& openList) { //, Foo& Tiles
-	Par* posExplorar = NULL;
+	Par posExplorar;
 	Nodo* nuevoNodo = NULL;
 	int alto = 0;
 	int ancho = 0;
@@ -91,7 +115,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 	actual.getPos(actualX, actualY);
 	explorarX = explorarX + actualX;
 	explorarY = actualY + explorarY;
-	posExplorar = new Par(actualX, actualY);
+	posExplorar.setPos(actualX, actualY);
 	for(int i = 0; i < 9; ++i) {
 		if (explorarX == (actualX+1)) {
 			explorarX = -2 + actualX;
@@ -103,7 +127,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		if ((explorarX == actualX)&&(explorarY == actualY)) {
 			continue;
 		}
-		posExplorar->setPos(explorarX, explorarY);
+		posExplorar.setPos(explorarX, explorarY);
 		if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			continue;
 		}
@@ -111,7 +135,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		if (coste == 0) {
 			continue;
 		}
-		closeFound = closeList.count(*posExplorar);
+		closeFound = closeList.count(posExplorar);
 		if (closeFound != 0) {
 			continue;
 		}
@@ -134,8 +158,6 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		openList.agregar(nuevoNodo);
 		delete nuevoNodo;
 	}
-
-	delete posExplorar;
 }
 
 

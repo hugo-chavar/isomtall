@@ -107,6 +107,15 @@ float PersonajeModelo::getVelocidad() {
 	return velocidad;
 }
 
+int PersonajeModelo::siCaminaDetenerse() {
+	int cambio = SIN_CAMBIO;
+	
+	if ((estado<10) || (estado>19)) { //si esta caminando
+		cambio = ESTADO_MOVIMIENTO; //que se quede quieto
+	}
+	return cambio;
+}
+
 int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
@@ -114,9 +123,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 	float costeF = 0;
 
 	if (target == current) {
-		if ((estado<10) || (estado>19)) { //si esta caminando
-			cambio = ESTADO_MOVIMIENTO; //que se quede quieto
-		}
+		cambio = this->siCaminaDetenerse();
 		estado = cambiarEstado(current.first, current.second, cambio);
 		velocidad = 0;
 		return estado;
@@ -134,9 +141,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		}
 		caminoSize = pathF.getPath(current.first, current.second, target.first, target.second, xPath, yPath);
 		if (caminoSize <  0) {
-			if ((estado<10) || (estado>19)) {
-				cambio = ESTADO_MOVIMIENTO;
-			}
+			cambio = this->siCaminaDetenerse();
 			estado = cambiarEstado(current.first, current.second, cambio);
 			velocidad = 0;
 			return estado;
@@ -150,9 +155,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
 		velocidad = ((this->velocidad)*costeF);
 		posMov++;
 	} else {
-		if ((estado<10) || (estado>19)) {
-			cambio = ESTADO_MOVIMIENTO;
-		}
+		cambio = this->siCaminaDetenerse();
 		estado = cambiarEstado(target.first, target.second, cambio);
 		velocidad = 0;
 		return estado;

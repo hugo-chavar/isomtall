@@ -81,7 +81,7 @@ void Personaje::mover(){
 	
 
 	calcularSigTileAMover();
-	velocidadRelativa(factor);
+	calcularvelocidadRelativa(factor);
 	if (estado != ERROR) {
 		sprites[estado]->actualizarFrame();
 		moverSprite(factor);
@@ -110,60 +110,70 @@ void Personaje::calcularSigTileAMover(){
 }
 
 void Personaje::moverSprite(std::pair<float, float>& factor){
-	float factorT = 0;	//El truncamiento de la variable factor
-	if (delta.first != 0) {
-		if (delta.second != 0) {
+	
+	if (delta.first != 0) { //Hay movimieto en x
+		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
 			serr++;
 		}
-		ePot.first = ePot.first + factor.first;
-		if (ePot.first >= 1) {
-			factorT = std::floor(ePot.first);
-			ePot.first -= factorT;
+		ePot.first = ePot.first + factor.first;	//Aumento la cantidad de movimiento, cuantos pixels se va a mover
+		moverSpriteEnX(factor); //Mueve en x
+	}
+	if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
+		serr = 0;																	//O si esta activada la corrección pero se completo el movimineto en x
+		ePot.second = ePot.second + factor.second;									//Caso en que la velocidad no es entera
+		moverSpriteEnY(factor);
+	}
+}
+
+void Personaje::moverSpriteEnX(std::pair<float, float>& factor) {
+	float factorT = 0;	//El truncamiento de la variable factor
+	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
+		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera
+		ePot.first -= factorT;	//Saco la cantidad entera de la cantidad de movimiento
+		if (delta.first < 0) {	//Si me muevo hacia las x negativas
+			delta.first += factorT;
+			if (delta.first > 0) {	//Si me paso, por los decimales
+				spriteRect.x -= (Sint16) (factorT - delta.first); //Muevo el sprite en x
+				ePot.first += delta.first;
+				delta.first = 0;	//Termino el movimietno en x
+			} else {				//Mientras siga pudiendo moverse
+				spriteRect.x -= (Sint16) factorT;
+			}
+		} else {
+			delta.first -= factorT;
 			if (delta.first < 0) {
-				delta.first += factorT;
-				if (delta.first > 0) {
-					spriteRect.x -= (Sint16) (factorT - delta.first);
-					ePot.first += delta.first;
-					delta.first = 0;
-				} else {
-					spriteRect.x -= (Sint16) factorT;
-				}
+				spriteRect.x += (Sint16)(factorT + delta.first);
+				ePot.first -= delta.first;
+				delta.first = 0;
 			} else {
-				delta.first -= factorT;
-				if (delta.first < 0) {
-					spriteRect.x += (Sint16)(factorT + delta.first);
-					ePot.first -= delta.first;
-					delta.first = 0;
-				} else {
-					spriteRect.x += (Sint16)factorT;
-				}
+				spriteRect.x += (Sint16)factorT;
 			}
 		}
 	}
-	if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) {
-		serr = 0;
-		ePot.second = ePot.second + factor.second;
-		if (ePot.second >= 1) {
-			factorT = std::floor(ePot.second);
-			ePot.second -= factorT;
-			if (delta.second < 0) {
-				delta.second += factorT;
-				if (delta.second > 0) {
-					spriteRect.y -= (Sint16)(factorT - delta.second);
-					ePot.second += delta.second;
-					delta.second = 0;
-				} else {
-					spriteRect.y -= (Sint16)factorT;
-				}
+}
+
+void Personaje::moverSpriteEnY(std::pair<float, float>& factor) {
+	float factorT = 0;	//El truncamiento de la variable factor
+	if (ePot.second >= 1) {
+		factorT = std::floor(ePot.second);
+		ePot.second -= factorT;
+		if (delta.second < 0) {
+			delta.second += factorT;
+			if (delta.second > 0) {
+				spriteRect.y -= (Sint16)(factorT - delta.second);
+				ePot.second += delta.second;
+				delta.second = 0;
 			} else {
-				delta.second -= factorT;
-				if (delta.second < 0) {
-					spriteRect.y += (Sint16)(factorT + delta.second);
-					ePot.second -= delta.second;
-					delta.second = 0;
-				} else {
-					spriteRect.y += (Sint16)factorT;
-				}
+				spriteRect.y -= (Sint16)factorT;
+			}
+		} else {
+			delta.second -= factorT;
+			if (delta.second < 0) {
+				spriteRect.y += (Sint16)(factorT + delta.second);
+				ePot.second -= delta.second;
+				delta.second = 0;
+			} else {
+				spriteRect.y += (Sint16)factorT;
 			}
 		}
 	}
@@ -178,7 +188,7 @@ void Personaje::setDestino(int xTile, int yTile){
 	modelo->setDestino(xTile, yTile);
 }
 
-void Personaje::velocidadRelativa(std::pair<float, float>& factor) {
+void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
 	if (delta.first != 0){ //Hay movimiento en x
 		if (delta.second != 0) { //Diagonal
 			factor.first = static_cast<float>(velocidad *0.707);
