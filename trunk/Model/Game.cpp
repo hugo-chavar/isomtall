@@ -2,13 +2,10 @@
 #include "Constants.h"
 
 
-Game::Game()
-{
-   
+Game::Game(){
 }
 
 Game::~Game(){
-	//_world.deleteMap();
 }
 
 Game& Game::instance(){
@@ -28,7 +25,6 @@ bool Game::initialize()
 {
 	yParser.parse();
 	_world = yParser.vStages()[0];
-	//_world.generateMap();
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
