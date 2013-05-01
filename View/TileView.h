@@ -4,39 +4,40 @@
 #include <string>
 //#include "SDL.h"
 #include "TileModel.h"
-#include "Surface.h"
+#include "Entity.h"
+#include "DataTypes.h"
 
 
+class TileView {
 
-	class TileView {
-	private:
-		//unsigned int speedPenalty;
-		//unsigned int centerX;
-		//unsigned int centerY;
-
-		TileModel* tileModel;
-		TileView * nextDrawableTile;
-	public:
-		//Constructor to load tile from image file.
-		//TileView(std::string filePath, unsigned int offsetX, unsigned int offsetY, unsigned int height, unsigned int width, unsigned int speedPenalty, unsigned int centerX, unsigned int centerY);
-
-		//Constuctor to load tile from SDL surface, i.e. from a tileset.
-		//TileView(SDL_Surface* sourceSdlSurface, unsigned int offsetX, unsigned int offsetY, unsigned int height, unsigned int width, unsigned int speedPenalty, unsigned int centerX, unsigned int centerY);
-
-		// TODO: There must be only one instance of every tile type all pointing to the same surface.
-		//SDL_Surface* sdlSurface;
-
-		//unsigned int getSpeedPenalty();
-
-		//unsigned int getCenterX();
-
-		//unsigned int getCenterY();
-
-		void cleanUp();
-
-		~TileView();
-	};
-
+public:
+	TileView();
+	~TileView();
+	//void cleanUp();
+	//int getSpeedPenalty()
+	Entity* getGroundEntity();
+	Entity* getOtherEntity();
+	void setGroundEntity(Entity * e);
+	void setOtherEntity(Entity * e);
+	void addEntity(Entity * e);
+	void setPosition(KeyPair);
+	KeyPair getPosition();
+	void setNextTile(TileView* );
+	TileView* getNextTile();
+	void setRelatedTile(TileView* );
+	TileView* getRelatedTile();
+	void setUndrawable();
+	bool drawable();
+private:
+	//SDL_Surface* sdlSurface;
+	TileModel* tileModel;
+	Entity* groundEntity;
+	Entity* otherEntity;
+	TileView* nextTile;
+	TileView* relatedTile;
+	KeyPair position;
+	bool isDrawable;
+};
 
 
 #endif //_TILE_H_

@@ -2,6 +2,7 @@
 #define _STAGEMODEL_H_
 
 #include <map>
+#include <list>
 #include <vector>
 #include <iostream>
 #include <utility>
@@ -43,13 +44,15 @@ public:
 
 	float mainCharacter_speed() const;
 	void mainCharacter_speed(float value);
-	PersonajeModelo* modelMainCharacters(unsigned);
-	void insertMainCharacter(PersonajeModelo*);
+	PersonajeModelo* modelMainCharacters(unsigned );
+	void insertMainCharacter(PersonajeModelo* );
 	void clearStage();
 	void generateMap();
 	void deleteMap();
-	void loadByDefault(EntityObject*);
+	void loadByDefault(EntityObject* );
 	void insertEntity(KeyPair k, EntityObject* e);
+	void markRelatedTiles(TileModel* );
+	void resolveRelatedTiles(TileModel* );
 private:
 	string _name;
 	unsigned int _width;

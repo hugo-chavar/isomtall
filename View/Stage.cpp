@@ -60,6 +60,10 @@ void view::Stage::addTile(TileView* tile) {
 	this->getTileArray().push_back(tile);
 }
 
+void view::Stage::loadGround(){
+
+}
+
 bool view::Stage::initialize()
 {
 	worldModel = Game::instance().world();

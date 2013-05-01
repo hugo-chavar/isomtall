@@ -1,33 +1,32 @@
 #ifndef _TIMEMANAGER_H_
 #define _TIMEMANAGER_H_
 
-namespace model { 
+
 
 //TODO: This class should not have static methods. The class shoud be retrieved from the model.
-	class TimeManager {
-		private:
+class TimeManager {
+private:
 	//TODO: Not OK with this aproach. Review.
 	//Internal variable to calculate deltaTime.
-			unsigned int startTime;
+	unsigned int startTime;
 
-			//Time between updateTime() calls in seconds.
-			float deltaTime;
+	//Time between updateTime() calls in seconds.
+	float deltaTime;
 
-		public:
-			TimeManager();
+public:
+	TimeManager();
 
-			//Starts world's time.
-			void initializeTime();
+	//Starts world's time.
+	void initializeTime();
 
-			//Updates world's time.
-			void updateTime();
+	//Updates world's time.
+	void updateTime();
 
-			//Returns time between updateTime() calls in seconds.
-			float getDeltaTime();
+	//Returns time between updateTime() calls in seconds.
+	float getDeltaTime();
 
-			~TimeManager();
-	};
- 
-} // namespace model
+	~TimeManager();
+};
+
 
 #endif //_TIMEMANAGER_H_

@@ -1,7 +1,6 @@
 #include "Configuration.h"
 
 using namespace common;
-using namespace model;
 
 Configuration::Configuration(){
 	_cameraScrollSpeed = DEFAULT_SCROLL_SPEED;

@@ -14,7 +14,6 @@
 #define ESTE 6
 #define OESTE 7
 
-using namespace model;
 using namespace common;
 
 

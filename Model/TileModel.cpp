@@ -9,6 +9,8 @@ TileModel::TileModel(){
 	this->groundEntity = NULL;
 	this->otherEntity = NULL;
 	this->nextTile = NULL;
+	this->relatedTile = NULL;
+	this->isDrawable = true;
 }
 
 TileModel::~TileModel(){
@@ -37,12 +39,33 @@ void TileModel::setPosition(KeyPair p){
 	this->position = p;
 }
 
+KeyPair TileModel::getPosition(){
+	return this->position;
+}
+
 void TileModel::setNextTile(TileModel* t){
 	this->nextTile = t;
 }
 
 TileModel* TileModel::getNextTile(){
 	return this->nextTile;
+}
+
+void TileModel::setRelatedTile(TileModel* t){
+	this->relatedTile = t;
+}
+
+TileModel* TileModel::getRelatedTile(){
+	return this->relatedTile;
+}
+
+void TileModel::setUndrawable(){
+	this->isDrawable = false;
+}
+
+
+bool TileModel::drawable(){
+	return this->isDrawable;
 }
 
 void TileModel::addEntity(EntityObject * e){
