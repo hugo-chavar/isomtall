@@ -578,7 +578,45 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 	//		KeyPair key(i, j);
 	//		(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
 	//	}
-	StageModel stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, stage_aux.vMainCharacters); //, entityMap
+	StageModel stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, stage_aux.vMainCharacters);
+	stage.generateMap();
+
+	//comienza refactor
+	for(unsigned int i=0; i<stage_aux.vEntitiesDef.size(); i++) {
+		KeyPair key(stage_aux.vEntitiesDef[i].x, stage_aux.vEntitiesDef[i].y);
+		EntityObject *entityObjectType = findEntityObjectType(stage_aux.vEntitiesDef[i].entity);
+		AnimatedEntity *animatedEntityType = findAnimatedEntityType(stage_aux.vEntitiesDef[i].entity);
+		if ((!entityObjectType) && (!animatedEntityType)){
+			Logger::instance().log("Parser Error: Entity type '"+stage_aux.vEntitiesDef[i].entity+"' defined in stage '"+stage_aux.name+"' not found.");
+			stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
+			i--;
+		}
+		else {
+			if (entityBaseIsInMapRange(i, stage_aux, entityObjectType, animatedEntityType)) {
+				if (entityObjectType){
+					stage.insertEntity(key,entityObjectType);
+				} else {
+					if (animatedEntityType){
+						stage.insertEntity(key,animatedEntityType);
+					}
+				}
+				//pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
+				//ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
+				//if (!ret.second) {
+				//	string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
+				//	string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
+				//	Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
+				//}
+			}
+			else {
+				Logger::instance().log("Parser Error: Entity '"+stage_aux.vEntitiesDef[i].entity+"''s base is out of map range.");
+				stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
+				i--;
+			}
+		}
+	}
+	//fin refactor
+	stage.loadByDefault(entities.vEntitiesObject[0]);
 	stages.vStages.push_back(stage);
 }
 

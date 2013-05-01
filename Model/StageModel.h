@@ -49,6 +49,7 @@ public:
 	void generateMap();
 	void deleteMap();
 	void loadByDefault(EntityObject*);
+	void insertEntity(KeyPair k, EntityObject* e);
 private:
 	string _name;
 	unsigned int _width;

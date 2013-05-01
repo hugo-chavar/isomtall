@@ -29,7 +29,6 @@ StageModel& StageModel::operator=(const StageModel &origStage){
 	this->width(origStage.width());
 	this->tileWidth(origStage.tileWidth());
 	this->tileHeight(origStage.tileHeight());
-	//this->_entityMap = origStage._entityMap;
 	this->_tilesMap = origStage._tilesMap;
 	this->firstTile = origStage.firstTile;
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
@@ -118,7 +117,7 @@ pair<int,int> StageModel::pixelToTileCoordinates(std::pair<int,int> pixelCoordin
 	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
 }
 
-bool StageModel::isInsideWorld(std::pair<int,int> tileCoordinates) {
+bool StageModel::isInsideWorld(pair<int,int> tileCoordinates) {
 	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first < static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second < static_cast<int>(this->height())) );
 }
 
@@ -147,11 +146,6 @@ void StageModel::clearStage(){
 	for (unsigned j=0; j < (this->_vMainCharacters.size()); j++)
 			delete _vMainCharacters[j];
 	_vMainCharacters.clear();
-	//if (_entityMap){
-	//	_entityMap->clear();
-	//	delete _entityMap;
-	//	_entityMap = NULL;
-	//}
 	_vEntitiesDef.clear();
 	this->deleteMap();
 
@@ -261,6 +255,10 @@ void StageModel::loadByDefault(EntityObject* e){
 	}
 }
 
+void StageModel::insertEntity(KeyPair k, EntityObject* e){
+	TileModel* tile = _tilesMap->at(k);
+	tile->addEntity(e);
+}
 
 unsigned max (unsigned a, unsigned b ) {
 	unsigned result = a;
