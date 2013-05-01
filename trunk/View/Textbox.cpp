@@ -93,7 +93,6 @@ bool Textbox::load() {
 }
 
 void Textbox::render(Camera &camera) {
-	//message = TTF_RenderText_Solid(font, "The quick brown fox jumps over the lazy dog", textColor);
 	camera.render(boxRect, box);
 	camera.render(closeButtonRect, closeButton);
 	camera.render(messageRect, message);
@@ -113,28 +112,11 @@ void Textbox::handleInput(SDL_Event *sdlEvent) {
 	if (sdlEvent->type==SDL_KEYDOWN) {
 		//Keep a copy of the current version of the string
 		string temp = str;
-		//If the key is a space
-		if (sdlEvent->key.keysym.unicode==(Uint16)' ') {
+		//If the key is a symbol or character
+		if ((sdlEvent->key.keysym.unicode>=(Uint16)' ') && (sdlEvent->key.keysym.unicode<=(Uint16)'ü')) {
 			//Append the character
 			str += (char)sdlEvent->key.keysym.unicode;
 		}
-		//If the key is a number
-		else
-			if ((sdlEvent->key.keysym.unicode>=(Uint16)'0') && (sdlEvent->key.keysym.unicode<=(Uint16)'9')) {
-				//Append the character
-				str += (char)sdlEvent->key.keysym.unicode;
-			}
-			//If the key is a uppercase letter
-			else
-				if ((sdlEvent->key.keysym.unicode>=(Uint16)'A') && (sdlEvent->key.keysym.unicode<=(Uint16)'Z')) {
-					//Append the character
-					str += (char)sdlEvent->key.keysym.unicode;
-				}
-				//If the key is a lowercase letter
-				else if ((sdlEvent->key.keysym.unicode>=(Uint16)'a') && (sdlEvent->key.keysym.unicode<=(Uint16)'z')) {
-					//Append the character
-					str += (char)sdlEvent->key.keysym.unicode;
-				}
 		//If backspace was pressed and the string isn't blank
 		if ((sdlEvent->key.keysym.sym==SDLK_BACKSPACE) && (str.length()!=0)) {
 			//Remove a character from the end
