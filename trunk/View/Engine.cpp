@@ -8,7 +8,7 @@ Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	this->desiredFPS = 100;
-	this->typing = false;
+	this->chat.setIsTyping(false);
 }
 
 bool Engine::isRunning() {
@@ -54,7 +54,7 @@ void Engine::initialize() {
 	bool cameraInitialized = this->camera.initialize();
 	bool mapInitialized = false;
 	bool textInitialized = true;
-	bool textboxInitialized = false;
+	bool chatInitialized = false;
 
 	//Initialize SDL_ttf
 	if (TTF_Init()==-1)
@@ -62,7 +62,7 @@ void Engine::initialize() {
 
 	if (cameraInitialized){
 		mapInitialized = worldView.initialize();
-		textboxInitialized = textbox.initialize(camera);
+		chatInitialized = chat.initialize(camera);
 	}
 
 	//si hubo errores de inicializacion salgo
@@ -76,12 +76,12 @@ void Engine::initialize() {
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
-	if (typing) {
+	if (chat.isTyping()) {
 		SDL_PollEvent(sdlEvent);
-		textbox.handleInput(sdlEvent);
+		chat.type(sdlEvent);
 		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
 			// ENVIAR MENSAJE...
-			textbox.cleanTextBox();
+			chat.cleanInput();
 		}
 	}
 
@@ -108,13 +108,13 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				}
 			case SDLK_w:
 				{
-					if (!typing)
+					if (!chat.isTyping())
 						Game::instance().personaje()->animar();
 					break;
 				}
 			case SDLK_y:
 				{
-					typing = true;
+					chat.setIsTyping(true);
 					break;
 				}
 			default:
@@ -124,8 +124,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		case SDL_MOUSEBUTTONDOWN: {
 			switch(sdlEvent->button.button) {
 				case SDL_BUTTON_LEFT: {
-					if (textbox.pressingClosingBox(sdlEvent->button.x+camera.getOffsetX(), sdlEvent->button.y+camera.getOffsetY()))
-						typing = false;
+					if (chat.isClosing(sdlEvent->button.x+camera.getOffsetX(), sdlEvent->button.y+camera.getOffsetY()))
+						chat.setIsTyping(false);
 					else
 						(Game::instance().world())->
 							destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
@@ -150,7 +150,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 void Engine::update() {
 	this->camera.update();
 	this->worldView.update();
-	this->textbox.update(camera);
+	this->chat.update(camera);
 }
 
 void Engine::render() {
@@ -158,8 +158,8 @@ void Engine::render() {
 
 	this->worldView.render(this->camera);
 
-	if (typing)
-		this->textbox.render(this->camera);
+	if (chat.isTyping())
+		this->chat.render(this->camera);
 
 	SDL_Flip(this->camera.cameraSurface);
 }

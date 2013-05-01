@@ -5,7 +5,7 @@ Textbox::Textbox() { }
 
 Textbox::~Textbox() {
 	//Free surfaces
-	SDL_FreeSurface(background);
+	SDL_FreeSurface(box);
 	SDL_FreeSurface(closeButton);
 	SDL_FreeSurface(message);
 	//Disable Unicode
@@ -21,18 +21,18 @@ bool Textbox::initialize(Camera &camera) {
 	textColor.g = 0;
 	textColor.b = 0;
 	SDL_EnableUNICODE(SDL_ENABLE);
-	rectangle.x = camera.getOffsetX()+camera.getWidth()-background->w-5;
-	rectangle.y = camera.getOffsetY()+5;
-	rectangle.w = background->w;
-	rectangle.h = background->h;
-	closeButtonRect.x = rectangle.x+rectangle.w-closeButton->w-5;
-	closeButtonRect.y = rectangle.y+rectangle.h-closeButton->h-5;
+	boxRect.x = camera.getOffsetX()+camera.getWidth()-box->w-5;
+	boxRect.y = camera.getOffsetY()+5;
+	boxRect.w = box->w;
+	boxRect.h = box->h;
+	closeButtonRect.x = boxRect.x+boxRect.w-closeButton->w-5;
+	closeButtonRect.y = boxRect.y+boxRect.h-closeButton->h-5;
 	closeButtonRect.w = closeButton->w;
 	closeButtonRect.h = closeButton->h;
-	messageRect.x = rectangle.x+5;
-	messageRect.y = rectangle.y+5;
-	messageRect.w = rectangle.w-closeButtonRect.w-10;
-	messageRect.h = rectangle.h;
+	messageRect.x = boxRect.x+10;
+	messageRect.y = boxRect.y+5;
+	messageRect.w = boxRect.w-closeButtonRect.w-10;
+	messageRect.h = boxRect.h;
 	return true;
 }
 
@@ -73,12 +73,12 @@ SDL_Surface *load_image(string filename)
 
 bool Textbox::load() {
 	//Load images
-	background = load_image("../Images/textbox.png");
+	box = load_image("../Images/textbox.png");
 	closeButton = load_image("../Images/closeButton.png");
 	//Open the font
 	font = TTF_OpenFont("../Fonts/arial.ttf", 16);
 	//If there was a problem in loading the background
-	if (background==NULL) {
+	if (box==NULL) {
 		return false;
 	}
 	if (closeButton==NULL) {
@@ -94,18 +94,18 @@ bool Textbox::load() {
 
 void Textbox::render(Camera &camera) {
 	//message = TTF_RenderText_Solid(font, "The quick brown fox jumps over the lazy dog", textColor);
-	camera.render(rectangle, background);
+	camera.render(boxRect, box);
 	camera.render(closeButtonRect, closeButton);
 	camera.render(messageRect, message);
 }
 
 void Textbox::update(Camera &camera) {
-	rectangle.x = camera.getOffsetX()+camera.getWidth()-background->w-5;
-	rectangle.y = camera.getOffsetY()+5;
-	closeButtonRect.x = rectangle.x+rectangle.w-closeButton->w-5;
-	closeButtonRect.y = rectangle.y+rectangle.h-closeButton->h-5;
-	messageRect.x = rectangle.x+5;
-	messageRect.y = rectangle.y+5;
+	boxRect.x = camera.getOffsetX()+camera.getWidth()-box->w-5;
+	boxRect.y = camera.getOffsetY()+5;
+	closeButtonRect.x = boxRect.x+boxRect.w-closeButton->w-5;
+	closeButtonRect.y = boxRect.y+boxRect.h-closeButton->h-5;
+	messageRect.x = boxRect.x+10;
+	messageRect.y = boxRect.y+5;
 }
 
 void Textbox::handleInput(SDL_Event *sdlEvent) {
@@ -165,35 +165,17 @@ void Textbox::cleanTextBox() {
 }
 
 int Textbox::getOffsetX() {
-	return rectangle.x;
+	return boxRect.x;
 }
 
 int Textbox::getOffsetY() {
-	return rectangle.y;
+	return boxRect.y;
 }
 
 int Textbox::getHeight() {
-	return rectangle.h;
+	return boxRect.h;
 }
 
 int Textbox::getWidth() {
-	return rectangle.w;
+	return boxRect.w;
 }
-
-/*
-Chat::Chat(Sprite *spriteCargado) {
-	sprite = spriteCargado;
-	spriteRect.x = 0;
-	spriteRect.y = 0;
-	spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);
-}
-
-bool Chat::initialize() {
-	//Initialize SDL_ttf
-	if (TTF_Init()==-1) {
-		return false;
-	}
-	return true;
-}
-*/

@@ -25,19 +25,15 @@ public:
 	int getOffsetY();
 	int getWidth();
 	int getHeight();
-	/*
-	Chat(Sprite *spriteCargado);
-	bool initialize();
-	*/
 	
 private:
-	SDL_Surface *background;
+	SDL_Surface *box;
 	SDL_Surface *closeButton;
 	SDL_Surface *message;
 	string str;
 	TTF_Font *font;
 	SDL_Color textColor;
-	SDL_Rect rectangle;
+	SDL_Rect boxRect;
 	SDL_Rect closeButtonRect;
 	SDL_Rect messageRect;
 

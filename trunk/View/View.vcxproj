@@ -70,6 +70,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Chat.cpp" />
     <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -85,6 +86,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Chat.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
