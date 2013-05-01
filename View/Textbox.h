@@ -1,12 +1,14 @@
 #ifndef _TEXTBOX_H_
 #define _TEXTBOX_H_
 
-#include "Sprite.h"
 #include "Camera.h"
 #include "SDL_ttf.h"
+#include "SDL_image.h"
+#include <string>
 
 
 using namespace view;
+using namespace std;
 
 
 class Textbox {
