@@ -14,7 +14,7 @@ public:
 	ListaPath();
 	void agregar(Nodo* nuevo);
 	bool empty();
-	Nodo* getNodo();
+	void getNodo(Nodo& actual);
 	Nodo* getNodo(int X, int Y);
 	~ListaPath();
 private:
