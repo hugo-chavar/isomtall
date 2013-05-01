@@ -39,7 +39,7 @@ entidades:
       ancho_base: 3
       alto_base: 3 
       pixel_ref_x: 64
-      pixel_ref_y: 64
+      pixel_ref_y: 32
       fps: 15
       delay: 3000
 
@@ -203,12 +203,12 @@ escenarios:
          - {x: 22, y: 27, entidad: agua}
          - {x: 22, y: 28, entidad: agua}  
          - {x: 20, y: 25, entidad: medieval} 
-         - {x: 20, y: 16, entidad: fuente} 
-         - {x: 3, y: 2, entidad: test1}
+         - {x: 29, y: 16, entidad: fuente} 
+         - {x: 35, y: 2, entidad: test1}
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 1, entidad: caballoC}
          - {x: 25, y: 1, entidad: caballoR}
-         - {x: 20, y: 20, entidad: piso2921}
+         - {x: 29, y: 21, entidad: piso2921}
       protagonista: 
          - tipoEntidad: caballo
            x: 5 
