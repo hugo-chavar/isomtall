@@ -42,11 +42,11 @@ SDL_Surface *load_SDLimage(string filename)
     return optimizedImage;
 }
 
-bool StaticTextBox::load(string imagePath) {
+bool StaticTextBox::load(string imagePath, char *fontPath) {
 	//Load images
 	_box = load_SDLimage(imagePath);
 	//Open the font
-	_font = TTF_OpenFont("../Fonts/arial.ttf", 16);
+	_font = TTF_OpenFont(fontPath, 16);
 	//If there was a problem in loading the background
 	if (_box==NULL) {
 		return false;
@@ -59,24 +59,26 @@ bool StaticTextBox::load(string imagePath) {
 	return true; 
 }
 
-bool StaticTextBox::initialize(string backgroundImagePath, string text, int offsetX, int offsetY) {
-	if (!load(backgroundImagePath))
+bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY) {
+	if (!load(backgroundImagePath, fontPath))
 		return false;
-	_textColor.r = 0;
-	_textColor.g = 0;
-	_textColor.b = 0;
-	_strText = text; // DE PRUEBA
-	_text = TTF_RenderText_Solid(_font, _strText.c_str(), _textColor); // DE PRUEBA
-	//_strText = "";
-	//_text = NULL;
-	_boxRect.x = offsetX;
-	_boxRect.y = offsetY;
-	_boxRect.w = _box->w;
-	_boxRect.h = _box->h;
+	_textColor = color;
+	_strText = "";
+	_text = NULL;
+	_boxRect.x = static_cast<Sint16>(offsetX);
+	_boxRect.y = static_cast<Sint16>(offsetY);
+	_boxRect.w = static_cast<Uint16>(_box->w);
+	_boxRect.h = static_cast<Uint16>(_box->h);
 	_textRect.x = _boxRect.x+10;
 	_textRect.y = _boxRect.y+5;
 	_textRect.w = _boxRect.w;
 	_textRect.h = _boxRect.h;
+	return true;
+}
+
+void StaticTextBox::setText(string text) {
+	_strText = text;
+	_text = TTF_RenderText_Solid(_font, _strText.c_str(), _textColor);
 }
 
 void StaticTextBox::render(Camera &camera) {
@@ -84,18 +86,18 @@ void StaticTextBox::render(Camera &camera) {
 	camera.render(_textRect, _text);
 }
 
-void StaticTextBox::update(int offsetX, int offsetY) {
-	_boxRect.x = offsetX;
-	_boxRect.y = offsetY;
+void StaticTextBox::update(float offsetX, float offsetY) {
+	_boxRect.x = static_cast<Sint16>(offsetX);
+	_boxRect.y = static_cast<Sint16>(offsetY);
 	_textRect.x = _boxRect.x+10;
 	_textRect.y = _boxRect.y+5;
 }
 
-int StaticTextBox::getOffsetX() {
+float StaticTextBox::getOffsetX() {
 	return _boxRect.x;
 }
 
-int StaticTextBox::getOffsetY() {
+float StaticTextBox::getOffsetY() {
 	return _boxRect.y;
 }
 
