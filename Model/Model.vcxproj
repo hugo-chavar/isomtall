@@ -38,8 +38,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
-    <IncludePath>..\Libraries\Parser YAML\include;$(IncludePath)</IncludePath>
-    <LibraryPath>..\Libraries\Parser YAML\bin\Debug;$(LibraryPath)</LibraryPath>
+    <IncludePath>..\Libraries\PThreads\include;..\Libraries\Parser YAML\include;$(IncludePath)</IncludePath>
+    <LibraryPath>..\Libraries\PThreads\lib;..\Libraries\Parser YAML\bin\Debug;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -47,6 +47,9 @@
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -67,32 +70,52 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedEntity.cpp" />
+    <ClCompile Include="Chat.cpp" />
+    <ClCompile Include="ConditionVariable.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Instruction.cpp" />
+    <ClCompile Include="InstructionQueue.cpp" />
     <ClCompile Include="ListaPath.cpp" />
+    <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="Par.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PersonajeModelo.cpp" />
+    <ClCompile Include="Receiver.cpp" />
+    <ClCompile Include="Sender.cpp" />
+    <ClCompile Include="Serializable.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="StageModel.cpp" />
+    <ClCompile Include="Thread.cpp" />
     <ClCompile Include="TileModel.cpp" />
     <ClCompile Include="YAMLParser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedEntity.h" />
+    <ClInclude Include="Chat.h" />
+    <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="EntityObject.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Instruction.h" />
+    <ClInclude Include="InstructionQueue.h" />
     <ClInclude Include="ListaPath.h" />
+    <ClInclude Include="Mutex.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PersonajeConstantes.h" />
     <ClInclude Include="PersonajeModelo.h" />
+    <ClInclude Include="Receiver.h" />
+    <ClInclude Include="Sender.h" />
+    <ClInclude Include="Serializable.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="StageModel.h" />
+    <ClInclude Include="Thread.h" />
     <ClInclude Include="TileModel.h" />
     <ClInclude Include="YAMLParser.h" />
   </ItemGroup>

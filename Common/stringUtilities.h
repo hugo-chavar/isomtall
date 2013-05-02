@@ -20,7 +20,7 @@ std::string padLeft(std::string string, char padWith, unsigned int padTo);
 std::string padRight(std::string string, char padWith, unsigned int padTo);
 
 //Metodo para convertir un string a int.
-int StringToInt (const std::string Text );
+int stringToInt (const std::string Text );
 
 //Metodo para convertir un int a string.
 std::string intToString(int i);
