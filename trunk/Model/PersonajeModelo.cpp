@@ -121,59 +121,82 @@ int PersonajeModelo::siCaminaDetenerse() {
 	return cambio;
 }
 
-int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidad) {
+int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
-	double coste;
+	double coste = 0;
 	float costeF = 0;
 
 	if (target == current) {
-		cambio = this->siCaminaDetenerse();
-		estado = cambiarEstado(current.first, current.second, cambio);
-		velocidad = 0;
-		return estado;
+		return (this->quedarseQuieto(velocidadAni));
 	}
-	if (((xPath == NULL)&&(yPath == NULL))||((xPath[caminoSize-1]!=targetParcial.first)||(yPath[caminoSize-1]!=targetParcial.second))||((posMov==caminoSize)&&((target.first!=targetParcial.first)||(target.second!=targetParcial.second)))) {
+	if (esNecesarioCalcularNuevoPath()) {
 		posMov = 0;
 		caminoSize = 0;
-		if (xPath != NULL) {
-			delete [] xPath;
-			xPath = NULL;
-		}
-		if (yPath != NULL) {
-			delete [] yPath;
-			yPath = NULL;
-		}
+		limpiarPath();
 		targetParcial.first = target.first;
 		targetParcial.second = target.second;
 		caminoSize = pathF.getPath(current.first, current.second, targetParcial.first, targetParcial.second, xPath, yPath);
-		if (caminoSize == 0) {
+		if (caminoSize == 0) { //Si no se tiene que mover, seteo el destino en los parciales
 			target.first = targetParcial.first;
 			target.second = targetParcial.second;
 		}
 		if (caminoSize <  0) {
-			cambio = this->siCaminaDetenerse();
-			estado = cambiarEstado(current.first, current.second, cambio);
-			velocidad = 0;
-			return estado;
+			return (this->quedarseQuieto(velocidadAni));
 		}
 	}
 	if (posMov < caminoSize) {
-		destino.first = xPath[posMov];
-		destino.second = yPath[posMov];
-		coste = (Game::instance().world())->cost(xPath[posMov], yPath[posMov]);
-		costeF = (float) coste;
-		velocidad = ((this->velocidad)*costeF);
-		posMov++;
+		this->moverse(destino, velocidadAni);
 	} else {
-		cambio = this->siCaminaDetenerse();
-		estado = cambiarEstado(targetParcial.first, targetParcial.second, cambio);
-		velocidad = 0;
-		return estado;
+		return (this->quedarseQuieto(velocidadAni));
 	}
 	cambio = ESTADO_MOVIMIENTO;
 	estado = cambiarEstado(destino.first, destino.second, cambio);
 	return estado;
+}
+
+bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
+	if ((xPath == NULL)&&(yPath == NULL)) { //Si no hay camino seteado
+		return true;
+	}
+	if ((xPath[caminoSize-1]!=targetParcial.first)||(yPath[caminoSize-1]!=targetParcial.second)) { //Si cambio de destino durante el movimiento
+		return true;
+	}
+	if ((posMov==caminoSize)&&((target.first!=targetParcial.first)||(target.second!=targetParcial.second))) { //Si completo el primer pedazo del camino
+		return true;
+	}
+	return false;
+}
+
+void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad){
+	double coste = 0;
+	float costeF = 0;
+
+	destino.first = xPath[posMov];
+	destino.second = yPath[posMov];
+	coste = (Game::instance().world())->cost(xPath[posMov], yPath[posMov]);
+	costeF = (float) coste;
+	velocidad = ((this->velocidad)*costeF);
+	posMov++;
+}
+
+int PersonajeModelo::quedarseQuieto(float &velocidad){
+	int cambio = SIN_CAMBIO;
+	cambio = this->siCaminaDetenerse();
+	estado = cambiarEstado(targetParcial.first, targetParcial.second, cambio);
+	velocidad = 0;
+	return estado;
+}
+
+void PersonajeModelo::limpiarPath() {
+	if (xPath != NULL) {
+		delete [] xPath;
+		xPath = NULL;
+	}
+	if (yPath != NULL) {
+		delete [] yPath;
+		yPath = NULL;
+	}
 }
 
 int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
@@ -183,7 +206,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	if((x==current.first)&&(y==current.second)&&(cambio==ESTADO_MOVIMIENTO)){
 		return (estado-FACTOR_ORIENTACION);
 	}
-	switch (comparadorOctario(x, y)) {
+	switch (obtenerOrientacion(x, y)) {
 	case NORTE: return CAMINANDO_N;
 	case NORESTE: return CAMINANDO_NE;
 	case NOROESTE: return CAMINANDO_NOE;
@@ -196,7 +219,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	}
 }
 
-int PersonajeModelo::comparadorOctario(int x, int y) {
+int PersonajeModelo::obtenerOrientacion(int x, int y) {
 	int xCurr = current.first;
 	int yCurr = current.second;
 	

@@ -7,6 +7,7 @@
 
 
 #define MOV_PENALTY 10
+#define MOV_PENALTY_DIAG 14
 
 
 int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY, int* &XPath, int* &YPath) { //, Foo &Tiles
@@ -159,7 +160,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		if (closeFound != 0) {
 			continue;
 		}
-		GCost = calcularGCost (actual.getGScore(), explorarX, explorarY, coste);
+		GCost = calcularGCost (actual.getGScore(), explorarX, explorarY, actualX, actualY, coste);
 		nuevoNodo = openList.getNodo(explorarX, explorarY);
 		if (nuevoNodo != NULL) {
 			if (nuevoNodo->getGScore() > GCost) {
@@ -179,12 +180,23 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 }
 
 
-unsigned int Pathfinder::calcularGCost (unsigned int padre, int posX, int posY, double coste) {
+unsigned int Pathfinder::calcularGCost (unsigned int padre, int posX, int posY, int padreX, int padreY, double coste) {
 	unsigned int costeRed = 0;
 
-	coste = MOV_PENALTY/coste;
+	if (diagonal(posX, posY, padreX, padreY)) {
+		coste = MOV_PENALTY_DIAG/coste;
+	} else {
+		coste = MOV_PENALTY/coste;
+	}
 	costeRed = (unsigned)std::floor(coste);
 	return (costeRed + padre); 
+}
+
+bool Pathfinder::diagonal(int posX, int posY, int padreX, int padreY){
+	if ((posX!=padreX)&&(posY!=padreY)) {
+		return true;
+	}
+	return false;
 }
 
 unsigned int Pathfinder::calcularHeuristica(int posX, int posY, int DestinoX, int DestinoY) {
