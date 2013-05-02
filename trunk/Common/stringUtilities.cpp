@@ -53,7 +53,7 @@ std::string padRight(std::string string, char padWith, unsigned int padTo) {
 	return paddedString;
 }
 
-int StringToInt (const std::string Text ) {
+int stringToInt (const std::string Text ) {
 	int result;
 	std::stringstream stringstream(Text);
 	return stringstream >> result ? result : 0;

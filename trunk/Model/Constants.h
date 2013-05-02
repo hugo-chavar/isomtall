@@ -49,7 +49,19 @@
 #define DEFAULT_STAGE_SIZE_X 100
 #define DEFAULT_STAGE_SIZE_Y 100
 
-
+#ifndef opCode_t
+#define opCode_t
+enum opCode_t {
+	OPCODE_NO_OPCODE,
+	OPCODE_INVALID,
+	OPCODE_CONNECTION_EROR,
+	OPCODE_LOGIN_REQUEST,
+	OPCODE_LOGOUT_REQUEST,
+	OPCODE_LOGIN_OK,
+	OPCODE_USERID_ALREADY_USED,
+	OPCODE_CHAT_MESSAGE
+};
+#endif
 
 //namespace common {
 //	class Constants {
