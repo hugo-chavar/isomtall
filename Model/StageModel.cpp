@@ -347,6 +347,10 @@ void StageModel::insertEntity(KeyPair k, EntityObject* e){
 	resolveRelatedTiles(tile);
 }
 
+TileModel* StageModel::getFirstTile(){
+	return this->firstTile;
+}
+
 unsigned max (unsigned a, unsigned b ) {
 	unsigned result = a;
 	if ( b > a )

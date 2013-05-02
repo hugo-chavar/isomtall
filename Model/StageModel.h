@@ -26,7 +26,6 @@ public:
 	string name() const; 
 	vector <EntityDef> vEntitiesDef();
 	vector <PersonajeModelo*>* vMainCharacters(); 
-	//map <KeyPair, EntityObject*> *entityMap();
 	void width(unsigned int); 
 	void height(unsigned int);
 	void name(string);
@@ -34,17 +33,17 @@ public:
 	unsigned int tileHeight() const;
 	void tileWidth(unsigned int);
 	void tileHeight(unsigned int);
-	//void addTile(unsigned int, unsigned int, Tile*);
 	unsigned int cost(unsigned int, unsigned int);
 	void initialize(unsigned int dimentionX, unsigned int dimentionY, unsigned int tileHeight, unsigned int tileWidth);
-	std::pair<int,int> pixelToTileCoordinatesInStage(std::pair<int,int> pixelCoordinates,float cameraX,float cameraY);
-	std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
-	bool isInsideWorld(std::pair<int,int> tileCoordinates);
+	pair<int,int> pixelToTileCoordinatesInStage(pair<int,int> pixelCoordinates,float cameraX,float cameraY);
+	pair<int,int> pixelToTileCoordinates(pair<int,int> pixelCoordinates);
+	bool isInsideWorld(pair<int,int> tileCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
 	float mainCharacter_speed() const;
 	void mainCharacter_speed(float value);
 	PersonajeModelo* modelMainCharacters(unsigned );
+	TileModel* getFirstTile();
 	void insertMainCharacter(PersonajeModelo* );
 	void clearStage();
 	void generateMap();
@@ -60,11 +59,10 @@ private:
 	unsigned int _tileWidth;
 	unsigned int _tileHeight;
 	vector <EntityDef> _vEntitiesDef;
-	//map <KeyPair, EntityObject*> *_entityMap;
 
 	map <KeyPair, TileModel*> *_tilesMap;
 	TileModel* firstTile;
-	//float _mainCharacter_speed;
+
 
 	vector <PersonajeModelo*> _vMainCharacters;
 };

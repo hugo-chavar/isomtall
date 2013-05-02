@@ -12,8 +12,7 @@
 
 
 
-class Sprite
-{
+class Sprite{
 
 protected:
 

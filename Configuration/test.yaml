@@ -4,7 +4,7 @@ pantalla:
 
 configuracion: 
     - vel_personaje: 2.5
-    - margen_scroll: 600
+    - margen_scroll: 50
     - vision_personaje: 3
     - puerto_servidor: 3500
      
@@ -156,9 +156,9 @@ escenarios:
          - {x: 51, y: 51, entidad: agua}
          - {x: 0, y: 5, entidad: dado}
          - {x: 0, y: 4, entidad: arbol}
-         - {x: 5, y: 0, entidad: arbol}
-         - {x: 6, y: 0, entidad: dado}
          - {x: 7, y: 0, entidad: arbol}
+         - {x: 6, y: 0, entidad: dado}
+         - {x: 5, y: 0, entidad: arbol}
          - {x: 0, y: 9, entidad: pelota}
          - {x: 0, y: 12, entidad: televisor}
          - {x: 30, y: 55, entidad: tierra} 
