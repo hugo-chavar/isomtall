@@ -133,7 +133,7 @@ void StageModel::destino(int x,int y,float cameraX,float cameraY){
 	pixelCoordinates.second = y;
 	std::pair<int,int> destino = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
 
-	if((isInsideWorld(destino)) && (cost(destino.first,destino.second) != 0)) 
+	if((isInsideWorld(destino))) 
 		Game::instance().personaje()->setDestino(destino.first,destino.second);
 }
 
