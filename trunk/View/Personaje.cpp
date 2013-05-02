@@ -125,7 +125,7 @@ void Personaje::moverSprite(std::pair<float, float>& factor){
 	}
 }
 
-void Personaje::moverSpriteEnX(std::pair<float, float>& factor) {
+void Personaje::moverSpriteEnX(std::pair<float, float>& factor) { //TODO: CORREGIR ESTO: warning C4100: 'factor' : parámetro formal sin referencia
 	float factorT = 0;	//El truncamiento de la variable factor
 	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
 		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera

@@ -1,5 +1,5 @@
-#ifndef _WORLD_H_
-#define _WORLD_H_
+#ifndef _STAGE_H_
+#define _STAGE_H_
 
 #include <vector>
 #include <utility>
@@ -21,32 +21,14 @@ using namespace std;
 namespace view {
 
 	class Stage {
-	private:
-	
-		//Se cargan una vez solamente los sprites
-		vector<Sprite*> spriteArray;
-		Personaje* _personaje;
-		map<string,int> mapEntityToSprite;
-		//list<Entity *> entityList;
-		vector<vector<Entity*>> entityList;
-		//std::vector<model::Tile*> tileArray;
-		vector<TileView*> tileArray;
-		map<KeyPair, TileView*> _tilesMap;
-
-		void renderTile(int Xt, int Yt,Camera& camera);
-		void loadGround();
-
 	public:
 		Stage();
-
 		void update(); 
-		StageModel* worldModel;
-
 		void render(Camera& camera);
 
-		void addTile(TileView* tile);
+		//void addTile(TileView* tile);
 
-		std::vector<TileView*>& getTileArray();
+		//std::vector<TileView*>& getTileArray();
 
 		//std::pair<int,int> tileToPixelCoordinates(std::pair<int,int> tileCoordinates);
 
@@ -57,8 +39,27 @@ namespace view {
 		~Stage();
 
 		Personaje* personaje();
+
+	private:
+		//Se cargan una vez solamente los sprites
+		vector<Sprite*> spriteArray;
+		Personaje* _personaje;
+		StageModel* worldModel;
+		map<string,int> mapEntityToSprite;
+		//list<Entity *> entityList;
+		vector<vector<Entity*>> entityList;
+		//std::vector<model::Tile*> tileArray;
+		//vector<TileView*> tileArray;
+		map<KeyPair, TileView*> tilesMap;
+		TileView* firstTile;
+
+		void renderTile(int Xt, int Yt,Camera& camera);
+		void loadSprites();
+		void generateStage();
+		void deleteStage();
+		TileView* createTile(TileModel* tile);
 	};
 
-} // namespace view
+}
 
-#endif //WORLD
+#endif //_STAGE_H_

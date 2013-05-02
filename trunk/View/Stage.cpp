@@ -2,10 +2,11 @@
 #include "Surface.h"
 #include "EntityObject.h"
 #include "DataTypes.h"
+#include "TileModel.h"
 
-std::vector<TileView*>& view::Stage::getTileArray() {
-	return this->tileArray;
-}
+//std::vector<TileView*>& view::Stage::getTileArray() {
+//	return this->tileArray;
+//}
 
 bool comparador (Entity* entity1, Entity* entity2) {
 	if ((entity1->order()) < (entity2->order())) {
@@ -53,47 +54,62 @@ view::Stage::~Stage() {
 		delete _personaje;
 		_personaje = NULL;
 	}
+	deleteStage();
 	
 }
 
-void view::Stage::addTile(TileView* tile) {
-	this->getTileArray().push_back(tile);
-}
-
-void view::Stage::loadGround(){
-
-}
-
-bool view::Stage::initialize()
-{
-	worldModel = Game::instance().world();
-
+void view::Stage::loadSprites(){
 	//carga de sprites estaticos
 	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
-	
 	for (unsigned a = 0; a < staticEntitiesModelCount; a++){
 		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
-		//enlazo Sprites con los nombres de las entidades estaticas en el modelo
 		mapEntityToSprite[entity->name()] = int(a);
-		//genero los Sprites
 		spriteArray.push_back(new Sprite(entity));
 	}
-	
 	//carga de sprites animados
 	unsigned animatedEntitiesModelCount = Game::instance().allEntities.vAnimatedEntities.size();
-
 	for (unsigned a = 0; a < animatedEntitiesModelCount; a++){
 		AnimatedEntity *entity = Game::instance().allEntities.vAnimatedEntities[a];
-		//enlazo Sprites con los nombres de las entidades animadas en el modelo
 		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
-		//genero los Sprites
 		spriteArray.push_back(new SpriteAnimado(entity));
 	}
+}
+
+TileView* view::Stage::createTile(TileModel* tileModel){
+	TileView* tile = new TileView(tileModel);
+	int posSpriteEntity = mapEntityToSprite.at(tile->getGroundEntityName());
+	tile->createGround(spriteArray[posSpriteEntity]);
+	if (tile->hasOtherEntity()){
+		posSpriteEntity = mapEntityToSprite.at(tile->getOtherEntityName());
+		tile->createOtherEntity(spriteArray[posSpriteEntity]);
+	}
+	tilesMap.insert(make_pair(tile->getPosition(), tile));
+	return tile;
+}
+
+void view::Stage::generateStage(){
+	TileModel* tileModel = worldModel->getFirstTile();
+	this->firstTile = this->createTile(tileModel);
+	TileView* currentTile;
+	TileView* prevTile = this->firstTile;
+	KeyPair tilePos;
+	while (tileModel){
+		currentTile = this->createTile(tileModel);
+		prevTile->setNextTile(currentTile);
+		prevTile = currentTile;
+		tileModel = tileModel->getNextTile();
+	}
+}
+
+bool view::Stage::initialize(){
+	worldModel = Game::instance().world();
+	this->loadSprites();
+	this->generateStage();
 
 	entityList.resize((worldModel->width())*(worldModel->height()));
 	
 	//Carga del piso x default
-	unsigned posEntityDefault = mapEntityToSprite["DEFAULT"];
+	unsigned posEntityDefault = mapEntityToSprite.at("DEFAULT ENTITY OBJECT");
 	unsigned w = (Game::instance().world())->width();
 	unsigned h = (Game::instance().world())->height();
 
@@ -212,4 +228,15 @@ void view::Stage::render(Camera& camera) {
 		
 		}
 	_personaje->render(camera);
+}
+
+void Stage::deleteStage(){
+	TileView* aux = this->firstTile;
+	TileView* nextAux;
+	while (aux){
+		nextAux = aux;
+		aux = nextAux->getNextTile();
+		delete nextAux;
+	}
+	tilesMap.clear();
 }

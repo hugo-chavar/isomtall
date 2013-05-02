@@ -11,12 +11,26 @@ TileView::TileView(){
 	this->nextTile = NULL;
 	this->relatedTile = NULL;
 	this->isDrawable = true;
+	this->tileModel = NULL;
+}
+
+TileView::TileView(TileModel* tModel){
+	this->groundEntity = NULL;
+	this->otherEntity = NULL;
+	this->nextTile = NULL;
+	this->relatedTile = NULL;
+	this->isDrawable = true;
+	this->tileModel = tModel;
 }
 
 TileView::~TileView(){
 	//string x = StringUtilities::unsignedToString(position.first);
 	//string y = StringUtilities::unsignedToString(position.second);
 	//Logger::instance().log("Borrado tile "+ x+ ", "+y+" listo");
+	if (otherEntity)
+		delete otherEntity;
+	if (groundEntity)
+		delete groundEntity;
 }
 
 Entity * TileView::getGroundEntity(){
@@ -35,12 +49,12 @@ void TileView::setOtherEntity(Entity * e){
 	this->otherEntity = e;
 }
 
-void TileView::setPosition(KeyPair p){
-	this->position = p;
-}
+//void TileView::setPosition(KeyPair p){
+//	this->position = p;
+//}
 
 KeyPair TileView::getPosition(){
-	return this->position;
+	return this->tileModel->getPosition();
 }
 
 void TileView::setNextTile(TileView* t){
@@ -59,13 +73,36 @@ TileView* TileView::getRelatedTile(){
 	return this->relatedTile;
 }
 
-void TileView::setUndrawable(){
-	this->isDrawable = false;
-}
+//void TileView::setUndrawable(){
+//	this->isDrawable = false;
+//}
 
 
 bool TileView::drawable(){
-	return this->isDrawable;
+	return this->tileModel->drawable();
+}
+
+string TileView::getGroundEntityName(){
+	return this->tileModel->getGroundEntity()->name();
+}
+
+bool TileView::hasOtherEntity(){
+	if (this->tileModel->getOtherEntity())
+		return true;
+	return false;
+}
+
+string TileView::getOtherEntityName(){
+	//a este metodo usarlo con validaciones hasOtherEntity()
+	return this->tileModel->getOtherEntity()->name();
+}
+
+void TileView::createGround(Sprite* sprite){
+	groundEntity = new Entity(this->tileModel->getPosition().first, this->tileModel->getPosition().second, sprite);
+}
+
+void TileView::createOtherEntity(Sprite* sprite){
+	otherEntity = new Entity(this->tileModel->getPosition().first, this->tileModel->getPosition().second, sprite);
 }
 
 //void TileView::cleanUp() {
