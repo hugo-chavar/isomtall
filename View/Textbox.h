@@ -16,28 +16,26 @@ class Textbox {
 public:
 	Textbox();
 	~Textbox();
-	bool initialize(Camera &camera);
-	bool load();
+	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY);
 	virtual void render(Camera &camera);
-	virtual void update(Camera &camera);
+	virtual void update(float offsetX, float offsetY);
 	void handleInput(SDL_Event *sdlEvent);
-	bool pressingClosingBox(int x, int y);
 	void cleanTextBox();
-	int getOffsetX();
-	int getOffsetY();
+	float getOffsetX();
+	void setOffsetX(float offsetX);
+	float getOffsetY();
 	int getWidth();
 	int getHeight();
 	
 private:
 	SDL_Surface *box;
-	SDL_Surface *closeButton;
 	SDL_Surface *message;
 	string str;
 	TTF_Font *font;
 	SDL_Color textColor;
 	SDL_Rect boxRect;
-	SDL_Rect closeButtonRect;
 	SDL_Rect messageRect;
+	bool load(string backgroundImagePath, char *fontPath);
 
 };
 

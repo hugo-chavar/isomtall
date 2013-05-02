@@ -16,12 +16,12 @@ class StaticTextBox {
 public:
 	StaticTextBox();
 	~StaticTextBox();
-	bool initialize(string backgroundImagePath, string text, int offsetX, int offsetY);
-	bool load(string imagePath);
+	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY);
 	virtual void render(Camera &camera);
-	virtual void update(int offsetX, int offsetY);
-	int getOffsetX();
-	int getOffsetY();
+	virtual void update(float offsetX, float offsetY);
+	void setText(string text);
+	float getOffsetX();
+	float getOffsetY();
 	int getWidth();
 	int getHeight();
 
@@ -33,6 +33,7 @@ private:
 	SDL_Rect _boxRect;
 	SDL_Rect _textRect;
 	string _strText;
+	bool load(string imagePath, char *fontPath);
 
 };
 

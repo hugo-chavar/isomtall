@@ -22,7 +22,7 @@ class Engine {
 		//TODO: Create getter/setter
 		Camera camera;
 
-		Chat chat;
+		view::Chat chat;
 	
 		bool isRunning();
 
