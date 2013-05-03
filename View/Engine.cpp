@@ -77,11 +77,10 @@ void Engine::initialize() {
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
 	if (chat.isTyping()) {
-		SDL_PollEvent(sdlEvent);
 		chat.type(sdlEvent);
 		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
 			// ENVIAR MENSAJE...
-			chat.cleanInput();
+			chat.sendMessage();
 		}
 	}
 
@@ -112,11 +111,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						Game::instance().personaje()->animar();
 					break;
 				}
-			case SDLK_y:
-				{
-					chat.setIsTyping(true);
-					break;
-				}
 			default:
 				break;
 			}
@@ -135,9 +129,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					break;
 				}
 				case SDL_BUTTON_RIGHT: {
-					//TODO: add event handling;
-					//sdlEvent->button.x;
-					//sdlEvent->button.y;
+					chat.setIsTyping(true);
 					break;
 				}
 			}

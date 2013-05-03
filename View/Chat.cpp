@@ -1,9 +1,8 @@
 #include "Chat.h"
 
+view::Chat::Chat() { }
 
-Chat::Chat() { }
-
-Chat::~Chat() {
+view::Chat::~Chat() {
 	SDL_FreeSurface(closeButton);
 }
 
@@ -42,7 +41,7 @@ SDL_Surface *load_surface(string filename)
     return optimizedImage;
 }
 
-bool Chat::initializeCloseButton() {
+bool view::Chat::initializeCloseButton() {
 	closeButton = load_surface("../Images/closeButton.png");
 	if (closeButton==NULL) {
 		return false;
@@ -51,53 +50,58 @@ bool Chat::initializeCloseButton() {
 	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
 	closeButtonRect.w = static_cast<Uint16>(closeButton->w);
 	closeButtonRect.h = static_cast<Uint16>(closeButton->h);
+	return true;
 }
 
-bool Chat::initialize(Camera &camera) {
+bool view::Chat::initialize(Camera &camera) {
+	//Ver si es el lugar adecuado para hacerlo
+	modelChat = model::Chat();
+	modelChat.initialize();
 	SDL_Color textboxColor;
 	textboxColor.r = 0;
 	textboxColor.g = 0;
 	textboxColor.b = 0;
-	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-5, camera.getOffsetY()+5))
+	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-5, camera.getOffsetY()+5,16))
 		return false;
 	textbox.setOffsetX(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5);
 	SDL_Color nameColor;
 	nameColor.r = 0;
 	nameColor.g = 0;
 	nameColor.b = 0;
-	if (!nameBox.initialize("../Images/nameBox.png", nameColor, "../Fonts/arial.ttf", camera.getOffsetX()+5, camera.getOffsetY()+5))
+	if (!nameBox.initialize("../Images/nameBox.png", nameColor, "../Fonts/arial.ttf", camera.getOffsetX()+5, camera.getOffsetY()+5,16,1))
 		return false;
 	SDL_Color messagesColor;
 	messagesColor.r = 0;
 	messagesColor.g = 0;
 	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10))
+	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10,12,5))
 		return false;
 	////// PRUEBA
-	nameBox.setText("Jugador 1");
-	messagesBox.setText("Hola");
+	nameBox.addLine("Jugador 1");
+	//messagesBox.addline("Hola");
 	//////
 	if (!initializeCloseButton())
 		return false;
 	return true;
 }
 
-bool Chat::isTyping() {
+bool view::Chat::isTyping() {
 	return typing;
 }
 
-void Chat::setIsTyping(bool state) {
+void view::Chat::setIsTyping(bool state) {
 	typing = state;
 }
 
-void Chat::render(Camera &camera) {
+void view::Chat::render(Camera &camera) {
 	nameBox.render(camera);
 	messagesBox.render(camera);
 	textbox.render(camera);
 	camera.render(closeButtonRect, closeButton);
 }
 
-void Chat::update(Camera &camera) {
+void view::Chat::update(Camera &camera) {
+	this->receiveMsgs();
 	nameBox.update(camera.getOffsetX()+5, camera.getOffsetY()+5);
 	messagesBox.update(nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10);
 	textbox.update(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5, camera.getOffsetY()+5);
@@ -105,16 +109,34 @@ void Chat::update(Camera &camera) {
 	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
 }
 
-void Chat::type(SDL_Event *sdlEvent) {
+void view::Chat::type(SDL_Event *sdlEvent) {
 	textbox.handleInput(sdlEvent);
 }
 
-void Chat::cleanInput() {
+void view::Chat::cleanInput() {
 	textbox.cleanTextBox();
 }
 
-bool Chat::isClosing(float x, float y) {
+bool view::Chat::isClosing(float x, float y) {
 	if ((x>=closeButtonRect.x) && (x<=(closeButtonRect.x+closeButtonRect.w)) && (y>=closeButtonRect.y) && (y<=(closeButtonRect.y+closeButtonRect.h)))
 		return true;
 	return false;
+}
+
+void view::Chat::sendMessage()
+{
+	modelChat.setInputBuffer(this->textbox.getText());
+	modelChat.setTo(this->nameBox.getLines()[0]->getStrText());
+	modelChat.sendMessage();
+	this->cleanInput();
+}
+
+void view::Chat::receiveMsgs()
+{
+	if (modelChat.getMessagesListMutex().tryLock()) {
+		for (std::list<std::string>::iterator it = modelChat.getMessagesList().begin(); it != modelChat.getMessagesList().end(); ++it) {
+			messagesBox.addLine((*it));
+		}
+	}
+	modelChat.getMessagesListMutex().unlock();
 }
