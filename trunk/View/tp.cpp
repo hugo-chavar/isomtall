@@ -7,6 +7,7 @@ using namespace common;
 
 int main(int argc, char *argv[]) {
 
+	string nombreJugador="Andres";
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");
     Engine engine;

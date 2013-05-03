@@ -5,6 +5,8 @@
 #include "SDL_ttf.h"
 #include "SDL_image.h"
 #include <string>
+#include <vector>
+#include "Line.h"
 
 
 using namespace view;
@@ -16,24 +18,30 @@ class StaticTextBox {
 public:
 	StaticTextBox();
 	~StaticTextBox();
-	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY);
+	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY,int textSize,int maxLines);
 	virtual void render(Camera &camera);
 	virtual void update(float offsetX, float offsetY);
-	void setText(string text);
+	//void setText(string text,int pos);
+	//void setLine(string text,int pos);
 	float getOffsetX();
 	float getOffsetY();
 	int getWidth();
 	int getHeight();
+	vector<Line *> getLines();
+	//string getText(int pos);
+	void addLine(string newMsg);
 
 private:
 	SDL_Surface *_box;
-	SDL_Surface *_text;
-	TTF_Font *_font;
-	SDL_Color _textColor;
 	SDL_Rect _boxRect;
-	SDL_Rect _textRect;
-	string _strText;
-	bool load(string imagePath, char *fontPath);
+	SDL_Color _textColor;
+	TTF_Font *_font;
+	unsigned maxLines;
+	vector<Line *> lines;
+	//vector<SDL_Surface *> _texts;//convendria encapsularlo
+	//vector<SDL_Rect *> _textRects;//convendria encapsularlo
+	//vector<string> _strTexts;//
+	bool load(string imagePath, char *fontPath, int textSize);
 
 };
 

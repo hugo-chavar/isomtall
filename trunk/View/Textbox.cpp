@@ -11,8 +11,8 @@ Textbox::~Textbox() {
 	SDL_EnableUNICODE(SDL_DISABLE);
 }
 
-bool Textbox::initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY) {
-	if (!load(backgroundImagePath, fontPath))
+bool Textbox::initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY, int textSize) {
+	if (!load(backgroundImagePath, fontPath,textSize))
 		return false;
 	str = "";
 	message = NULL;
@@ -64,11 +64,11 @@ SDL_Surface *load_image(string filename)
     return optimizedImage;
 }
 
-bool Textbox::load(string backgroundImagePath, char *fontPath) {
+bool Textbox::load(string backgroundImagePath, char *fontPath, int textSize) {
 	//Load images
 	box = load_image(backgroundImagePath);
 	//Open the font
-	font = TTF_OpenFont(fontPath, 16);
+	font = TTF_OpenFont(fontPath, textSize);
 	//If there was a problem in loading the background
 	if (box==NULL) {
 		return false;
@@ -145,4 +145,9 @@ int Textbox::getHeight() {
 
 int Textbox::getWidth() {
 	return boxRect.w;
+}
+
+string Textbox::getText()
+{
+	return this->str;
 }

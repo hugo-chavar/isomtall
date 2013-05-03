@@ -16,7 +16,7 @@ class Textbox {
 public:
 	Textbox();
 	~Textbox();
-	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY);
+	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY, int textSize);
 	virtual void render(Camera &camera);
 	virtual void update(float offsetX, float offsetY);
 	void handleInput(SDL_Event *sdlEvent);
@@ -26,6 +26,7 @@ public:
 	float getOffsetY();
 	int getWidth();
 	int getHeight();
+	string getText();
 	
 private:
 	SDL_Surface *box;
@@ -35,7 +36,7 @@ private:
 	SDL_Color textColor;
 	SDL_Rect boxRect;
 	SDL_Rect messageRect;
-	bool load(string backgroundImagePath, char *fontPath);
+	bool load(string backgroundImagePath, char *fontPath, int textSize);
 
 };
 

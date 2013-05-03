@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "Textbox.h"
 #include "StaticTextBox.h"
+#include "../Model/Chat.h"
 
 
 namespace view {
@@ -21,6 +22,7 @@ namespace view {
 		void type(SDL_Event *sdlEvent);
 		void cleanInput();
 		bool isClosing(float x, float y);
+		void sendMessage();
 
 	private:
 		Textbox textbox;
@@ -30,6 +32,8 @@ namespace view {
 		SDL_Rect closeButtonRect;
 		bool typing;
 		bool initializeCloseButton();
+		model::Chat modelChat;
+		void receiveMsgs();
 
 	};
 
