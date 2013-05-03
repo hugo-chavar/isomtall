@@ -12,7 +12,20 @@
 #define ERROR -1
 #define ESTADO_MOVIMIENTO 1
 #define SIN_CAMBIO 0
+#define PARADO 10
 #define MOVIMIENTO 20
+#define FREEZAR 30
+
+//Orientacion
+
+#define NORTE 0
+#define NORESTE 1
+#define NOROESTE 2
+#define SUR 3
+#define SUDESTE 4
+#define SUDOESTE 5
+#define ESTE 6
+#define OESTE 7
 
 //Codigo de las animaciones
 
@@ -32,6 +45,14 @@
 #define WALK_SOE 13
 #define WALK_E 14
 #define WALK_O 15
+#define FREEZE_N 16
+#define FREEZE_NE 17
+#define FREEZE_NOE 18
+#define FREEZE_S 19
+#define FREEZE_SE 20
+#define FREEZE_SOE 21
+#define FREEZE_E 22
+#define FREEZE_O 23
 
 //Parado esperando
 
@@ -55,15 +76,15 @@
 #define CAMINANDO_E 26
 #define CAMINANDO_O 27
 
-//Animacion
-#define ANIMACION_N 30
-#define ANIMACION_NE 31
-#define ANIMACION_NOE 22
-#define ANIMACION_S 33
-#define ANIMACION_SE 34
-#define ANIMACION_SOE 35
-#define ANIMACION_E 36
-#define ANIMACION_O 37
+//Freezar
+#define FREEZAR_N 30
+#define FREEZAR_NE 31
+#define FREEZAR_NOE 32
+#define FREEZAR_S 33
+#define FREEZAR_SE 34
+#define FREEZAR_SOE 35
+#define FREEZAR_E 36
+#define FREEZAR_O 37
 
 
 #endif

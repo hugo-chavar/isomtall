@@ -31,9 +31,10 @@ private:
 	void calcularSigTileAMover();
 	//realiza el desplazamiento en x y en y del sprite, de un tile a otro
 	void moverSprite(std::pair<float, float>& factor);
-	void moverSpriteEnX(std::pair<float, float>& factor);
-	void moverSpriteEnY(std::pair<float, float>& factor);
+	void moverSpriteEnX();
+	void moverSpriteEnY();
 	bool isCenteredInTile();
+	void freezar();
 
 	std::pair<int, int> tileActual;
 	PersonajeModelo* modelo;

@@ -63,14 +63,25 @@ bool Personaje::isCenteredInTile(){
 	return ((delta.first == 0) && (delta.second == 0));
 }
 
-void Personaje::update(){
-	if (gralStatus == 0){ // mover gralStatus al modelo // modelo->moviendose();
-		this->mover();
-	} else {
-		if (this->isCenteredInTile()) {
-			//this->animate(); //
-		}
+void Personaje::freezar() {
+	int animacion = modelo->getEstado();
+	estado = procesarAnimacion(animacion);
+	sprites[estado]->actualizarFrame();
+}
 
+void Personaje::update(){
+	
+	if ((modelo->getIsActivo())||(!(this->isCenteredInTile()))) {
+		if (gralStatus == 0){ // mover gralStatus al modelo // modelo->moviendose();
+			this->mover();
+		} else {
+			if (this->isCenteredInTile()) {
+				//this->animate(); //
+			}
+
+		}
+	} else {
+		this->freezar();
 	}
 }
 
@@ -116,16 +127,16 @@ void Personaje::moverSprite(std::pair<float, float>& factor){
 			serr++;
 		}
 		ePot.first = ePot.first + factor.first;	//Aumento la cantidad de movimiento, cuantos pixels se va a mover
-		moverSpriteEnX(factor); //Mueve en x
+		moverSpriteEnX(); //Mueve en x
 	}
 	if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
 		serr = 0;																	//O si esta activada la corrección pero se completo el movimineto en x
 		ePot.second = ePot.second + factor.second;									//Caso en que la velocidad no es entera
-		moverSpriteEnY(factor);
+		moverSpriteEnY();
 	}
 }
 
-void Personaje::moverSpriteEnX(std::pair<float, float>& factor) { //TODO: CORREGIR ESTO: warning C4100: 'factor' : parámetro formal sin referencia
+void Personaje::moverSpriteEnX() {
 	float factorT = 0;	//El truncamiento de la variable factor
 	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
 		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera
@@ -152,7 +163,7 @@ void Personaje::moverSpriteEnX(std::pair<float, float>& factor) { //TODO: CORREG
 	}
 }
 
-void Personaje::moverSpriteEnY(std::pair<float, float>& factor) {
+void Personaje::moverSpriteEnY() {
 	float factorT = 0;	//El truncamiento de la variable factor
 	if (ePot.second >= 1) {
 		factorT = std::floor(ePot.second);
@@ -264,6 +275,14 @@ int Personaje::procesarAnimacion(int animacion) {
 						delta.second = 0;
 						return WALK_E;
 					  }
+	case FREEZAR_N: return FREEZE_N;
+	case FREEZAR_NE: return FREEZE_NE;
+	case FREEZAR_NOE: return FREEZE_NOE;
+	case FREEZAR_S: return FREEZE_S;
+	case FREEZAR_SE: return FREEZE_SE;
+	case FREEZAR_SOE: return FREEZE_SOE;
+	case FREEZAR_E: return FREEZE_E;
+	case FREEZAR_O: return FREEZE_O;
 	default: return ERROR;
 	}
 }
