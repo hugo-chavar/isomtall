@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\Sanabria\Documents\Andy\Fiuba\3er Ano\Taller\isomtall\Libraries\PThreads\include;..\Libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\Libraries\PThreads\include;..\Libraries\SDL-1.2.15\include;$(IncludePath)</IncludePath>
     <LibraryPath>..\Libraries\PThreads\lib;..\Libraries\Parser YAML\bin\Debug;..\Libraries\SDL-1.2.15\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
