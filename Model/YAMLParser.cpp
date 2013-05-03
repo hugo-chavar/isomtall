@@ -223,6 +223,8 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	if (!imagePathFound) {
 		pixelRefX = ERROR_IMAGE_PIXEL_REF_X;
 		pixelRefY = ERROR_IMAGE_PIXEL_REF_Y;
+		baseWidth = DEFAULT_BASE_WIDTH;
+		baseHeight = DEFAULT_BASE_HEIGHT;
 	}
 
 	entity->name(name);
@@ -234,7 +236,7 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 }
 
 void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
-	int pixelRefX, pixelRefY, fps, delay;
+	int baseWidth, baseHeight, pixelRefX, pixelRefY, fps, delay;
 	string imageDir, field;
 	bool pixelRefXFound = false, pixelRefYFound = false, fpsFound = false, delayFound = false, imageDirFound = false;
 
@@ -267,6 +269,8 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
+	baseWidth = entity_aux->baseWidth();
+	baseHeight = entity_aux->baseHeight();
 
 	managePositiveIntCase(node, pixelRefX, entity_aux->name(), "entity","pixel_ref_x",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X, YES_IGNORE_LOG);
 	managePositiveIntCase(node, pixelRefY, entity_aux->name(), "entity","pixel_ref_y",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y, YES_IGNORE_LOG);
@@ -276,11 +280,13 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	if (!imageDirFound) {
 		pixelRefX = ERROR_ANIMATED_PIXEL_REF_X;
 		pixelRefY = ERROR_ANIMATED_PIXEL_REF_Y;
+		baseWidth = DEFAULT_BASE_WIDTH;
+		baseHeight = DEFAULT_BASE_HEIGHT;
 	}
 
 	animatedEntity->name(entity_aux->name());
-	animatedEntity->baseWidth(entity_aux->baseWidth());
-	animatedEntity->baseHeight(entity_aux->baseHeight());
+	animatedEntity->baseWidth(baseWidth);
+	animatedEntity->baseHeight(baseHeight);
 	animatedEntity->pixelRefX(pixelRefX);
 	animatedEntity->pixelRefY(pixelRefY);
 	animatedEntity->fps(fps);
