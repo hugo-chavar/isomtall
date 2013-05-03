@@ -5,14 +5,6 @@
 #include "PersonajeConstantes.h"
 #include "Game.h"
 
-#define NORTE 0
-#define NORESTE 1
-#define NOROESTE 2
-#define SUR 3
-#define SUDESTE 4
-#define SUDOESTE 5
-#define ESTE 6
-#define OESTE 7
 
 using namespace common;
 
@@ -30,6 +22,8 @@ PersonajeModelo::PersonajeModelo() {
 	caminoSize = 0;
 	estado = PARADO_S;
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
+	isActivo = true;
+	orientacion = SUR;
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
@@ -44,6 +38,8 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	posMov = 0;
 	caminoSize = 0;
 	this->estado = PARADO_S;
+	isActivo = true;
+	orientacion = SUR;
 	//this->velocidad = velocidad;
 }
 
@@ -84,16 +80,43 @@ int PersonajeModelo::delay()
 }
 
 void PersonajeModelo::setDestino(int x, int y) {
-	target.first = x;
-	target.second = y;
-	targetParcial.first = x;
-	targetParcial.second = y;
+	if (isActivo) {
+		target.first = x;
+		target.second = y;
+		targetParcial.first = x;
+		targetParcial.second = y;
+	}
 }
 
 void PersonajeModelo::setEstado(int state) {
 	estado = state;
 }
 
+void PersonajeModelo::setIsActivo() {
+	activarDesactivar();
+	if (isActivo) {
+		isActivo = false;
+	} else {
+		isActivo = true;
+	}
+}
+
+void PersonajeModelo::activarDesactivar() {
+	if (isActivo) {
+		if (estado >= MOVIMIENTO) {
+			estado = estado + FREEZAR - MOVIMIENTO;
+		} else {
+			estado = estado + FREEZAR - PARADO;
+		}
+		targetParcial = target = current;
+	} else {
+		estado = estado - FREEZAR + PARADO;
+	}
+}
+
+bool PersonajeModelo::getIsActivo() {
+	return isActivo;
+}
 
 void PersonajeModelo::setVelocidad(float vel) {
 	velocidad = vel;
@@ -206,7 +229,8 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	if((x==current.first)&&(y==current.second)&&(cambio==ESTADO_MOVIMIENTO)){
 		return (estado-FACTOR_ORIENTACION);
 	}
-	switch (obtenerOrientacion(x, y)) {
+	orientacion = obtenerOrientacion(x, y);
+	switch (orientacion) {
 	case NORTE: return CAMINANDO_N;
 	case NORESTE: return CAMINANDO_NE;
 	case NOROESTE: return CAMINANDO_NOE;

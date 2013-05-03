@@ -17,6 +17,8 @@ public:
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
 	void getCurrent(std::pair<int, int>& actual);
+	void setIsActivo();
+	bool getIsActivo();
 	int getEstado();
 	float getVelocidad();
 	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
@@ -39,6 +41,7 @@ private:
 	int quedarseQuieto(float &velocidadAni);
 	//Modifica las variables del modelo para representar el movimiento
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
+	void activarDesactivar();
 	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
@@ -48,7 +51,9 @@ private:
 	int posMov;
 	int caminoSize;
 	int estado;
+	int orientacion;
 	float velocidad;
+	bool isActivo;
 	AnimatedEntity * _animation;
 };
 
