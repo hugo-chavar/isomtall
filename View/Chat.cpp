@@ -46,7 +46,7 @@ bool view::Chat::initializeCloseButton() {
 	if (closeButton==NULL) {
 		return false;
 	}
-	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()-closeButton->w-5);
+	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()+6);
 	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
 	closeButtonRect.w = static_cast<Uint16>(closeButton->w);
 	closeButtonRect.h = static_cast<Uint16>(closeButton->h);
@@ -61,7 +61,7 @@ bool view::Chat::initialize(Camera &camera) {
 	textboxColor.r = 0;
 	textboxColor.g = 0;
 	textboxColor.b = 0;
-	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-5, camera.getOffsetY()+5,16))
+	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5,16))
 		return false;
 	textbox.setOffsetX(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5);
 	SDL_Color nameColor;
@@ -74,7 +74,7 @@ bool view::Chat::initialize(Camera &camera) {
 	messagesColor.r = 0;
 	messagesColor.g = 0;
 	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10,10,7))
+	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+5,10,7))
 		return false;
 	if (!initializeCloseButton())
 		return false;
@@ -99,9 +99,9 @@ void view::Chat::render(Camera &camera) {
 void view::Chat::update(Camera &camera) {
 	this->receiveMsgs();
 	nameBox.update(camera.getOffsetX()+5, camera.getOffsetY()+5);
-	messagesBox.update(nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10);
-	textbox.update(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5, camera.getOffsetY()+5);
-	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()-closeButton->w-5);
+	messagesBox.update(nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+5);
+	textbox.update(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-35, camera.getOffsetY()+5);
+	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()+6);
 	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
 }
 

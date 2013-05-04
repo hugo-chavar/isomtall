@@ -160,7 +160,6 @@ escenarios:
          - {x: 6, y: 0, entidad: dado}
          - {x: 5, y: 0, entidad: arbol}
          - {x: 0, y: 9, entidad: pelota}
-         - {x: 0, y: 12, entidad: televisor}
          - {x: 30, y: 55, entidad: tierra} 
          - {x: -30, y: 55, entidad: tierra}
          - {x: 0, y: 22, entidad: agua}
