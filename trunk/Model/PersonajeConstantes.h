@@ -15,6 +15,7 @@
 #define PARADO 10
 #define MOVIMIENTO 20
 #define FREEZAR 30
+#define ATACAR 40
 
 //Orientacion
 
@@ -53,6 +54,14 @@
 #define FREEZE_SOE 21
 #define FREEZE_E 22
 #define FREEZE_O 23
+#define ATTACK_N 24
+#define ATTACK_NE 25
+#define ATTACK_NOE 26
+#define ATTACK_S 27
+#define ATTACK_SE 28
+#define ATTACK_SOE 29
+#define ATTACK_E 30
+#define ATTACK_O 31
 
 //Parado esperando
 
@@ -86,5 +95,14 @@
 #define FREEZAR_E 36
 #define FREEZAR_O 37
 
+//Atacar
+#define ATACAR_N 40
+#define ATACAR_NE 41
+#define ATACAR_NOE 42
+#define ATACAR_S 43
+#define ATACAR_SE 44
+#define ATACAR_SOE 45
+#define ATACAR_E 46
+#define ATACAR_O 47
 
 #endif

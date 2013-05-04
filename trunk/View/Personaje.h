@@ -35,13 +35,14 @@ private:
 	void moverSpriteEnY();
 	bool isCenteredInTile();
 	void freezar();
+	void animar();
+	void detenerAnimacion();
 
 	std::pair<int, int> tileActual;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual
 	int estado; //estado actual, si se mueve y en que dirección
-	int gralStatus; //0 MOVIMIENTO, 1 ANIMACION
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y
 	int serr; //variable usada para coordinar el movimiento en x y en y en la diagonal

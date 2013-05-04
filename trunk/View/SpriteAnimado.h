@@ -15,6 +15,9 @@ private:
 public:
 	void actualizarFrame();
 	SpriteAnimado(AnimatedEntity* entity);
+	//Dice si el sprite esta en el ultimo frame
+	bool ultimoFrame();
+	void reiniciar();
 	~SpriteAnimado();
 };
 

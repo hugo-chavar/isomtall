@@ -29,8 +29,9 @@ public:
 	AnimatedEntity* animation();
 	int fps();
 	int delay();
-
-	void animar();
+	bool estaAnimando();
+	void terminarAnimacion();
+	void animar(char opcion);
 private:
 
 	int siCaminaDetenerse();
@@ -42,6 +43,7 @@ private:
 	//Modifica las variables del modelo para representar el movimiento
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
 	void activarDesactivar();
+	void atacar();
 	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
@@ -50,6 +52,8 @@ private:
 	int* yPath;
 	int posMov;
 	int caminoSize;
+	bool animando;
+	int animacionActual;
 	int estado;
 	int orientacion;
 	float velocidad;

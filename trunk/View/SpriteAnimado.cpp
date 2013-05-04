@@ -35,10 +35,22 @@ void SpriteAnimado::cargarFrames(AnimatedEntity * entity)
 	}
 }
 
+bool SpriteAnimado::ultimoFrame(){
+	if (estado >= frames.size()-1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void SpriteAnimado::reiniciar() {
+	estado = 0;
+}
+
 void SpriteAnimado::avanzarFrames()
 {
 	comienzo_frame = SDL_GetTicks();
-	if ( estado >= frames.size()-1 )
+	if ( this->ultimoFrame() )
 		estado = 0;
 	else
 		estado = estado++;

@@ -111,6 +111,12 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						Game::instance().personaje()->setIsActivo();
 					break;
 				}
+				case SDLK_a:
+				{
+					if (!chat.isTyping())
+						Game::instance().personaje()->animar('a');
+					break;
+				}
 			default:
 				break;
 			}
