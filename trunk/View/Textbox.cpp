@@ -102,6 +102,10 @@ void Textbox::handleInput(SDL_Event *sdlEvent) {
 		if ((sdlEvent->key.keysym.unicode>=(Uint16)' ') && (sdlEvent->key.keysym.unicode<=(Uint16)'ü')) {
 			//Append the character
 			str += (char)sdlEvent->key.keysym.unicode;
+			int w;
+			TTF_SizeText(this->font,str.c_str(),&w,NULL);
+			if( this->getWidth() <= w+20)
+				str=temp;
 		}
 		//If backspace was pressed and the string isn't blank
 		if ((sdlEvent->key.keysym.sym==SDLK_BACKSPACE) && (str.length()!=0)) {
