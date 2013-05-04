@@ -357,3 +357,25 @@ unsigned max (unsigned a, unsigned b ) {
 		result = b;
 	return result;
 }
+
+bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY)
+{
+	std::pair<int,int> pixelCoordinates;
+	pixelCoordinates.first =x;
+	pixelCoordinates.second =y;
+	std::pair<int,int> tilePos=pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
+	if(isInsideWorld(tilePos))
+	{
+		for(int i=0;i<_vMainCharacters.size();i++)
+		{
+			std::pair<int,int> posChar;
+			_vMainCharacters[i]->getCurrent(posChar);
+			if(posChar==tilePos)
+			{
+				name=_vMainCharacters[i]->getName();
+				return true;
+			}
+		}
+	}
+	return false;
+}

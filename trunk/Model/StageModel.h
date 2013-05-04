@@ -52,6 +52,7 @@ public:
 	void insertEntity(KeyPair k, EntityObject* e);
 	void markRelatedTiles(TileModel* );
 	void resolveRelatedTiles(TileModel* );
+	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 private:
 	string _name;
 	unsigned int _width;

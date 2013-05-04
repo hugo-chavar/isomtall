@@ -74,12 +74,8 @@ bool view::Chat::initialize(Camera &camera) {
 	messagesColor.r = 0;
 	messagesColor.g = 0;
 	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10,12,5))
+	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+10,10,7))
 		return false;
-	////// PRUEBA
-	nameBox.addLine("Jugador 1");
-	//messagesBox.addline("Hola");
-	//////
 	if (!initializeCloseButton())
 		return false;
 	return true;
@@ -139,4 +135,9 @@ void view::Chat::receiveMsgs()
 		}
 	}
 	modelChat.getMessagesListMutex().unlock();
+}
+
+void view::Chat::setTo(string To)
+{
+	this->nameBox.addLine(To);
 }

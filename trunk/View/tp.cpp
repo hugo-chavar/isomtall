@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");
     Engine engine;
-	if (!Game::instance().initialize())
+	if (!Game::instance().initialize(nombreJugador))
 		return 1;
  
 	return engine.execute();

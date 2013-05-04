@@ -135,7 +135,12 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					break;
 				}
 				case SDL_BUTTON_RIGHT: {
+					string To="";
+					if(Game::instance().world()->isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY()))
+					{
+					chat.setTo(To);
 					chat.setIsTyping(true);
+					}
 					break;
 				}
 			}

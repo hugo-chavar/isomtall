@@ -91,12 +91,13 @@ bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char
 void StaticTextBox::render(Camera &camera) {
 
 		//Escribo en el fondo las lineas adecuadas
-	camera.render(_boxRect, _box);
+	    camera.render(_boxRect, _box);
+		int max=lines.size()-1;
 		for(unsigned i=0;i<lines.size();i++)
 	{
 		SDL_Rect rect;
 		rect.x =(Sint16) _boxRect.x+10;
-		rect.y =(Sint16) _boxRect.y+5+i*TTF_FontLineSkip(_font);
+		rect.y =(Sint16) _boxRect.y+5+(max-i)*TTF_FontLineSkip(_font);
 		camera.render(rect,lines[i]->getText());
 	}
 }
@@ -132,6 +133,8 @@ void StaticTextBox::addLine(string newMsg)
 	lines.push_back(new Line(newMsg,_font,this->_textColor));
 	if(lines.size()> maxLines)
 	{
+	lines[0]->liberar();
+	delete lines[0];
 	lines.erase(lines.begin());
 	}
 }

@@ -32,6 +32,9 @@ public:
 	bool estaAnimando();
 	void terminarAnimacion();
 	void animar(char opcion);
+	string getName();
+	void setName(string nombreJugador);
+
 private:
 
 	int siCaminaDetenerse();
@@ -59,6 +62,7 @@ private:
 	float velocidad;
 	bool isActivo;
 	AnimatedEntity * _animation;
+	string name;
 };
 
 
