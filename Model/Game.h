@@ -18,7 +18,7 @@ public:
 	static Game& instance();
 	StageModel* world();
 	TimeManager* time();
-	bool initialize();
+	bool initialize(string nombreJugador);
 	EntLists allEntities;
 	YAMLParser yParser;
 	AnimatedEntity* animatedEntityAt(unsigned pos);

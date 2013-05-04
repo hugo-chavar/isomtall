@@ -322,3 +322,13 @@ PersonajeModelo::~PersonajeModelo(){
 		yPath = NULL;
 	}
 }
+
+void PersonajeModelo::setName(string nombreJugador)
+{
+	this->name=nombreJugador;
+}
+
+string PersonajeModelo::getName()
+{
+	return this->name;
+}

@@ -21,7 +21,7 @@ TimeManager* Game::time(){
 	return &_time;
 }
 
-bool Game::initialize()
+bool Game::initialize(string nombreJugador)
 {
 	yParser.parse();
 	_world = yParser.vStages()[0];
@@ -37,7 +37,7 @@ bool Game::initialize()
 		return false;
 
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
-
+	_personaje->setName(nombreJugador);
 	this->_time.initializeTime();
 	return true;
 }

@@ -23,6 +23,7 @@ namespace view {
 		void cleanInput();
 		bool isClosing(float x, float y);
 		void sendMessage();
+		void setTo(string To);
 
 	private:
 		Textbox textbox;
