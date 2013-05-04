@@ -24,6 +24,8 @@ PersonajeModelo::PersonajeModelo() {
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
 	isActivo = true;
 	orientacion = SUR;
+	animando = false;
+	animacionActual = SIN_CAMBIO;
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
@@ -40,6 +42,8 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	this->estado = PARADO_S;
 	isActivo = true;
 	orientacion = SUR;
+	animando = false;
+	animacionActual = SIN_CAMBIO;
 	//this->velocidad = velocidad;
 }
 
@@ -53,9 +57,39 @@ void PersonajeModelo::animation(AnimatedEntity* ae) {
 	_animation = ae;
 }
 
-void PersonajeModelo::animar() {
-	this->setDestino(5,5);
+void PersonajeModelo::atacar() {
+	animacionActual = ATACAR;
+	targetParcial = target = current;
+	if (estado >= MOVIMIENTO) {
+		estado = estado + ATACAR - MOVIMIENTO;
+	} else {
+		estado = estado + ATACAR - PARADO;
+	}
 }
+
+bool PersonajeModelo::estaAnimando() {
+	return animando;
+}
+
+void PersonajeModelo::animar(char opcion) {
+	if (isActivo) {
+		
+		switch (opcion) {
+		case 'a': {
+			animando = true;
+			this->atacar();
+				  }
+		default:;
+		}
+	}
+}
+
+void PersonajeModelo::terminarAnimacion() {
+	animando = false;
+	estado = estado - animacionActual + PARADO;
+	animacionActual = SIN_CAMBIO;
+}
+
 
 bool PersonajeModelo::hasDirectoryRemaining(){
 	return _animation->hasNextDir();
@@ -80,7 +114,7 @@ int PersonajeModelo::delay()
 }
 
 void PersonajeModelo::setDestino(int x, int y) {
-	if (isActivo) {
+	if ((isActivo)&&(!animando)) {
 		target.first = x;
 		target.second = y;
 		targetParcial.first = x;
@@ -102,6 +136,9 @@ void PersonajeModelo::setIsActivo() {
 }
 
 void PersonajeModelo::activarDesactivar() {
+	if ((this->estaAnimando())) {
+		this->terminarAnimacion();
+	}
 	if (isActivo) {
 		if (estado >= MOVIMIENTO) {
 			estado = estado + FREEZAR - MOVIMIENTO;
@@ -113,6 +150,7 @@ void PersonajeModelo::activarDesactivar() {
 		estado = estado - FREEZAR + PARADO;
 	}
 }
+
 
 bool PersonajeModelo::getIsActivo() {
 	return isActivo;

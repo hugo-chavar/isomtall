@@ -15,8 +15,6 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.second = 0;
 	serr = 0;
 
-	gralStatus = 0;
-
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
 
@@ -69,16 +67,32 @@ void Personaje::freezar() {
 	sprites[estado]->actualizarFrame();
 }
 
+void Personaje::detenerAnimacion() {
+	sprites[estado]->actualizarFrame();
+	modelo->terminarAnimacion();
+	int animacion = modelo->getEstado();
+	estado = procesarAnimacion(animacion);
+}
+
+void Personaje::animar() {
+	int animacion = modelo->getEstado();
+	if (procesarAnimacion(animacion) != estado) {
+		sprites[estado]->reiniciar();
+	}
+	estado = procesarAnimacion(animacion);
+	if (sprites[estado]->ultimoFrame()) {
+		this->detenerAnimacion();
+	}
+	sprites[estado]->actualizarFrame();
+}
+
 void Personaje::update(){
 	
 	if ((modelo->getIsActivo())||(!(this->isCenteredInTile()))) {
-		if (gralStatus == 0){ // mover gralStatus al modelo // modelo->moviendose();
-			this->mover();
+		if ((modelo->estaAnimando())&&(this->isCenteredInTile())) {
+			this->animar();
 		} else {
-			if (this->isCenteredInTile()) {
-				//this->animate(); //
-			}
-
+			this->mover();
 		}
 	} else {
 		this->freezar();
@@ -283,6 +297,14 @@ int Personaje::procesarAnimacion(int animacion) {
 	case FREEZAR_SOE: return FREEZE_SOE;
 	case FREEZAR_E: return FREEZE_E;
 	case FREEZAR_O: return FREEZE_O;
+	case ATACAR_N: return ATTACK_N;
+	case ATACAR_NE: return ATTACK_NE;
+	case ATACAR_NOE: return ATTACK_NOE;
+	case ATACAR_S: return ATTACK_S;
+	case ATACAR_SE: return ATTACK_SE;
+	case ATACAR_SOE: return ATTACK_SOE;
+	case ATACAR_E: return ATTACK_E;
+	case ATACAR_O: return ATTACK_O;
 	default: return ERROR;
 	}
 }
