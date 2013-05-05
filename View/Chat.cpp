@@ -75,7 +75,7 @@ bool view::Chat::initialize(Camera &camera) {
 	messagesColor.r = 0;
 	messagesColor.g = 0;
 	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+5,10,7))
+	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5,10,5))
 		return false;
 	if (!initializeCloseButton())
 		return false;
@@ -100,8 +100,8 @@ void view::Chat::render(Camera &camera) {
 void view::Chat::update(Camera &camera) {
 	this->receiveMsgs();
 	nameBox.update(camera.getOffsetX()+5, camera.getOffsetY()+5);
-	messagesBox.update(nameBox.getOffsetX(), nameBox.getOffsetY()+nameBox.getHeight()+5);
 	textbox.update(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-35, camera.getOffsetY()+5);
+	messagesBox.update(textbox.getOffsetX(), textbox.getOffsetY()+textbox.getHeight()+5);
 	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()+6);
 	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
 }
