@@ -15,8 +15,7 @@ public:
 	TileView();
 	TileView(TileModel* );
 	~TileView();
-	//void cleanUp();
-	//int getSpeedPenalty()
+	TileModel* getTileModel();
 	Entity* getGroundEntity();
 	Entity* getOtherEntity();
 	void setGroundEntity(Entity* e);
@@ -30,7 +29,7 @@ public:
 	TileView* getRelatedTile();
 	//void setUndrawable();
 	bool drawable();
-
+	bool EOL();
 	string getGroundEntityName();
 	bool hasOtherEntity();
 	string getOtherEntityName();
@@ -43,7 +42,7 @@ private:
 	Entity* otherEntity;
 	TileView* nextTile;
 	TileView* relatedTile;
-	KeyPair position;
+	//KeyPair position;
 	bool isDrawable;
 };
 

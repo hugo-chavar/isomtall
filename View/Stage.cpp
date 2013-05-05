@@ -4,9 +4,8 @@
 #include "DataTypes.h"
 #include "TileModel.h"
 
-//std::vector<TileView*>& view::Stage::getTileArray() {
-//	return this->tileArray;
-//}
+#define START_LEVEL 0
+#define EXTRA_TILES_TO_RENDER 10
 
 bool comparador (Entity* entity1, Entity* entity2) {
 	if ((entity1->order()) < (entity2->order())) {
@@ -14,20 +13,6 @@ bool comparador (Entity* entity1, Entity* entity2) {
 	}
 	return false;
 }
-
-
-//void model::World::cleanUp() {
-//	for (unsigned int i = 0; i < this->getTileArray().size(); i++) {
-//		this->getTileArray()[i]->cleanUp();
-//	}
-//}
-//
-//model::World::~World() {
-//	for (unsigned int i = 0; i < this->getTileArray().size(); i++) {
-//		delete this->getTileArray()[i];
-//	}
-//}
-
 
 view::Stage::Stage() {
 	_personaje = NULL;
@@ -90,19 +75,44 @@ TileView* view::Stage::createTile(TileModel* tileModel){
 void view::Stage::generateStage(){
 	TileModel* tileModel = worldModel->getFirstTile();
 	this->firstTile = this->createTile(tileModel);
+	tileLevels.push_back(this->firstTile);
 	TileView* currentTile;
 	TileView* prevTile = this->firstTile;
 	KeyPair tilePos;
+	tileModel = tileModel->getNextTile();
 	while (tileModel){
 		currentTile = this->createTile(tileModel);
+		if (prevTile->EOL())
+			tileLevels.push_back(currentTile);
 		prevTile->setNextTile(currentTile);
 		prevTile = currentTile;
 		tileModel = tileModel->getNextTile();
 	}
+	currentTile = this->firstTile;
+	tileModel = worldModel->getFirstTile();
+	while ((currentTile) && (tileModel)){
+		if (tileModel->getRelatedTile()){
+			tilePos = tileModel->getRelatedTile()->getPosition();
+			//prevTile = currentTile;
+			prevTile = tilesMap.at(tilePos);
+			currentTile->setRelatedTile(prevTile);
+		}
+		currentTile = currentTile->getNextTile();
+		tileModel = tileModel->getNextTile();
+	}
+}
+
+void view::Stage::setTilesInCamera(int w, int h){
+	unsigned horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(w) / DEFAULT_TILE_WIDTH));
+	unsigned verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(h) / DEFAULT_TILE_HEIGHT));
+	minLevelsInCamera = horizontalTilesInCamera + verticalTilesInCamera;
+	//horizontalTilesInCamera += 10;
+	//verticalTilesInCamera += 10;
 }
 
 bool view::Stage::initialize(){
 	worldModel = Game::instance().world();
+	
 	this->loadSprites();
 	this->generateStage();
 
@@ -142,8 +152,7 @@ bool view::Stage::initialize(){
 }
 
 void view::Stage::update() {
-	for(unsigned i=0;i<spriteArray.size();i++)
-	{
+	for(unsigned i=0;i<spriteArray.size();i++){
 		spriteArray[i]->actualizarFrame();
 	}
 
@@ -151,82 +160,211 @@ void view::Stage::update() {
 
 }
 
-Personaje* view::Stage::personaje()
-{
+Personaje* view::Stage::personaje(){
 	return _personaje;
+}
+
+TileView* view::Stage::getTileAt(KeyPair k){
+	return tilesMap.at(k);
+}
+
+TileView* view::Stage::getFirstMatch(std::pair<int,int> k){
+	TileView* aux = tileLevels.at(this->fixLevel(k));
+	KeyPair position = aux->getPosition();
+	while ((static_cast<int>(position.second) > k.second) && (aux)){
+		aux = aux->getNextTile();
+		if (aux)
+			position = aux->getPosition();
+	}
+	return aux;
+}
+
+TileView* view::Stage::getLastMatch(TileView* firstMatch, std::pair<int,int> k){
+	TileView* aux = firstMatch;
+	KeyPair position = aux->getPosition();
+	while ((static_cast<int>(position.first) <= k.first) && (!aux->EOL())){
+		aux = aux->getNextTile();
+		position = aux->getPosition();
+	}
+	return aux;
+}
+
+void view::Stage::fixKeyLeftBottom(int level, std::pair<int,int> &k){
+	while (level < (k.first + k.second)){
+			k.first--;
+	}
+}
+
+void view::Stage::fixKeyRightBottom(int level, std::pair<int,int> &k){
+	while (level < (k.first + k.second)){
+			k.second--;
+	}
+}
+
+int view::Stage::fixLevel(std::pair<int,int> k){
+	int level = k.first + k.second;
+	if (level > this->worldModel->maxLevels() ){
+		level = this->worldModel->maxLevels();
+	}
+	else if (level < START_LEVEL )
+		level = START_LEVEL;
+	return level;
+}
+
+int view::Stage::fixStartLevel(int endLevel, std::pair<int,int> &ref){
+	int level = this->fixLevel(ref);
+	if (((endLevel - level) < minLevelsInCamera) && (level > START_LEVEL)){
+		if ((endLevel - minLevelsInCamera) > START_LEVEL){
+			ref.first -= minLevelsInCamera - (endLevel - level);
+			level = this->fixLevel(ref);
+		}else {
+			level = START_LEVEL;
+		}
+	}
+
+	return level;
+}
+
+void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
+	int level1 = this->fixLevel(k1);
+	int level2 = this->fixLevel(k2);
+	while (level1 > level2 ){
+		k2.first++;
+		level2 = this->fixLevel(k2);
+	}
+	while (level1 < level2 ){
+		k2.second--;
+		level2 = this->fixLevel(k2);
+	}
+}
+
+list<std::pair<TileView*,TileView*>> view::Stage::calculateTilesToRender(Camera& camera){
+	list<std::pair<TileView*,TileView*>> limits;
+	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+	cameraReferenceTile.second -= EXTRA_TILES_TO_RENDER;
+	cameraReferenceTile.first -= EXTRA_TILES_TO_RENDER;
+	std::pair<int,int> leftBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(0,camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
+	std::pair<int,int> rightBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(camera.getWidth(),camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
+	leftBottom.second += EXTRA_TILES_TO_RENDER;
+	rightBottom.first += EXTRA_TILES_TO_RENDER;
+	int endLevel = this->fixLevel(leftBottom);
+	this->fixKeyLeftBottom(endLevel, leftBottom);
+	this->alignLevel(leftBottom, rightBottom );
+	int startLevel = this->fixStartLevel(endLevel, cameraReferenceTile);
+
+	while (endLevel >= startLevel){
+		TileView* firstMatch = this->getFirstMatch(leftBottom);
+		//si hubo match
+		if (firstMatch){
+			TileView* lastMatch = this->getLastMatch(firstMatch,rightBottom);
+			limits.push_front(std::make_pair(firstMatch,lastMatch));
+		}
+		if (endLevel%2 == 0){
+			leftBottom.first--;
+			rightBottom.first--;
+		} else {
+			rightBottom.second--;
+			leftBottom.second--;
+		}
+		endLevel--;
+	}
+	
+	return limits;
 }
 
 void view::Stage::render(Camera& camera) {
 
-	unsigned int horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH));
-	unsigned int verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT));
-	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
-	int Xt = 0;
-	int Yt = 0;
+	list<std::pair<TileView*,TileView*>> l = calculateTilesToRender(camera);
+	std::list<std::pair<TileView*, TileView*>>::iterator it = l.begin();
+	TileView* tile;
+	for (; it != l.end(); it++){
+		tile = (*it).first;
+		while (tile != (*it).second ){
+			tile->getGroundEntity()->render(camera);
 
-	//Crappy way to avoid not drawing partial tiles
-	cameraReferenceTile.first -= 10;
-	horizontalTilesInCamera += 10;
-	verticalTilesInCamera += 10;
+			if (tile->drawable()){
+				TileView* tileaux = tile->getRelatedTile();
+				if (tileaux)
+					tileaux->getOtherEntity()->render(camera);
+				else 
+					if (tile->hasOtherEntity())
+						tile->getOtherEntity()->render(camera);
+				}
+				tile = tile->getNextTile();
+			}
+		tile->getGroundEntity()->render(camera);
+	}
 
-	list<Entity*> ordenada;
-	//Dibujo primero el piso por defecto
-	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
-			Xt = cameraReferenceTile.first + i;
-			Yt = cameraReferenceTile.second + i;
-			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
-	
-				int indice=Xt+Yt*(worldModel->width());
-				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
-				{
-						entityList[indice][0]->render(camera);	
-				}
-				indice++;
-				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
-				{
-						entityList[indice][0]->render(camera);
-				}
-				Xt++;
-				Yt--;
-			}
-			}
-	//Dibujo el resto de las entidades
 
-	
-		for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
-			Xt = cameraReferenceTile.first + i;
-			Yt = cameraReferenceTile.second + i;
-			for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
-	
-				int indice=Xt+Yt*(worldModel->width());
-				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
-				{
-				for(unsigned l=1;l<entityList[indice].size();l++)
-				{
-				//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
-						ordenada.push_back(entityList[indice][l]);	
-				}
-				}
-				indice++;
-				if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
-				{
-				for(unsigned l=1;l<entityList[indice].size();l++)
-				{
-					//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
-						ordenada.push_back(entityList[indice][l]);
-				}
-				}
-				Xt++;
-				Yt--;
-			}
-		}
-		list<Entity*>::iterator it;
-		ordenada.sort(comparador);
-		for(it=ordenada.begin();it!=ordenada.end();it++)
-		{
-			(*it)->render(camera);
-		
-		}
+	//old render
+	//unsigned horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH));
+	//unsigned verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT));
+
+	//std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+	//int Xt = 0;
+	//int Yt = 0;
+	//horizontalTilesInCamera += 10;
+	//verticalTilesInCamera += 10;
+	//cameraReferenceTile.first -= 10;
+
+	//list<Entity*> ordenada;
+	////Dibujo primero el piso por defecto
+	//for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+	//		Xt = cameraReferenceTile.first + i;
+	//		Yt = cameraReferenceTile.second + i;
+	//		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+	//
+	//			int indice=Xt+Yt*(worldModel->width());
+	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+	//			{
+	//					entityList[indice][0]->render(camera);	
+	//			}
+	//			indice++;
+	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+	//			{
+	//					entityList[indice][0]->render(camera);
+	//			}
+	//			Xt++;
+	//			Yt--;
+	//		}
+	//		}
+	////Dibujo el resto de las entidades
+
+	//
+	//	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
+	//		Xt = cameraReferenceTile.first + i;
+	//		Yt = cameraReferenceTile.second + i;
+	//		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
+	//
+	//			int indice=Xt+Yt*(worldModel->width());
+	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
+	//			{
+	//			for(unsigned l=1;l<entityList[indice].size();l++)
+	//			{
+	//			//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
+	//					ordenada.push_back(entityList[indice][l]);	
+	//			}
+	//			}
+	//			indice++;
+	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
+	//			{
+	//			for(unsigned l=1;l<entityList[indice].size();l++)
+	//			{
+	//				//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
+	//					ordenada.push_back(entityList[indice][l]);
+	//			}
+	//			}
+	//			Xt++;
+	//			Yt--;
+	//		}
+	//	}
+	//	list<Entity*>::iterator it;
+	//	ordenada.sort(comparador);
+	//	for(it=ordenada.begin();it!=ordenada.end();it++)
+	//	{
+	//		(*it)->render(camera);
+	//	
+	//	}
 	_personaje->render(camera);
 }
 

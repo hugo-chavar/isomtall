@@ -40,16 +40,18 @@ public:
 	bool isInsideWorld(pair<int,int> tileCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
-	float mainCharacter_speed() const;
-	void mainCharacter_speed(float value);
+	//float mainCharacter_speed() const;
+	//void mainCharacter_speed(float value);
 	PersonajeModelo* modelMainCharacters(unsigned );
 	TileModel* getFirstTile();
 	void insertMainCharacter(PersonajeModelo* );
 	void clearStage();
 	void generateMap();
+	int maxLevels();
 	void deleteMap();
 	void loadByDefault(EntityObject* );
 	void insertEntity(KeyPair k, EntityObject* e);
+	TileModel* getTileAt(KeyPair k);
 	void markRelatedTiles(TileModel* );
 	void resolveRelatedTiles(TileModel* );
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
@@ -60,11 +62,9 @@ private:
 	unsigned int _tileWidth;
 	unsigned int _tileHeight;
 	vector <EntityDef> _vEntitiesDef;
-
 	map <KeyPair, TileModel*> *_tilesMap;
 	TileModel* firstTile;
-
-
+	vector <TileModel*> tileLevels;
 	vector <PersonajeModelo*> _vMainCharacters;
 };
 

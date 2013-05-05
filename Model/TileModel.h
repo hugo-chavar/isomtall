@@ -21,7 +21,10 @@ public:
 	void setRelatedTile(TileModel*);
 	TileModel* getRelatedTile();
 	void setUndrawable();
+	void setDrawable();
 	bool drawable();
+	void setEOL();
+	bool EOL();
 private:
 	EntityObject* groundEntity;
 	EntityObject* otherEntity;
@@ -29,6 +32,7 @@ private:
 	TileModel* relatedTile;
 	KeyPair position;
 	bool isDrawable;
+	bool endOfLevel;
 };
 
 

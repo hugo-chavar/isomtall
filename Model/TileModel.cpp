@@ -11,6 +11,7 @@ TileModel::TileModel(){
 	this->nextTile = NULL;
 	this->relatedTile = NULL;
 	this->isDrawable = true;
+	this->endOfLevel = false;
 }
 
 TileModel::~TileModel(){
@@ -63,11 +64,21 @@ void TileModel::setUndrawable(){
 	this->isDrawable = false;
 }
 
+void TileModel::setDrawable(){
+	this->isDrawable = true;
+}
 
 bool TileModel::drawable(){
 	return this->isDrawable;
 }
 
+bool TileModel::EOL(){
+	return this->endOfLevel;
+}
+
+void TileModel::setEOL(){
+	this->endOfLevel = true;
+}
 void TileModel::addEntity(EntityObject * e){
 	if ( e->isGround() ){
 		if (!this->groundEntity){
