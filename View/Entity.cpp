@@ -3,14 +3,14 @@
 
 Entity::Entity() {}
 
-Entity::Entity(int tileX,int tileY,Sprite* spriteCargado,int order)//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely)
-{
-	sprite= spriteCargado;
-	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
-	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
-	orden=order;
-}
+//Entity::Entity(int tileX,int tileY,Sprite* spriteCargado,int order)//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely)
+//{
+//	sprite= spriteCargado;
+//	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
+//	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+//	spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
+//	orden=order;
+//}
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado){
 	sprite= spriteCargado;
@@ -31,6 +31,7 @@ void Entity::update()
 	sprite->actualizarFrame();
 	//Aca deberia actualizarse tambien la entidad del modelo
 }
+
 void Entity::render(Camera& camera){
 	camera.render(spriteRect,sprite->getFrameActual()->getSuperficie());
 }

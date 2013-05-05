@@ -21,7 +21,7 @@ public:
 
 	Entity();
 	Entity(int tileX,int tileY,Sprite* spriteCargado);
-	Entity(int tileX,int tileY,Sprite* spriteCargado,int orden);//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely);
+	//Entity(int tileX,int tileY,Sprite* spriteCargado,int orden);//(int tileX,int tileY,std::string path,std::string nombre,int nroFrames, int relx,int rely);
 	virtual void update();
 	virtual void render(Camera& camera);
 	int order();
