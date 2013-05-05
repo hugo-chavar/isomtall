@@ -374,10 +374,14 @@ void operator >> (const Node& node, EntityDef& entityDef) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
 
-	if (!xFound)
+	if (!xFound) {
+		entityDef.x = -1;
 		Logger::instance().logFieldNotDefined(entityDef.entity, "x", "one of the entities");
-	if (!yFound)
+	}
+	if (!yFound) {
+		entityDef.y = -1;
 		Logger::instance().logFieldNotDefined(entityDef.entity, "y", "one of the entities");
+	}
 }
 
 void operator >> (const Node& node, sMainCharacter& mainCharacter) {
