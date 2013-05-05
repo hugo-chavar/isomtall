@@ -41,7 +41,6 @@ void Personaje::clearSprites() {
 		delete *it;
 	}
 	sprites.clear();
-
 }
 
 void Personaje::addNextSprite(AnimatedEntity* entity) {

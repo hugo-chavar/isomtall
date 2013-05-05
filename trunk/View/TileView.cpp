@@ -109,10 +109,15 @@ void TileView::createOtherEntity(Sprite* sprite){
 	otherEntity = new Entity(this->tileModel->getPosition().first, this->tileModel->getPosition().second, sprite);
 }
 
-//void TileView::cleanUp() {
-//	SDL_FreeSurface(this->sdlSurface);
-//}
+void TileView::render(Camera& camera){
+	this->getGroundEntity()->render(camera);
 
-//unsigned int TileView::getSpeedPenalty() {
-//	return this->speedPenalty;
-//}
+	if (this->drawable()){
+		TileView* tileaux = this->getRelatedTile();
+		if (tileaux)
+			tileaux->getOtherEntity()->render(camera);
+		else 
+			if (this->hasOtherEntity())
+				this->getOtherEntity()->render(camera);
+	}
+}

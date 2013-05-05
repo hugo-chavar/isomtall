@@ -219,7 +219,6 @@ void StageModel::generateMap(){
 	}
 }
 
-
 void StageModel::markRelatedTiles(TileModel* tile){
 	EntityObject* entity = tile->getOtherEntity();
 	KeyPair tilePos, refTilePos;
@@ -235,7 +234,7 @@ void StageModel::markRelatedTiles(TileModel* tile){
 	currentTile  = tile;
 	unsigned currentLevel = 1;
 	while ( currentLevel <= levels ){
-		if (currentLevel < entity->baseHeight()){
+		if (currentLevel < static_cast<unsigned>(entity->baseHeight())){
 			tilePos.first = refTilePos.first;
 			tilePos.second = refTilePos.second + currentLevel;
 		} else {
@@ -269,13 +268,6 @@ TileModel* StageModel::getFirstTile(){
 	return this->firstTile;
 }
 
-unsigned max (unsigned a, unsigned b ) {
-	unsigned result = a;
-	if ( b > a )
-		result = b;
-	return result;
-}
-
 bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY)
 {
 	std::pair<int,int> pixelCoordinates;
@@ -296,11 +288,4 @@ bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float came
 		}
 	}
 	return false;
-}
-
-unsigned min (unsigned a, unsigned b ) {
-	unsigned result = a;
-	if ( b < a )
-		result = b;
-	return result;
 }

@@ -6,6 +6,7 @@
 #include "TileModel.h"
 #include "Entity.h"
 #include "DataTypes.h"
+#include "Camera.h"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ public:
 	string getOtherEntityName();
 	void createGround(Sprite*);
 	void createOtherEntity(Sprite*);
+	void render(Camera& camera);
 private:
 	//SDL_Surface* sdlSurface;
 	TileModel* tileModel;

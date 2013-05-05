@@ -7,17 +7,9 @@
 #define START_LEVEL 0
 #define EXTRA_TILES_TO_RENDER 10
 
-bool comparador (Entity* entity1, Entity* entity2) {
-	if ((entity1->order()) < (entity2->order())) {
-		return true;
-	}
-	return false;
-}
-
 view::Stage::Stage() {
 	_personaje = NULL;
 }
-
 
 view::Stage::~Stage() {
 	for (unsigned int i = 0; i < spriteArray.size(); i++)
@@ -93,7 +85,6 @@ void view::Stage::generateStage(){
 	while ((currentTile) && (tileModel)){
 		if (tileModel->getRelatedTile()){
 			tilePos = tileModel->getRelatedTile()->getPosition();
-			//prevTile = currentTile;
 			prevTile = tilesMap.at(tilePos);
 			currentTile->setRelatedTile(prevTile);
 		}
@@ -106,8 +97,6 @@ void view::Stage::setTilesInCamera(int w, int h){
 	unsigned horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(w) / DEFAULT_TILE_WIDTH));
 	unsigned verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(h) / DEFAULT_TILE_HEIGHT));
 	minLevelsInCamera = horizontalTilesInCamera + verticalTilesInCamera;
-	//horizontalTilesInCamera += 10;
-	//verticalTilesInCamera += 10;
 }
 
 bool view::Stage::initialize(){
@@ -115,32 +104,6 @@ bool view::Stage::initialize(){
 	
 	this->loadSprites();
 	this->generateStage();
-
-	//entityList.resize((worldModel->width())*(worldModel->height()));
-
-	////Carga del piso x default
-	//unsigned posEntityDefault = mapEntityToSprite.at("DEFAULT ENTITY OBJECT");
-	//unsigned w = (Game::instance().world())->width();
-	//unsigned h = (Game::instance().world())->height();
-
-	//for(unsigned i=0; i < w; i++){ 
-	//	for(unsigned j=0; j < h; j++){
-	//		entityList[i+j*(worldModel->width())].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
-	//	}
-	//}
-
-	////genero entidades de la vista estaticas
-	//vector <EntityDef> vEntitiesDef = worldModel->vEntitiesDef();
-	//unsigned defCount = vEntitiesDef.size();
-	//int posSpriteEntity;
-	//for (unsigned a = 0; a < defCount; a++){
-	//	posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];
-	//	int baseh=spriteArray[posSpriteEntity]->baseHeight();
-	//	int basew=spriteArray[posSpriteEntity]->baseWidth();
-	//	int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*(worldModel->width());
-	//	entityList[posArray].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity],int(a)));
-
-	//}
 
 	if (!Game::instance().personaje()){
 		return false;
@@ -254,11 +217,12 @@ list<std::pair<TileView*,TileView*>> view::Stage::calculateTilesToRender(Camera&
 
 	while (endLevel >= startLevel){
 		TileView* firstMatch = this->getFirstMatch(leftBottom);
-		//si hubo match
+
 		if (firstMatch){
 			TileView* lastMatch = this->getLastMatch(firstMatch,rightBottom);
 			limits.push_front(std::make_pair(firstMatch,lastMatch));
 		}
+
 		if (endLevel%2 == 0){
 			leftBottom.first--;
 			rightBottom.first--;
@@ -280,93 +244,11 @@ void view::Stage::render(Camera& camera) {
 	for (; it != l.end(); it++){
 		tile = (*it).first;
 		while (tile != (*it).second ){
-			tile->getGroundEntity()->render(camera);
-
-			if (tile->drawable()){
-				TileView* tileaux = tile->getRelatedTile();
-				if (tileaux)
-					tileaux->getOtherEntity()->render(camera);
-				else 
-					if (tile->hasOtherEntity())
-						tile->getOtherEntity()->render(camera);
-				}
-				tile = tile->getNextTile();
-			}
-		tile->getGroundEntity()->render(camera);
-		if (tile->hasOtherEntity())
-			tile->getOtherEntity()->render(camera);
+			tile->render(camera);
+			tile = tile->getNextTile();
+		}
+		tile->render(camera);
 	}
-
-
-	//old render
-	//unsigned horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getWidth()) / DEFAULT_TILE_WIDTH));
-	//unsigned verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(camera.getHeight()) / DEFAULT_TILE_HEIGHT));
-
-	//std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
-	//int Xt = 0;
-	//int Yt = 0;
-	//horizontalTilesInCamera += 10;
-	//verticalTilesInCamera += 10;
-	//cameraReferenceTile.first -= 10;
-
-	//list<Entity*> ordenada;
-	////Dibujo primero el piso por defecto
-	//for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
-	//		Xt = cameraReferenceTile.first + i;
-	//		Yt = cameraReferenceTile.second + i;
-	//		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
-	//
-	//			int indice=Xt+Yt*(worldModel->width());
-	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
-	//			{
-	//					entityList[indice][0]->render(camera);	
-	//			}
-	//			indice++;
-	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
-	//			{
-	//					entityList[indice][0]->render(camera);
-	//			}
-	//			Xt++;
-	//			Yt--;
-	//		}
-	//		}
-	////Dibujo el resto de las entidades
-
-	//
-	//	for (unsigned int i = 0; i < verticalTilesInCamera; i++) {
-	//		Xt = cameraReferenceTile.first + i;
-	//		Yt = cameraReferenceTile.second + i;
-	//		for (unsigned int j = 0; j < horizontalTilesInCamera; j++) {
-	//
-	//			int indice=Xt+Yt*(worldModel->width());
-	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt,Yt)))
-	//			{
-	//			for(unsigned l=1;l<entityList[indice].size();l++)
-	//			{
-	//			//if((Xt>=0)&&(Yt>=0)&&(Xt<worldModel.width())&&(Yt<worldModel.height()))
-	//					ordenada.push_back(entityList[indice][l]);	
-	//			}
-	//			}
-	//			indice++;
-	//			if (this->worldModel->isInsideWorld(std::make_pair<int,int>(Xt + 1,Yt)))
-	//			{
-	//			for(unsigned l=1;l<entityList[indice].size();l++)
-	//			{
-	//				//if((Xt+1>=0)&&(Yt>=0)&&(Xt+1<worldModel.width())&&(Yt<worldModel.height()))
-	//					ordenada.push_back(entityList[indice][l]);
-	//			}
-	//			}
-	//			Xt++;
-	//			Yt--;
-	//		}
-	//	}
-	//	list<Entity*>::iterator it;
-	//	ordenada.sort(comparador);
-	//	for(it=ordenada.begin();it!=ordenada.end();it++)
-	//	{
-	//		(*it)->render(camera);
-	//	
-	//	}
 	_personaje->render(camera);
 }
 
