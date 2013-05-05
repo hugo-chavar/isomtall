@@ -9,6 +9,7 @@ StageModel::StageModel(){
 	this->firstTile = NULL;
 	_vMainCharacters.clear();
 	_vEntitiesDef.clear();
+	tileLevels.clear();
 }
 
 StageModel::StageModel(const StageModel &origStage){
@@ -21,6 +22,7 @@ StageModel::StageModel(const StageModel &origStage){
 	this->firstTile = origStage.firstTile;
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
+	this->tileLevels.assign(origStage.tileLevels.begin(),origStage.tileLevels.end());
 }
 
 StageModel& StageModel::operator=(const StageModel &origStage){
@@ -33,6 +35,7 @@ StageModel& StageModel::operator=(const StageModel &origStage){
 	this->firstTile = origStage.firstTile;
 	this->_vMainCharacters.assign(origStage._vMainCharacters.begin(),origStage._vMainCharacters.end());
 	this->_vEntitiesDef = origStage._vEntitiesDef;
+	this->tileLevels.assign(origStage.tileLevels.begin(),origStage.tileLevels.end());
 	return *this;
 }
 
@@ -64,11 +67,6 @@ vector <PersonajeModelo*>* StageModel::vMainCharacters() {
 	return &_vMainCharacters;
 }
 
-//map <KeyPair, EntityObject*>* StageModel::entityMap() {
-//	return _entityMap;
-//}
-
-//info de los tiles
 unsigned int StageModel::tileWidth() const{
 	return _tileWidth;
 }
@@ -90,10 +88,7 @@ void StageModel::name(string value){
 }
 
 unsigned int StageModel::cost(unsigned int x, unsigned int y){
-	KeyPair k;
-	k.first = x;
-	k.second = y;
-	TileModel* tile = _tilesMap->at(k);
+	TileModel* tile = _tilesMap->at(make_pair(x,y));
 	if ( (tile->getOtherEntity()) || (tile->getRelatedTile()))
 		return 0;
 	return 1;
@@ -118,7 +113,7 @@ pair<int,int> StageModel::pixelToTileCoordinatesInStage(pair<int,int> pixelCoord
 	return std::make_pair<int,int>(static_cast<int>(tileX),static_cast<int>(tileY));
 }
 
-pair<int,int> StageModel::pixelToTileCoordinates(std::pair<int,int> pixelCoordinates) {
+pair<int,int> StageModel::pixelToTileCoordinates(pair<int,int> pixelCoordinates) {
 
 	return pixelToTileCoordinatesInStage(pixelCoordinates,0,0);
 }
@@ -128,15 +123,10 @@ bool StageModel::isInsideWorld(pair<int,int> tileCoordinates) {
 }
 
 void StageModel::destino(int x,int y,float cameraX,float cameraY){
-	std::pair<int,int> pixelCoordinates;
-	pixelCoordinates.first = x;
-	pixelCoordinates.second = y;
-	std::pair<int,int> destino = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-
-	if((isInsideWorld(destino))) 
+	std::pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
+	if(isInsideWorld(destino)) 
 		Game::instance().personaje()->setDestino(destino.first,destino.second);
 }
-
 
 void StageModel::insertMainCharacter(PersonajeModelo* pm){
 	_vMainCharacters.push_back(pm);
@@ -154,85 +144,49 @@ void StageModel::clearStage(){
 	_vMainCharacters.clear();
 	_vEntitiesDef.clear();
 	this->deleteMap();
-
 }
 
 void StageModel::generateMap(){
-	unsigned currentLevel = 0;
 	KeyPair tilePos;
 	tilePos.first = 0;
 	tilePos.second = 0;
-	unsigned levels = max(this->_width, this->_height) - 1;
 	_tilesMap = new map <KeyPair, TileModel*>();
 	TileModel* currentTile  = new TileModel();
 	TileModel* prevTile;
 	firstTile = currentTile;
+	tileLevels.push_back(firstTile);
+	firstTile->setEOL();
 	firstTile->setPosition(tilePos);
 	_tilesMap->insert(make_pair(tilePos, firstTile));
-	currentLevel++;
-	if (levels == (this->_width - 1) ){
-		while ( currentLevel <= levels ) {
-			tilePos.first = currentLevel;
-			tilePos.second = 0;
-			while (( tilePos.second <= currentLevel )&& (tilePos.second <= (this->_height -1)) ){
-				prevTile = currentTile;
-				currentTile  = new TileModel();
-				currentTile->setPosition(tilePos);
-				prevTile->setNextTile(currentTile);
-				_tilesMap->insert(make_pair(tilePos, currentTile));
-				tilePos.first--;
-				tilePos.second++;
-			} //when exit level complete
-			currentLevel++;
-		}
-		levels = (this->_height -1);
-		currentLevel = 1;
-		while ( currentLevel <= levels ){
-			tilePos.first = (this->_width - 1); //currentLevel
-			tilePos.second = currentLevel;
-			while ( tilePos.second <= levels ){
-				prevTile = currentTile;
-				currentTile  = new TileModel();
-				currentTile->setPosition(tilePos);
-				prevTile->setNextTile(currentTile);
-				_tilesMap->insert(make_pair(tilePos, currentTile));
-				tilePos.first--;
-				tilePos.second++;
-			} //when exit level complete
-			currentLevel++;
-		}
-	} else { //height > width
-		while ( currentLevel <= levels ){
+	unsigned currentLevel = 1;
+	unsigned levels = this->_width + this->_height - 2;
+	while ( currentLevel <= levels ){
+		if (currentLevel < this->_height){
 			tilePos.first = 0;
 			tilePos.second = currentLevel;
-			while ( (tilePos.first <= currentLevel) && (tilePos.first <= (this->_width -1)) ){
-				prevTile = currentTile;
-				currentTile  = new TileModel();
-				currentTile->setPosition(tilePos);
-				prevTile->setNextTile(currentTile);
-				_tilesMap->insert(make_pair(tilePos, currentTile));
-				tilePos.second--;
-				tilePos.first++;
-			} //when exit level complete
-			currentLevel++;
-		}
-		levels = (this->_width -1);
-		currentLevel = 1;
-		while ( currentLevel <= levels ){
-			tilePos.first = currentLevel;
+		} else {
 			tilePos.second = (this->_height -1);
-			while ( tilePos.first <= levels ){
-				prevTile = currentTile;
-				currentTile  = new TileModel();
-				currentTile->setPosition(tilePos);
-				prevTile->setNextTile(currentTile);
-				_tilesMap->insert(make_pair(tilePos, currentTile));
-				tilePos.first++;
-				tilePos.second--;
-			} //when exit level complete
-			currentLevel++;
+			tilePos.first = (currentLevel - tilePos.second);
 		}
+		while ( (tilePos.first <= currentLevel) && (tilePos.first <= (this->_width -1)) ){
+			prevTile = currentTile;
+			currentTile  = new TileModel();
+			currentTile->setPosition(tilePos);
+			prevTile->setNextTile(currentTile);
+			if (prevTile->EOL()){
+				tileLevels.push_back(currentTile);
+			}
+			_tilesMap->insert(make_pair(tilePos, currentTile));
+			tilePos.second--;
+			tilePos.first++;
+		} //when exit level complete
+		currentTile->setEOL();
+		currentLevel++;
 	}
+}
+
+int StageModel::maxLevels(){
+	return tileLevels.size() -1;
 }
 
 void StageModel::deleteMap(){
@@ -260,9 +214,8 @@ void StageModel::loadByDefault(EntityObject* e){
 
 void StageModel::resolveRelatedTiles(TileModel* tile){
 	EntityObject* entity = tile->getOtherEntity();
-	if ( (entity) && ( (entity->baseWidth() > 1) || (entity->baseHeight() > 1) ) ){
+	if ( (entity) && ((entity->baseWidth() > 1) || (entity->baseHeight() > 1)) ){
 		markRelatedTiles(tile);
-
 	}
 }
 
@@ -276,11 +229,12 @@ void StageModel::markRelatedTiles(TileModel* tile){ //TODO:falta testear con bas
 	TileModel* prevTile  = tile;
 	TileModel* currentTile = _tilesMap->at(tilePos);
 	currentTile->setRelatedTile(tile);
-	currentTile->setUndrawable();
+	TileModel* referenceTile = currentTile;
+	tile->setUndrawable();
 	unsigned levels = max(entity->baseWidth(), entity->baseHeight()) - 1;
 	currentTile  = tile;
 	currentLevel++;
-	if (levels == (entity->baseWidth() - 1) ){
+	if (levels == (entity->baseWidth() - 1) ){ //TODO: eliminar codigo repetido
 		while ( currentLevel <= levels ) {
 			tilePos.first = refTilePos.first + currentLevel;
 			tilePos.second = refTilePos.second;
@@ -339,12 +293,17 @@ void StageModel::markRelatedTiles(TileModel* tile){ //TODO:falta testear con bas
 			currentLevel++;
 		}
 	}
+	referenceTile->setDrawable();
 }
 
 void StageModel::insertEntity(KeyPair k, EntityObject* e){
 	TileModel* tile = _tilesMap->at(k);
 	tile->addEntity(e);
 	resolveRelatedTiles(tile);
+}
+
+TileModel* StageModel::getTileAt(KeyPair k){
+	return _tilesMap->at(k);
 }
 
 TileModel* StageModel::getFirstTile(){
@@ -378,4 +337,11 @@ bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float came
 		}
 	}
 	return false;
+}
+
+unsigned min (unsigned a, unsigned b ) {
+	unsigned result = a;
+	if ( b < a )
+		result = b;
+	return result;
 }

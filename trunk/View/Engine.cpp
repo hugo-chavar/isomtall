@@ -63,6 +63,7 @@ void Engine::initialize() {
 	if (cameraInitialized){
 		mapInitialized = worldView.initialize();
 		chatInitialized = chat.initialize(camera);
+		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
 	}
 
 	//si hubo errores de inicializacion salgo

@@ -73,13 +73,17 @@ TileView* TileView::getRelatedTile(){
 	return this->relatedTile;
 }
 
-//void TileView::setUndrawable(){
-//	this->isDrawable = false;
-//}
-
+TileModel* TileView::getTileModel(){
+	return this->tileModel;
+}
 
 bool TileView::drawable(){
 	return this->tileModel->drawable();
+}
+
+
+bool TileView::EOL(){
+	return this->tileModel->EOL();
 }
 
 string TileView::getGroundEntityName(){

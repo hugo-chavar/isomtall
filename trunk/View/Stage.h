@@ -23,25 +23,13 @@ namespace view {
 	class Stage {
 	public:
 		Stage();
+		~Stage();
 		void update(); 
 		void render(Camera& camera);
-
-		//void addTile(TileView* tile);
-
-		//std::vector<TileView*>& getTileArray();
-
-		//std::pair<int,int> tileToPixelCoordinates(std::pair<int,int> tileCoordinates);
-
-		//std::pair<int,int> pixelToTileCoordinates(std::pair<int,int> pixelCoordinates);
-
 		bool initialize();
-
-		~Stage();
-
+		void setTilesInCamera(int h, int v);
 		Personaje* personaje();
-
 	private:
-		//Se cargan una vez solamente los sprites
 		vector<Sprite*> spriteArray;
 		Personaje* _personaje;
 		StageModel* worldModel;
@@ -52,12 +40,24 @@ namespace view {
 		//vector<TileView*> tileArray;
 		map<KeyPair, TileView*> tilesMap;
 		TileView* firstTile;
-
+		vector <TileView*> tileLevels;
+		int minLevelsInCamera;
+		//unsigned horizontalTilesInCamera;
+		//unsigned verticalTilesInCamera;
 		void renderTile(int Xt, int Yt,Camera& camera);
+		list<pair<TileView*,TileView*>> calculateTilesToRender(Camera& camera);
 		void loadSprites();
 		void generateStage();
 		void deleteStage();
 		TileView* createTile(TileModel* tile);
+		TileView* getTileAt(KeyPair k);
+		TileView* getFirstMatch(std::pair<int,int> k);
+		TileView* getLastMatch(TileView* firstMatch, std::pair<int,int> k);
+		void fixKeyLeftBottom(int level, std::pair<int,int> &k);
+		void fixKeyRightBottom(int level, std::pair<int,int> &k);
+		int fixLevel(std::pair<int,int> k);
+		int fixStartLevel(int endLevel, std::pair<int,int> &ref);
+		void alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2);
 	};
 
 }

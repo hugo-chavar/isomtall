@@ -215,7 +215,7 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
-	managePositiveIntCase(node,baseWidth,name, "entity","ancho_base",DEFAULT_BASE_WIDTH, YES);
+	managePositiveIntCase(node, baseWidth, name, "entity","ancho_base", DEFAULT_BASE_WIDTH, YES);
 	managePositiveIntCase(node, baseHeight, name, "entity","alto_base", DEFAULT_BASE_HEIGHT, YES);
 	managePositiveIntCase(node, pixelRefX, name, "entity","pixel_ref_x",DEFAULT_ENTITY_OBJECT_PIXEL_REF_X, YES);
 	managePositiveIntCase(node, pixelRefY, name, "entity","pixel_ref_y",DEFAULT_ENTITY_OBJECT_PIXEL_REF_Y, YES);
@@ -271,6 +271,9 @@ void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	};
 	baseWidth = entity_aux->baseWidth();
 	baseHeight = entity_aux->baseHeight();
+
+	managePositiveIntCase(node, baseWidth, entity_aux->name(), "entity","ancho_base", DEFAULT_BASE_WIDTH, YES);
+	managePositiveIntCase(node, baseHeight, entity_aux->name(), "entity","alto_base", DEFAULT_BASE_HEIGHT, YES);
 
 	managePositiveIntCase(node, pixelRefX, entity_aux->name(), "entity","pixel_ref_x",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_X, YES_IGNORE_LOG);
 	managePositiveIntCase(node, pixelRefY, entity_aux->name(), "entity","pixel_ref_y",DEFAULT_ANIMATED_ENTITY_PIXEL_REF_Y, YES_IGNORE_LOG);
