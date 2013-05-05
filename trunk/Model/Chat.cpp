@@ -63,6 +63,8 @@ void model::Chat::setTo(std::string to) {
 }
 
 void model::Chat::sendMessage() {
+	if(connected)
+	{
 	Instruction instruction;
 	if (!this->isLoggedIn()) {
 		instruction.setOpCode(OPCODE_LOGIN_REQUEST);
@@ -75,6 +77,7 @@ void model::Chat::sendMessage() {
 
 	this->getSender()->addInstruction(instruction);
 	this->inputBuffer = "";
+	}
 }
 
 void model::Chat::initialize() {
@@ -83,8 +86,8 @@ void model::Chat::initialize() {
 
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 	if (newSocket->connectTo() != -1) {
-		this->getMessagesList().push_back("user name?");
-
+		//this->getMessagesList().push_back("user name?");
+		connected=true;
 		this->setSocket(newSocket);
 
 		Sender* newSender = new Sender(this->getSocket());
@@ -92,12 +95,14 @@ void model::Chat::initialize() {
 
 		this->setSender(newSender);
 		this->getSender()->startSending();
-	
 		this->setReceiver(newReceiver);
 		this->getReceiver()->startReceiving();
+		this->setInputBuffer(Game::instance().personaje()->getName());
+		this->sendMessage();
 
 
 	} else {
+		connected=false;
 		this->getMessagesList().push_back("SERVER UNREACHABLE");
 	}
 }
@@ -119,7 +124,10 @@ void model::Chat::cleanUp() {
 }
 
 model::Chat::~Chat() {
+	if(connected)
+	{
 	delete this->getSender();
 	delete this->getReceiver();
+	}
 	delete this->getSocket();
 }

@@ -33,7 +33,7 @@ namespace view {
 		SDL_Rect closeButtonRect;
 		bool typing;
 		bool initializeCloseButton();
-		model::Chat modelChat;
+		model::Chat * modelChat;
 		void receiveMsgs();
 
 	};

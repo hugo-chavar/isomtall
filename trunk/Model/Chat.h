@@ -8,6 +8,7 @@
 #include "Sender.h"
 #include "Receiver.h"
 #include "Socket.h"
+#include "Game.h"
 
 namespace model {
 	class Chat {
@@ -43,6 +44,8 @@ namespace model {
 			void setReceiver(Receiver* receiver);
 
 			std::string getTo();
+
+			bool connected;
 
 		public:
 			Chat();
