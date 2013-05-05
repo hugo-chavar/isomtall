@@ -99,11 +99,19 @@ entidades:
 
     - nombre: caballoC
       imagen: ../Images/caballo/
+      ancho_base: 3 
+      alto_base: 1 
+      pixel_ref_x: 40
+      pixel_ref_y: 60
       fps: 10
       delay: 3000
 
     - nombre: caballoR
       imagen: ../Images/caballoR/
+      ancho_base: 2 
+      alto_base: 2 
+      pixel_ref_x: 80
+      pixel_ref_y: 55
       fps: 10
       delay: 3000  
 
