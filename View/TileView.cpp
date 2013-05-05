@@ -24,9 +24,6 @@ TileView::TileView(TileModel* tModel){
 }
 
 TileView::~TileView(){
-	//string x = StringUtilities::unsignedToString(position.first);
-	//string y = StringUtilities::unsignedToString(position.second);
-	//Logger::instance().log("Borrado tile "+ x+ ", "+y+" listo");
 	if (otherEntity)
 		delete otherEntity;
 	if (groundEntity)
@@ -48,10 +45,6 @@ void TileView::setGroundEntity(Entity * e){
 void TileView::setOtherEntity(Entity * e){
 	this->otherEntity = e;
 }
-
-//void TileView::setPosition(KeyPair p){
-//	this->position = p;
-//}
 
 KeyPair TileView::getPosition(){
 	return this->tileModel->getPosition();

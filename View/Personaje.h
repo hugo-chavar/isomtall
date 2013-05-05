@@ -10,12 +10,11 @@
 class Personaje : public Entity {
 public:
 	Personaje(PersonajeModelo* pj);
-	void agregarSprite(Sprite* sprite);
+	~Personaje();
 	void update();
-	
 	void render(Camera& camera);
 	void setDestino(int xTile, int yTile);
-	~Personaje();
+	
 	std::pair<int,int> posicion();
 	PersonajeModelo* personajeModelo();
 	void loadSprites();
