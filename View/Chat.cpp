@@ -4,6 +4,7 @@ view::Chat::Chat() { }
 
 view::Chat::~Chat() {
 	SDL_FreeSurface(closeButton);
+	delete modelChat;
 }
 
 SDL_Surface *load_surface(string filename)
@@ -55,8 +56,8 @@ bool view::Chat::initializeCloseButton() {
 
 bool view::Chat::initialize(Camera &camera) {
 	//Ver si es el lugar adecuado para hacerlo
-	modelChat = model::Chat();
-	modelChat.initialize();
+	modelChat = new model::Chat();
+	modelChat->initialize();
 	SDL_Color textboxColor;
 	textboxColor.r = 0;
 	textboxColor.g = 0;
@@ -121,20 +122,21 @@ bool view::Chat::isClosing(float x, float y) {
 
 void view::Chat::sendMessage()
 {
-	modelChat.setInputBuffer(this->textbox.getText());
-	modelChat.setTo(this->nameBox.getLines()[0]->getStrText());
-	modelChat.sendMessage();
+	modelChat->setInputBuffer(this->textbox.getText());
+	modelChat->setTo(this->nameBox.getLines()[0]->getStrText());
+	modelChat->sendMessage();
 	this->cleanInput();
 }
 
 void view::Chat::receiveMsgs()
 {
-	if (modelChat.getMessagesListMutex().tryLock()) {
-		for (std::list<std::string>::iterator it = modelChat.getMessagesList().begin(); it != modelChat.getMessagesList().end(); ++it) {
+	if (modelChat->getMessagesListMutex().tryLock()) {
+		for (std::list<std::string>::iterator it = modelChat->getMessagesList().begin(); it != modelChat->getMessagesList().end(); ++it) {
 			messagesBox.addLine((*it));
 		}
 	}
-	modelChat.getMessagesListMutex().unlock();
+	modelChat->getMessagesList().clear();
+	modelChat->getMessagesListMutex().unlock();
 }
 
 void view::Chat::setTo(string To)
