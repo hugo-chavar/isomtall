@@ -116,31 +116,31 @@ bool view::Stage::initialize(){
 	this->loadSprites();
 	this->generateStage();
 
-	entityList.resize((worldModel->width())*(worldModel->height()));
-	
-	//Carga del piso x default
-	unsigned posEntityDefault = mapEntityToSprite.at("DEFAULT ENTITY OBJECT");
-	unsigned w = (Game::instance().world())->width();
-	unsigned h = (Game::instance().world())->height();
+	//entityList.resize((worldModel->width())*(worldModel->height()));
 
-	for(unsigned i=0; i < w; i++){ 
-		for(unsigned j=0; j < h; j++){
-			entityList[i+j*(worldModel->width())].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
-		}
-	}
+	////Carga del piso x default
+	//unsigned posEntityDefault = mapEntityToSprite.at("DEFAULT ENTITY OBJECT");
+	//unsigned w = (Game::instance().world())->width();
+	//unsigned h = (Game::instance().world())->height();
 
-	//genero entidades de la vista estaticas
-	vector <EntityDef> vEntitiesDef = worldModel->vEntitiesDef();
-	unsigned defCount = vEntitiesDef.size();
-	int posSpriteEntity;
-	for (unsigned a = 0; a < defCount; a++){
-		posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];
-		int baseh=spriteArray[posSpriteEntity]->baseHeight();
-		int basew=spriteArray[posSpriteEntity]->baseWidth();
-		int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*(worldModel->width());
-		entityList[posArray].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity],int(a)));
+	//for(unsigned i=0; i < w; i++){ 
+	//	for(unsigned j=0; j < h; j++){
+	//		entityList[i+j*(worldModel->width())].push_back(new Entity(int(i),int(j),spriteArray[posEntityDefault],-1));
+	//	}
+	//}
 
-	}
+	////genero entidades de la vista estaticas
+	//vector <EntityDef> vEntitiesDef = worldModel->vEntitiesDef();
+	//unsigned defCount = vEntitiesDef.size();
+	//int posSpriteEntity;
+	//for (unsigned a = 0; a < defCount; a++){
+	//	posSpriteEntity = mapEntityToSprite[vEntitiesDef[a].entity];
+	//	int baseh=spriteArray[posSpriteEntity]->baseHeight();
+	//	int basew=spriteArray[posSpriteEntity]->baseWidth();
+	//	int posArray= vEntitiesDef[a].x+(basew-1)+(vEntitiesDef[a].y+(baseh-1))*(worldModel->width());
+	//	entityList[posArray].push_back(new Entity(vEntitiesDef[a].x,vEntitiesDef[a].y,spriteArray[posSpriteEntity],int(a)));
+
+	//}
 
 	if (!Game::instance().personaje()){
 		return false;
@@ -293,6 +293,8 @@ void view::Stage::render(Camera& camera) {
 				tile = tile->getNextTile();
 			}
 		tile->getGroundEntity()->render(camera);
+		if (tile->hasOtherEntity())
+			tile->getOtherEntity()->render(camera);
 	}
 
 
