@@ -325,9 +325,17 @@ std::pair<int,int> Personaje::posicion(){
 }
 
 std::pair<int,int> Personaje::getPosicionEnTiles(){
-	if ((delta.first == 0) && (delta.second == 0)) {
+	float deltaAbsX = std::abs(delta.first);
+	float deltaAbsY = std::abs(delta.second);
+
+	if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
 		return modelo->getPosition();
-	} else {
-		return tileActual;
 	}
+	if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
+		return modelo->getPosition();
+	}
+	if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
+		return modelo->getPosition();
+	}
+	return tileActual;
 }
