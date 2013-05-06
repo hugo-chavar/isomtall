@@ -323,12 +323,14 @@ PersonajeModelo::~PersonajeModelo(){
 	}
 }
 
-void PersonajeModelo::setName(string nombreJugador)
-{
+void PersonajeModelo::setName(string nombreJugador){
 	this->name=nombreJugador;
 }
 
-string PersonajeModelo::getName()
-{
+string PersonajeModelo::getName(){
 	return this->name;
+}
+
+std::pair<int, int> PersonajeModelo::getPosition(){
+	return this->current;
 }

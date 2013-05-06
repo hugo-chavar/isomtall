@@ -34,7 +34,7 @@ public:
 	void animar(char opcion);
 	string getName();
 	void setName(string nombreJugador);
-
+	std::pair<int, int> getPosition();
 private:
 
 	int siCaminaDetenerse();
