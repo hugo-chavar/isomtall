@@ -1,5 +1,6 @@
 #include "Personaje.h"
 #include "../Model/PersonajeConstantes.h"
+#include "SDL_ttf.h"
 
 #include "Game.h"
 
@@ -14,9 +15,18 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
+	crearNombre();
 
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
+
+/*void Personaje::crearNombre() {
+	TTF_Font *font = NULL;
+	SDL_Color textColor = { 0, 0, 0 };
+	font = TTF_OpenFont( "../Fonts/Arial.ttf", 8 );
+	nombre = TTF_RenderText_Solid( font, "The quick brown fox jumps over the lazy dog", textColor );
+	TTF_CloseFont( font );
+}*/
 
 void Personaje::loadSprites() {
 	AnimatedEntity* animatedEntity;
@@ -309,8 +319,10 @@ int Personaje::procesarAnimacion(int animacion) {
 }
 
 Personaje::~Personaje(){
-	if (sprites.size() > 0)
+	if (sprites.size() > 0) {
 		clearSprites();
+	}
+	/*SDL_FreeSurface( nombre );*/
 }
 
 PersonajeModelo* Personaje::personajeModelo(){
