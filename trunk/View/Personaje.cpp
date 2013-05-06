@@ -325,5 +325,9 @@ std::pair<int,int> Personaje::posicion(){
 }
 
 std::pair<int,int> Personaje::getPosicionEnTiles(){
-	return modelo->getPosition();
+	if ((delta.first == 0) && (delta.second == 0)) {
+		return modelo->getPosition();
+	} else {
+		return tileActual;
+	}
 }
