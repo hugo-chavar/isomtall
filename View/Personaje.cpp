@@ -15,7 +15,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	crearNombre();
+	//crearNombre();
 
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
