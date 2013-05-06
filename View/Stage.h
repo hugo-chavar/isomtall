@@ -14,6 +14,7 @@
 #include "Entity.h"
 #include "Personaje.h"
 #include "SpriteAnimado.h"
+#include "RenderHelper.h"
 
 
 using namespace std;
@@ -34,18 +35,14 @@ namespace view {
 		Personaje* _personaje;
 		StageModel* worldModel;
 		map<string,int> mapEntityToSprite;
-		//list<Entity *> entityList;
 		vector<vector<Entity*>> entityList;
-		//std::vector<model::Tile*> tileArray;
-		//vector<TileView*> tileArray;
 		map<KeyPair, TileView*> tilesMap;
 		TileView* firstTile;
 		vector <TileView*> tileLevels;
 		int minLevelsInCamera;
-		//unsigned horizontalTilesInCamera;
-		//unsigned verticalTilesInCamera;
-		void renderTile(int Xt, int Yt,Camera& camera);
-		list<pair<TileView*,TileView*>> calculateTilesToRender(Camera& camera);
+		RenderHelper renderHelper;
+		//void renderTile(int Xt, int Yt,Camera& camera);
+		void calculateTilesToRender(Camera& camera); //list<pair<TileView*,TileView*>>
 		void loadSprites();
 		void generateStage();
 		void deleteStage();

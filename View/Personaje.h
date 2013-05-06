@@ -21,7 +21,7 @@ public:
 	void clearSprites() ;
 	void addNextSprite(AnimatedEntity*);
 	void addFirstSprite(AnimatedEntity*);
-	
+	std::pair<int,int> getPosicionEnTiles();
 private:
 	//determina en que posicion del vector de sprites esta el sprite del estado actual
 	int procesarAnimacion(int animacion);

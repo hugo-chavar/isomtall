@@ -201,8 +201,9 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 	}
 }
 
-list<std::pair<TileView*,TileView*>> view::Stage::calculateTilesToRender(Camera& camera){
-	list<std::pair<TileView*,TileView*>> limits;
+ void view::Stage::calculateTilesToRender(Camera& camera){ //list<std::pair<TileView*,TileView*>>
+	//list<std::pair<TileView*,TileView*>> limits;
+	renderHelper.clear();
 	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
 	cameraReferenceTile.second -= EXTRA_TILES_TO_RENDER;
 	cameraReferenceTile.first -= EXTRA_TILES_TO_RENDER;
@@ -214,42 +215,56 @@ list<std::pair<TileView*,TileView*>> view::Stage::calculateTilesToRender(Camera&
 	this->fixKeyLeftBottom(endLevel, leftBottom);
 	this->alignLevel(leftBottom, rightBottom );
 	int startLevel = this->fixStartLevel(endLevel, cameraReferenceTile);
-
-	while (endLevel >= startLevel){
+	renderHelper.setStartLevel(startLevel);
+	renderHelper.setEndLevel(endLevel);
+	while (renderHelper.incomplete()){ //endLevel >= startLevel
 		TileView* firstMatch = this->getFirstMatch(leftBottom);
-
+		TileView* lastMatch;
 		if (firstMatch){
-			TileView* lastMatch = this->getLastMatch(firstMatch,rightBottom);
-			limits.push_front(std::make_pair(firstMatch,lastMatch));
+			lastMatch = this->getLastMatch(firstMatch,rightBottom);
+			renderHelper.addLevel(firstMatch,lastMatch);
+			//limits.push_front(std::make_pair(firstMatch,lastMatch));
+		} else {
+			renderHelper.setEmptyLevel();
 		}
 
-		if (endLevel%2 == 0){
+		if (renderHelper.flip()){
 			leftBottom.first--;
 			rightBottom.first--;
 		} else {
 			rightBottom.second--;
 			leftBottom.second--;
 		}
-		endLevel--;
+		//endLevel--;
 	}
 	
-	return limits;
+	//return limits;
 }
 
 void view::Stage::render(Camera& camera) {
 
-	list<std::pair<TileView*,TileView*>> l = calculateTilesToRender(camera);
-	std::list<std::pair<TileView*, TileView*>>::iterator it = l.begin();
-	TileView* tile;
-	for (; it != l.end(); it++){
-		tile = (*it).first;
-		while (tile != (*it).second ){
-			tile->render(camera);
-			tile = tile->getNextTile();
-		}
-		tile->render(camera);
+	//list<std::pair<TileView*,TileView*>> l = calculateTilesToRender(camera);
+	
+	//std::list<std::pair<TileView*, TileView*>>::iterator it = l.begin();
+	//TileView* tile;
+	//for (; it != l.end(); it++){
+	//	tile = (*it).first;
+	//	while (tile != (*it).second ){
+	//		tile->render(camera);
+	//		tile = tile->getNextTile();
+	//	}
+	//	tile->render(camera);
+	//}
+	
+
+	this->calculateTilesToRender(camera);
+	renderHelper.startRendering();
+	while (renderHelper.hasLevelsToRender()){
+		renderHelper.renderNextLevel(camera);
+		if (renderHelper.belongsToLevel(_personaje->getPosicionEnTiles()))
+			_personaje->render(camera);
 	}
-	_personaje->render(camera);
+	
 }
 
 void Stage::deleteStage(){

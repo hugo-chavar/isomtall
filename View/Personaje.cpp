@@ -317,10 +317,13 @@ PersonajeModelo* Personaje::personajeModelo(){
 	return modelo;
 }
 
-std::pair<int,int> Personaje::posicion()
-{
+std::pair<int,int> Personaje::posicion(){
 	std::pair<int,int> pos;
 	pos.first = spriteRect.x;
 	pos.second = spriteRect.y;
 	return pos;
+}
+
+std::pair<int,int> Personaje::getPosicionEnTiles(){
+	return modelo->getPosition();
 }
