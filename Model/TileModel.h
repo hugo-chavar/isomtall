@@ -23,6 +23,8 @@ public:
 	void setUndrawable();
 	void setDrawable();
 	bool drawable();
+	void setOverlapped();
+	bool overlapped();
 	void setEOL();
 	bool EOL();
 private:

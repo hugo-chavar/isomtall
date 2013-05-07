@@ -177,8 +177,15 @@ void StageModel::loadByDefault(EntityObject* e){
 void StageModel::resolveRelatedTiles(TileModel* tile){
 	EntityObject* entity = tile->getOtherEntity();
 	if ( (entity) && ((entity->baseWidth() > 1) || (entity->baseHeight() > 1)) ){
-		markRelatedTiles(tile);
+		this->markRelatedTiles(tile);
+		if  ((entity->baseWidth() > 2) || (entity->baseHeight() > 2))
+			this->resolveBolckedEntities(tile);
 	}
+}
+
+void StageModel::resolveBolckedEntities(TileModel* tile){
+	//TODO: en caso de ser necesario
+	return;
 }
 
 void StageModel::generateMap(){
@@ -221,16 +228,29 @@ void StageModel::generateMap(){
 }
 
 void StageModel::markRelatedTiles(TileModel* tile){
+	bool hasCenter = false;
 	EntityObject* entity = tile->getOtherEntity();
-	KeyPair tilePos, refTilePos;
+	KeyPair tilePos, centerTilePos, refTilePos;
 	refTilePos = tile->getPosition();
 	tilePos.first = refTilePos.first + (entity->baseWidth() - 1);
 	tilePos.second = refTilePos.second + (entity->baseHeight() - 1);
+	centerTilePos.first = refTilePos.first  + (static_cast<unsigned>(ceil(static_cast<float>(entity->baseWidth() - 1) / 2)));
+	centerTilePos.second = refTilePos.second  + (static_cast<unsigned>(ceil(static_cast<float>(entity->baseHeight() - 1) / 2)));
+	TileModel* centerTile = _tilesMap->at(centerTilePos);
 	TileModel* prevTile  = tile;
 	TileModel* currentTile = _tilesMap->at(tilePos);
-	currentTile->setRelatedTile(tile);
-	TileModel* referenceTile = currentTile;
+	if ( centerTile != currentTile){
+		currentTile->setRelatedTile(centerTile);
+		//centerTile->setRelatedTile(tile);
+		hasCenter = true;
+	} 
+	centerTile->setRelatedTile(tile);
+	//TileModel* referenceTile = currentTile;
 	tile->setUndrawable();
+
+	//TileModel* referenceTile = tile; //currentTile;
+	//currentTile->setUndrawable(); //tile
+	//tile->setRelatedTile(currentTile); //testing
 	unsigned levels = entity->baseWidth() + entity->baseHeight() - 2;
 	currentTile  = tile;
 	unsigned currentLevel = 1;
@@ -245,14 +265,19 @@ void StageModel::markRelatedTiles(TileModel* tile){
 		while ( (tilePos.first <= (refTilePos.first + currentLevel)) && (tilePos.first <= (refTilePos.first + entity->baseWidth() -1)) ){
 			prevTile = currentTile;
 			currentTile  = _tilesMap->at(tilePos);
-			currentTile->setUndrawable();
-			prevTile->setRelatedTile(currentTile);
+			if ( (!hasCenter) || (currentTile != centerTile)){
+				currentTile->setUndrawable();
+				prevTile->setRelatedTile(currentTile);
+			} else {
+				currentTile = prevTile;
+			}
 			tilePos.second--;
 			tilePos.first++;
 		} //when exit level complete
 		currentLevel++;
 	}
-	referenceTile->setDrawable();
+	//referenceTile->setDrawable();
+	centerTile->setDrawable();
 }
 
 void StageModel::insertEntity(KeyPair k, EntityObject* e){

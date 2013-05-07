@@ -255,7 +255,8 @@ void view::Stage::render(Camera& camera) {
 	
 
 	this->calculateTilesToRender(camera);
-	renderHelper.startRendering();
+	renderHelper.renderGround(camera);
+	renderHelper.startRenderingEntities();
 	while (renderHelper.hasLevelsToRender()){
 		renderHelper.renderNextLevel(camera);
 		if (renderHelper.belongsToLevel(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))

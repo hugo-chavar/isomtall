@@ -53,6 +53,7 @@ public:
 	TileModel* getTileAt(KeyPair k);
 	void markRelatedTiles(TileModel* );
 	void resolveRelatedTiles(TileModel* );
+	void StageModel::resolveBolckedEntities(TileModel* tile);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 private:
 	string _name;

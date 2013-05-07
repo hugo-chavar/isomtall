@@ -16,7 +16,7 @@ void RenderHelper::clear(){
 	coin = false;
 }
 
-void RenderHelper::startRendering(){
+void RenderHelper::startRenderingEntities(){
 	this->currentLevel = this->startLevel -1;
 	levelIterator = limits.begin();
 }
@@ -55,14 +55,15 @@ bool RenderHelper::flip(){
 	return coin;
 }
 
-int RenderHelper::maxLevel(pair<int,int> pos1, pair<int,int> pos2){
+pair<int,int> RenderHelper::maxLevel(pair<int,int> pos1, pair<int,int> pos2){
 	if ((pos1.first + pos1.second) > (pos2.first + pos2.second) )
-		return (pos1.first + pos1.second);
-	return (pos2.first + pos2.second);
+		return pos1;
+	return pos2;
 }
 
 bool RenderHelper::belongsToLevel(pair<int,int> currentPos, pair<int,int> previousPos){
-	return (this->currentLevel == this->maxLevel(currentPos, previousPos) );
+	pair<int,int> aux = this->maxLevel(currentPos, previousPos);
+	return (this->currentLevel == (aux.first + aux.second) );
 }
 
 void RenderHelper::addLevel(TileView* first ,TileView* last){
@@ -77,9 +78,20 @@ void RenderHelper::renderNextLevel(Camera& camera){
 	TileView* tile;
 	tile = (*levelIterator).first;
 	while (tile != (*levelIterator).second ){
-		tile->render(camera);
+		tile->renderEntity(camera);
 		tile = tile->getNextTile();
 	}
 	levelIterator++;
 
+}
+
+void RenderHelper::renderGround(Camera& camera){
+	TileView* tile;
+	for (levelIterator = limits.begin(); levelIterator != limits.end(); levelIterator++){
+		tile = (*levelIterator).first;
+		while (tile != (*levelIterator).second ){
+			tile->renderGround(camera);
+			tile = tile->getNextTile();
+		}
+	}
 }

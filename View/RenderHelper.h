@@ -12,7 +12,7 @@ public:
 	RenderHelper();
 	~RenderHelper();
 	void clear();
-	void startRendering();
+	void startRenderingEntities();
 	void setStartLevel(int);
 	void setEndLevel(int);
 	void setEmptyLevel();
@@ -20,10 +20,11 @@ public:
 	bool hasLevelsToRender();
 	bool currentIsEmpty();
 	bool belongsToLevel(pair<int,int>, pair<int,int>);
-	int maxLevel(pair<int,int>, pair<int,int>);
+	pair<int,int> maxLevel(pair<int,int>, pair<int,int>);
 	bool flip();
 	void addLevel(TileView* ,TileView*);
 	void renderNextLevel(Camera& camera);
+	void renderGround(Camera& camera);
 
 private:
 	int startLevel;
