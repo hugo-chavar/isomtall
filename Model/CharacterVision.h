@@ -20,13 +20,13 @@ public:
 	void updatePosition(pair<int, int>);
 	bool testPosition(pair<int, int>);
 	void setKnown(pair<int, int> );
+	bool isInsideVision(pair<int, int> pos);
 private:
 	vector <bitset<MAX_STAGE_SIZE_X> > mapKnowledge;
 	int rangeVision;
 	int mapHeight;
 	int mapWidth;
 	pair<int, int > position;
-	//pair<int, int > prevPosition;
 
 };
 
