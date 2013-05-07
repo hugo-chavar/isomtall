@@ -48,6 +48,7 @@
 
 #define DEFAULT_STAGE_SIZE_X 100
 #define DEFAULT_STAGE_SIZE_Y 100
+#define MAX_STAGE_SIZE_X 1024 //para manejar la vision del personaje necesito un limite
 
 #ifndef opCode_t
 #define opCode_t
@@ -62,11 +63,5 @@ enum opCode_t {
 	OPCODE_CHAT_MESSAGE
 };
 #endif
-
-//namespace common {
-//	class Constants {
-//		public:
-//	};
-//};
 
 #endif
