@@ -70,6 +70,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AnimatedEntity.cpp" />
+    <ClCompile Include="CharacterVision.cpp" />
     <ClCompile Include="Chat.cpp" />
     <ClCompile Include="ConditionVariable.cpp" />
     <ClCompile Include="Configuration.cpp" />
@@ -94,6 +95,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimatedEntity.h" />
+    <ClInclude Include="CharacterVision.h" />
     <ClInclude Include="Chat.h" />
     <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="Configuration.h" />
