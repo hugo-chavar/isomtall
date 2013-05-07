@@ -17,8 +17,8 @@ class StageModel {
 
 public:
 	StageModel();
-	StageModel(string name, unsigned int width, unsigned int height, vector <EntityDef> vEntitiesDef, vector <PersonajeModelo*> vMainCharacters): //, map <KeyPair, EntityObject*> *entityMap
-	_name(name), _width(width), _height(height), _vEntitiesDef(vEntitiesDef),  _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; firstTile = NULL; this->_tilesMap = NULL; }; //_entityMap(entityMap),
+	StageModel(string name, vector <EntityDef> vEntitiesDef, vector <PersonajeModelo*> vMainCharacters): // unsigned int width, unsigned int height,
+	_name(name), _vEntitiesDef(vEntitiesDef),  _vMainCharacters(vMainCharacters) { _tileWidth = DEFAULT_TILE_WIDTH; _tileHeight = DEFAULT_TILE_HEIGHT; firstTile = NULL; this->_tilesMap = NULL; }; //_width(width), _height(height), 
 	StageModel(const StageModel&);
 	StageModel& operator=(const StageModel&);
 	unsigned int width() const; 
@@ -26,8 +26,9 @@ public:
 	string name() const; 
 	vector <EntityDef> vEntitiesDef();
 	vector <PersonajeModelo*>* vMainCharacters(); 
-	void width(unsigned int); 
-	void height(unsigned int);
+	void width(unsigned); 
+	void height(unsigned);
+	void setSize(unsigned, unsigned);
 	void name(string);
 	unsigned int tileWidth() const; 
 	unsigned int tileHeight() const;
@@ -40,8 +41,6 @@ public:
 	bool isInsideWorld(pair<int,int> tileCoordinates);
 	void destino(int x,int y,float cameraX,float cameraY);
 
-	//float mainCharacter_speed() const;
-	//void mainCharacter_speed(float value);
 	PersonajeModelo* modelMainCharacters(unsigned );
 	TileModel* getFirstTile();
 	void insertMainCharacter(PersonajeModelo* );

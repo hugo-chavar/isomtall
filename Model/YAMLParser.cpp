@@ -22,9 +22,6 @@ YAMLParser::~YAMLParser() {
 	entities.vAnimatedEntities.clear();
 	for (unsigned i=0; i < stages.vStages.size(); i++){
 		stages.vStages[i].clearStage();
-		//stages.vStages_aux[i].vEntitiesDef.clear();
-		//stages.vStages_aux[i].vMainCharacters.clear();
-		//stages.vStages_aux[i].vMainCharacters_aux.clear();
 		stages.vStages.clear();
 		stages.vStages_aux.clear();
 	}
@@ -48,7 +45,7 @@ bool managePositiveIntCase(const Node& node, int &result, string context, string
 		}
 		return false;
 	} catch (InvalidScalar) {
-		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){  //fuerzo el valor x default
+		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){
 			result = defaultValue;
 			if (force == YES_IGNORE_LOG)
 				return true;
@@ -82,7 +79,7 @@ bool managePositiveFloatCase(const Node& node, float &result, string context, st
 		}
 		return false;
 	} catch (InvalidScalar) {
-		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){  //fuerzo el valor x default
+		if ((force == YES) || (force == YES_IGNORE_LOG) || (force == ONLY_INVALID)){ 
 			result = defaultValue;
 			if (force == YES_IGNORE_LOG)
 				return true;
@@ -463,7 +460,8 @@ void operator >> (const Node& node, Stages& stages) {
 		if (stage.name.size() > 0) // Si tiene nombre se guarda.
 			stages.vStages_aux.push_back(stage);
 		else {
-			string str_i = static_cast<std::ostringstream*>(&(ostringstream() << i+1))->str();
+			string str_i = StringUtilities::unsignedToString(i+1);
+			//string str_i = static_cast<std::ostringstream*>(&(ostringstream() << i+1))->str();
 			Logger::instance().logFieldNotDefined(str_i, "nombre", "stage number");
 		}
 	}
@@ -486,10 +484,6 @@ Screen YAMLParser::generateDefaultScreen() {
 }
 
 PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
-	//if (entities.vAnimatedEntities.size()<=0) {
-	//	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
-	//	entities.vAnimatedEntities.push_back(animatedEntity_default);
-	//}
 	PersonajeModelo *mainCharacter = new PersonajeModelo();
 	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
@@ -500,15 +494,10 @@ PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 StageModel YAMLParser::generateDefaultStage() {
 	vector <EntityDef> vEntitiesDef;
 	vector <PersonajeModelo*> vMainCharacters;
-	//map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
-	//for(int i=0; i<DEFAULT_STAGE_SIZE_X; i++) // Cargo el mapa con entidad objeto default guardada en la primera posición.
-	//	for(int j=0; j<DEFAULT_STAGE_SIZE_Y; j++) {
-	//		KeyPair key(i, j);
-	//		(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
-	//	}
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
 
-	StageModel stage("DEFAULT", DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y, vEntitiesDef, vMainCharacters);
+	StageModel stage("DEFAULT", vEntitiesDef, vMainCharacters);
+	stage.setSize(DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y);
 	stage.generateMap();
 	stage.loadByDefault(entities.vEntitiesObject[0]);
 
@@ -559,39 +548,8 @@ bool YAMLParser::entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, E
 
 void YAMLParser::loadEntitiesToMap(int stage_index) {
 	sStage stage_aux = stages.vStages_aux[stage_index];
-	//map <KeyPair, EntityObject*>* entityMap = new map <KeyPair, EntityObject*>();
-	//for(unsigned int i=0; i<stage_aux.vEntitiesDef.size(); i++) {
-	//	KeyPair key(stage_aux.vEntitiesDef[i].x, stage_aux.vEntitiesDef[i].y);
-	//	EntityObject *entityObjectType = findEntityObjectType(stage_aux.vEntitiesDef[i].entity);
-	//	AnimatedEntity *animatedEntityType = findAnimatedEntityType(stage_aux.vEntitiesDef[i].entity);
-	//	if ((!entityObjectType) && (!animatedEntityType)){
-	//		Logger::instance().log("Parser Error: Entity type '"+stage_aux.vEntitiesDef[i].entity+"' defined in stage '"+stage_aux.name+"' not found.");
-	//		stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
-	//		i--;
-	//	}
-	//	else {
-	//		if (entityBaseIsInMapRange(i, stage_aux, entityObjectType, animatedEntityType)) {
-	//			pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
-	//			ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
-	//			//if (!ret.second) {
-	//			//	string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
-	//			//	string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
-	//			//	Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
-	//			//}
-	//		}
-	//		else {
-	//			Logger::instance().log("Parser Error: Entity '"+stage_aux.vEntitiesDef[i].entity+"''s base is out of map range.");
-	//			stage_aux.vEntitiesDef.erase(stage_aux.vEntitiesDef.begin()+i);
-	//			i--;
-	//		}
-	//	}
-	//}
-	//for(int i=0; i<stage_aux.size_x; i++) // Completo el mapa con entidad objeto default guardada en la primera posición.
-	//	for(int j=0; j<stage_aux.size_y; j++) {
-	//		KeyPair key(i, j);
-	//		(*entityMap).insert(make_pair(key, entities.vEntitiesObject[0]));
-	//	}
-	StageModel stage(stage_aux.name, stage_aux.size_x, stage_aux.size_y, stage_aux.vEntitiesDef, stage_aux.vMainCharacters);
+	StageModel stage(stage_aux.name, stage_aux.vEntitiesDef, stage_aux.vMainCharacters);
+	stage.setSize( stage_aux.size_x, stage_aux.size_y);
 	stage.generateMap();
 
 	//comienza refactor
@@ -613,13 +571,6 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 						stage.insertEntity(key,animatedEntityType);
 					}
 				}
-				//pair<map<KeyPair,EntityObject*>::iterator,bool> ret;
-				//ret = (*entityMap).insert(make_pair(key, entityObjectType)); // VER LO DE ENTIDADES ANIMADAS
-				//if (!ret.second) {
-				//	string str_x = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].x))->str();
-				//	string str_y = static_cast<std::ostringstream*>(&(ostringstream() << stage_aux.vEntitiesDef[i].y))->str();
-				//	Logger::instance().log("Parser Error: Position '("+str_x+","+str_y+")' already defined for stage '"+stage_aux.name+"'.");
-				//}
 			}
 			else {
 				Logger::instance().log("Parser Error: Entity '"+stage_aux.vEntitiesDef[i].entity+"''s base is out of map range.");

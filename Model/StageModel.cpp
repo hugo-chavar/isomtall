@@ -1,6 +1,7 @@
 #include "StageModel.h"
 #include "Game.h"
 #include "stringUtilities.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -288,4 +289,13 @@ bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float came
 		}
 	}
 	return false;
+}
+
+void StageModel::setSize(unsigned w, unsigned h){
+	this->height(h);
+	if (w > MAX_STAGE_SIZE_X)
+		this->width(MAX_STAGE_SIZE_X);
+	else
+		this->width(w);
+
 }
