@@ -17,16 +17,16 @@ view::Stage::~Stage() {
 		delete spriteArray[i];
 	}
 
-	for(unsigned j=0;j<entityList.size();j++)
-	{
-		for (unsigned i=0;i<entityList[j].size();i++)
-		{
-			delete(entityList[j][i]);
-		}
-		entityList[j].clear();
-	}
+	//for(unsigned j=0;j<entityList.size();j++)
+	//{
+	//	for (unsigned i=0;i<entityList[j].size();i++)
+	//	{
+	//		delete(entityList[j][i]);
+	//	}
+	//	entityList[j].clear();
+	//}
 	spriteArray.clear();
-	entityList.clear();
+	//entityList.clear();
 	if (_personaje){
 		delete _personaje;
 		_personaje = NULL;
@@ -201,8 +201,8 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 	}
 }
 
- void view::Stage::calculateTilesToRender(Camera& camera){ //list<std::pair<TileView*,TileView*>>
-	//list<std::pair<TileView*,TileView*>> limits;
+ void view::Stage::calculateTilesToRender(Camera& camera){ 
+
 	renderHelper.clear();
 	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
 	cameraReferenceTile.second -= EXTRA_TILES_TO_RENDER;
@@ -217,13 +217,12 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 	int startLevel = this->fixStartLevel(endLevel, cameraReferenceTile);
 	renderHelper.setStartLevel(startLevel);
 	renderHelper.setEndLevel(endLevel);
-	while (renderHelper.incomplete()){ //endLevel >= startLevel
+	while (renderHelper.incomplete()){
 		TileView* firstMatch = this->getFirstMatch(leftBottom);
 		TileView* lastMatch;
 		if (firstMatch){
 			lastMatch = this->getLastMatch(firstMatch,rightBottom);
 			renderHelper.addLevel(firstMatch,lastMatch);
-			//limits.push_front(std::make_pair(firstMatch,lastMatch));
 		} else {
 			renderHelper.setEmptyLevel();
 		}
@@ -235,10 +234,8 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 			rightBottom.second--;
 			leftBottom.second--;
 		}
-		//endLevel--;
 	}
-	
-	//return limits;
+
 }
 
 void view::Stage::render(Camera& camera) {
@@ -261,7 +258,7 @@ void view::Stage::render(Camera& camera) {
 	renderHelper.startRendering();
 	while (renderHelper.hasLevelsToRender()){
 		renderHelper.renderNextLevel(camera);
-		if (renderHelper.belongsToLevel(_personaje->getPosicionEnTiles()))
+		if (renderHelper.belongsToLevel(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))
 			_personaje->render(camera);
 	}
 	

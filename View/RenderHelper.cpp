@@ -55,8 +55,14 @@ bool RenderHelper::flip(){
 	return coin;
 }
 
-bool RenderHelper::belongsToLevel(pair<int,int> tilePos){
-	return ((this->currentLevel ) == (tilePos.first + tilePos.second) );
+int RenderHelper::maxLevel(pair<int,int> pos1, pair<int,int> pos2){
+	if ((pos1.first + pos1.second) > (pos2.first + pos2.second) )
+		return (pos1.first + pos1.second);
+	return (pos2.first + pos2.second);
+}
+
+bool RenderHelper::belongsToLevel(pair<int,int> currentPos, pair<int,int> previousPos){
+	return (this->currentLevel == this->maxLevel(currentPos, previousPos) );
 }
 
 void RenderHelper::addLevel(TileView* first ,TileView* last){
@@ -66,6 +72,8 @@ void RenderHelper::addLevel(TileView* first ,TileView* last){
 
 void RenderHelper::renderNextLevel(Camera& camera){
 	this->currentLevel++;
+	if (this->currentIsEmpty())
+		return;
 	TileView* tile;
 	tile = (*levelIterator).first;
 	while (tile != (*levelIterator).second ){

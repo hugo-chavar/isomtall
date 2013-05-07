@@ -19,7 +19,8 @@ public:
 	bool incomplete();
 	bool hasLevelsToRender();
 	bool currentIsEmpty();
-	bool belongsToLevel(pair<int,int>);
+	bool belongsToLevel(pair<int,int>, pair<int,int>);
+	int maxLevel(pair<int,int>, pair<int,int>);
 	bool flip();
 	void addLevel(TileView* ,TileView*);
 	void renderNextLevel(Camera& camera);
