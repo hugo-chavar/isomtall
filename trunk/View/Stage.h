@@ -35,7 +35,7 @@ namespace view {
 		Personaje* _personaje;
 		StageModel* worldModel;
 		map<string,int> mapEntityToSprite;
-		vector<vector<Entity*>> entityList;
+		//vector<vector<Entity*>> entityList;
 		map<KeyPair, TileView*> tilesMap;
 		TileView* firstTile;
 		vector <TileView*> tileLevels;

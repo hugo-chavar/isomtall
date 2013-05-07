@@ -337,17 +337,21 @@ std::pair<int,int> Personaje::posicion(){
 }
 
 std::pair<int,int> Personaje::getPosicionEnTiles(){
+	return modelo->getPosition();
+}
+
+std::pair<int,int> Personaje::getPosicionAnteriorEnTiles(){
 	float deltaAbsX = std::abs(delta.first);
 	float deltaAbsY = std::abs(delta.second);
 
 	if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
-		return modelo->getPosition();
+		return this->getPosicionEnTiles();
 	}
 	if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
-		return modelo->getPosition();
+		return this->getPosicionEnTiles();
 	}
 	if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
-		return modelo->getPosition();
+		return this->getPosicionEnTiles();
 	}
 	return tileActual;
 }
