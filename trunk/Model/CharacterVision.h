@@ -14,8 +14,7 @@ class CharacterVision {
 public:
 	CharacterVision();
 	~CharacterVision();
-	//void setMapWidth(int value);
-	//void setMapHeight(int value);
+	void setRangeVision(int value);
 	void initialize();
 	void setPosition(pair<int, int>);
 	void updatePosition(pair<int, int>);
@@ -27,7 +26,7 @@ private:
 	int mapHeight;
 	int mapWidth;
 	pair<int, int > position;
-	pair<int, int > prevPosition;
+	//pair<int, int > prevPosition;
 
 };
 

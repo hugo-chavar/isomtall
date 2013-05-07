@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "DirList.h"
 #include "AnimatedEntity.h"
+#include "CharacterVision.h"
 
 
 class PersonajeModelo {
@@ -35,6 +36,9 @@ public:
 	string getName();
 	void setName(string nombreJugador);
 	std::pair<int, int> getPosition();
+	void createVision(int range);
+	CharacterVision* getVision();
+	void update();
 private:
 
 	int siCaminaDetenerse();
@@ -63,6 +67,7 @@ private:
 	bool isActivo;
 	AnimatedEntity * _animation;
 	string name;
+	CharacterVision* vision;
 };
 
 

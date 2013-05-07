@@ -38,6 +38,7 @@ bool Game::initialize(string nombreJugador)
 
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
 	_personaje->setName(nombreJugador);
+	_personaje->createVision(_configuration->visionRange());
 	this->_time.initializeTime();
 	return true;
 }

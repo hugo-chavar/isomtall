@@ -321,6 +321,8 @@ PersonajeModelo::~PersonajeModelo(){
 		delete [] yPath;
 		yPath = NULL;
 	}
+	if (this->vision)
+		delete this->vision;
 }
 
 void PersonajeModelo::setName(string nombreJugador){
@@ -333,4 +335,19 @@ string PersonajeModelo::getName(){
 
 std::pair<int, int> PersonajeModelo::getPosition(){
 	return this->current;
+}
+
+void PersonajeModelo::createVision(int range){
+	this->vision = new CharacterVision();
+	this->vision->setRangeVision(range);
+	this->vision->setPosition(this->getPosition());
+	this->vision->initialize();
+}
+
+CharacterVision* PersonajeModelo::getVision(){
+	return this->vision;
+}
+
+void PersonajeModelo::update(){
+	this->vision->updatePosition(this->getPosition());
 }
