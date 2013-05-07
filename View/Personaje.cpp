@@ -106,6 +106,7 @@ void Personaje::update(){
 	} else {
 		this->freezar();
 	}
+	modelo->update();
 }
 
 void Personaje::mover(){
