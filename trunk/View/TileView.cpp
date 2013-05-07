@@ -10,7 +10,7 @@ TileView::TileView(){
 	this->otherEntity = NULL;
 	this->nextTile = NULL;
 	this->relatedTile = NULL;
-	this->isDrawable = true;
+	this->isDrawable = true; //TODO: PASAR A FALSE
 	this->tileModel = NULL;
 }
 
@@ -102,10 +102,34 @@ void TileView::createOtherEntity(Sprite* sprite){
 	otherEntity = new Entity(this->tileModel->getPosition().first, this->tileModel->getPosition().second, sprite);
 }
 
-void TileView::render(Camera& camera){
+void TileView::renderGround(Camera& camera){
 	this->getGroundEntity()->render(camera);
 
-	if (this->drawable()){
+	//if (this->drawable()){ 
+	//	this->getGroundEntity()->render(camera);
+	//	TileView* tileaux = this->getRelatedTile();
+	//	while ( (tileaux) && (tileaux != this) ){
+	//		tileaux->getGroundEntity()->render(camera);
+	//		tileaux = tileaux->getRelatedTile();
+	//	}
+	//	if (this->hasOtherEntity())
+	//			this->getOtherEntity()->render(camera);
+
+	//	//TileView* tileaux = this->getRelatedTile();
+	//	//if (tileaux)
+	//	//	tileaux->getOtherEntity()->render(camera);
+	//	//else 
+	//	//	if (this->hasOtherEntity())
+	//	//		this->getOtherEntity()->render(camera);
+	//}
+}
+
+void TileView::renderEntity(Camera& camera){
+
+	if (this->drawable()){//TODO: PONER EN FALSE POR DEFAULT
+		/*if (this->hasOtherEntity())
+				this->getOtherEntity()->render(camera);*/
+
 		TileView* tileaux = this->getRelatedTile();
 		if (tileaux)
 			tileaux->getOtherEntity()->render(camera);

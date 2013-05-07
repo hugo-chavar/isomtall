@@ -20,10 +20,10 @@ entidades:
        
     - nombre: molino
       imagen: ../Images/molino/
-      ancho_base: 2
-      alto_base: 2 
+      ancho_base: 3
+      alto_base: 3 
       pixel_ref_x: 64
-      pixel_ref_y: 124
+      pixel_ref_y: 100
       fps: 15
       delay: 3000
 
@@ -143,6 +143,13 @@ entidades:
       imagen: ../Images/dado0.png
       pixel_ref_x: 32 
       pixel_ref_y: 30 
+
+    - nombre: cubogrande
+      imagen: ../Images/cubogrande.png
+      ancho_base: 2 
+      alto_base: 2 
+      pixel_ref_x: 64 
+      pixel_ref_y: 80 
        
 escenarios: 
     - nombre: bosque_encantado 
@@ -151,7 +158,6 @@ escenarios:
       entidadesDef:  
          - {x: 3, y: 10, entidad: arbol}
          - {x: 0, y: 41, entidad: piso041}
-         - {x: 8, y: 8, entidad: caballo}
          - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 50, y: 50, entidad: agua}
@@ -163,6 +169,7 @@ escenarios:
          - {x: 51, y: 50, entidad: agua}
          - {x: 51, y: 51, entidad: agua}
          - {x: 0, y: 5, entidad: dado}
+         - {x: 10, y: 5, entidad: cubogrande}
          - {x: 0, y: 4, entidad: arbol}
          - {x: 7, y: 0, entidad: arbol}
          - {x: 6, y: 0, entidad: dado}
@@ -198,7 +205,8 @@ escenarios:
          - {x: 2, y: 24, entidad: piedra}
          - {x: 3, y: 24, entidad: piedra}
          - {x: 0, y: 20, entidad: watermill}
-         - {x: 15, y: 15, entidad: bandera}
+         - {x: 23, y: 20, entidad: bandera}
+         - {x: 5, y: 9, entidad: molino}
          - {x: 20, y: 26, entidad: agua}
          - {x: 20, y: 27, entidad: agua}
          - {x: 20, y: 28, entidad: agua}

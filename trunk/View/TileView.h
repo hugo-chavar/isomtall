@@ -33,7 +33,8 @@ public:
 	string getOtherEntityName();
 	void createGround(Sprite*);
 	void createOtherEntity(Sprite*);
-	void render(Camera& camera);
+	void renderEntity(Camera& camera);
+	void renderGround(Camera& camera);
 private:
 	TileModel* tileModel;
 	Entity* groundEntity;
