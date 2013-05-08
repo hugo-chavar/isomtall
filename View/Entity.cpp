@@ -5,6 +5,7 @@ Entity::Entity(){
 }
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado){
+	this->setFreezed(true);
 	sprite= spriteCargado;
 	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
 	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
@@ -30,6 +31,14 @@ void Entity::update(){
 
 void Entity::render(Camera& camera){
 	camera.render(spriteRect,sprite->getFrameActual()->getSuperficie());
+}
+
+void Entity::setFreezed(bool value){
+	this->freezed = value;
+}
+
+bool Entity::isFreezed(){
+	return this->freezed;
 }
 
 

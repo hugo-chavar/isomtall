@@ -62,9 +62,16 @@ pair<int,int> RenderHelper::maxLevel(pair<int,int> pos1, pair<int,int> pos2){
 	return pos2;
 }
 
-bool RenderHelper::belongsToLevel(pair<int,int> currentPos, pair<int,int> previousPos){
+bool RenderHelper::belongsToLevel(pair<int,int> currentPos){ //, pair<int,int> previousPos
+	//pair<int,int> aux = this->maxLevel(currentPos, previousPos);
+	return (this->currentLevel == (currentPos.first + currentPos.second) );
+}
+
+bool RenderHelper::shouldRenderThis(pair<int,int> currentPos, pair<int,int> previousPos){
 	pair<int,int> aux = this->maxLevel(currentPos, previousPos);
-	return (this->currentLevel == (aux.first + aux.second) );
+	if (this->belongsToLevel(aux))
+		return (Game::instance().insidePlayerVision(currentPos) || Game::instance().insidePlayerVision(previousPos));
+	return false;
 }
 
 void RenderHelper::addLevel(TileView* first ,TileView* last){
@@ -82,7 +89,7 @@ void RenderHelper::renderNextLevel(Camera& camera){
 		if (Game::instance().insidePlayerVision(tile->getPosition())){
 			tile->renderEntity(camera);
 		} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
-			//aplicar niebla
+			//TODO: niebla aplicada NO ES NECESARIO EL IF!!
 			tile->renderEntity(camera);
 		}
 		tile = tile->getNextTile();
@@ -97,9 +104,11 @@ void RenderHelper::renderGround(Camera& camera){
 		tile = (*levelIterator).first;
 		while (tile != (*levelIterator).second ){
 			if (Game::instance().insidePlayerVision(tile->getPosition())){
+				tile->setFreezed(false);
 				tile->renderGround(camera);
 			} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
-				//aplicar niebla
+				//aplico niebla
+				tile->setFreezed(false);
 				tile->renderEntity(camera);
 			}
 			tile = tile->getNextTile();
