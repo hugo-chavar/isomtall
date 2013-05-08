@@ -1,10 +1,10 @@
 #include "Entity.h"
 #include "Game.h"
 
-Entity::Entity(){
+Entity::Entity() {
 }
 
-Entity::Entity(int tileX,int tileY,Sprite* spriteCargado){
+Entity::Entity(int tileX,int tileY,Sprite* spriteCargado) {
 	this->setFreezed(true);
 	sprite= spriteCargado;
 	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
@@ -12,10 +12,10 @@ Entity::Entity(int tileX,int tileY,Sprite* spriteCargado){
 	spriteRect.h=(Uint16)(sprite->getFrameActual()->getSuperficie()->h);
 }
 
-Entity::~Entity(void){
+Entity::~Entity(void) {
 }
 
-SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite){
+SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) {
 	SDL_Rect rectangulo;
 	unsigned pptx = Game::instance().world()->tileWidth();
 	unsigned ppty = Game::instance().world()->tileHeight();
@@ -24,20 +24,27 @@ SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite){
 	return rectangulo;
 }
 
-void Entity::update(){
-	sprite->actualizarFrame();
+void Entity::update() {
+	if (this->isFreezed() && (this->freezedSpriteState < 0)) {
+		freezedSpriteState = sprite->getCurrentState();
+	}
+	//sprite->actualizarFrame();
 	//Aca deberia actualizarse tambien la entidad del modelo
 }
 
-void Entity::render(Camera& camera){
-	camera.render(spriteRect,sprite->getFrameActual()->getSuperficie());
+void Entity::render(Camera& camera) {
+	camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie());
 }
 
-void Entity::setFreezed(bool value){
+void Entity::setFreezed(bool value) {
+	if (this->freezed == value)
+		return;
 	this->freezed = value;
+	if (!this->isFreezed())
+		this->freezedSpriteState = -1;
 }
 
-bool Entity::isFreezed(){
+bool Entity::isFreezed() {
 	return this->freezed;
 }
 

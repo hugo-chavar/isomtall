@@ -36,6 +36,7 @@ public:
 	void renderEntity(Camera& camera);
 	void renderGround(Camera& camera);
 	void setFreezed(bool value);
+	void update();
 private:
 	TileModel* tileModel;
 	Entity* groundEntity;

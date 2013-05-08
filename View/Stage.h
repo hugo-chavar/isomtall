@@ -55,6 +55,8 @@ namespace view {
 		int fixLevel(std::pair<int,int> k);
 		int fixStartLevel(int endLevel, std::pair<int,int> &ref);
 		void alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2);
+		void updateTiles();
+		void updateSprites();
 	};
 
 }

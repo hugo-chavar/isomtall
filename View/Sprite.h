@@ -45,7 +45,8 @@ public:
 	int relaty();
 	int baseWidth();
 	int baseHeight();
-
+	unsigned getCurrentState();
+	Frame* getFrameAt(int state);
 };
 
 #endif

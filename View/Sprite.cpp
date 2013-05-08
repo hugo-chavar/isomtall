@@ -66,3 +66,14 @@ int Sprite::baseHeight()
 {
 	return _baseHeight;
 }
+
+unsigned Sprite::getCurrentState() {
+	return estado;
+}
+
+Frame* Sprite::getFrameAt(int state) {
+	if (state < 0) {
+		return this->getFrameActual();
+	}
+	return frames[static_cast<int>(state)];
+}

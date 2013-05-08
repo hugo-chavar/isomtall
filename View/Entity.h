@@ -13,6 +13,7 @@ protected:
 	Sprite * sprite;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
 	bool freezed;
+	int freezedSpriteState;
 
 public:
 	Entity();
