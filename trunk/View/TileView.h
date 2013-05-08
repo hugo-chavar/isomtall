@@ -35,6 +35,7 @@ public:
 	void createOtherEntity(Sprite*);
 	void renderEntity(Camera& camera);
 	void renderGround(Camera& camera);
+	void setFreezed(bool value);
 private:
 	TileModel* tileModel;
 	Entity* groundEntity;

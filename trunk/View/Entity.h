@@ -12,6 +12,7 @@ protected:
 	SDL_Rect spriteRect;
 	Sprite * sprite;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
+	bool freezed;
 
 public:
 	Entity();
@@ -19,5 +20,7 @@ public:
 	virtual void update();
 	virtual void render(Camera& camera);
 	~Entity(void);
+	void setFreezed(bool);
+	bool isFreezed();
 };
 
