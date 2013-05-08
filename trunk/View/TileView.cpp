@@ -113,7 +113,7 @@ void TileView::setFreezed(bool value){
 		}
 		else 
 			if (this->hasOtherEntity()){
-				this->getGroundEntity()->setFreezed(value);
+				this->getOtherEntity()->setFreezed(value);
 			}
 }
 
@@ -131,5 +131,12 @@ void TileView::renderEntity(Camera& camera){
 			if (this->hasOtherEntity()){
 				this->getOtherEntity()->render(camera);
 			}
+	}
+}
+
+void TileView::update(){
+	//this->getGroundEntity()->update();
+	if (this->hasOtherEntity()){
+		this->getOtherEntity()->update();
 	}
 }

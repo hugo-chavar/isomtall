@@ -2,27 +2,26 @@
 #include "Constants.h"
 
 
-Game::Game(){
+Game::Game() {
 }
 
-Game::~Game(){
+Game::~Game() {
 }
 
-Game& Game::instance(){
+Game& Game::instance() {
 	static Game singleton;
 	return singleton;
 }
 
-StageModel* Game::world(){
+StageModel* Game::world() {
 	return &_world;
 }
 
-TimeManager* Game::time(){
+TimeManager* Game::time() {
 	return &_time;
 }
 
-bool Game::initialize(string nombreJugador)
-{
+bool Game::initialize(string nombreJugador) {
 	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
@@ -58,8 +57,7 @@ AnimatedEntity* Game::animatedEntityAt(unsigned pos) {
 	return NULL;
 }
 
-PersonajeModelo * Game::personaje()
-{
+PersonajeModelo * Game::personaje() {
 	if (this->_personaje){
 		return this->_personaje;
 	}
@@ -67,7 +65,7 @@ PersonajeModelo * Game::personaje()
 	return NULL;
 }
 
-Configuration* Game::configuration(){
+Configuration* Game::configuration() {
 	if (_configuration)
 			return _configuration;
 	Logger::instance().nullPointer("Configuration* Game::configuration");
@@ -75,9 +73,21 @@ Configuration* Game::configuration(){
 }
 
 bool Game::insidePlayerVision(std::pair<int,int> pos){
-	return this->_personaje->getVision()->isInsideVision(pos);
+	bool inside = this->_personaje->getVision()->isInsideVision(pos);
+
+	if (!inside) {
+		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
+		if (relatedTile){
+			while ( (!inside) && (relatedTile != Game::instance().world()->getTileAt(pos)) ) {
+				pair<int, int> posRelated = relatedTile->getPosition();
+				inside = this->_personaje->getVision()->isInsideVision(posRelated);
+				relatedTile = relatedTile->getRelatedTile();
+			}
+		}
+	}
+	return inside;
 }
 
-bool Game::isKnownByPlayer(std::pair<int,int> pos){
+bool Game::isKnownByPlayer(std::pair<int,int> pos) {
 	return this->_personaje->getVision()->testPosition(pos);
 }

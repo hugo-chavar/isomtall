@@ -16,7 +16,6 @@ view::Stage::~Stage() {
 	{
 		delete spriteArray[i];
 	}
-
 	//for(unsigned j=0;j<entityList.size();j++)
 	//{
 	//	for (unsigned i=0;i<entityList[j].size();i++)
@@ -115,9 +114,13 @@ bool view::Stage::initialize(){
 }
 
 void view::Stage::update() {
-	for(unsigned i=0;i<spriteArray.size();i++){
-		spriteArray[i]->actualizarFrame();
-	}
+	//for(unsigned i=0;i<spriteArray.size();i++){
+	//	spriteArray[i]->actualizarFrame();
+	//}
+
+
+	this->updateSprites();
+	this->updateTiles();
 
 	_personaje->update();
 
@@ -265,13 +268,29 @@ void view::Stage::render(Camera& camera) {
 	
 }
 
-void Stage::deleteStage(){
+void Stage::deleteStage() {
 	TileView* aux = this->firstTile;
 	TileView* nextAux;
-	while (aux){
+	while (aux) {
 		nextAux = aux;
 		aux = nextAux->getNextTile();
 		delete nextAux;
 	}
 	tilesMap.clear();
+}
+
+
+void Stage::updateTiles() {
+	TileView* aux = this->firstTile;
+	TileView* nextAux;
+	while (aux) {
+		aux->update();
+		aux = aux->getNextTile();
+	}
+}
+
+void Stage::updateSprites() {
+	for (unsigned i = 0 ; i < spriteArray.size(); i++) {
+		spriteArray[i]->actualizarFrame();
+	}
 }

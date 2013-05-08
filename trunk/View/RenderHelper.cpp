@@ -108,7 +108,7 @@ void RenderHelper::renderGround(Camera& camera){
 				tile->renderGround(camera);
 			} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
 				//aplico niebla
-				tile->setFreezed(false);
+				tile->setFreezed(true);
 				tile->renderEntity(camera);
 			}
 			tile = tile->getNextTile();
