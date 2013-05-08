@@ -74,7 +74,6 @@ bool TileView::drawable(){
 	return this->tileModel->drawable();
 }
 
-
 bool TileView::EOL(){
 	return this->tileModel->EOL();
 }
@@ -104,24 +103,6 @@ void TileView::createOtherEntity(Sprite* sprite){
 
 void TileView::renderGround(Camera& camera){
 	this->getGroundEntity()->render(camera);
-
-	//if (this->drawable()){ 
-	//	this->getGroundEntity()->render(camera);
-	//	TileView* tileaux = this->getRelatedTile();
-	//	while ( (tileaux) && (tileaux != this) ){
-	//		tileaux->getGroundEntity()->render(camera);
-	//		tileaux = tileaux->getRelatedTile();
-	//	}
-	//	if (this->hasOtherEntity())
-	//			this->getOtherEntity()->render(camera);
-
-	//	//TileView* tileaux = this->getRelatedTile();
-	//	//if (tileaux)
-	//	//	tileaux->getOtherEntity()->render(camera);
-	//	//else 
-	//	//	if (this->hasOtherEntity())
-	//	//		this->getOtherEntity()->render(camera);
-	//}
 }
 
 void TileView::renderEntity(Camera& camera){

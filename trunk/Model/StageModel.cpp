@@ -178,15 +178,15 @@ void StageModel::resolveRelatedTiles(TileModel* tile){
 	EntityObject* entity = tile->getOtherEntity();
 	if ( (entity) && ((entity->baseWidth() > 1) || (entity->baseHeight() > 1)) ){
 		this->markRelatedTiles(tile);
-		if  ((entity->baseWidth() > 2) || (entity->baseHeight() > 2))
-			this->resolveBolckedEntities(tile);
+		//if  ((entity->baseWidth() > 2) || (entity->baseHeight() > 2))
+		//	this->resolveBolckedEntities(tile);
 	}
 }
 
-void StageModel::resolveBolckedEntities(TileModel* tile){
-	//TODO: en caso de ser necesario
-	return;
-}
+//void StageModel::resolveBolckedEntities(TileModel* tile){
+//	//TODO: en caso de ser necesario
+//	return;
+//}
 
 void StageModel::generateMap(){
 	KeyPair tilePos;
