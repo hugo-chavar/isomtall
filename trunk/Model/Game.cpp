@@ -77,7 +77,8 @@ bool Game::insidePlayerVision(std::pair<int,int> pos){
 
 	if (!inside) {
 		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
-		if (relatedTile){
+		if (relatedTile) {//TODO: mejorar para optimizar codigo
+			// preguntar si es drawable() e ir salteando..
 			while ( (!inside) && (relatedTile != Game::instance().world()->getTileAt(pos)) ) {
 				pair<int, int> posRelated = relatedTile->getPosition();
 				inside = this->_personaje->getVision()->isInsideVision(posRelated);

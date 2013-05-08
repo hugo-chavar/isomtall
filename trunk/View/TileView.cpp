@@ -101,34 +101,43 @@ void TileView::createOtherEntity(Sprite* sprite){
 	otherEntity = new Entity(this->tileModel->getPosition().first, this->tileModel->getPosition().second, sprite);
 }
 
-void TileView::renderGround(Camera& camera){
+void TileView::renderGround(Camera& camera) {
 	this->getGroundEntity()->render(camera);
 }
 
-void TileView::setFreezed(bool value){
+void TileView::setFreezed(bool value) {
 	this->getGroundEntity()->setFreezed(value);
+	//if (this->drawable()) {
+		
 		TileView* tileaux = this->getRelatedTile();
-		if (tileaux){
-			this->getGroundEntity()->setFreezed(value);
+		if (tileaux) {
+			while (tileaux != this){
+				tileaux->getGroundEntity()->setFreezed(value);
+				if (tileaux->hasOtherEntity()) {
+					tileaux->getOtherEntity()->setFreezed(value);
+				}
+				tileaux = tileaux->getRelatedTile();
+			}
 		}
 		else 
-			if (this->hasOtherEntity()){
+			if (this->hasOtherEntity()) {
 				this->getOtherEntity()->setFreezed(value);
 			}
+	//}
 }
 
 void TileView::renderEntity(Camera& camera){
 
-	if (this->drawable()){//TODO: PONER EN FALSE POR DEFAULT
+	if (this->drawable()) {//TODO: PONER EN FALSE POR DEFAULT
 		/*if (this->hasOtherEntity())
 				this->getOtherEntity()->render(camera);*/
 
 		TileView* tileaux = this->getRelatedTile();
-		if (tileaux){
+		if (tileaux) {
 			tileaux->getOtherEntity()->render(camera);
 		}
 		else 
-			if (this->hasOtherEntity()){
+			if (this->hasOtherEntity()) {
 				this->getOtherEntity()->render(camera);
 			}
 	}

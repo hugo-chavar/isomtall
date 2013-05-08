@@ -6,6 +6,7 @@ Entity::Entity() {
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado) {
 	this->setFreezed(true);
+	this->freezedSpriteState = -1;
 	sprite= spriteCargado;
 	spriteRect=posicionIsometricaPorTiles(tileX, tileY,sprite);
 	spriteRect.w=(Uint16)(sprite->getFrameActual()->getSuperficie()->w);
