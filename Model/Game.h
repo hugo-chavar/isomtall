@@ -19,6 +19,8 @@ public:
 	StageModel* world();
 	TimeManager* time();
 	bool initialize(string nombreJugador);
+	bool insidePlayerVision(std::pair<int,int> );
+	bool isKnownByPlayer(std::pair<int,int> );
 	EntLists allEntities;
 	YAMLParser yParser;
 	AnimatedEntity* animatedEntityAt(unsigned pos);

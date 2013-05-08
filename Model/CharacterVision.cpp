@@ -1,5 +1,6 @@
 #include "CharacterVision.h"
 #include "Game.h"
+#include "TileModel.h"
 
 CharacterVision::CharacterVision(){
 	mapKnowledge.clear();
@@ -41,7 +42,6 @@ void CharacterVision::initialize(){
 				aux.first = this->position.first + (i - j);
 				this->setKnown(aux);
 			}
-
 		}
 		aux.second = this->position.second;
 		aux.first = this->position.first - i;
@@ -59,51 +59,100 @@ void CharacterVision::updatePosition(pair<int, int> pos){
 	if (pos == this->position)
 		return;
 	pair<int, int > aux = pos;
-	if (pos.first > this->position.first) {
-		for (int j = this->rangeVision; j > 0; j--){
-			aux.second = pos.second - j;
-			aux.first = pos.first + (this->rangeVision - j);
+	if (pos.first > this->position.first) { //TODO: eliminar codigo repetido
+		if (pos.second == this->position.second){
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = this->position.second - j;
+				aux.first = pos.first + (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second = this->position.second + j;
+				this->setKnown(aux);
+			}
+			aux.second = this->position.second;
+			aux.first = pos.first + this->rangeVision;
 			this->setKnown(aux);
-			aux.second = pos.second + j;
+		} else if (pos.second > this->position.second) {
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = pos.second + j;
+				aux.first = pos.first + (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second -= 1;
+				this->setKnown(aux);
+			}
+			aux.second = pos.second;
+			aux.first = pos.first + this->rangeVision;
+			this->setKnown(aux);
+		} else  { //if (pos.second < this->position.second)
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = pos.second - j;
+				aux.first = pos.first + (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second += 1;
+				this->setKnown(aux);
+			}
+			aux.second = pos.second;
+			aux.first = pos.first + this->rangeVision;
 			this->setKnown(aux);
 		}
-		aux.second = pos.second;
-		aux.first = pos.first + this->rangeVision;
-		this->setKnown(aux);
 	} else if (pos.first < this->position.first) {
-		for (int j = this->rangeVision; j > 0; j--){
-			aux.second = pos.second - j;
-			aux.first = pos.first - (this->rangeVision - j);
+		if (pos.second == this->position.second){
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = this->position.second - j; 
+				aux.first = pos.first - (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second = this->position.second + j;
+				this->setKnown(aux);
+			}
+			aux.second = this->position.second;
+			aux.first = pos.first - this->rangeVision;
 			this->setKnown(aux);
-			aux.second = pos.second + j;
+		} else if (pos.second > this->position.second) { 
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = pos.second + j;
+				aux.first = pos.first - (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second -= 1;
+				this->setKnown(aux);
+			}
+			aux.second = pos.second;
+			aux.first = pos.first - this->rangeVision;
+			this->setKnown(aux);
+		} else  { //if (pos.second < this->position.second)
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.second = pos.second - j;
+				aux.first = pos.first - (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.second += 1;
+				this->setKnown(aux);
+			}
+			aux.second = pos.second;
+			aux.first = pos.first - this->rangeVision;
 			this->setKnown(aux);
 		}
-		aux.second = pos.second;
-		aux.first = pos.first - this->rangeVision;
-		this->setKnown(aux);
-	}
-	if (pos.second > this->position.second) {
-		for (int j = this->rangeVision; j > 0; j--){
-			aux.first = pos.first - j;
-			aux.second = pos.second + (this->rangeVision - j);
+	} else {
+		if (pos.second > this->position.second) {
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.first = this->position.first - j; 
+				aux.second = pos.second + (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.first = this->position.first + j;
+				this->setKnown(aux);
+			}
+			aux.first = this->position.first; 
+			aux.second = pos.second + this->rangeVision;
 			this->setKnown(aux);
-			aux.first = pos.first + j;
+		} else  {
+			for (int j = this->rangeVision; j > 0; j--){
+				aux.first = this->position.first - j;
+				aux.second = pos.second - (this->rangeVision - j);
+				this->setKnown(aux);
+				aux.first = this->position.first + j;
+				this->setKnown(aux);
+			}
+			aux.first = this->position.first;
+			aux.second = pos.second - this->rangeVision;
 			this->setKnown(aux);
 		}
-		aux.second = pos.second;
-		aux.first = pos.first + this->rangeVision;
-		this->setKnown(aux);
-	} else if (pos.second < this->position.second) {
-		for (int j = this->rangeVision; j > 0; j--){
-			aux.first = pos.first - j;
-			aux.second = pos.second - (this->rangeVision - j);
-			this->setKnown(aux);
-			aux.first = pos.first + j;
-			this->setKnown(aux);
-		}
-		aux.first = pos.first;
-		aux.second = pos.second - this->rangeVision;
-		this->setKnown(aux);
 	}
 	this->position = pos;
 }
@@ -113,10 +162,22 @@ bool CharacterVision::testPosition(pair<int, int> pos){
 }
 
 void CharacterVision::setKnown(pair<int, int> pos){
-	if (Game::instance().world()->isInsideWorld(pos))
+	if (Game::instance().world()->isInsideWorld(pos)){
 		this->mapKnowledge[pos.second].set(pos.first);
+		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
+		if (relatedTile){
+			while (relatedTile != Game::instance().world()->getTileAt(pos) ){
+				pair<int, int> posRelated = relatedTile->getPosition();
+				this->mapKnowledge[posRelated.second].set(posRelated.first);
+				relatedTile = relatedTile->getRelatedTile();
+			}
+		}
+	}
 }
 
 bool CharacterVision::isInsideVision(pair<int, int> pos){
-	return ((pos.first <= (this->position.first + this->rangeVision)) && (pos.first >= (this->position.first - this->rangeVision)) && (pos.second <= (this->position.second + this->rangeVision)) && (pos.second  >= (this->position.second - this->rangeVision)));
+
+	int bottom =  (this->position.second - this->rangeVision + abs(this->position.first - pos.first));
+	int top = this->position.second + this->rangeVision- abs(this->position.first - pos.first);
+	return ((pos.second  >= bottom)	&& (pos.second <= top));
 }

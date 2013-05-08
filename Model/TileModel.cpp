@@ -12,13 +12,9 @@ TileModel::TileModel(){
 	this->relatedTile = NULL;
 	this->isDrawable = true;
 	this->endOfLevel = false;
-	//this->overlap = false;
 }
 
 TileModel::~TileModel(){
-	//string x = StringUtilities::unsignedToString(position.first);
-	//string y = StringUtilities::unsignedToString(position.second);
-	//Logger::instance().log("Borrado tile "+ x+ ", "+y+" listo");
 }
 
 EntityObject * TileModel::getGroundEntity(){

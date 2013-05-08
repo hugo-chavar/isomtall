@@ -1,4 +1,5 @@
 #include "RenderHelper.h"
+#include "Game.h"
 
 using namespace view;
 
@@ -78,7 +79,12 @@ void RenderHelper::renderNextLevel(Camera& camera){
 	TileView* tile;
 	tile = (*levelIterator).first;
 	while (tile != (*levelIterator).second ){
-		tile->renderEntity(camera);
+		if (Game::instance().insidePlayerVision(tile->getPosition())){
+			tile->renderEntity(camera);
+		} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
+			//aplicar niebla
+			tile->renderEntity(camera);
+		}
 		tile = tile->getNextTile();
 	}
 	levelIterator++;
@@ -90,7 +96,12 @@ void RenderHelper::renderGround(Camera& camera){
 	for (levelIterator = limits.begin(); levelIterator != limits.end(); levelIterator++){
 		tile = (*levelIterator).first;
 		while (tile != (*levelIterator).second ){
-			tile->renderGround(camera);
+			if (Game::instance().insidePlayerVision(tile->getPosition())){
+				tile->renderGround(camera);
+			} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
+				//aplicar niebla
+				tile->renderEntity(camera);
+			}
 			tile = tile->getNextTile();
 		}
 	}

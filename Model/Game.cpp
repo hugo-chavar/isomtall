@@ -73,3 +73,11 @@ Configuration* Game::configuration(){
 	Logger::instance().nullPointer("Configuration* Game::configuration");
 	return NULL;
 }
+
+bool Game::insidePlayerVision(std::pair<int,int> pos){
+	return this->_personaje->getVision()->isInsideVision(pos);
+}
+
+bool Game::isKnownByPlayer(std::pair<int,int> pos){
+	return this->_personaje->getVision()->testPosition(pos);
+}
