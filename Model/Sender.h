@@ -7,23 +7,15 @@
 
 class Sender : public Thread {
 private:
-	bool keepSending;
-
-	bool forceShutdown;
-
 	Socket* socket;
+
+	bool forceStop;
 
 	InstructionQueue instructionQueue;
 
-	void setKeepSending(bool keepSending);
+	bool isForceStop();
 
-	bool getKeepSending() const;
-
-	bool getForceShutdown();
-
-	void setForceShutdown(bool forceShutdown);
-
-	Socket* getSocket() const;
+	void setForceStop(bool forceStop);
 
 	InstructionQueue& getInstructionQueue();
 
@@ -36,11 +28,15 @@ private:
 public:
 	Sender(Socket* socket);
 
+	Socket* getSocket();
+
+	void setSocket(Socket* socket);
+
 	void startSending();
 
 	void addInstruction(Instruction& instruction);
 
-	void stopSending(bool forceShutdown);
+	void stopSending(bool forceStop);
 
 	~Sender();
 };

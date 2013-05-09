@@ -1,47 +1,48 @@
 #ifndef _RECEIVER_H_
 #define _RECEIVER_H_
 
-#include <list>
-#include <string>
-
 #include "Thread.h"
 #include "Socket.h"
-#include "Mutex.h"
+#include "InstructionQueue.h"
 
 class Receiver : public Thread {
 private:
-	bool keepReceiving;
-
 	Socket* socket;
 
-	Mutex& messagesListMutex;
+	std::string userID;
 
-	std::list<std::string>& messagesList;
+	bool connectionOK;
 
-	bool& loggedIn;
+	bool inyectUserIDonReceive;
 
-	bool isLoggedIn();
+	InstructionQueue* instructionQueue;
 
-	void setLoggedIn(bool loggedIn);
+	void setConnectionOK(bool connectionOK);
 
-	void setKeepReceiving(bool keepReceiving);
+	bool isInyectUserIDonReceive();
 
-	bool getKeepReceiving() const;
-
-	Socket* getSocket() const;
-
-	Mutex& getMessagesListMutex();
-
-	std::list<std::string>& getMessagesList();
+	InstructionQueue* getInstructionQueue();
 
 	void receive();
 
-	std::string receiveMessage();
+	std::string receiveMessageFromSocket();
 
 	void* run();
 
 public:
-	Receiver(Socket* socket, Mutex& messagesListMutex, std::list<std::string>& messagesList, bool& loggedIn);
+	Receiver(Socket* socket, InstructionQueue* instructionQueue, std::string userID, bool inyectUserIDonReceive);
+
+	Socket* getSocket();
+
+	void setSocket(Socket* socket);
+
+	std::string getUserID();
+
+	void setUserID(std::string userID);
+
+	bool isConnectionOK();
+
+	void setInstructionQueue(InstructionQueue* instructionQueue);
 
 	void startReceiving();
 

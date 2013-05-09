@@ -23,13 +23,13 @@ unsigned int Instruction::getOpCode() const {
 	return this->opCode;
 }
 
-std::map<std::string,std::string>& Instruction::getArguments() {
+std::map<unsigned int,std::string>& Instruction::getArguments() {
 	return this->arguments;
 }
 
-std::string Instruction::getArgument(std::string name) {
+std::string Instruction::getArgument(unsigned int key) {
 	std::string argument = "";
-	std::map<std::string,std::string>::iterator it = this->getArguments().find(name);
+	std::map<unsigned int,std::string>::iterator it = this->getArguments().find(key);
 
 	if (it != this->getArguments().end())
 		argument = it->second;
@@ -37,28 +37,28 @@ std::string Instruction::getArgument(std::string name) {
 	return argument;
 }
 
-void Instruction::insertArgument(std::string name, std::string value) {
-	this->getArguments().insert(std::pair<std::string,std::string>(name,value));
+void Instruction::insertArgument(unsigned int key, std::string value) {
+	this->getArguments().insert(std::pair<unsigned int,std::string>(key,value));
 }
 
 void Instruction::deserialize(std::string serializedInstruction) {
 	std::vector<std::string> instructionParams;
 
-	StringUtilities::splitString(serializedInstruction,instructionParams,'|');
+	stringUtilities::splitString(serializedInstruction,instructionParams,'|');
 
-	this->setOpCode(StringUtilities::stringToInt(instructionParams[0]));
+	this->setOpCode(stringUtilities::stringToInt(instructionParams[0]));
 	for (unsigned int i = 1; i < instructionParams.size(); i = i + 2) {
-		this->insertArgument(instructionParams[i],instructionParams[i + 1]);
+		this->insertArgument(static_cast<unsigned int>(stringUtilities::stringToInt(instructionParams[i])),instructionParams[i + 1]);
 	}
 }
 
 std::string Instruction::serialize() {
 	std::string serializedInstruction = "";
 	this->getOpCode();
-	serializedInstruction += StringUtilities::intToString(this->getOpCode());
-	for (std::map<std::string,std::string>::iterator it = this->getArguments().begin(); it != this->getArguments().end(); ++it) {
+	serializedInstruction += stringUtilities::intToString(this->getOpCode());
+	for (std::map<unsigned int,std::string>::iterator it = this->getArguments().begin(); it != this->getArguments().end(); ++it) {
 		serializedInstruction += "|";
-		serializedInstruction += it->first;
+		serializedInstruction += stringUtilities::intToString(static_cast<unsigned int>(it->first));
 		serializedInstruction += "|";
 		serializedInstruction += it->second;
 	}

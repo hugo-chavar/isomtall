@@ -1,6 +1,7 @@
 #include <sstream>
-#include "stringUtilities.h"
-namespace StringUtilities {
+#include "StringUtilities.h"
+
+namespace stringUtilities {
 
 void splitString(std::string string, std::vector<std::string>& splittedString, char delimiter) {
 	unsigned int from = 0;

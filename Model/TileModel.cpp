@@ -1,6 +1,6 @@
 #include "TileModel.h"
 #include "Logger.h"
-#include "stringUtilities.h"
+#include "StringUtilities.h"
 
 using namespace common;
 
@@ -81,16 +81,16 @@ void TileModel::addEntity(EntityObject * e){
 		if (!this->groundEntity){
 			this->setGroundEntity(e);
 		} else {
-			string x = StringUtilities::unsignedToString(position.first);
-			string y = StringUtilities::unsignedToString(position.second);
+			string x = stringUtilities::unsignedToString(position.first);
+			string y = stringUtilities::unsignedToString(position.second);
 			Logger::instance().log("Game warning: pos "+ x+ ", "+y+" already has ground, ignoring '"+e->name()+"'");
 		}
 	} else { //no es piso
 		if (!this->otherEntity){
 			this->setOtherEntity(e);
 		} else {
-			string x = StringUtilities::unsignedToString(position.first);
-			string y = StringUtilities::unsignedToString(position.second);
+			string x = stringUtilities::unsignedToString(position.first);
+			string y = stringUtilities::unsignedToString(position.second);
 			Logger::instance().log("Game warning: pos "+ x+ ", "+y+" already has a entity, ignoring '"+e->name()+"'");
 		}
 	}

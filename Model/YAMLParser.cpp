@@ -1,6 +1,6 @@
 #include <windows.h>
 #include "YAMLParser.h"
-#include "stringUtilities.h"
+#include "StringUtilities.h"
 
 
 using namespace std;
@@ -460,7 +460,7 @@ void operator >> (const Node& node, Stages& stages) {
 		if (stage.name.size() > 0) // Si tiene nombre se guarda.
 			stages.vStages_aux.push_back(stage);
 		else {
-			string str_i = StringUtilities::unsignedToString(i+1);
+			string str_i = stringUtilities::unsignedToString(i+1);
 			//string str_i = static_cast<std::ostringstream*>(&(ostringstream() << i+1))->str();
 			Logger::instance().logFieldNotDefined(str_i, "nombre", "stage number");
 		}
@@ -600,7 +600,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 				stage_aux.vMainCharacters.push_back(mainCharacter);
 			}
 			else {
-				string str_nro = StringUtilities::intToString(NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER);
+				string str_nro = stringUtilities::intToString(NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER);
 				Logger::instance().log("Parser Error: Entity type '"+mainCharacter_aux.entityType+"' for main character in stage '"+stage_aux.name+"' does not have the "+str_nro+" image directories needed.");
 			}
 		}
