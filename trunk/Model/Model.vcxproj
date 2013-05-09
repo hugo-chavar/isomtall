@@ -72,6 +72,7 @@
     <ClCompile Include="AnimatedEntity.cpp" />
     <ClCompile Include="CharacterVision.cpp" />
     <ClCompile Include="Chat.cpp" />
+    <ClCompile Include="Circle.cpp" />
     <ClCompile Include="ConditionVariable.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="EntityObject.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="AnimatedEntity.h" />
     <ClInclude Include="CharacterVision.h" />
     <ClInclude Include="Chat.h" />
+    <ClInclude Include="Circle.h" />
     <ClInclude Include="ConditionVariable.h" />
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Constants.h" />

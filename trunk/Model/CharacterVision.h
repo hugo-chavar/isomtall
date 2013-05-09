@@ -5,6 +5,7 @@
 #include <vector>
 #include <bitset>
 #include "Constants.h"
+#include "Circle.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ private:
 	int mapHeight;
 	int mapWidth;
 	pair<int, int > position;
-
+	Circle vision;
 };
 
 
