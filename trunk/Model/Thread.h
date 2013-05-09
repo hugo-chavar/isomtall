@@ -6,10 +6,17 @@
 class Thread{
 private:
 	pthread_t thread;
+
+	bool stopping;
+
 	static void* staticRun(void* arguments);
 
 protected:
 	Thread();
+
+	bool isStopping();
+
+	void setStopping(bool stopping);
 
 	int start();
 

@@ -1,19 +1,17 @@
 #ifndef _MODEL_CHAT_H_
 #define _MODEL_CHAT_H_
 
-#include <string>
 #include <list>
+#include <string>
 
-#include "Mutex.h"
-#include "Sender.h"
-#include "Receiver.h"
-#include "Socket.h"
-#include "Game.h"
+#include "ChatUpdater.h"
 
 namespace model {
 	class Chat {
 		private:
-			bool loggedIn;
+//			bool loggedIn;
+
+			ChatUpdater chatUpdater;
 
 			std::string inputBuffer;
 
@@ -21,36 +19,37 @@ namespace model {
 
 			std::list<std::string> messagesList;
 
-			Socket* socket;
+//			Socket* socket;
 
-			Sender* sender;
+//			Sender* sender;
 
-			Receiver* receiver;
+//			Receiver* receiver;
 
 			std::string to;
 
-			void setLoggedIn(bool loggedIn);
+//			void setLoggedIn(bool loggedIn);
 
-			Socket* getSocket();
+//			Socket* getSocket();
 
-			void setSocket(Socket* socket);
+//			void setSocket(Socket* socket);
 
-			Sender* getSender();
+//			Sender* getSender();
 
-			void setSender(Sender* sender);
+//			void setSender(Sender* sender);
 
-			Receiver* getReceiver();
+//			Receiver* getReceiver();
 
-			void setReceiver(Receiver* receiver);
+//			void setReceiver(Receiver* receiver);
 
 			std::string getTo();
-
-			bool connected;
 
 		public:
 			Chat();
 
-			bool& isLoggedIn();
+			//TEMPORARY. THIS SHOULD BE PRIVATE.
+			ChatUpdater& getChatUpdater();
+
+			bool isConnected();
 
 			std::string getInputBuffer();
 

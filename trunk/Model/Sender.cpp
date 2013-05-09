@@ -1,37 +1,20 @@
 #include "Sender.h"
 
+// ----------------------------------- CONSTRUCTOR ---------------------------------------
+
 Sender::Sender(Socket* socket) {
 	this->socket = socket;
-	this->keepSending = true;
-	this->forceShutdown = false;
+	this->forceStop = false;
 }
 
-void Sender::startSending() {
-	this->start();
+// ----------------------------------- PRIVATE METHODS -----------------------------------
+
+bool Sender::isForceStop() {
+	return this->forceStop;
 }
 
-void Sender::addInstruction(Instruction& instruction) {
-	this->getInstructionQueue().addInstruction(instruction);
-}
-
-void Sender::setKeepSending(bool keepSending) {
-	this->keepSending = keepSending;
-}
-
-bool Sender::getKeepSending() const {
-	return this->keepSending;
-}
-
-Socket* Sender::getSocket() const {
-	return this->socket;
-}
-
-bool Sender::getForceShutdown() {
-	return this->forceShutdown;
-}
-
-void Sender::setForceShutdown(bool forceShutdown) {
-	this->forceShutdown = forceShutdown;
+void Sender::setForceStop(bool forceStop) {
+	this->forceStop = forceStop;
 }
 
 InstructionQueue& Sender::getInstructionQueue() {
@@ -40,23 +23,24 @@ InstructionQueue& Sender::getInstructionQueue() {
 
 void Sender::send(){
 	Instruction instruction;
-	std::string response;
+	std::string mensaje;
 
-	instruction = this->getInstructionQueue().getNextInstruction(true);
-	while (this->getKeepSending()) {
-		response = instruction.serialize();
-		this->sendMessage(response);
-		instruction.clear();
+	do {
 		instruction = this->getInstructionQueue().getNextInstruction(true);
-	}
-
-	if (!this->getForceShutdown()) {
-		while (instruction.getOpCode() != OPCODE_NO_OPCODE) {
-			response = instruction.serialize();
-			this->sendMessage(response);
-			instruction.clear();
-			instruction = this->getInstructionQueue().getNextInstruction(false);
+		if (instruction.getOpCode() != OPCODE_NO_OPCODE) {
+			mensaje = instruction.serialize();
+			this->sendMessage(mensaje);
 		}
+	} while (!this->isStopping());
+	
+	if (!this->isForceStop()) {
+		do {
+			instruction = this->getInstructionQueue().getNextInstruction(false);
+			if (instruction.getOpCode() != OPCODE_NO_OPCODE) {
+				mensaje = instruction.serialize();
+				this->sendMessage(mensaje);
+			}
+		} while (instruction.getOpCode() != OPCODE_NO_OPCODE);
 	}
 }
 
@@ -67,7 +51,7 @@ void Sender::sendMessage(std::string message){
 
 	messageSize = message.length();
 
-	aux = "<message>" + message + "</message>";
+	aux = MESSAGE_ENVELOPE_BEGIN_TAG + message + MESSAGE_ENVELOPE_END_TAG;
 
 	do {
 		bytesSent += this->getSocket()->sendData(aux.c_str());
@@ -82,12 +66,32 @@ void* Sender::run(){
 	return NULL;
 }
 
-void Sender::stopSending(bool forceShutdown){
-	this->setForceShutdown(forceShutdown);
-	this->setKeepSending(false);
+// ----------------------------------- PUBLIC METHODS ------------------------------------
+
+Socket* Sender::getSocket() {
+	return this->socket;
+}
+
+void Sender::setSocket(Socket* socket) {
+	this->socket = socket;
+}
+
+void Sender::startSending() {
+	this->start();
+}
+
+void Sender::addInstruction(Instruction& instruction) {
+	this->getInstructionQueue().addInstruction(instruction);
+}
+
+void Sender::stopSending(bool forceStop){
+	this->setForceStop(forceStop);
+	this->setStopping(true);
 	this->getInstructionQueue().stopWaiting();
 	this->join();
 }
+
+// ----------------------------------- DESTRUCTOR ----------------------------------------
 
 Sender::~Sender(){
 }

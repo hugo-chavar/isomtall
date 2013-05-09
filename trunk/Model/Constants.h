@@ -50,18 +50,4 @@
 #define DEFAULT_STAGE_SIZE_Y 100
 #define MAX_STAGE_SIZE_X 1024 //para manejar la vision del personaje necesito un limite
 
-#ifndef opCode_t
-#define opCode_t
-enum opCode_t {
-	OPCODE_NO_OPCODE,
-	OPCODE_INVALID,
-	OPCODE_CONNECTION_EROR,
-	OPCODE_LOGIN_REQUEST,
-	OPCODE_LOGOUT_REQUEST,
-	OPCODE_LOGIN_OK,
-	OPCODE_USERID_ALREADY_USED,
-	OPCODE_CHAT_MESSAGE
-};
-#endif
-
 #endif

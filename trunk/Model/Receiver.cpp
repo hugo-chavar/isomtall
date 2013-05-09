@@ -3,94 +3,58 @@
 #include <iostream>
 
 #include "StringUtilities.h"
-#include "Instruction.h"
 
-Receiver::Receiver(Socket* socket, Mutex& messagesListMutex, std::list<std::string>& messagesList, bool& loggedIn) : messagesListMutex(messagesListMutex), messagesList(messagesList), loggedIn(loggedIn) {
+// ----------------------------------- CONSTRUCTOR ---------------------------------------
+
+Receiver::Receiver(Socket* socket, InstructionQueue* instructionQueue, std::string userID, bool inyectUserIDonReceive) {
 	this->socket = socket;
-	this->keepReceiving = true;
+	this->userID = userID;
+	this->connectionOK = true;
+	this->inyectUserIDonReceive = inyectUserIDonReceive;
+	this->instructionQueue = instructionQueue;
 }
 
-void Receiver::startReceiving(){
-	this->start();
+// ----------------------------------- PRIVATE METHODS -----------------------------------
+
+void Receiver::setConnectionOK(bool connectionOK) {
+	this->connectionOK = connectionOK;
 }
 
-void Receiver::setKeepReceiving(bool keepReceiving){
-	this->keepReceiving = keepReceiving;
+bool Receiver::isInyectUserIDonReceive() {
+	return this->inyectUserIDonReceive;
 }
 
-bool Receiver::getKeepReceiving() const{
-	return this->keepReceiving;
-}
-
-Socket* Receiver::getSocket() const{
-	return this->socket;
-}
-
-Mutex& Receiver::getMessagesListMutex() {
-	return this->messagesListMutex;
-}
-
-std::list<std::string>& Receiver::getMessagesList() {
-	return this->messagesList;
-}
-
-bool Receiver::isLoggedIn() {
-	return this->loggedIn;
-}
-
-void Receiver::setLoggedIn(bool loggedIn) {
-	this->loggedIn = loggedIn;
+InstructionQueue* Receiver::getInstructionQueue() {
+	return this->instructionQueue;
 }
 
 void Receiver::receive() {
-	std::string request = "";
-	std::string message = "";
 	Instruction instruction;
+	std::string request;
+	std::string messageBeginTag = MESSAGE_ENVELOPE_BEGIN_TAG;
 
-	request = this->receiveMessage();
-	while (this->getKeepReceiving()) {
+	request = this->receiveMessageFromSocket();
+	while (!this->isStopping() && this->isConnectionOK()){
 		instruction.clear();
 
 		if (request != "") {
-			request = request.substr(9,(request.find("</message>") - 9));
+			request = request.substr(messageBeginTag.length(),(request.find(MESSAGE_ENVELOPE_END_TAG) - messageBeginTag.length()));
 			instruction.deserialize(request);
 		} else {
-			message = "CONNECTION ERROR - SERVER UNREACHABLE";
-			this->keepReceiving = false;
+			instruction.setOpCode(OPCODE_CONNECTION_ERROR);
+			this->setConnectionOK(false);
 		}
+		
+		if (this->isInyectUserIDonReceive())
+			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,this->getUserID());
 
-		if (!isLoggedIn()) {
-			switch (instruction.getOpCode()) {
-				case OPCODE_LOGIN_OK: {
-					message = "LOGIN SUCCESSFULL - Server greeting: " + instruction.getArgument("greeting");
-					this->setLoggedIn(true);
-					break;
-				}
-				case OPCODE_USERID_ALREADY_USED: {
-					message = "USERNAME ALREADY IN USE. TRY AGAIN";
-					break;
-				}
-			}
-		} else {
-			switch (instruction.getOpCode()) {
-				case OPCODE_CHAT_MESSAGE: {
-					message = instruction.getArgument("from") + ": " + instruction.getArgument("message");
-					break;
-				}
-			}
-		}
+		this->getInstructionQueue()->addInstruction(instruction);
 
-		this->getMessagesListMutex().lock();
-		this->getMessagesList().push_back(message);
-		if (this->getMessagesList().size() > 10)
-			this->getMessagesList().pop_front();
-		this->getMessagesListMutex().unlock();
-
-		request = this->receiveMessage();
+		request = this->receiveMessageFromSocket();
 	}
 }
 
-std::string Receiver::receiveMessage() {
+std::string Receiver::receiveMessageFromSocket() {
 	bool validRead = true;
 	char buffer[512] = "";
 	int bytesReceived = 0;
@@ -99,16 +63,14 @@ std::string Receiver::receiveMessage() {
 
 	do {
 		bytesReceived = this->getSocket()->receiveData(buffer,512);
-
 		if (bytesReceived <= 0) {
 			validRead = false;
 			if (bytesReceived == 0)
-				this->setKeepReceiving(false);
-			std::cout << "receiver from chat: " << StringUtilities::intToString(bytesReceived) << std::endl;
+				this->setStopping(true);
 		} else {
 			aux.append(buffer,bytesReceived);
 		}
-	} while ( (aux.find("</message>") == std::string::npos) && (validRead) );
+	} while ( (aux.find(MESSAGE_ENVELOPE_END_TAG) == std::string::npos) && (validRead) );
 
 	if (validRead){
 		message = aux;
@@ -122,11 +84,43 @@ void* Receiver::run(){
 	return NULL;
 }
 
+// ----------------------------------- PUBLIC METHODS ------------------------------------
+
+Socket* Receiver::getSocket() {
+	return this->socket;
+}
+
+void Receiver::setSocket(Socket* socket) {
+	this->socket = socket;
+}
+
+std::string Receiver::getUserID() {
+	return this->userID;
+}
+
+bool Receiver::isConnectionOK() {
+	return this->connectionOK;
+}
+
+void Receiver::setInstructionQueue(InstructionQueue* instructionQueue) {
+	this->instructionQueue = instructionQueue;
+}
+
+void Receiver::setUserID(std::string userID) {
+	this->userID = userID;
+}
+
+void Receiver::startReceiving() {
+	this->start();
+}
+
 void Receiver::stopReceiving(){
-	this->setKeepReceiving(false);
+	this->setStopping(true);
 	this->getSocket()->disconect();
 	this->join();
 }
+
+// ----------------------------------- DESTRUCTOR ----------------------------------------
 
 Receiver::~Receiver(){
 }

@@ -5,7 +5,7 @@
 #include <vector>
 
 
-namespace StringUtilities {
+namespace stringUtilities {
 
 //Metodo para dividir un string según un separador indicado.
 void splitString(std::string string, std::vector<std::string>& splittedString, char delimiter);
