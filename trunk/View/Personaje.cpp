@@ -15,17 +15,21 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	crearNombre();
+	crearNombre(modelo->getName());
 
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
 
-void Personaje::crearNombre() {
+void Personaje::crearNombre(string textoNombre) {
 	TTF_Font *font = NULL;
-	SDL_Color textColor = { 0, 0, 0 };
-	font = TTF_OpenFont( "../Fonts/Arial.ttf", 12 );
-	nombre = TTF_RenderText_Solid( font, "Vampiro", textColor );
-	SDL_SetClipRect(nombre, (&(this->spriteRect)));
+	SDL_Rect cuadroMensaje;
+
+	cuadroMensaje.x = spriteRect.x + 25;
+	cuadroMensaje.y = spriteRect.y;
+	SDL_Color textColor = { 255, 255, 255 };
+	font = TTF_OpenFont( FUENTE, 12 );
+	nombre = TTF_RenderText_Blended( font, textoNombre.c_str(), textColor );
+	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	TTF_CloseFont( font );
 }
 
@@ -216,8 +220,13 @@ void Personaje::moverSpriteEnY() {
 }
 
 void Personaje::render(Camera& camera) {
+	SDL_Rect cuadroMensaje;
+
+	cuadroMensaje.x = spriteRect.x + 25;
+	cuadroMensaje.y = spriteRect.y;
 	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie());
-	camera.render(this->spriteRect, this->nombre);
+	SDL_SetClipRect(nombre, (&cuadroMensaje));
+	camera.render(cuadroMensaje, this->nombre);
 }
 
 

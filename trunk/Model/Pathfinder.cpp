@@ -199,8 +199,8 @@ void Pathfinder::explorarObstaculos(int actualX, int actualY, bool* obstaculosAd
 			obstaculosAdyacentes[0] = false;
 		}
 	}
-	explorarX = actualX - 1;
-	explorarY = actualY - 1;
+	explorarX = explorarX - 1;
+	explorarY = explorarY - 1;
 	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			obstaculosAdyacentes[1] = true;
 	} else {
@@ -210,8 +210,8 @@ void Pathfinder::explorarObstaculos(int actualX, int actualY, bool* obstaculosAd
 			obstaculosAdyacentes[1] = false;
 		}
 	}
-	explorarX = actualX - 1;
-	explorarY = actualY + 1;
+	explorarX = explorarX - 1;
+	explorarY = explorarY + 1;
 	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			obstaculosAdyacentes[2] = true;
 	} else {
@@ -221,8 +221,8 @@ void Pathfinder::explorarObstaculos(int actualX, int actualY, bool* obstaculosAd
 			obstaculosAdyacentes[2] = false;
 		}
 	}
-	explorarX = actualX + 1;
-	explorarY = actualY + 1;
+	explorarX = explorarX + 1;
+	explorarY = explorarY + 1;
 	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
 			obstaculosAdyacentes[3] = true;
 	} else {
