@@ -72,7 +72,7 @@ bool PersonajeModelo::estaAnimando() {
 }
 
 void PersonajeModelo::animar(char opcion) {
-	if (isActivo) {
+	if ((isActivo)&&(animacionActual == SIN_CAMBIO)) {
 		
 		switch (opcion) {
 		case 'a': {

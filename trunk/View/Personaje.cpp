@@ -15,18 +15,19 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	//crearNombre();
+	crearNombre();
 
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
 }
 
-/*void Personaje::crearNombre() {
+void Personaje::crearNombre() {
 	TTF_Font *font = NULL;
 	SDL_Color textColor = { 0, 0, 0 };
-	font = TTF_OpenFont( "../Fonts/Arial.ttf", 8 );
-	nombre = TTF_RenderText_Solid( font, "The quick brown fox jumps over the lazy dog", textColor );
+	font = TTF_OpenFont( "../Fonts/Arial.ttf", 12 );
+	nombre = TTF_RenderText_Solid( font, "Vampiro", textColor );
+	SDL_SetClipRect(nombre, (&(this->spriteRect)));
 	TTF_CloseFont( font );
-}*/
+}
 
 void Personaje::loadSprites() {
 	AnimatedEntity* animatedEntity;
@@ -216,6 +217,7 @@ void Personaje::moverSpriteEnY() {
 
 void Personaje::render(Camera& camera) {
 	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie());
+	camera.render(this->spriteRect, this->nombre);
 }
 
 
@@ -323,7 +325,7 @@ Personaje::~Personaje(){
 	if (sprites.size() > 0) {
 		clearSprites();
 	}
-	/*SDL_FreeSurface( nombre );*/
+	SDL_FreeSurface( nombre );
 }
 
 PersonajeModelo* Personaje::personajeModelo(){

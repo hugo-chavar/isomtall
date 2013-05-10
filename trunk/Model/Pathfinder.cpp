@@ -128,6 +128,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 	int explorarY = 1;
 	double coste = 0;
 	int closeFound = 0;
+	bool obstaculosAdyacentes [4];
 	unsigned int GCost = 0;
 	unsigned int HCost = 0;
 
@@ -137,6 +138,7 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 	explorarX = explorarX + actualX;
 	explorarY = actualY + explorarY;
 	posExplorar.setPos(actualX, actualY);
+	explorarObstaculos(actualX, actualY, obstaculosAdyacentes);
 	for(int i = 0; i < 9; ++i) {
 		if (explorarX == (actualX+1)) {
 			explorarX = -2 + actualX;
@@ -154,6 +156,9 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		}
 		coste = (Game::instance().world())->cost(explorarX, explorarY);
 		if (coste == 0) {
+			continue;
+		}
+		if (hayObstaculosAdyacentes(explorarX, explorarY, actualX, actualY, obstaculosAdyacentes)) {
 			continue;
 		}
 		closeFound = closeList.count(posExplorar);
@@ -177,6 +182,72 @@ void Pathfinder::agregarVecinos(Nodo& actual, int DestinoX, int DestinoY, std::m
 		openList.agregar(&nodoAgregar);
 		delete nuevoNodo;
 	}
+}
+
+void Pathfinder::explorarObstaculos(int actualX, int actualY, bool* obstaculosAdyacentes) {
+	int explorarX = actualX + 1;
+	int explorarY = actualY;
+	int alto = (Game::instance().world())->height();
+	int ancho = (Game::instance().world())->width();
+
+	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
+			obstaculosAdyacentes[0] = true;
+	} else {
+		if ((Game::instance().world())->cost(explorarX, explorarY) == 0) {
+			obstaculosAdyacentes[0] = true;
+		} else {
+			obstaculosAdyacentes[0] = false;
+		}
+	}
+	explorarX = actualX - 1;
+	explorarY = actualY - 1;
+	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
+			obstaculosAdyacentes[1] = true;
+	} else {
+		if ((Game::instance().world())->cost(explorarX, explorarY) == 0) {
+			obstaculosAdyacentes[1] = true;
+		} else {
+			obstaculosAdyacentes[1] = false;
+		}
+	}
+	explorarX = actualX - 1;
+	explorarY = actualY + 1;
+	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
+			obstaculosAdyacentes[2] = true;
+	} else {
+		if ((Game::instance().world())->cost(explorarX, explorarY) == 0) {
+			obstaculosAdyacentes[2] = true;
+		} else {
+			obstaculosAdyacentes[2] = false;
+		}
+	}
+	explorarX = actualX + 1;
+	explorarY = actualY + 1;
+	if (((explorarX < 0)||(explorarX > ancho-1))||((explorarY < 0)||(explorarY > alto-1))) {
+			obstaculosAdyacentes[3] = true;
+	} else {
+		if ((Game::instance().world())->cost(explorarX, explorarY) == 0) {
+			obstaculosAdyacentes[3] = true;
+		} else {
+			obstaculosAdyacentes[3] = false;
+		}
+	}
+}
+
+bool Pathfinder::hayObstaculosAdyacentes(int explorarX, int explorarY, int actualX, int actualY, bool* obstaculosAdyacentes) {
+	if ((explorarX > actualX) && (explorarY < actualY)) {
+		return ((obstaculosAdyacentes[0])||(obstaculosAdyacentes[1]));
+	}
+	if ((explorarX < actualX) && (explorarY < actualY)) {
+		return ((obstaculosAdyacentes[1])||(obstaculosAdyacentes[2]));
+	}
+	if ((explorarX < actualX) && (explorarY > actualY)) {
+		return ((obstaculosAdyacentes[2])||(obstaculosAdyacentes[3]));
+	}
+	if ((explorarX > actualX) && (explorarY > actualY)) {
+		return ((obstaculosAdyacentes[0])||(obstaculosAdyacentes[3]));
+	}
+	return false;
 }
 
 

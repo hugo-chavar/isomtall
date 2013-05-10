@@ -37,10 +37,10 @@ private:
 	void freezar();
 	void animar();
 	void detenerAnimacion();
-	//void crearNombre();
+	void crearNombre();
 
 	std::pair<int, int> tileActual;
-	/*SDL_Surface *nombre;*/
+	SDL_Surface *nombre;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual
