@@ -37,7 +37,7 @@ private:
 	void freezar();
 	void animar();
 	void detenerAnimacion();
-	void crearNombre();
+	void crearNombre(string textoNombre);
 
 	std::pair<int, int> tileActual;
 	SDL_Surface *nombre;

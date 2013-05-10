@@ -351,3 +351,48 @@ CharacterVision* PersonajeModelo::getVision(){
 void PersonajeModelo::update(){
 	this->vision->updatePosition(this->getPosition());
 }
+
+std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
+	std::pair <int, int> posicionSig;
+
+	if (orientacion == NORTE) {
+		posicionSig.first = current.first - 1;
+		posicionSig.second = current.second - 1;
+		return posicionSig;
+	}
+	if (orientacion == NORESTE) {
+		posicionSig.first = current.first;
+		posicionSig.second = current.second - 1;
+		return posicionSig;
+	}
+	if (orientacion == ESTE) {
+		posicionSig.first = current.first + 1;
+		posicionSig.second = current.second - 1;
+		return posicionSig;
+	}
+	if (orientacion == NOROESTE) {
+		posicionSig.first = current.first - 1;
+		posicionSig.second = current.second;
+		return posicionSig;
+	}
+	if (orientacion == SUDESTE) {
+		posicionSig.first = current.first + 1;
+		posicionSig.second = current.second;
+		return posicionSig;
+	}
+	if (orientacion == OESTE) {
+		posicionSig.first = current.first - 1;
+		posicionSig.second = current.second + 1;
+		return posicionSig;
+	}
+	if (orientacion == SUDOESTE) {
+		posicionSig.first = current.first;
+		posicionSig.second = current.second + 1;
+		return posicionSig;
+	}
+	if (orientacion == SUR) {
+		posicionSig.first = current.first + 1;
+		posicionSig.second = current.second + 1;
+		return posicionSig;
+	}
+}

@@ -39,6 +39,7 @@ public:
 	void createVision(int range);
 	CharacterVision* getVision();
 	void update();
+	std::pair<int, int> obtenerFrentePersonaje();
 private:
 
 	int siCaminaDetenerse();

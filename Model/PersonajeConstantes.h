@@ -3,6 +3,10 @@
 #ifndef PERSONAJECONSTANTES_H
 #define PERSONAJECONSTANTES_H
 
+//Fuente de texto
+
+#define FUENTE "../Fonts/Arial.ttf"
+
 //Factor de separación. Permite que las orientaciones esten alineadas (p.e. norte siempre termina en 0)
 
 #define FACTOR_ORIENTACION 10
