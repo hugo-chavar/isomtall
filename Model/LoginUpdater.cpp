@@ -1,56 +1,59 @@
-#include "ChatUpdater.h"
+#include "LoginUpdater.h"
 
 #include <iostream>
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
-ChatUpdater::ChatUpdater(Mutex& messagesListMutex, std::list<std::string>& messagesList) : connector(NULL,&(this->getInstructionQueue())), messagesListMutex(messagesListMutex), messagesList(messagesList) {
-	this->connected = false;
+LoginUpdater::LoginUpdater(Mutex& messagesListMutex, std::list<std::string>& messagesList) : connector(NULL,&(this->getInstructionQueue())), messagesListMutex(messagesListMutex), messagesList(messagesList) {
+	this->loggedIn = false;
 }
 
 // ----------------------------------- PRIVATE METHODS -----------------------------------
 
-void ChatUpdater::setConnected(bool connected) {
-	this->connected = connected;
+void LoginUpdater::setLoggedIn(bool loggedIn) {
+	this->loggedIn = loggedIn;
 }
 
-bool ChatUpdater::isForceStop() {
+bool LoginUpdater::isForceStop() {
 	return this->forceStop;
 }
 
-void ChatUpdater::setForceStop(bool forceStop) {
+void LoginUpdater::setForceStop(bool forceStop) {
 	this->forceStop = forceStop;
 }
 
-Connector& ChatUpdater::getConnector() {
+Connector& LoginUpdater::getConnector() {
 	return this->connector;
 }
 
-InstructionQueue& ChatUpdater::getInstructionQueue() {
+InstructionQueue& LoginUpdater::getInstructionQueue() {
 	return this->instructionQueue;
 }
 
-Mutex& ChatUpdater::getMessagesListMutex() {
+Mutex& LoginUpdater::getMessagesListMutex() {
 	return this->messagesListMutex;
 }
 
-std::list<std::string>& ChatUpdater::getMessagesList() {
+std::list<std::string>& LoginUpdater::getMessagesList() {
 	return this->messagesList;
 }
 
-void ChatUpdater::updateChatModel() {
+void LoginUpdater::updateLoginModel() {
+	// Agregado para que funcione.
 	WSAData ws;
 	WSAStartup(MAKEWORD(2,2),&ws);
 	Instruction instructionIn;
-	Instruction instructionOut;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
-		instructionOut.setOpCode(OPCODE_CONNECT_TO_CHAT);
-		instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,"1"); // harcodeo
-		this->addInstruction(instructionOut);
+		// Agregado para que funcione.
+		Instruction instructionOut;
+		instructionOut.setOpCode(OPCODE_LOGIN_REQUEST);
+		instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"Andres"); // harcodeo
+		
+		this->getConnector().addInstruction(instructionOut);
 		do {
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
@@ -66,47 +69,54 @@ void ChatUpdater::updateChatModel() {
 				}
 			} while (instructionIn.getOpCode() != OPCODE_NO_OPCODE);
 		}
+		/*
+		instructionIn = this->getInstructionQueue().getNextInstruction(true);
+		while(!this->isStopping()) {
+			this->processInstruction(instructionIn);
+			instructionIn = this->getInstructionQueue().getNextInstruction(true);
+		}
+
+		if (!this->isForceStop()) {
+			while (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
+				this->processInstruction(instructionIn);
+				instructionIn = this->getInstructionQueue().getNextInstruction(false);
+			}
+		}
+		*/
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		this->getMessagesList().push_back("SERVER UNREACHABLE");
-		//std::cout << "SERVER UNREACHABLE" << std::endl;
+		std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
 }
 
-void ChatUpdater::processInstruction(Instruction& instructionIn) {
+void LoginUpdater::processInstruction(Instruction& instructionIn) {
 	Instruction instructionOut;
 
 	instructionOut.clear();
 	switch (instructionIn.getOpCode()) {
-		case OPCODE_CONNECT_TO_CHAT:
+		case OPCODE_LOGIN_REQUEST:
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
-		case OPCODE_CHAT_MESSAGE_OUT:
-			instructionOut = instructionIn;
-			this->getConnector().addInstruction(instructionOut);
-		break;
-		case OPCODE_CHAT_MESSAGE_IN:
-			this->getConnector().addInstruction(instructionOut);
+		case OPCODE_USERID_NOT_AVAILABLE:
+			this->setStopping(true);//TEMPORARY
 			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_FROM) + ": " + instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_MESSAGE));
+			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ERROR));
 			this->getMessagesListMutex().unlock();
 		break;
-		case OPCODE_CHAT_LOGOUT_REQUEST:
-			this->setConnected(false);
-			this->setStopping(true);//TEMPORARY
-			instructionOut = instructionIn;
-			this->getConnector().addInstruction(instructionOut);
-		break;
-		case OPCODE_CHAT_CONNECTION_ESTABLISHED:
-			this->setConnected(true);
+		case OPCODE_LOGIN_OK:
+			this->setLoggedIn(true);
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_GREETING));
 			this->getMessagesListMutex().unlock();
 		break;
+		case OPCODE_LOGOUT_REQUEST:
+			this->setStopping(true);
+			instructionOut = instructionIn;
+			this->getConnector().addInstruction(instructionOut);
+		break;
 		case OPCODE_CONNECTION_ERROR:
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
-			this->setConnected(false);
 			this->setStopping(true);
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back("CONNECTION WITH SERVER LOST");
@@ -115,35 +125,35 @@ void ChatUpdater::processInstruction(Instruction& instructionIn) {
 	}
 }
 
-void* ChatUpdater::run() {
-	this->updateChatModel();
+void* LoginUpdater::run() {
+	this->updateLoginModel();
 	return NULL;
 }
 
 // ----------------------------------- PUBLIC METHODS ------------------------------------
 
-bool ChatUpdater::isConnected() {
-	return this->connected;
+bool LoginUpdater::isLoggedIn() {
+	return this->loggedIn;
 }
 
-void ChatUpdater::addInstruction(Instruction instruction) {
+void LoginUpdater::addInstruction(Instruction instruction) {
 	this->getInstructionQueue().addInstruction(instruction);
 }
 
-void ChatUpdater::startUpdating() {
+void LoginUpdater::startUpdating() {
 	this->start();
 }
 
-void ChatUpdater::stopUpdating(bool forceStop) {
+void LoginUpdater::stopUpdating(bool forceStop) {
 	this->setForceStop(forceStop);
 	this->setStopping(true);
 	this->getInstructionQueue().stopWaiting();
 	this->join();
 	this->getConnector().stopConnector(forceStop);
-	this->setConnected(false);
+	this->setLoggedIn(false);
 }
 
 // ----------------------------------- DESTRUCTOR ----------------------------------------
 
-ChatUpdater::~ChatUpdater() {
+LoginUpdater::~LoginUpdater() {
 }

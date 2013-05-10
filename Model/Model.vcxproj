@@ -83,6 +83,8 @@
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="InstructionQueue.cpp" />
     <ClCompile Include="ListaPath.cpp" />
+    <ClCompile Include="Login.cpp" />
+    <ClCompile Include="LoginUpdater.cpp" />
     <ClCompile Include="Mutex.cpp" />
     <ClCompile Include="Nodo.cpp" />
     <ClCompile Include="Par.cpp" />
@@ -114,6 +116,8 @@
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="InstructionQueue.h" />
     <ClInclude Include="ListaPath.h" />
+    <ClInclude Include="Login.h" />
+    <ClInclude Include="LoginUpdater.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="Nodo.h" />
     <ClInclude Include="Par.h" />
