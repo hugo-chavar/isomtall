@@ -6,6 +6,7 @@ Game::Game() {
 }
 
 Game::~Game() {
+	_login.cleanUp();
 }
 
 Game& Game::instance() {
@@ -39,6 +40,7 @@ bool Game::initialize(string nombreJugador) {
 	_personaje->setName(nombreJugador);
 	_personaje->createVision(_configuration->visionRange());
 	this->_time.initializeTime();
+	_login.initialize();
 	return true;
 }
 
