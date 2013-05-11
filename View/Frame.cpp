@@ -43,11 +43,11 @@ SDL_Surface* Frame::getSuperficie(bool freezed)
 {
 	if(freezed)
 	{
-		SDL_SetAlpha( superficie, SDL_SRCALPHA, 50);
+		SDL_SetAlpha( superficie, SDL_SRCALPHA, (SDL_ALPHA_TRANSPARENT + SDL_ALPHA_OPAQUE)/2);
 	}
 	else
 	{
-		SDL_SetAlpha( superficie, SDL_SRCALPHA, 255);
+		SDL_SetAlpha( superficie, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
 	}
 	return superficie;
 }
