@@ -34,7 +34,7 @@ void Entity::update() {
 }
 
 void Entity::render(Camera& camera) {
-	camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie());
+	camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie(this->freezed));
 }
 
 void Entity::setFreezed(bool value) {
