@@ -131,7 +131,7 @@ void model::Chat::cleanUp() {
 		this->getChatUpdater().stopUpdating(false);
 	}
 
-	WSACleanup();
+	//WSACleanup();
 }
 
 model::Chat::~Chat() {

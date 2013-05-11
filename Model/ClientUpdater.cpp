@@ -27,8 +27,8 @@ InstructionQueue& ClientUpdater::getInstructionQueue() {
 
 void ClientUpdater::updateClient() {
 	//Agregado, no se conectaba
-	WSAData ws;
-	WSAStartup(MAKEWORD(2,2),&ws);
+//	WSAData ws;
+//	WSAStartup(MAKEWORD(2,2),&ws);
 	Instruction instructionIn;
 	Instruction instructionOut;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);

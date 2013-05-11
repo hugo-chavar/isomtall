@@ -25,6 +25,8 @@ namespace view {
 		void sendMessage();
 		void setTo(string To);
 
+
+		model::Chat * modelChat;
 	private:
 		Textbox textbox;
 		StaticTextBox nameBox;
@@ -33,7 +35,7 @@ namespace view {
 		SDL_Rect closeButtonRect;
 		bool typing;
 		bool initializeCloseButton();
-		model::Chat * modelChat;
+//		model::Chat * modelChat;
 		void receiveMsgs();
 
 	};
