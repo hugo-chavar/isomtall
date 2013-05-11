@@ -1,6 +1,8 @@
 #include "Personaje.h"
 #include "../Model/PersonajeConstantes.h"
 #include "SDL_ttf.h"
+#include "Logger.h"
+#include "StringUtilities.h"
 
 #include "Game.h"
 
@@ -145,6 +147,8 @@ void Personaje::calcularSigTileAMover(){
 			ePot.first = 0;
 			ePot.second = 0;
 		} 
+		std::string aux = stringUtilities::floatToString(velocidad);
+		common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			modelo->setCurrent(tile.first, tile.second);
 		}
