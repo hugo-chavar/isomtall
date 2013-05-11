@@ -73,28 +73,37 @@ void Circle::initialize(std::pair<int, int> center, int range) {
 void Circle::fill() {
 	if (orderedLimits.size() < 5)
 		return;
-	std::list <std::pair<int, int> >::iterator it = orderedLimits.begin();
-	int maxValueY = (*it).second;
+	std::list <std::pair<int, int> >::iterator itBegin = orderedLimits.begin();
+	std::list <std::pair<int, int> >::iterator itEnd;
+	std::pair<int, int> pos1;
+	std::pair<int, int> pos2 = orderedLimits.back();
+	int maxValueY = (*itBegin).second;
+	int minValueY = (pos2.second >= -1) ? pos2.second : -1;
 
-	while ((it != orderedLimits.end()) && ((*it).second == maxValueY)) {
-		it++;
+	while ((itBegin != orderedLimits.end()) && ((*itBegin).second == maxValueY)) {
+		itBegin++;
 	}
 
-	std::pair<int, int> pos1 = (*it);
-	it++;
-	std::pair<int, int> pos2 = (*it);
-	it++;
-	while ((it != orderedLimits.end()) && (pos1.second == pos2.second) && (pos1.second != (*it).second)){
+	pos1 = (*itBegin);
+	//itBegin++;
+	itEnd = itBegin;
+	// = (*itEnd);
+	//itEnd++;
+	while ((itBegin != orderedLimits.end()) && (minValueY < (*itBegin).second ) ) { // && (pos1.second == (*itEnd).second) && (pos1.second != (*it).second)
+		while ((itEnd != orderedLimits.end()) && (pos1.second == (*itEnd).second ) ) { //&& (pos1.second != (*it).second)
+			pos2 = (*itEnd);
+			itEnd++;
+		}
 
 		for (int i = (pos1.first + 1); i < pos2.first; i++) {
 			limits.insert(std::make_pair(i, pos1.second));
 		}
-		
-		pos1 = (*it);
-		it++;
-		if (it != orderedLimits.end())
-			pos2 = (*it);
-		it++;
+		itBegin = itEnd;
+		pos1 = (*itBegin);
+		//itBegin++;
+		//if (itBegin != orderedLimits.end())
+		//	pos2 = (*itBegin);
+		//itBegin++;
 	}
 	itlim = limits.begin();
 }
