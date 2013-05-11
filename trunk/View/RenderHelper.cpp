@@ -86,12 +86,13 @@ void RenderHelper::renderNextLevel(Camera& camera){
 	TileView* tile;
 	tile = (*levelIterator).first;
 	while (tile != (*levelIterator).second ){
-		if (Game::instance().insidePlayerVision(tile->getPosition())){
-			tile->renderEntity(camera);
-		} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
-			//TODO: niebla aplicada NO ES NECESARIO EL IF!!
-			tile->renderEntity(camera);
-		}
+		tile->renderEntity(camera);
+		//if (Game::instance().insidePlayerVision(tile->getPosition())){
+		//	tile->renderEntity(camera);
+		//} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
+		//	//TODO: niebla aplicada NO ES NECESARIO EL IF!!
+		//	tile->renderEntity(camera);
+		//}
 		tile = tile->getNextTile();
 	}
 	levelIterator++;
@@ -109,7 +110,7 @@ void RenderHelper::renderGround(Camera& camera){
 			} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
 				//aplico niebla
 				tile->setFreezed(true);
-				tile->renderEntity(camera);
+				tile->renderGround(camera);
 			}
 			tile = tile->getNextTile();
 		}
