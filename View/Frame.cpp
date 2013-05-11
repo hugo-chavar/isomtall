@@ -39,9 +39,22 @@ void Frame::liberar()
 		SDL_FreeSurface(superficie);
 	}
 
+SDL_Surface* Frame::getSuperficie(bool freezed)
+{
+	if(freezed)
+	{
+		SDL_SetAlpha( superficie, SDL_SRCALPHA, 50);
+	}
+	else
+	{
+		SDL_SetAlpha( superficie, SDL_SRCALPHA, 255);
+	}
+	return superficie;
+}
+
 SDL_Surface* Frame::getSuperficie()
 {
-	return superficie;
+		return superficie;
 }
 	
 void Frame::setSuperficie(SDL_Surface* superf)

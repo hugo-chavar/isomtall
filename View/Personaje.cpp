@@ -18,6 +18,8 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	crearNombre(modelo->getName());
 
 	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
+
+	this->setFreezed(false);
 }
 
 void Personaje::crearNombre(string textoNombre) {
@@ -224,7 +226,7 @@ void Personaje::render(Camera& camera) {
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie());
+	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie(this->freezed));
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
 }
