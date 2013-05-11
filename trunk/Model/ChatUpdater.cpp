@@ -39,18 +39,18 @@ std::list<std::string>& ChatUpdater::getMessagesList() {
 }
 
 void ChatUpdater::updateChatModel() {
-	WSAData ws;
-	WSAStartup(MAKEWORD(2,2),&ws);
+//	WSAData ws;
+//	WSAStartup(MAKEWORD(2,2),&ws);
 	Instruction instructionIn;
-	Instruction instructionOut;
+//	Instruction instructionOut;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
-		instructionOut.setOpCode(OPCODE_CONNECT_TO_CHAT);
-		instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,"1"); // harcodeo
-		this->addInstruction(instructionOut);
+//		instructionOut.setOpCode(OPCODE_CONNECT_TO_CHAT);
+//		instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,"1"); // harcodeo
+//		this->addInstruction(instructionOut);
 		do {
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {

@@ -6,7 +6,7 @@ Game::Game() {
 }
 
 Game::~Game() {
-	_login.cleanUp();
+//	_login.cleanUp();
 }
 
 Game& Game::instance() {
@@ -20,6 +20,10 @@ StageModel* Game::world() {
 
 TimeManager* Game::time() {
 	return &_time;
+}
+
+model::Login* Game::getLogin() {
+	return &_login;
 }
 
 bool Game::initialize(string nombreJugador) {

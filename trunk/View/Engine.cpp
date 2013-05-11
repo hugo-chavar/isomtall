@@ -9,6 +9,9 @@ Engine::Engine() {
 	//TODO: must be either in the config file or an in-game parameter.
 	this->desiredFPS = 100;
 	this->chat.setIsTyping(false);
+
+	WSAData ws;
+	WSAStartup(MAKEWORD(2,2),&ws);
 }
 
 bool Engine::isRunning() {
@@ -26,7 +29,19 @@ int Engine::execute() {
 
 	this->initialize();
  
-	
+	Instruction instruction;
+	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	Game::instance().getLogin()->getLoginUpdater().addInstruction(instruction);
+	Sleep(2000);
+	if (!Game::instance().getLogin()->isLoggedIn())
+		return EXIT_FAILURE;
+
+	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	this->chat.modelChat->getMessagesList().push_back("Connecting to chat");
+	this->chat.modelChat->getChatUpdater().addInstruction(instruction);
+
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
@@ -50,6 +65,9 @@ int Engine::execute() {
 void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
+
+	string nombreJugador="1";
+	Game::instance().initialize(nombreJugador);
 
 	bool cameraInitialized = this->camera.initialize();
 	bool mapInitialized = false;
@@ -171,8 +189,13 @@ void Engine::render() {
 void Engine::cleanUp() {
 	this->camera.cleanUp();
 
+	Game::instance().getLogin()->cleanUp();
+
+	this->chat.modelChat->cleanUp();
+
 	SDL_Quit();
 }
 
 Engine::~Engine() {
+	WSACleanup();
 }
