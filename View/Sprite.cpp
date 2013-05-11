@@ -3,14 +3,12 @@
 #include "AnimatedEntity.h"
 #include "DirList.h"
 
-Sprite::Sprite(EntityObject *entity)
-{
+Sprite::Sprite(EntityObject *entity) {
 	this->inicializar(entity->pixelRefX(),entity->pixelRefY(),entity->baseWidth(),entity->baseHeight());
-	cargarFrame(entity);//->imagePath());
+	cargarFrame(entity);
 }
 
-void Sprite::inicializar(int refX,int refY,int baseWidth,int baseHeight)
-{
+void Sprite::inicializar(int refX,int refY,int baseWidth,int baseHeight) {
 	estado = 0;
 	relx = refX;
 	rely = refY;
@@ -18,52 +16,42 @@ void Sprite::inicializar(int refX,int refY,int baseWidth,int baseHeight)
 	_baseHeight = baseHeight;
 }
 
-Sprite::Sprite()
-{
+Sprite::Sprite() {
 }
 
-Sprite::~Sprite()
-{
-	for(unsigned i=0;i<frames.size();i++)
-	{
+Sprite::~Sprite() {
+	for(unsigned i=0;i<frames.size();i++) 	{
 		frames[i]->liberar();
 		delete frames[i];
 	}
 }
 
-void Sprite::cargarFrame(EntityObject * entity)
-{
+void Sprite::cargarFrame(EntityObject * entity) {
 	frames.push_back(new Frame());
 	frames[0]->cargar(entity->imagePath());
 }
 
 
-void Sprite::actualizarFrame()
-{
+void Sprite::actualizarFrame() {
 }
 
-Frame* Sprite::getFrameActual()
-{
+Frame* Sprite::getFrameActual() {
 	return frames[estado];
 }
 
-int Sprite::relatx()
-{
+int Sprite::relatx() {
 	return relx;
 }
 
-int Sprite::relaty()
-{
+int Sprite::relaty() {
 	return rely;
 }
 
-int Sprite::baseWidth()
-{
+int Sprite::baseWidth() {
 	return _baseWidth;
 }
 
-int Sprite::baseHeight()
-{
+int Sprite::baseHeight() {
 	return _baseHeight;
 }
 

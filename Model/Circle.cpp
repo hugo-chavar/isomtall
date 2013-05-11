@@ -66,7 +66,6 @@ void Circle::initialize(std::pair<int, int> center, int range) {
 		}
 	}
 	std::copy(limits.begin(), limits.end(), std::inserter(orderedLimits, orderedLimits.begin()));
-	//orderedLimits.assign(limits.begin(), limits.end());
 	orderedLimits.sort(comparator);
 }
 
@@ -85,12 +84,9 @@ void Circle::fill() {
 	}
 
 	pos1 = (*itBegin);
-	//itBegin++;
 	itEnd = itBegin;
-	// = (*itEnd);
-	//itEnd++;
-	while ((itBegin != orderedLimits.end()) && (minValueY < (*itBegin).second ) ) { // && (pos1.second == (*itEnd).second) && (pos1.second != (*it).second)
-		while ((itEnd != orderedLimits.end()) && (pos1.second == (*itEnd).second ) ) { //&& (pos1.second != (*it).second)
+	while ((itBegin != orderedLimits.end()) && (minValueY < (*itBegin).second ) ) { 
+		while ((itEnd != orderedLimits.end()) && (pos1.second == (*itEnd).second ) ) {
 			pos2 = (*itEnd);
 			itEnd++;
 		}
@@ -98,12 +94,9 @@ void Circle::fill() {
 		for (int i = (pos1.first + 1); i < pos2.first; i++) {
 			limits.insert(std::make_pair(i, pos1.second));
 		}
+
 		itBegin = itEnd;
 		pos1 = (*itBegin);
-		//itBegin++;
-		//if (itBegin != orderedLimits.end())
-		//	pos2 = (*itBegin);
-		//itBegin++;
 	}
 	itlim = limits.begin();
 }

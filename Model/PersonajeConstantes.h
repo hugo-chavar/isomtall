@@ -13,7 +13,7 @@
 
 //Cambios de estado
 
-#define ERROR -1
+#define ESTADO_ERROR -1
 #define ESTADO_MOVIMIENTO 1
 #define SIN_CAMBIO 0
 #define PARADO 10

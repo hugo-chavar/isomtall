@@ -277,7 +277,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	case SUDOESTE: return CAMINANDO_SOE;
 	case ESTE: return CAMINANDO_E;
 	case OESTE: return CAMINANDO_O;
-	default: return ERROR;
+	default: return ESTADO_ERROR;
 	}
 }
 
@@ -309,7 +309,7 @@ int PersonajeModelo::obtenerOrientacion(int x, int y) {
 	if ((x > xCurr)&&(y > yCurr)) {
 		return SUR;
 	}
-	return ERROR;
+	return ESTADO_ERROR;
 }
 
 PersonajeModelo::~PersonajeModelo(){
@@ -353,46 +353,58 @@ void PersonajeModelo::update(){
 }
 
 std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
-	std::pair <int, int> posicionSig;
+	std::pair <int, int> posicionSig = current;
 
-	if (orientacion == NORTE) {
-		posicionSig.first = current.first - 1;
-		posicionSig.second = current.second - 1;
-		return posicionSig;
-	}
-	if (orientacion == NORESTE) {
-		posicionSig.first = current.first;
-		posicionSig.second = current.second - 1;
-		return posicionSig;
-	}
-	if (orientacion == ESTE) {
-		posicionSig.first = current.first + 1;
-		posicionSig.second = current.second - 1;
-		return posicionSig;
-	}
-	if (orientacion == NOROESTE) {
-		posicionSig.first = current.first - 1;
-		posicionSig.second = current.second;
-		return posicionSig;
-	}
-	if (orientacion == SUDESTE) {
-		posicionSig.first = current.first + 1;
-		posicionSig.second = current.second;
-		return posicionSig;
-	}
-	if (orientacion == OESTE) {
-		posicionSig.first = current.first - 1;
-		posicionSig.second = current.second + 1;
-		return posicionSig;
-	}
-	if (orientacion == SUDOESTE) {
-		posicionSig.first = current.first;
-		posicionSig.second = current.second + 1;
-		return posicionSig;
-	}
-	if (orientacion == SUR) {
-		posicionSig.first = current.first + 1;
-		posicionSig.second = current.second + 1;
-		return posicionSig;
-	}
+	if ((orientacion == NORTE) || (orientacion == NORESTE) || (orientacion == ESTE))
+		posicionSig.second--;
+	else if ((orientacion == SUDOESTE) || (orientacion == OESTE) || (orientacion == SUR))
+		posicionSig.second++;
+
+	if ((orientacion == NORTE) || (orientacion == NOROESTE) || (orientacion == OESTE))
+		posicionSig.first--;
+	else if ((orientacion == ESTE) || (orientacion == SUDESTE) || (orientacion == SUR))
+		posicionSig.first++;
+	
+	return posicionSig;
+
+	//if (orientacion == NORTE) {
+	//	posicionSig.first = current.first - 1;
+	//	posicionSig.second = current.second - 1;
+	//	return posicionSig;
+	//}
+	//if (orientacion == NORESTE) {
+	//	posicionSig.first = current.first;
+	//	posicionSig.second = current.second - 1;
+	//	return posicionSig;
+	//}
+	//if (orientacion == ESTE) {
+	//	posicionSig.first = current.first + 1;
+	//	posicionSig.second = current.second - 1;
+	//	return posicionSig;
+	//}
+	//if (orientacion == NOROESTE) {
+	//	posicionSig.first = current.first - 1;
+	//	posicionSig.second = current.second;
+	//	return posicionSig;
+	//}
+	//if (orientacion == SUDESTE) {
+	//	posicionSig.first = current.first + 1;
+	//	posicionSig.second = current.second;
+	//	return posicionSig;
+	//}
+	//if (orientacion == OESTE) {
+	//	posicionSig.first = current.first - 1;
+	//	posicionSig.second = current.second + 1;
+	//	return posicionSig;
+	//}
+	//if (orientacion == SUDOESTE) {
+	//	posicionSig.first = current.first;
+	//	posicionSig.second = current.second + 1;
+	//	return posicionSig;
+	//}
+	//if (orientacion == SUR) {
+	//	posicionSig.first = current.first + 1;
+	//	posicionSig.second = current.second + 1;
+	//	return posicionSig;
+	//}
 }
