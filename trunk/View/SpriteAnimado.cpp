@@ -1,8 +1,7 @@
 #include "SpriteAnimado.h"
 
 
-SpriteAnimado::SpriteAnimado(AnimatedEntity* entity)
-{
+SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
 	this->inicializar(entity->pixelRefX(),entity->pixelRefY(),entity->baseWidth(),entity->baseHeight());
 	comienzo_frame = SDL_GetTicks();
 	delay = static_cast<float>(entity->delay()); 
@@ -10,13 +9,10 @@ SpriteAnimado::SpriteAnimado(AnimatedEntity* entity)
 	cargarFrames(entity);
 }
 
-
-SpriteAnimado::~SpriteAnimado()
-{
+SpriteAnimado::~SpriteAnimado() {
 }
 
-void SpriteAnimado::actualizarFrame()
-{
+void SpriteAnimado::actualizarFrame() {
 	float deltaTime = 0.0;
 	if(estado == 0)
 		deltaTime = delay;
@@ -24,8 +20,7 @@ void SpriteAnimado::actualizarFrame()
 		this->avanzarFrames();
 }
 
-void SpriteAnimado::cargarFrames(AnimatedEntity * entity)
-{
+void SpriteAnimado::cargarFrames(AnimatedEntity * entity) {
 	unsigned i = 0;
 	entity->imagesPaths()->restartCurrentPosition();
 	while (entity->imagesPaths()->hasNext()) {
@@ -35,7 +30,7 @@ void SpriteAnimado::cargarFrames(AnimatedEntity * entity)
 	}
 }
 
-bool SpriteAnimado::ultimoFrame(){
+bool SpriteAnimado::ultimoFrame() {
 	if (estado >= frames.size()-1) {
 		return true;
 	} else {
@@ -47,8 +42,7 @@ void SpriteAnimado::reiniciar() {
 	estado = 0;
 }
 
-void SpriteAnimado::avanzarFrames()
-{
+void SpriteAnimado::avanzarFrames() {
 	comienzo_frame = SDL_GetTicks();
 	if ( this->ultimoFrame() )
 		estado = 0;
@@ -56,7 +50,6 @@ void SpriteAnimado::avanzarFrames()
 		estado = estado++;
 }
 
-bool SpriteAnimado::tiempoFrameCumplido(float delta)
-{
+bool SpriteAnimado::tiempoFrameCumplido(float delta) {
 	return ((SDL_GetTicks() - comienzo_frame) >= ((1000/fps) + delta));
 }

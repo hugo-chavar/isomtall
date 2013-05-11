@@ -4,20 +4,29 @@
 #include "SDL.h"
 #include <string>
 
-//TODO: static class completely copied from SDL tutorials. This methos shoud be in an abstract class from which all views should inherit.
-//Esta clase vendria a ser el equivalente en la vista de la clase EntityObject del modelo, son dos estructuras conectadas
 namespace view{
 	class Surface {
-	public:
-		Surface();
+		private:
+			SDL_Surface* sdlSurface;
 
-		static SDL_Surface* loadFromBMP(std::string fileName);
+			void setSdlSurface(SDL_Surface* sdlSurface);
 
-		static bool draw(SDL_Surface* source, SDL_Surface* destination, unsigned int destinationOffsetX, unsigned int destinationOffsetY);
+		public:
+			Surface();
 
-		static bool draw(SDL_Surface* source, unsigned int sourceOffsetX, unsigned int sourceOffsetY, unsigned int sourceHeight, unsigned int sourceWidth, SDL_Surface* destination, unsigned int destinationOffsetX, unsigned int destinationOffsetY);
+			SDL_Surface* getSdlSurface();
 
-		~Surface();
+			void load(std::string fileName);
+
+			void createTransparent();
+
+			int getWidth();
+
+			int getHeight();
+
+			void free();
+
+			~Surface();
 	};
 }
  

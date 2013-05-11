@@ -35,14 +35,12 @@ namespace view {
 		Personaje* _personaje;
 		StageModel* worldModel;
 		map<string,int> mapEntityToSprite;
-		//vector<vector<Entity*>> entityList;
 		map<KeyPair, TileView*> tilesMap;
 		TileView* firstTile;
 		vector <TileView*> tileLevels;
 		int minLevelsInCamera;
 		RenderHelper renderHelper;
-		//void renderTile(int Xt, int Yt,Camera& camera);
-		void calculateTilesToRender(Camera& camera); //list<pair<TileView*,TileView*>>
+		void calculateTilesToRender(Camera& camera);
 		void loadSprites();
 		void generateStage();
 		void deleteStage();

@@ -85,7 +85,6 @@ void RenderHelper::renderNextLevel(Camera& camera) {
 	TileView* tile;
 	tile = (*levelIterator).first;
 	while (tile != (*levelIterator).second ) {
-		//tile->renderEntity(camera);
 		if ( (Game::instance().insidePlayerVision(tile->getPosition()) ) || (Game::instance().isKnownByPlayer(tile->getPosition()))) {
 			tile->renderEntity(camera);
 		} //else if (Game::instance().isKnownByPlayer(tile->getPosition())){

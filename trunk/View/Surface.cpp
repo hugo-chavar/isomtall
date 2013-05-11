@@ -1,57 +1,51 @@
 #include "Surface.h"
+#include <SDL_image.h>
 
-using namespace view;
-
-Surface::Surface() {
+view::Surface::Surface() {
+	this->sdlSurface = NULL;
 }
- 
-SDL_Surface* Surface::loadFromBMP(std::string fileName) {
+
+SDL_Surface* view::Surface::getSdlSurface() {
+	return this->sdlSurface;
+}
+
+void view::Surface::setSdlSurface(SDL_Surface* sdlSurface) {
+	this->sdlSurface = sdlSurface;
+}
+
+int view::Surface::getWidth() {
+	return this->getSdlSurface()->w;
+}
+
+int view::Surface::getHeight() {
+	return this->getSdlSurface()->h;
+}
+
+void view::Surface::createTransparent() {
 	SDL_Surface* tempSurface = NULL;
-	SDL_Surface* surface = NULL;
 
-	if((tempSurface = SDL_LoadBMP(fileName.c_str())) == NULL) {
-		return NULL;
-	}
+	tempSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA,800,600,32,0,0,0,0);
 
-	surface = SDL_DisplayFormat(tempSurface);
+	this->setSdlSurface(SDL_DisplayFormatAlpha(tempSurface));
+
+	SDL_FillRect(this->getSdlSurface(),NULL,SDL_MapRGBA(this->getSdlSurface()->format,0,0,0,0));
+
 	SDL_FreeSurface(tempSurface);
-
-	return surface;
 }
 
-bool Surface::draw(SDL_Surface* source, SDL_Surface* destination, unsigned int destinationOffsetX, unsigned int destinationOffsetY) {
-	if(source == NULL || destination == NULL) {
-		return false;
-	}
+void view::Surface::load(std::string fileName) {
+	SDL_Surface* tempSurface = NULL;
 
-	SDL_Rect destinationRectangle;
-	destinationRectangle.x = (Sint16) destinationOffsetX;
-	destinationRectangle.y = (Sint16) destinationOffsetY;
+	tempSurface = IMG_Load(fileName.c_str());
 
-	SDL_BlitSurface(source,NULL,destination,&destinationRectangle);
+	this->setSdlSurface(SDL_DisplayFormatAlpha(tempSurface));
 
-	return true;
+	SDL_FreeSurface(tempSurface);
 }
 
-bool Surface::draw(SDL_Surface* source, unsigned int sourceOffsetX, unsigned int sourceOffsetY, unsigned int sourceHeight, unsigned int sourceWidth, SDL_Surface* destination, unsigned int destinationOffsetX, unsigned int destinationOffsetY) {
-	if(source == NULL || destination == NULL) {
-		return false;
-	}
-
-	SDL_Rect destinationRectangle;
-	destinationRectangle.x = (Sint16) destinationOffsetX;
-	destinationRectangle.y = (Sint16) destinationOffsetY;
-
-	SDL_Rect sourceRectangle;
-	sourceRectangle.x = (Sint16) sourceOffsetX;
-	sourceRectangle.y = (Sint16) sourceOffsetY;
-	sourceRectangle.h = (Uint16) sourceHeight;
-	sourceRectangle.w = (Uint16) sourceWidth;
-
-	SDL_BlitSurface(source,&sourceRectangle,destination,&destinationRectangle);
-
-    return true;
+void view::Surface::free() {
+	SDL_FreeSurface(this->getSdlSurface());
 }
 
-Surface::~Surface() {
+view::Surface::~Surface() {
 }
