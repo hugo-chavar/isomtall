@@ -23,8 +23,10 @@ public:
 	virtual void update();
 	virtual void render(Camera& camera);
 	~Entity(void);
-	void setFreezed(bool);
+	virtual void setFreezed(bool);
 	bool isFreezed();
-	SDL_Rect getSdlRect();
+	void setRectangle(std::pair<int, int> pos, Sprite* sprite );
+	void resetSpriteState(); //virtual?
+	//SDL_Rect getSdlRect();
 };
 

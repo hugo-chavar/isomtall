@@ -6,18 +6,22 @@ Entity::Entity() {
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado) {
 	this->setFreezed(true);
-	this->freezedSpriteState = -1;
+	this->resetSpriteState();
 	sprite = spriteCargado;
-	spriteRect = posicionIsometricaPorTiles(tileX, tileY, sprite);
-	spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);
-	//this->shadow = new Surface();
-	this->shadow.createShadow(sprite->getFrameActual()->getSuperficie());
+	this->setRectangle(std::make_pair(tileX, tileY), spriteCargado);
 }
 
-Entity::~Entity(void) {
-	//this->shadow->free();
+Entity::~Entity() {
+	//this->shadow.free();
 	//delete this->shadow;
+}
+
+void Entity::setRectangle(std::pair<int, int> pos, Sprite* sprite ) {
+	spriteRect = posicionIsometricaPorTiles(pos.first, pos.second, sprite);
+	/*spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
+	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);*/
+	spriteRect.w = (Uint16)(sprite->getCurrentSurface()->getSurface()->w);
+	spriteRect.h = (Uint16)(sprite->getCurrentSurface()->getSurface()->h);
 }
 
 SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) {
@@ -38,11 +42,16 @@ void Entity::update() {
 }
 
 void Entity::render(Camera& camera) {
+
+	//if (this->freezed)
+	//	camera.render(spriteRect,this->shadow.getSdlSurface());
 	//camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie(this->freezed));
-	if (this->freezed)
-		camera.render(spriteRect,this->shadow.getSdlSurface());
-	camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie(this->freezed));
+
 	//camera.render(spriteRect,sprite->getFrameActual()->getSuperficie(false));
+
+	if (this->freezed)
+		camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getShadow());
+	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
 }
 
 void Entity::setFreezed(bool value) {
@@ -50,15 +59,19 @@ void Entity::setFreezed(bool value) {
 		return;
 	this->freezed = value;
 	if (!this->isFreezed())
-		this->freezedSpriteState = -1;
+		this->resetSpriteState();
+}
+
+void Entity::resetSpriteState() {
+	this->freezedSpriteState = -1;
 }
 
 bool Entity::isFreezed() {
 	return this->freezed;
 }
-
-SDL_Rect Entity::getSdlRect() {
-	return this->spriteRect;
-}
+//
+//SDL_Rect Entity::getSdlRect() {
+//	return this->spriteRect;
+//}
 
 

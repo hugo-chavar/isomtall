@@ -5,13 +5,19 @@
 #include "PersonajeConstantes.h"
 #include "Game.h"
 
-
 using namespace common;
 
-
 PersonajeModelo::PersonajeModelo() {
-	current.first = DEFAULT_MAIN_CHARACTER_X;
-	current.second = DEFAULT_MAIN_CHARACTER_Y;
+	this->initialize(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
+}
+
+PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
+	this->initialize(ActualX, ActualY);
+}
+
+void PersonajeModelo::initialize(int pos_x, int pos_y) {
+	current.first = pos_x;
+	current.second = pos_y;
 	target.first = current.first;
 	target.second = current.second;
 	targetParcial.first = current.first;
@@ -22,29 +28,10 @@ PersonajeModelo::PersonajeModelo() {
 	caminoSize = 0;
 	estado = PARADO_S;
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
-	isActivo = true;
+	this->setIsActivo(true);
 	orientacion = SUR;
-	animando = false;
+	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
-}
-
-PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
-	current.first = ActualX;
-	current.second = ActualY;
-	target.first = current.first;
-	target.second = current.second;
-	targetParcial.first = current.first;
-	targetParcial.second = current.second;
-	xPath = NULL;
-	yPath = NULL;
-	posMov = 0;
-	caminoSize = 0;
-	this->estado = PARADO_S;
-	isActivo = true;
-	orientacion = SUR;
-	animando = false;
-	animacionActual = SIN_CAMBIO;
-	//this->velocidad = velocidad;
 }
 
 
@@ -53,8 +40,8 @@ void PersonajeModelo::setCurrent(int x, int y) {
 	current.second = y;
 }
 
-void PersonajeModelo::animation(AnimatedEntity* ae) {
-	_animation = ae;
+void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
+	animation = ae;
 }
 
 void PersonajeModelo::atacar() {
@@ -67,8 +54,8 @@ void PersonajeModelo::atacar() {
 	}
 }
 
-bool PersonajeModelo::estaAnimando() {
-	return animando;
+bool PersonajeModelo::estaAnimandose() {
+	return this->isAnimating;
 }
 
 void PersonajeModelo::animar(char opcion) {
@@ -76,7 +63,7 @@ void PersonajeModelo::animar(char opcion) {
 		
 		switch (opcion) {
 		case 'a': {
-			animando = true;
+			this->setAnimating(true);
 			this->atacar();
 				  }
 		default:;
@@ -85,36 +72,34 @@ void PersonajeModelo::animar(char opcion) {
 }
 
 void PersonajeModelo::terminarAnimacion() {
-	animando = false;
+	this->setAnimating(false);
 	estado = estado - animacionActual + PARADO;
 	animacionActual = SIN_CAMBIO;
 }
 
 
 bool PersonajeModelo::hasDirectoryRemaining(){
-	return _animation->hasNextDir();
+	return animation->hasNextDir();
 }
 
-AnimatedEntity* PersonajeModelo::animation() {
-	return _animation;
+AnimatedEntity* PersonajeModelo::getAnimation() {
+	return animation;
 }
 
 string PersonajeModelo::nextDirectory() {
-	return _animation->nextDirectory();
+	return animation->nextDirectory();
 }
 
-int PersonajeModelo::fps()
-{
-	return _animation->fps();
+int PersonajeModelo::fps() {
+	return animation->fps();
 }
 
-int PersonajeModelo::delay()
-{
-	return _animation->delay();
+int PersonajeModelo::delay() {
+	return animation->delay();
 }
 
 void PersonajeModelo::setDestino(int x, int y) {
-	if ((isActivo)&&(!animando)) {
+	if ((isActivo)&&(!this->estaAnimandose())) {
 		target.first = x;
 		target.second = y;
 		targetParcial.first = x;
@@ -126,30 +111,34 @@ void PersonajeModelo::setEstado(int state) {
 	estado = state;
 }
 
-void PersonajeModelo::setIsActivo() {
-	activarDesactivar();
-	if (isActivo) {
-		isActivo = false;
-	} else {
-		isActivo = true;
-	}
+void PersonajeModelo::setIsActivo(bool active) {
+		isActivo = active;
 }
 
-void PersonajeModelo::activarDesactivar() {
-	if ((this->estaAnimando())) {
-		this->terminarAnimacion();
-	}
-	if (isActivo) {
-		if (estado >= MOVIMIENTO) {
-			estado = estado + FREEZAR - MOVIMIENTO;
-		} else {
-			estado = estado + FREEZAR - PARADO;
-		}
-		targetParcial = target = current;
-	} else {
-		estado = estado - FREEZAR + PARADO;
-	}
-}
+//void PersonajeModelo::setIsActivo() {
+//	activarDesactivar();
+//	if (isActivo) {
+//		isActivo = false;
+//	} else {
+//		isActivo = true;
+//	}
+//}
+//
+//void PersonajeModelo::activarDesactivar() {
+//	if ((this->estaAnimando())) {
+//		this->terminarAnimacion();
+//	}
+//	if (isActivo) {
+//		if (estado >= MOVIMIENTO) {
+//			estado = estado + FREEZAR - MOVIMIENTO;
+//		} else {
+//			estado = estado + FREEZAR - PARADO;
+//		}
+//		targetParcial = target = current;
+//	} else {
+//		estado = estado - FREEZAR + PARADO;
+//	}
+//}
 
 
 bool PersonajeModelo::getIsActivo() {
@@ -160,10 +149,10 @@ void PersonajeModelo::setVelocidad(float vel) {
 	velocidad = vel;
 }
 
-void PersonajeModelo::getCurrent(std::pair<int, int>& actual) {
-	actual.first = current.first;
-	actual.second = current.second;
-}
+//void PersonajeModelo::getCurrent(std::pair<int, int>& actual) {
+//	actual.first = current.first;
+//	actual.second = current.second;
+//}
 
 int PersonajeModelo::getEstado() {
 	return estado;
@@ -313,42 +302,43 @@ int PersonajeModelo::obtenerOrientacion(int x, int y) {
 }
 
 PersonajeModelo::~PersonajeModelo(){
-	if (xPath != NULL) {
-		delete [] xPath;
-		xPath = NULL;
-	}
-	if (yPath != NULL) {
-		delete [] yPath;
-		yPath = NULL;
-	}
+	//if (xPath != NULL) {
+	//	delete [] xPath;
+	//	xPath = NULL;
+	//}
+	//if (yPath != NULL) {
+	//	delete [] yPath;
+	//	yPath = NULL;
+	//}
+	this->limpiarPath();
 	if (this->vision)
 		delete this->vision;
 }
 
-void PersonajeModelo::setName(string nombreJugador){
-	this->name=nombreJugador;
+void PersonajeModelo::setName(string nombreJugador) {
+	this->name = nombreJugador;
 }
 
-string PersonajeModelo::getName(){
+string PersonajeModelo::getName() {
 	return this->name;
 }
 
-std::pair<int, int> PersonajeModelo::getPosition(){
+std::pair<int, int> PersonajeModelo::getPosition() {
 	return this->current;
 }
 
-void PersonajeModelo::createVision(int range){
+void PersonajeModelo::createVision(int range) {
 	this->vision = new CharacterVision();
 	this->vision->setRangeVision(range);
 	this->vision->setPosition(this->getPosition());
 	this->vision->initialize();
 }
 
-CharacterVision* PersonajeModelo::getVision(){
+CharacterVision* PersonajeModelo::getVision() {
 	return this->vision;
 }
 
-void PersonajeModelo::update(){
+void PersonajeModelo::update() {
 	this->vision->updatePosition(this->getPosition());
 }
 
@@ -407,4 +397,8 @@ std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
 	//	posicionSig.second = current.second + 1;
 	//	return posicionSig;
 	//}
+}
+
+void PersonajeModelo::setAnimating(bool value) {
+	this->isAnimating = value;
 }

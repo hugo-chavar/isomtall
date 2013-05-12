@@ -9,7 +9,8 @@
 
 Personaje::Personaje(PersonajeModelo* pj) {
 	modelo = pj;
-	pj->getCurrent(tileActual);
+	tileActual = pj->getPosition();
+	//pj->getCurrent(tileActual);
 	estado = procesarAnimacion(pj->getEstado());
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
@@ -19,9 +20,10 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	serr = 0;
 	crearNombre(modelo->getName());
 
-	this->modelo->animation()->fps(static_cast<int>(this->modelo->animation()->fps() * (this->modelo->getVelocidad()/2)));
+	this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
 
 	this->setFreezed(false);
+	this->resetSpriteState();
 }
 
 void Personaje::crearNombre(string textoNombre) {
@@ -40,7 +42,7 @@ void Personaje::crearNombre(string textoNombre) {
 void Personaje::loadSprites() {
 	AnimatedEntity* animatedEntity;
 	animatedEntity = new AnimatedEntity();
-	animatedEntity->copy(modelo->animation());
+	animatedEntity->copy(modelo->getAnimation());
 	animatedEntity->loadImages(modelo->nextDirectory());
 	this->addFirstSprite(animatedEntity);
 
@@ -70,20 +72,34 @@ void Personaje::addNextSprite(AnimatedEntity* entity) {
 void Personaje::addFirstSprite(AnimatedEntity* entity) {
 	SpriteAnimado* newSprite = new SpriteAnimado(entity);
 	sprites.push_back(newSprite);
-	spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
+	this->setRectangle(tileActual, newSprite);
+	/*spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
 	spriteRect.w = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->h);
+	spriteRect.h = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->h);*/
 }
 
-bool Personaje::isCenteredInTile(){
+bool Personaje::isCenteredInTile() {
 	return ((delta.first == 0) && (delta.second == 0));
 }
 
-void Personaje::freezar() {
-	int animacion = modelo->getEstado();
-	estado = procesarAnimacion(animacion);
-	sprites[estado]->actualizarFrame();
+void Personaje::setFreezed(bool value) {
+	Entity::setFreezed(value);
+	//if (this->freezed == value)
+	//	return;
+	//this->freezed = value;
+	//if (!this->isFreezed())
+	//	this->freezedSpriteState = -1;
 }
+//
+//void Personaje::resetSpriteState() {
+//	this->freezedSpriteState = -1;
+//}
+
+//void Personaje::freezar() {
+//	int animacion = modelo->getEstado();
+//	estado = procesarAnimacion(animacion);
+//	sprites[estado]->actualizarFrame();
+//}
 
 void Personaje::detenerAnimacion() {
 	sprites[estado]->actualizarFrame();
@@ -93,6 +109,8 @@ void Personaje::detenerAnimacion() {
 }
 
 void Personaje::animar() {
+	if (!this->modelo->estaAnimandose())
+		return;
 	int animacion = modelo->getEstado();
 	if (procesarAnimacion(animacion) != estado) {
 		sprites[estado]->reiniciar();
@@ -104,26 +122,39 @@ void Personaje::animar() {
 	sprites[estado]->actualizarFrame();
 }
 
-void Personaje::update(){
-	
-	if ((modelo->getIsActivo())||(!(this->isCenteredInTile()))) {
-		if ((modelo->estaAnimando())&&(this->isCenteredInTile())) {
-			this->animar();
-		} else {
-			this->mover();
-		}
-	} else {
-		this->freezar();
-	}
+void Personaje::update() {
+	this->setFreezed(!modelo->getIsActivo());
+	this->mover();
+	this->animar();
 	modelo->update();
+	//if (!this->isCenteredInTile() {
+	//	this->mover();
+	//} else {
+	//	if (!this->isFreezed()) {
+	//		this->animar();
+	//		this->mover();
+	//	}
+	//}
+	//if ((modelo->getIsActivo())||(!(this->isCenteredInTile()))) {
+	//	if ((modelo->estaAnimando())&&(this->isCenteredInTile())) {
+	//		this->animar();
+	//	} else {
+	//		this->mover();
+	//	}
+	//} else {
+	//	this->setFreezed(true);
+	//}
+	
 }
 
-void Personaje::mover(){
+void Personaje::mover() {
+	if (this->isCenteredInTile() && (this->isFreezed() || this->modelo->estaAnimandose()))
+		return;
+
 	std::pair<float, float> factor;	//Cuantos pixels se mueve por ciclo
 	factor.first = 0;
 	factor.second = 0;
 	
-
 	calcularSigTileAMover();
 	calcularvelocidadRelativa(factor);
 	if (estado != ERROR) {
@@ -140,15 +171,16 @@ void Personaje::calcularSigTileAMover(){
 
 	if (this->isCenteredInTile()) {
 		serr = 0;
-		modelo->getCurrent(tileActual);
+		tileActual = modelo->getPosition();
+		//modelo->getCurrent(tileActual);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
 		if (estadoAnterior != estado) {
 			ePot.first = 0;
 			ePot.second = 0;
 		} 
-		std::string aux = stringUtilities::floatToString(velocidad);
-		common::Logger::instance().log("Velocidad: "+ aux);
+		//std::string aux = stringUtilities::floatToString(velocidad);
+		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			modelo->setCurrent(tile.first, tile.second);
 		}
@@ -230,11 +262,13 @@ void Personaje::render(Camera& camera) {
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie(this->freezed));
+	//camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie(this->freezed));
+	if (this->freezed)
+		camera.render(spriteRect,sprites[estado]->getSurfaceAt(freezedSpriteState)->getShadow());
+	camera.render(this->spriteRect, sprites[estado]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
 }
-
 
 void Personaje::setDestino(int xTile, int yTile){
 	modelo->setDestino(xTile, yTile);
@@ -332,7 +366,7 @@ int Personaje::procesarAnimacion(int animacion) {
 	case ATACAR_SOE: return ATTACK_SOE;
 	case ATACAR_E: return ATTACK_E;
 	case ATACAR_O: return ATTACK_O;
-	default: return ERROR;
+	default: return ESTADO_ERROR;
 	}
 }
 

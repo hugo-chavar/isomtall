@@ -17,8 +17,8 @@ public:
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
-	void getCurrent(std::pair<int, int>& actual);
-	void setIsActivo();
+	//void getCurrent(std::pair<int, int>& actual);
+	void setIsActivo(bool active);
 	bool getIsActivo();
 	int getEstado();
 	float getVelocidad();
@@ -26,11 +26,11 @@ public:
 	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
 	string nextDirectory();
 	bool hasDirectoryRemaining();
-	void animation(AnimatedEntity*);
-	AnimatedEntity* animation();
+	void setAnimation(AnimatedEntity* entity);
+	AnimatedEntity* getAnimation();
 	int fps();
 	int delay();
-	bool estaAnimando();
+	bool estaAnimandose();
 	void terminarAnimacion();
 	void animar(char opcion);
 	string getName();
@@ -40,6 +40,7 @@ public:
 	CharacterVision* getVision();
 	void update();
 	std::pair<int, int> obtenerFrentePersonaje();
+	void setAnimating(bool value);
 private:
 
 	int siCaminaDetenerse();
@@ -50,8 +51,10 @@ private:
 	int quedarseQuieto(float &velocidadAni);
 	//Modifica las variables del modelo para representar el movimiento
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
-	void activarDesactivar();
+	//void activarDesactivar();
 	void atacar();
+
+	void initialize(int pos_x, int pos_y);
 	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
@@ -60,13 +63,13 @@ private:
 	int* yPath;
 	int posMov;
 	int caminoSize;
-	bool animando;
+	bool isAnimating;
 	int animacionActual;
 	int estado;
 	int orientacion;
 	float velocidad;
 	bool isActivo;
-	AnimatedEntity * _animation;
+	AnimatedEntity * animation;
 	string name;
 	CharacterVision* vision;
 };

@@ -7,18 +7,24 @@
 namespace view{
 	class Surface {
 		private:
-			SDL_Surface* sdlSurface;
+			SDL_Surface* surface;
 
-			void setSdlSurface(SDL_Surface* sdlSurface);
+			SDL_Surface* shadow;
+
+			void setSurface(SDL_Surface* surface);
+
+			void setShadowSurface(SDL_Surface* surface);
 
 		public:
 			Surface();
 
-			SDL_Surface* getSdlSurface();
+			SDL_Surface* getSurface();
+
+			SDL_Surface* getShadow();
+
+			SDL_Surface* getSurfaceToShow(bool fogged);
 
 			void load(std::string fileName);
-
-			void createTransparent();
 
 			int getWidth();
 
@@ -30,9 +36,10 @@ namespace view{
 
 			void setTransparent();
 
-			void createShadow(SDL_Surface* source);
+			void setOpaque();
 
-			//void setShadow(SDL_Surface* source);
+			void createShadow();
+
 	};
 }
  

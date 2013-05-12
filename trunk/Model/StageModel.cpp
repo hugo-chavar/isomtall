@@ -304,8 +304,8 @@ bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float came
 	{
 		for(unsigned i=0;i<_vMainCharacters.size();i++)
 		{
-			std::pair<int,int> posChar;
-			_vMainCharacters[i]->getCurrent(posChar);
+			std::pair<int,int> posChar = _vMainCharacters[i]->getPosition();
+			//_vMainCharacters[i]->getCurrent(posChar);
 			if(posChar==tilePos)
 			{
 				name=_vMainCharacters[i]->getName();
