@@ -1,6 +1,8 @@
 #ifndef _MODEL_CHAT_H_
 #define _MODEL_CHAT_H_
 
+#pragma warning(disable: 4512)
+
 #include <list>
 #include <string>
 

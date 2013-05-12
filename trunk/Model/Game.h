@@ -1,5 +1,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
+#pragma warning(disable: 4512)
 
 #include <fstream>
 #include <string>

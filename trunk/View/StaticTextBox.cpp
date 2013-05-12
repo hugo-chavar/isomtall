@@ -90,14 +90,13 @@ bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char
 
 void StaticTextBox::render(Camera &camera) {
 
-		//Escribo en el fondo las lineas adecuadas
-	    camera.render(_boxRect, _box);
-		int max=lines.size()-1;
-		for(unsigned i=0;i<lines.size();i++)
-	{
+	//Escribo en el fondo las lineas adecuadas
+	camera.render(_boxRect, _box);
+	int max=lines.size()-1;
+	for(unsigned i=0;i<lines.size();i++) {
 		SDL_Rect rect;
-		rect.x =(Sint16) _boxRect.x+10;
-		rect.y =(Sint16) _boxRect.y+5+(max-i)*TTF_FontLineSkip(_font);
+		rect.x = static_cast<Sint16>(_boxRect.x+10);
+		rect.y = static_cast<Sint16>(_boxRect.y+5+(max-i)*TTF_FontLineSkip(_font));
 		camera.render(rect,lines[i]->getText());
 	}
 }

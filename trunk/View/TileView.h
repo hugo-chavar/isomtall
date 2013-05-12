@@ -6,6 +6,7 @@
 #include "Entity.h"
 #include "DataTypes.h"
 #include "Camera.h"
+#include "Surface.h"
 
 using namespace std;
 
@@ -13,7 +14,7 @@ class TileView {
 
 public:
 	TileView();
-	TileView(TileModel* );
+	TileView(TileModel*);
 	~TileView();
 	TileModel* getTileModel();
 	Entity* getGroundEntity();
@@ -35,8 +36,10 @@ public:
 	void createOtherEntity(Sprite*);
 	void renderEntity(Camera& camera);
 	void renderGround(Camera& camera);
+	//void renderFog(Camera& camera);
 	void setFreezed(bool value);
 	void update();
+	void initialize();
 private:
 	TileModel* tileModel;
 	Entity* groundEntity;
@@ -44,6 +47,8 @@ private:
 	TileView* nextTile;
 	TileView* relatedTile;
 	bool isDrawable;
+	bool isFreezed;
+	//Surface* fog;
 };
 
 

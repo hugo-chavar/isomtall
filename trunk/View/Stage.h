@@ -15,6 +15,7 @@
 #include "Personaje.h"
 #include "SpriteAnimado.h"
 #include "RenderHelper.h"
+#include "Surface.h"
 
 
 using namespace std;
@@ -31,6 +32,7 @@ namespace view {
 		void setTilesInCamera(int h, int v);
 		Personaje* personaje();
 	private:
+		//Surface* fog;
 		vector<Sprite*> spriteArray;
 		Personaje* _personaje;
 		StageModel* worldModel;
