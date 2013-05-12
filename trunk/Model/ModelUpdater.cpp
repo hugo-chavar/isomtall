@@ -91,6 +91,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
 		break;
+		case OPCODE_CLIENT_COMMAND:
+			instructionOut = instructionIn;
+			this->getConnector().addInstruction(instructionOut);
+		break;
 		case OPCODE_SIMULATION_UPDATE:
 			std::cout << instructionIn.serialize() << std::endl;
 		break;

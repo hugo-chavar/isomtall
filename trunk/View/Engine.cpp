@@ -3,6 +3,7 @@
 #include "Surface.h"
 #include "Game.h"
 #include "SDL_ttf.h"
+#include "Instruction.h"
 
 Engine::Engine() {
 	this->running = true;
@@ -100,6 +101,8 @@ void Engine::initialize() {
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
+	Instruction instruction;
+	
 	if (chat.isTyping()) {
 		chat.type(sdlEvent);
 		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
@@ -160,11 +163,11 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					if (chat.isClosing(sdlEvent->button.x+camera.getOffsetX(), sdlEvent->button.y+camera.getOffsetY()))
 						chat.setIsTyping(false);
 					else
-						(Game::instance().world())->
-							destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
-					//TODO: add event handling;
-					//sdlEvent->button.x;
-					//sdlEvent->button.y;
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,"DUMMY DESTINATION");
+						Game::instance().getModelUpdater()->addInstruction(instruction);
+						Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
 					break;
 				}
 				case SDL_BUTTON_RIGHT: {
