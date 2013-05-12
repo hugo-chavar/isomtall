@@ -10,8 +10,8 @@ Engine::Engine() {
 	this->desiredFPS = 100;
 	this->chat.setIsTyping(false);
 
-	WSAData ws;
-	WSAStartup(MAKEWORD(2,2),&ws);
+	//WSAData ws;
+	//WSAStartup(MAKEWORD(2,2),&ws);
 }
 
 bool Engine::isRunning() {

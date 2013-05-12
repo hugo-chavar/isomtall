@@ -60,6 +60,7 @@ public:
 	bool empty();
 	bool emptyDir();
 	void restartCurrentPosition();
+	void serializarDirectorio(string path,string& serialize_s);
 
 };
 
