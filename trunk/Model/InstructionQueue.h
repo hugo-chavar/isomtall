@@ -19,7 +19,7 @@ private:
 
 	ConditionVariable& getConditionVariable();
 
-	std::queue<Instruction>& getInstructionQueue();
+//	std::queue<Instruction>& getInstructionQueue();
 
 public:
 	InstructionQueue();
@@ -28,6 +28,15 @@ public:
 
 	Instruction getNextInstruction(bool shouldWait);
 
+
+	//TODO: FIND A BETTER WAY.
+	void lock();
+
+	std::queue<Instruction>& getInstructionQueue();
+
+	void unLock();
+
+	
 	void stopWaiting();
 
 	~InstructionQueue();

@@ -42,6 +42,11 @@ int Engine::execute() {
 	this->chat.modelChat->getMessagesList().push_back("Connecting to chat");
 	this->chat.modelChat->getChatUpdater().addInstruction(instruction);
 
+	instruction.clear();
+	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	Game::instance().getModelUpdater()->addInstruction(instruction);
+
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
@@ -196,11 +201,20 @@ void Engine::render() {
 }
 
 void Engine::cleanUp() {
+	Instruction instructionOut;
+
 	this->camera.cleanUp();
 
 	Game::instance().getLogin()->cleanUp();
 
 	this->chat.modelChat->cleanUp();
+
+	
+	if (Game::instance().getModelUpdater()->isConnected()) {
+		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
+		Game::instance().getModelUpdater()->addInstruction(instructionOut);
+		Game::instance().getModelUpdater()->stopUpdating(false);
+	}
 
 	SDL_Quit();
 }
