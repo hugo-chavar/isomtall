@@ -23,6 +23,9 @@ public:
 	void addFirstSprite(AnimatedEntity*);
 	std::pair<int,int> getPosicionEnTiles();
 	std::pair<int,int> getPosicionAnteriorEnTiles();
+	void setFreezed(bool value);
+	void setAnimating(bool value);
+	//void resetSpriteState(); poner en virtual en entity para activar esto
 private:
 	//determina en que posicion del vector de sprites esta el sprite del estado actual
 	int procesarAnimacion(int animacion);
@@ -34,10 +37,11 @@ private:
 	void moverSpriteEnX();
 	void moverSpriteEnY();
 	bool isCenteredInTile();
-	void freezar();
+	//void freezar();
 	void animar();
 	void detenerAnimacion();
 	void crearNombre(string textoNombre);
+	
 
 	std::pair<int, int> tileActual;
 	SDL_Surface *nombre;
@@ -48,5 +52,6 @@ private:
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y
 	int serr; //variable usada para coordinar el movimiento en x y en y en la diagonal
+	//bool isAnimating;
 };
 #endif

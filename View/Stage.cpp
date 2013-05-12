@@ -30,21 +30,26 @@ view::Stage::~Stage() {
 
 void view::Stage::loadSprites() {
 	//carga de sprites estaticos
-	//this->fog = new Surface();
-	//this->fog->load(FOG_IMAGE);
-	//this->fog->setTransparent();
+	Sprite* auxSprite;
 	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
 	for (unsigned a = 0; a < staticEntitiesModelCount; a++){
 		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
 		mapEntityToSprite[entity->name()] = int(a);
-		spriteArray.push_back(new Sprite(entity));
+		auxSprite = new Sprite(entity);
+		//auxSprite->initialize();
+		spriteArray.push_back(auxSprite);
+		auxSprite = NULL;
 	}
 	//carga de sprites animados
+	SpriteAnimado* auxAnimatedSprite;
 	unsigned animatedEntitiesModelCount = Game::instance().allEntities.vAnimatedEntities.size();
 	for (unsigned a = 0; a < animatedEntitiesModelCount; a++){
 		AnimatedEntity *entity = Game::instance().allEntities.vAnimatedEntities[a];
 		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
-		spriteArray.push_back(new SpriteAnimado(entity));
+		auxAnimatedSprite = new SpriteAnimado(entity);
+		//auxAnimatedSprite->initialize();
+		spriteArray.push_back(auxAnimatedSprite);
+		auxAnimatedSprite = NULL;
 	}
 }
 

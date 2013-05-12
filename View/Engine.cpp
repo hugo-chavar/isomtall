@@ -124,13 +124,21 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					running = false;
 					break;
 				}
+			case SDLK_f:
+				{
+					if (!chat.isTyping())
+						//Game::instance().personaje()->setIsActivo();
+						Game::instance().personaje()->setIsActivo(false);
+					break;
+				}
 			case SDLK_w:
 				{
 					if (!chat.isTyping())
-						Game::instance().personaje()->setIsActivo();
+						//Game::instance().personaje()->setIsActivo();
+						Game::instance().personaje()->setIsActivo(true);
 					break;
 				}
-				case SDLK_a:
+			case SDLK_a:
 				{
 					if (!chat.isTyping())
 						Game::instance().personaje()->animar('a');
@@ -139,6 +147,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			default:
 				break;
 			}
+			break;
 		}
 		case SDL_MOUSEBUTTONDOWN: {
 			switch(sdlEvent->button.button) {
