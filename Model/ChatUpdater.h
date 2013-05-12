@@ -1,6 +1,8 @@
 #ifndef _CHAT_UPDATER_H_
 #define _CHAT_UPDATER_H_
 
+#pragma warning(disable: 4512)
+
 #include <list>
 
 #include "Thread.h"

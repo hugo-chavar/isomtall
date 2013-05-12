@@ -1,4 +1,5 @@
 #pragma warning(disable: 4355)
+
 #include "ChatUpdater.h"
 
 #include <iostream>

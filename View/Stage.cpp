@@ -5,37 +5,34 @@
 #include "TileModel.h"
 
 #define START_LEVEL 0
-#define EXTRA_TILES_TO_RENDER 10
+#define EXTRA_TILES_TO_RENDER 9
 
 view::Stage::Stage() {
 	_personaje = NULL;
 }
 
 view::Stage::~Stage() {
-	for (unsigned int i = 0; i < spriteArray.size(); i++)
-	{
+	for (unsigned int i = 0; i < spriteArray.size(); i++) {
 		delete spriteArray[i];
 	}
-	//for(unsigned j=0;j<entityList.size();j++)
-	//{
-	//	for (unsigned i=0;i<entityList[j].size();i++)
-	//	{
-	//		delete(entityList[j][i]);
-	//	}
-	//	entityList[j].clear();
-	//}
+
 	spriteArray.clear();
-	//entityList.clear();
 	if (_personaje){
 		delete _personaje;
 		_personaje = NULL;
 	}
 	deleteStage();
-	
+	//if (this->fog){
+	//	this->fog->free();
+	//	delete this->fog;
+	//}
 }
 
-void view::Stage::loadSprites(){
+void view::Stage::loadSprites() {
 	//carga de sprites estaticos
+	//this->fog = new Surface();
+	//this->fog->load(FOG_IMAGE);
+	//this->fog->setTransparent();
 	unsigned staticEntitiesModelCount = Game::instance().allEntities.vEntitiesObject.size();
 	for (unsigned a = 0; a < staticEntitiesModelCount; a++){
 		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
@@ -51,11 +48,11 @@ void view::Stage::loadSprites(){
 	}
 }
 
-TileView* view::Stage::createTile(TileModel* tileModel){
+TileView* view::Stage::createTile(TileModel* tileModel) {
 	TileView* tile = new TileView(tileModel);
 	int posSpriteEntity = mapEntityToSprite.at(tile->getGroundEntityName());
 	tile->createGround(spriteArray[posSpriteEntity]);
-	if (tile->hasOtherEntity()){
+	if (tile->hasOtherEntity()) {
 		posSpriteEntity = mapEntityToSprite.at(tile->getOtherEntityName());
 		tile->createOtherEntity(spriteArray[posSpriteEntity]);
 	}
@@ -63,7 +60,7 @@ TileView* view::Stage::createTile(TileModel* tileModel){
 	return tile;
 }
 
-void view::Stage::generateStage(){
+void view::Stage::generateStage() {
 	TileModel* tileModel = worldModel->getFirstTile();
 	this->firstTile = this->createTile(tileModel);
 	tileLevels.push_back(this->firstTile);
@@ -71,7 +68,7 @@ void view::Stage::generateStage(){
 	TileView* prevTile = this->firstTile;
 	KeyPair tilePos;
 	tileModel = tileModel->getNextTile();
-	while (tileModel){
+	while (tileModel) {
 		currentTile = this->createTile(tileModel);
 		if (prevTile->EOL())
 			tileLevels.push_back(currentTile);
@@ -81,8 +78,8 @@ void view::Stage::generateStage(){
 	}
 	currentTile = this->firstTile;
 	tileModel = worldModel->getFirstTile();
-	while ((currentTile) && (tileModel)){
-		if (tileModel->getRelatedTile()){
+	while ((currentTile) && (tileModel)) {
+		if (tileModel->getRelatedTile()) {
 			tilePos = tileModel->getRelatedTile()->getPosition();
 			prevTile = tilesMap.at(tilePos);
 			currentTile->setRelatedTile(prevTile);
@@ -92,13 +89,13 @@ void view::Stage::generateStage(){
 	}
 }
 
-void view::Stage::setTilesInCamera(int w, int h){
+void view::Stage::setTilesInCamera(int w, int h) {
 	unsigned horizontalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(w) / DEFAULT_TILE_WIDTH));
 	unsigned verticalTilesInCamera = static_cast<unsigned>(ceil(static_cast<float>(h) / DEFAULT_TILE_HEIGHT));
 	minLevelsInCamera = horizontalTilesInCamera + verticalTilesInCamera;
 }
 
-bool view::Stage::initialize(){
+bool view::Stage::initialize() {
 	worldModel = Game::instance().world();
 	
 	this->loadSprites();
@@ -114,30 +111,23 @@ bool view::Stage::initialize(){
 }
 
 void view::Stage::update() {
-	//for(unsigned i=0;i<spriteArray.size();i++){
-	//	spriteArray[i]->actualizarFrame();
-	//}
-
-
 	this->updateSprites();
 	this->updateTiles();
-
 	_personaje->update();
-
 }
 
-Personaje* view::Stage::personaje(){
+Personaje* view::Stage::personaje() {
 	return _personaje;
 }
 
-TileView* view::Stage::getTileAt(KeyPair k){
+TileView* view::Stage::getTileAt(KeyPair k) {
 	return tilesMap.at(k);
 }
 
-TileView* view::Stage::getFirstMatch(std::pair<int,int> k){
+TileView* view::Stage::getFirstMatch(std::pair<int,int> k) {
 	TileView* aux = tileLevels.at(this->fixLevel(k));
 	KeyPair position = aux->getPosition();
-	while ((static_cast<int>(position.second) > k.second) && (aux)){
+	while ((static_cast<int>(position.second) > k.second) && (aux)) {
 		aux = aux->getNextTile();
 		if (aux)
 			position = aux->getPosition();
@@ -145,31 +135,31 @@ TileView* view::Stage::getFirstMatch(std::pair<int,int> k){
 	return aux;
 }
 
-TileView* view::Stage::getLastMatch(TileView* firstMatch, std::pair<int,int> k){
+TileView* view::Stage::getLastMatch(TileView* firstMatch, std::pair<int,int> k) {
 	TileView* aux = firstMatch;
 	KeyPair position = aux->getPosition();
-	while ((static_cast<int>(position.first) <= k.first) && (!aux->EOL())){
+	while ((static_cast<int>(position.first) <= k.first) && (!aux->EOL())) {
 		aux = aux->getNextTile();
 		position = aux->getPosition();
 	}
 	return aux;
 }
 
-void view::Stage::fixKeyLeftBottom(int level, std::pair<int,int> &k){
-	while (level < (k.first + k.second)){
+void view::Stage::fixKeyLeftBottom(int level, std::pair<int,int> &k) {
+	while (level < (k.first + k.second)) {
 			k.first--;
 	}
 }
 
-void view::Stage::fixKeyRightBottom(int level, std::pair<int,int> &k){
-	while (level < (k.first + k.second)){
+void view::Stage::fixKeyRightBottom(int level, std::pair<int,int> &k) {
+	while (level < (k.first + k.second)) {
 			k.second--;
 	}
 }
 
-int view::Stage::fixLevel(std::pair<int,int> k){
+int view::Stage::fixLevel(std::pair<int,int> k) {
 	int level = k.first + k.second;
-	if (level > this->worldModel->maxLevels() ){
+	if (level > this->worldModel->maxLevels() ) {
 		level = this->worldModel->maxLevels();
 	}
 	else if (level < START_LEVEL )
@@ -177,37 +167,36 @@ int view::Stage::fixLevel(std::pair<int,int> k){
 	return level;
 }
 
-int view::Stage::fixStartLevel(int endLevel, std::pair<int,int> &ref){
+int view::Stage::fixStartLevel(int endLevel, std::pair<int,int> &ref) {
 	int level = this->fixLevel(ref);
-	if (((endLevel - level) < minLevelsInCamera) && (level > START_LEVEL)){
-		if ((endLevel - minLevelsInCamera) > START_LEVEL){
+	if (((endLevel - level) < minLevelsInCamera) && (level > START_LEVEL)) {
+		if ((endLevel - minLevelsInCamera) > START_LEVEL) {
 			ref.first -= minLevelsInCamera - (endLevel - level);
 			level = this->fixLevel(ref);
 		}else {
 			level = START_LEVEL;
 		}
 	}
-
 	return level;
 }
 
-void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
+void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2) {
 	int level1 = this->fixLevel(k1);
 	int level2 = this->fixLevel(k2);
-	while (level1 > level2 ){
+	while (level1 > level2 )  {
 		k2.first++;
 		level2 = this->fixLevel(k2);
 	}
-	while (level1 < level2 ){
+	while (level1 < level2 ) {
 		k2.second--;
 		level2 = this->fixLevel(k2);
 	}
 }
 
- void view::Stage::calculateTilesToRender(Camera& camera){ 
-
+ void view::Stage::calculateTilesToRender(Camera& camera) { 
 	renderHelper.clear();
-	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(std::make_pair(camera.getOffsetX(),camera.getOffsetY()));
+	std::pair<int,int> position = std::make_pair(static_cast<int>(camera.getOffsetX()),static_cast<int>(camera.getOffsetY()));
+	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(position);
 	cameraReferenceTile.second -= EXTRA_TILES_TO_RENDER;
 	cameraReferenceTile.first -= EXTRA_TILES_TO_RENDER;
 	std::pair<int,int> leftBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(0,camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
@@ -220,17 +209,17 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 	int startLevel = this->fixStartLevel(endLevel, cameraReferenceTile);
 	renderHelper.setStartLevel(startLevel);
 	renderHelper.setEndLevel(endLevel);
-	while (renderHelper.incomplete()){
+	while (renderHelper.incomplete()) {
 		TileView* firstMatch = this->getFirstMatch(leftBottom);
 		TileView* lastMatch;
-		if (firstMatch){
+		if (firstMatch) {
 			lastMatch = this->getLastMatch(firstMatch,rightBottom);
 			renderHelper.addLevel(firstMatch,lastMatch);
 		} else {
 			renderHelper.setEmptyLevel();
 		}
 
-		if (renderHelper.flip()){
+		if (renderHelper.flip()) {
 			leftBottom.first--;
 			rightBottom.first--;
 		} else {
@@ -242,30 +231,14 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2){
 }
 
 void view::Stage::render(Camera& camera) {
-
-	//list<std::pair<TileView*,TileView*>> l = calculateTilesToRender(camera);
-	
-	//std::list<std::pair<TileView*, TileView*>>::iterator it = l.begin();
-	//TileView* tile;
-	//for (; it != l.end(); it++){
-	//	tile = (*it).first;
-	//	while (tile != (*it).second ){
-	//		tile->render(camera);
-	//		tile = tile->getNextTile();
-	//	}
-	//	tile->render(camera);
-	//}
-	
-
 	this->calculateTilesToRender(camera);
 	renderHelper.renderGround(camera);
 	renderHelper.startRenderingEntities();
-	while (renderHelper.hasLevelsToRender()){
+	while (renderHelper.hasLevelsToRender()) {
 		renderHelper.renderNextLevel(camera);
 		if (renderHelper.shouldRenderThis(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))
 			_personaje->render(camera);
 	}
-	
 }
 
 void Stage::deleteStage() {
@@ -282,7 +255,6 @@ void Stage::deleteStage() {
 
 void Stage::updateTiles() {
 	TileView* aux = this->firstTile;
-	TileView* nextAux;
 	while (aux) {
 		aux->update();
 		aux = aux->getNextTile();

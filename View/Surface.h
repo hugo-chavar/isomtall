@@ -27,6 +27,12 @@ namespace view{
 			void free();
 
 			~Surface();
+
+			void setTransparent();
+
+			void createShadow(SDL_Surface* source);
+
+			//void setShadow(SDL_Surface* source);
 	};
 }
  

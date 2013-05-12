@@ -3,17 +3,16 @@
 
 using namespace common;
 
-Frame::Frame(void)
-{}
+Frame::Frame(void) {
+}
 
 
-Frame::~Frame(void)
-{}
+Frame::~Frame(void ){
+}
 
-int Frame::cargar(std::string path){
+int Frame::cargar(std::string path) {
 	SDL_Surface * superficie1=IMG_Load(path.c_str());
-	if(superficie1==NULL)
-	{
+	if(superficie1 == NULL) {
 		Logger::instance().log("Aplication error: superficie1=IMG_Load(path.c_str()) loading "+ path + " ocurred this error:");
 		std::string error(SDL_GetError());
 		Logger::instance().log("SDL error "+ error);
@@ -22,8 +21,7 @@ int Frame::cargar(std::string path){
 	
 	superficie = SDL_DisplayFormat(superficie1);
 	SDL_FreeSurface(superficie1);
-	if ( superficie == NULL)
-	{
+	if ( superficie == NULL) {
 		Logger::instance().log("in DL_DisplayFormat(superficie1) loading "+ path + " ocurred this error:");
 		std::string error(SDL_GetError());
 		Logger::instance().log("SDL error "+ error);
@@ -34,31 +32,25 @@ int Frame::cargar(std::string path){
 	return 0;
 }
 	
-void Frame::liberar()
-	{
+void Frame::liberar() {
 		SDL_FreeSurface(superficie);
 	}
 
-SDL_Surface* Frame::getSuperficie(bool freezed)
-{
-	if(freezed)
-	{
+SDL_Surface* Frame::getSuperficie(bool freezed) {
+	if(freezed)	{
 		SDL_SetAlpha( superficie, SDL_SRCALPHA, (SDL_ALPHA_TRANSPARENT + SDL_ALPHA_OPAQUE)/2);
 	}
-	else
-	{
+	else {
 		SDL_SetAlpha( superficie, SDL_SRCALPHA, SDL_ALPHA_OPAQUE);
 	}
 	return superficie;
 }
 
-SDL_Surface* Frame::getSuperficie()
-{
+SDL_Surface* Frame::getSuperficie() {
 		return superficie;
 }
 	
-void Frame::setSuperficie(SDL_Surface* superf)
-{
-	superficie=superf;
+void Frame::setSuperficie(SDL_Surface* superf) {
+	superficie = superf;
 }
 	

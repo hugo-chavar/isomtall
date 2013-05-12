@@ -1,6 +1,8 @@
 #ifndef _MODEL_LOGIN_H_
 #define _MODEL_LOGIN_H_
 
+#pragma warning(disable: 4512)
+
 #include <list>
 #include <string>
 

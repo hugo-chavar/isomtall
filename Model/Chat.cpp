@@ -1,4 +1,6 @@
 #pragma warning(disable: 4355)
+#pragma warning(disable: 4512)
+
 #include "Chat.h"
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
