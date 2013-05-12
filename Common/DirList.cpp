@@ -220,3 +220,21 @@ bool DirList::canOpenFile(string file){
 	}
 	return true;
 }
+
+void DirList::serializarDirectorio(string path,string& serialize_s)
+{
+	DirList aux;
+	aux.createFromDirectory(path);
+	while(aux.hasNextDir())
+	{
+		string nextDir=aux.nextDir();
+		serialize_s+=(nextDir+">~");
+		this->serializarDirectorio(path+"/"+nextDir,serialize_s);
+	}
+	while(aux.hasNext())
+	{
+		string next=aux.next();
+		serialize_s+=(next+"~");
+	}
+	serialize_s+=("..~");
+}

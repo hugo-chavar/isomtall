@@ -3,6 +3,7 @@
 
 #include "Connector.h"
 #include "InstructionQueue.h"
+#include "stringUtilities.h"
 
 class ClientUpdater {
 private:
@@ -17,6 +18,10 @@ private:
 	Connector& getConnector();
 
 	InstructionQueue& getInstructionQueue();
+
+	void crearDirectorios(std::string directorios,std::string path);
+
+	void ClientUpdater::receiveFile(std::ofstream* archivo,Instruction instructionIn);
 
 public:
 	ClientUpdater();
