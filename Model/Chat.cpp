@@ -94,7 +94,7 @@ void model::Chat::sendMessage() {
 }
 
 void model::Chat::initialize() {
-	Instruction instruction;
+//	Instruction instruction;
 	this->getChatUpdater().startUpdating();
 
 /*	WSAData ws;
@@ -129,12 +129,12 @@ void model::Chat::cleanUp() {
 	Instruction instructionOut;
 
 	if (this->isConnected()) {
-		instructionOut.setOpCode(OPCODE_CHAT_LOGOUT_REQUEST);
+		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_CHAT);
 		this->getChatUpdater().addInstruction(instructionOut);
 		this->getChatUpdater().stopUpdating(false);
 	}
 
-	//WSACleanup();
+
 }
 
 model::Chat::~Chat() {

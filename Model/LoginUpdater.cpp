@@ -41,21 +41,13 @@ std::list<std::string>& LoginUpdater::getMessagesList() {
 }
 
 void LoginUpdater::updateLoginModel() {
-	// Agregado para que funcione.
-//	WSAData ws;
-//	WSAStartup(MAKEWORD(2,2),&ws);
 	Instruction instructionIn;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
-		// Agregado para que funcione.
-//		Instruction instructionOut;
-//		instructionOut.setOpCode(OPCODE_LOGIN_REQUEST);
-//		instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"Andres"); // harcodeo
-		
-//		this->getConnector().addInstruction(instructionOut);
+
 		do {
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {

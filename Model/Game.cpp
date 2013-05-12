@@ -26,6 +26,10 @@ model::Login* Game::getLogin() {
 	return &_login;
 }
 
+ModelUpdater* Game::getModelUpdater() {
+	return &this->_modelUpdater;
+}
+
 bool Game::initialize(string nombreJugador) {
 	yParser.parse();
 	_world = yParser.vStages()[0];
@@ -45,6 +49,7 @@ bool Game::initialize(string nombreJugador) {
 	_personaje->createVision(_configuration->visionRange());
 	this->_time.initializeTime();
 	_login.initialize();
+	this->getModelUpdater()->startUpdating();
 	return true;
 }
 

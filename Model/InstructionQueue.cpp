@@ -45,6 +45,14 @@ Instruction InstructionQueue::getNextInstruction(bool shouldWait) {
 	return aux;
 }
 
+void InstructionQueue::lock() {
+	this->getMutex().lock();
+}
+
+void InstructionQueue::unLock() {
+	this->getMutex().unlock();
+}
+
 void InstructionQueue::stopWaiting() {
 	this->getConditionVariable().getConditionMutex().lock();
 	this->getConditionVariable().signal();

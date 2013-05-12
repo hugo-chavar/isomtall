@@ -13,6 +13,7 @@
 #include "Login.h"
 #include "Connector.h"
 #include "InstructionQueue.h"
+#include "ModelUpdater.h"
 
 class Game
 {
@@ -23,6 +24,7 @@ public:
 	StageModel* world();
 	TimeManager* time();
 	model::Login* getLogin();
+	ModelUpdater* getModelUpdater();
 	bool initialize(string nombreJugador);
 	bool insidePlayerVision(std::pair<int,int> );
 	bool isKnownByPlayer(std::pair<int,int> );
@@ -40,6 +42,7 @@ private:
 	TimeManager _time;
 	PersonajeModelo * _personaje;
 	model::Login _login;
+	ModelUpdater _modelUpdater;
 };
 
 #endif

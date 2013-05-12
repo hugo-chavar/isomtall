@@ -1,46 +1,44 @@
-#pragma warning(disable: 4355)
+#include "ModelUpdater.h"
 
-#include "ChatUpdater.h"
+#include "StringUtilities.h"
 
 #include <iostream>
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
-ChatUpdater::ChatUpdater(Mutex& messagesListMutex, std::list<std::string>& messagesList) : connector(NULL,&(this->getInstructionQueue())), messagesListMutex(messagesListMutex), messagesList(messagesList) {
+ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 	this->connected = false;
+	this->activatedAt = 0;
 }
 
 // ----------------------------------- PRIVATE METHODS -----------------------------------
 
-void ChatUpdater::setConnected(bool connected) {
+void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
 }
 
-bool ChatUpdater::isForceStop() {
+
+void ModelUpdater::setActivatedAt(unsigned int activatedAt) {
+	this->activatedAt = activatedAt;
+}
+
+bool ModelUpdater::isForceStop() {
 	return this->forceStop;
 }
 
-void ChatUpdater::setForceStop(bool forceStop) {
+void ModelUpdater::setForceStop(bool forceStop) {
 	this->forceStop = forceStop;
 }
 
-Connector& ChatUpdater::getConnector() {
+Connector& ModelUpdater::getConnector() {
 	return this->connector;
 }
 
-InstructionQueue& ChatUpdater::getInstructionQueue() {
+InstructionQueue& ModelUpdater::getInstructionQueue() {
 	return this->instructionQueue;
 }
 
-Mutex& ChatUpdater::getMessagesListMutex() {
-	return this->messagesListMutex;
-}
-
-std::list<std::string>& ChatUpdater::getMessagesList() {
-	return this->messagesList;
-}
-
-void ChatUpdater::updateChatModel() {
+void ModelUpdater::updateModel() {
 	Instruction instructionIn;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 
@@ -65,73 +63,69 @@ void ChatUpdater::updateChatModel() {
 		}
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		this->getMessagesList().push_back("SERVER UNREACHABLE");
-		//std::cout << "SERVER UNREACHABLE" << std::endl;
+		std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
 }
 
-void ChatUpdater::processInstruction(Instruction& instructionIn) {
+void ModelUpdater::processInstruction(Instruction& instructionIn) {
 	Instruction instructionOut;
 
 	instructionOut.clear();
 	switch (instructionIn.getOpCode()) {
-		case OPCODE_CONNECT_TO_CHAT:
+		case OPCODE_CONNECT_TO_SIMULATION:
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
-		case OPCODE_CHAT_MESSAGE_OUT:
-			instructionOut = instructionIn;
-			this->getConnector().addInstruction(instructionOut);
-		break;
-		case OPCODE_CHAT_MESSAGE_IN:
-			this->getConnector().addInstruction(instructionOut);
-			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_FROM) + ": " + instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_MESSAGE));
-			this->getMessagesListMutex().unlock();
-		break;
-		case OPCODE_DISCONNECT_FROM_CHAT:
+		case OPCODE_DISCONNECT_FROM_SIMULATION:
 			this->setConnected(false);
 			this->setStopping(true);
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
-		case OPCODE_CHAT_CONNECTION_ESTABLISHED:
+		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
 			this->setConnected(true);
-			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_GREETING));
-			this->getMessagesListMutex().unlock();
+			std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
+			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
+			this->getConnector().addInstruction(instructionOut);
+		break;
+		case OPCODE_SIMULATION_SYNCHRONIZE:
+			this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
+		break;
+		case OPCODE_SIMULATION_UPDATE:
+			std::cout << instructionIn.serialize() << std::endl;
 		break;
 		case OPCODE_CONNECTION_ERROR:
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);
-			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back("CONNECTION WITH SERVER LOST");
-			this->getMessagesListMutex().unlock();
 		break;
 	}
 }
 
-void* ChatUpdater::run() {
-	this->updateChatModel();
+void* ModelUpdater::run() {
+	this->updateModel();
 	return NULL;
 }
 
 // ----------------------------------- PUBLIC METHODS ------------------------------------
 
-bool ChatUpdater::isConnected() {
+bool ModelUpdater::isConnected() {
 	return this->connected;
 }
 
-void ChatUpdater::addInstruction(Instruction instruction) {
+unsigned int ModelUpdater::getActivatedAt() {
+	return this->activatedAt;
+}
+
+void ModelUpdater::addInstruction(Instruction instruction) {
 	this->getInstructionQueue().addInstruction(instruction);
 }
 
-void ChatUpdater::startUpdating() {
+void ModelUpdater::startUpdating() {
 	this->start();
 }
 
-void ChatUpdater::stopUpdating(bool forceStop) {
+void ModelUpdater::stopUpdating(bool forceStop) {
 	this->setForceStop(forceStop);
 	this->setStopping(true);
 	this->getInstructionQueue().stopWaiting();
@@ -142,5 +136,5 @@ void ChatUpdater::stopUpdating(bool forceStop) {
 
 // ----------------------------------- DESTRUCTOR ----------------------------------------
 
-ChatUpdater::~ChatUpdater() {
+ModelUpdater::~ModelUpdater() {
 }

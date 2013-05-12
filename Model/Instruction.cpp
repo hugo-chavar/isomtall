@@ -4,7 +4,6 @@
 #include <utility>
 
 #include "StringUtilities.h"
-#include "Constants.h"
 
 Instruction::Instruction() {
 	this->opCode = OPCODE_NO_OPCODE;

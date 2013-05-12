@@ -1,5 +1,5 @@
-#ifndef STRINGUTILITIES_H_
-#define STRINGUTILITIES_H_
+#ifndef _STRINGUTILITIES_H_
+#define _STRINGUTILITIES_H_
 
 #include <string>
 #include <vector>
@@ -20,7 +20,7 @@ std::string padLeft(std::string string, char padWith, unsigned int padTo);
 std::string padRight(std::string string, char padWith, unsigned int padTo);
 
 //Metodo para convertir un string a int.
-int stringToInt (const std::string Text );
+int stringToInt(const std::string Text);
 
 //Metodo para convertir un int a string.
 std::string intToString(int i);
@@ -34,7 +34,6 @@ std::string floatToString(float f);
 //Metodo para remover los espacios en blanco al comienzo y al final del string.
 std::string trim(std::string string);
 
-
 }
 
-#endif /* STRINGUTILITIES_H_ */
+#endif // _STRINGUTILITIES_H_
