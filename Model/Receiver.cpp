@@ -12,6 +12,7 @@ Receiver::Receiver(Socket* socket, InstructionQueue* instructionQueue, std::stri
 	this->connectionOK = true;
 	this->inyectUserIDonReceive = inyectUserIDonReceive;
 	this->instructionQueue = instructionQueue;
+	this->reminder = "";
 }
 
 // ----------------------------------- PRIVATE METHODS -----------------------------------
@@ -22,6 +23,14 @@ void Receiver::setConnectionOK(bool connectionOK) {
 
 bool Receiver::isInyectUserIDonReceive() {
 	return this->inyectUserIDonReceive;
+}
+
+std::string Receiver::getReminder() {
+	return this->reminder;
+}
+
+void Receiver::setReminder(std::string reminder) {
+	this->reminder = reminder;
 }
 
 InstructionQueue* Receiver::getInstructionQueue() {
@@ -58,8 +67,10 @@ std::string Receiver::receiveMessageFromSocket() {
 	bool validRead = true;
 	char buffer[512] = "";
 	int bytesReceived = 0;
-	std::string aux = "";
+	std::string aux = this->getReminder();
 	std::string message = "";
+	std::string messageEndTag = MESSAGE_ENVELOPE_END_TAG;
+	unsigned int messageEndPosition = 0;
 
 	do {
 		bytesReceived = this->getSocket()->receiveData(buffer,512);
@@ -70,10 +81,12 @@ std::string Receiver::receiveMessageFromSocket() {
 		} else {
 			aux.append(buffer,bytesReceived);
 		}
-	} while ( (aux.find(MESSAGE_ENVELOPE_END_TAG) == std::string::npos) && (validRead) );
+	} while ( (aux.find(messageEndTag) == std::string::npos) && (validRead) );
 
-	if (validRead){
-		message = aux;
+	if (validRead) {
+		messageEndPosition = aux.find(messageEndTag) + messageEndTag.length();
+		message = aux.substr(0,messageEndPosition);
+		this->setReminder(aux.substr(messageEndPosition));
 	}
 
 	return message;

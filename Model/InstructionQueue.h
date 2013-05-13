@@ -22,7 +22,6 @@ private:
 //	std::queue<Instruction>& getInstructionQueue();
 
 public:
-
 	InstructionQueue();
 
 	void addInstruction(Instruction& instruction);
