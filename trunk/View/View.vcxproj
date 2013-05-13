@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chat.cpp" />
+    <ClCompile Include="GameView.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
     <ClCompile Include="StaticTextBox.cpp" />
@@ -92,6 +93,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chat.h" />
+    <ClInclude Include="GameView.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClInclude Include="StaticTextBox.h" />

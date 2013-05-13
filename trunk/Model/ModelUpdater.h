@@ -4,6 +4,7 @@
 #include "Thread.h"
 #include "Connector.h"
 #include "InstructionQueue.h"
+//#include "../View/GameView.h"
 
 class ModelUpdater : public Thread {
 private:
@@ -34,6 +35,10 @@ private:
 	void processInstruction(Instruction& instructionIn);
 
 	void* run();
+
+	void simulationsUpdate(Instruction& instructionIn);
+
+	void simulate(std::string simulation_package);
 
 public:
 	ModelUpdater();

@@ -96,7 +96,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_UPDATE:
-			std::cout << instructionIn.serialize() << std::endl;
+			this->simulationsUpdate(instructionIn);
+			//std::cout << instructionIn.serialize() << std::endl;
 		break;
 		case OPCODE_CONNECTION_ERROR:
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
@@ -110,6 +111,40 @@ void* ModelUpdater::run() {
 	this->updateModel();
 	return NULL;
 }
+
+//Ejemplo de recepcion player,carlos, tileX=1,tileY=2 ~ player,pedro, tileX=5,tileY=2 ~ stage,..."
+void ModelUpdater::simulationsUpdate(Instruction& instructionIn)
+{
+	std::string serializedSimulations=instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
+	std::vector<std::string> simulations_packages;
+
+	stringUtilities::splitString(serializedSimulations,simulations_packages,'~');
+
+	for(int i=0;i<simulations_packages.size();i++)
+	{
+		this->simulate(simulations_packages[i]);
+	}
+
+}
+
+void ModelUpdater::simulate(std::string simulation_package)
+{
+	std::vector<std::string> simulation_fields;
+	stringUtilities::splitString(simulation_package,simulation_fields,',');
+	if(simulation_fields[0]=="player")
+	{
+		//Personaje* personaje=GameView::instance().getPersonaje(simulation_fields[1]);
+	}
+	else if(simulation_fields[0]=="stage")
+	{
+		//lo que haga falta actualizar en el mapa
+	}
+
+	//Anidar if aqui si se puede mandar otro tipo de actualizacion
+
+
+}
+
 
 // ----------------------------------- PUBLIC METHODS ------------------------------------
 

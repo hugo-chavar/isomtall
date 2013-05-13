@@ -30,6 +30,7 @@ namespace view {
 		bool initialize();
 		void setTilesInCamera(int h, int v);
 		Personaje* personaje();
+		map <string,Personaje*> personajes;//agrego diccionario de personajes
 	private:
 		vector<Sprite*> spriteArray;
 		Personaje* _personaje;
