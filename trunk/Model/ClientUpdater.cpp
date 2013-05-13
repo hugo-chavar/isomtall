@@ -57,8 +57,18 @@ void ClientUpdater::receiveFile(std::ofstream* archivo,Instruction instruction)
 {
 	if (!(*archivo))
 		return;
+	char buffer[TAMBUFFER];
 	std::string serializedFile = instruction.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_FILE);
-	archivo->write(serializedFile.c_str(),serializedFile.size());
+	int recibidos=stringUtilities::replaceStringForChar('\0',buffer,"<BARRACERO>",serializedFile);
+	archivo->write(buffer,recibidos);
+}
+
+void ClientUpdater::sendConfirmation()
+{
+	Instruction instructionOut;
+	instructionOut.clear();
+	instructionOut.setOpCode(OPCODE_UPDATE_RECV);
+	this->getConnector().addInstruction(instructionOut);
 }
 
 
@@ -83,17 +93,22 @@ void ClientUpdater::updateClient() {
 		while (instructionIn.getOpCode() != OPCODE_UPDATE_COMPLETE && this->getConnector().isConnectionOK()) {
 			switch (instructionIn.getOpCode()) {
 				case OPCODE_UPDATE_FILE:
+					{
 					receiveFile(&archivo,instructionIn);
+					this->sendConfirmation();
+					}
 				break;
 				case OPCODE_UPDATE_FILE_START:
 					{
 						path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
 						archivo.open(path,std::ios::binary);
+						this->sendConfirmation();
 					//ABRO ARCHIVO
 					}
 				break;
 				case OPCODE_UPDATE_FILE_COMPLETE:
 					archivo.close();
+					this->sendConfirmation();
 					//DEBO PARARME EN EL DIRECTORIO DEL NUEVO ARCHIVO A RECIBIR
 				break;
 				case OPCODE_UPDATE_DIRECTORY:
@@ -101,6 +116,7 @@ void ClientUpdater::updateClient() {
 					std::string directorios = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_DIR);
 					path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
 					this->crearDirectorios(directorios,path);
+					this->sendConfirmation();
 					//DEBO RECIBIR ARBOL DE DIRECTORIOS A PROCESAR
 					}
 				break;

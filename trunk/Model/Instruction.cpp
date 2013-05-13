@@ -40,14 +40,34 @@ void Instruction::insertArgument(unsigned int key, std::string value) {
 	this->getArguments().insert(std::pair<unsigned int,std::string>(key,value));
 }
 
+//void Instruction::deserialize(std::string serializedInstruction) {
+//	std::vector<std::string> instructionParams;
+//
+//	stringUtilities::splitString(serializedInstruction,instructionParams,'|');
+//
+//	this->setOpCode(stringUtilities::stringToInt(instructionParams[0]));
+//	for (unsigned int i = 1; i < instructionParams.size(); i = i + 2) {
+//		this->insertArgument(static_cast<unsigned int>(stringUtilities::stringToInt(instructionParams[i])),instructionParams[i + 1]);
+//	}
+//}
+
 void Instruction::deserialize(std::string serializedInstruction) {
 	std::vector<std::string> instructionParams;
 
 	stringUtilities::splitString(serializedInstruction,instructionParams,'|');
 
 	this->setOpCode(stringUtilities::stringToInt(instructionParams[0]));
-	for (unsigned int i = 1; i < instructionParams.size(); i = i + 2) {
-		this->insertArgument(static_cast<unsigned int>(stringUtilities::stringToInt(instructionParams[i])),instructionParams[i + 1]);
+	if(this->getOpCode()!=OPCODE_UPDATE_FILE)
+	{
+		for (unsigned int i = 1; i < instructionParams.size(); i = i + 2) {
+			this->insertArgument(static_cast<unsigned int>(stringUtilities::stringToInt(instructionParams[i])),instructionParams[i + 1]);
+		}
+	}else
+	{
+		int posicion=serializedInstruction.find_first_of('|',0);
+		posicion=serializedInstruction.find_first_of('|',posicion+1);
+		serializedInstruction.erase(0,posicion+1);
+		this->insertArgument(static_cast<unsigned int>(stringUtilities::stringToInt(instructionParams[1])),serializedInstruction);
 	}
 }
 
