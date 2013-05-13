@@ -61,6 +61,10 @@ namespace stringUtilities {
 		return stringstream >> result ? result : 0;
 	}
 
+	unsigned stringToUnsigned(const std::string Text){
+		return static_cast<unsigned>(stringToInt(Text));
+	}
+
 	std::string intToString(int i) {
 		std::stringstream stringstream;
 		stringstream << i;
@@ -101,54 +105,42 @@ namespace stringUtilities {
 		return string.substr(from,to);
 	}
 
-std::string replaceCharForString(char charR,char* buff,int size,std::string replacer)
-{
-	std::string result="";
-	for(int i=0;i<size;i++)
+	std::string replaceCharForString(char charR,char* buff,int size,std::string replacer)
 	{
-		if(buff[i]==charR)
+		std::string result="";
+		for(int i=0;i<size;i++)
 		{
-		result+=replacer;
-		}
-		else
-			result+=buff[i];
-	}
-	return result;
-}
-
-int replaceStringForChar(char charR,char* buff,std::string replaced,std::string toConvert)
-{
-	std::vector<int> posiciones; 
-	int posicion=toConvert.find(replaced,0);
-	while(posicion!=-1)
-	{
-		posiciones.push_back(posicion);
-		posicion=toConvert.find(replaced,posicion+1);
-	}
-	int i=0;
-	int chars=0;
-	int pos=0;
-	while(i<posiciones.size())
-	{	
-		while(pos<posiciones[i])
+			if(buff[i]==charR)
 			{
-				buff[chars]=toConvert[pos];
-				chars++;
-				pos++;
+				result+=replacer;
 			}
-		buff[chars]=charR;
-		chars++;
-		pos+=replaced.size();
-		i++;
-	}
-	while(pos<toConvert.size())
-		{
-				buff[chars]=toConvert[pos];
-				chars++;
-				pos++;
+			else
+				result+=buff[i];
 		}
+		return result;
+	}
+	std::string pairIntToString(std::pair<int, int> key) {
+		std::string aux = intToString(key.first)+","+intToString(key.second);
+		return aux;
+	}
 
-return chars;
-}
+	std::string pairUnsignedToString(std::pair<unsigned, unsigned> key) {
+		std::string aux = unsignedToString(key.first)+","+unsignedToString(key.second);
+		return aux;
+	}
 
-} // namespace StringUtilities>>>>>>> .r214
+	std::pair<int, int> stringToPairInt(std::string source) {
+		std::vector <std::string> auxVector;
+		splitString(source, auxVector, ',');
+		std::pair<int, int> auxPair = std::make_pair(stringToInt(auxVector[0]), stringToInt(auxVector[1]));
+		return auxPair;
+	}
+
+	//std::pair<unsigned, unsigned> pairUnsignedToString(std::string source) {
+	//	std::vector <std::string> auxVector;
+	//	splitString(source, auxVector, ',');
+	//	std::pair<unsigned, unsigned> auxPair = std::make_pair(stringToUnsigned(auxVector[0]), stringToUnsigned(auxVector[1]));
+	//	return auxPair;
+	//}
+
+} // namespace StringUtilities
