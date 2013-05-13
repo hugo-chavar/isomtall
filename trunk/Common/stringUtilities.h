@@ -39,13 +39,16 @@ namespace stringUtilities {
 
 	std::string replaceCharForString(char charR,char* buff,int size,std::string replacer);
 
+	//devuelve el tamanio del vector de chars;
+	int replaceStringForChar(char charR,char* buff,std::string replaced,std::string toConvert);
+
 	std::string pairIntToString(std::pair<int, int> key);
 
 	std::string pairUnsignedToString(std::pair<unsigned, unsigned> key); 
 
 	std::pair<int, int> stringToPairInt(std::string source);
 
-	//std::pair<unsigned, unsigned> pairUnsignedToString(std::string source); 
+	std::pair<unsigned, unsigned> pairUnsignedToString(std::string source); 
 
 }
 

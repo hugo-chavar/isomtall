@@ -136,11 +136,48 @@ namespace stringUtilities {
 		return auxPair;
 	}
 
-	//std::pair<unsigned, unsigned> pairUnsignedToString(std::string source) {
-	//	std::vector <std::string> auxVector;
-	//	splitString(source, auxVector, ',');
-	//	std::pair<unsigned, unsigned> auxPair = std::make_pair(stringToUnsigned(auxVector[0]), stringToUnsigned(auxVector[1]));
-	//	return auxPair;
-	//}
+	std::pair<unsigned, unsigned> pairUnsignedToString(std::string source) {
+		std::vector <std::string> auxVector;
+		splitString(source, auxVector, ',');
+		std::pair<unsigned, unsigned> auxPair = std::make_pair(stringToUnsigned(auxVector[0]), stringToUnsigned(auxVector[1]));
+		return auxPair;
+	}
+
+
+
+	int replaceStringForChar(char charR,char* buff,std::string replaced,std::string toConvert)
+	{
+		std::vector<int> posiciones; 
+		int posicion=toConvert.find(replaced,0);
+		while(posicion!=-1)
+		{
+			posiciones.push_back(posicion);
+			posicion=toConvert.find(replaced,posicion+1);
+		}
+		int i=0;
+		int chars=0;
+		int pos=0;
+		while(i<posiciones.size())
+		{	
+			while(pos<posiciones[i])
+			{
+				buff[chars]=toConvert[pos];
+				chars++;
+				pos++;
+			}
+			buff[chars]=charR;
+			chars++;
+			pos+=replaced.size();
+			i++;
+		}
+		while(pos<toConvert.size())
+		{
+			buff[chars]=toConvert[pos];
+			chars++;
+			pos++;
+		}
+
+		return chars;
+	}
 
 } // namespace StringUtilities
