@@ -72,7 +72,7 @@ void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
 
-	string nombreJugador="1";
+	string nombreJugador="harcoded";
 	Game::instance().initialize(nombreJugador);
 
 	bool cameraInitialized = this->camera.initialize();

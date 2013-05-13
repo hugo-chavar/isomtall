@@ -20,7 +20,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	serr = 0;
 	crearNombre(modelo->getName());
 
-	this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
+	//this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
 
 	this->setFreezed(false);
 	this->resetSpriteState();
@@ -109,6 +109,8 @@ void Personaje::detenerAnimacion() {
 }
 
 void Personaje::animar() {
+//	float deltaTime = Game::instance().time()->getDeltaTime();
+	//this->modelo->getAnimation()->fps();
 	if (!this->modelo->estaAnimandose())
 		return;
 	int animacion = modelo->getEstado();
@@ -119,7 +121,7 @@ void Personaje::animar() {
 	if (sprites[estado]->ultimoFrame()) {
 		this->detenerAnimacion();
 	}
-	sprites[estado]->actualizarFrame();
+	//sprites[estado]->actualizarFrame();
 }
 
 void Personaje::update() {
@@ -127,6 +129,7 @@ void Personaje::update() {
 	this->mover();
 	this->animar();
 	modelo->update();
+	sprites[estado]->actualizarFrame();
 	//if (!this->isCenteredInTile() {
 	//	this->mover();
 	//} else {
@@ -202,7 +205,7 @@ void Personaje::moverSprite(std::pair<float, float>& factor){
 void Personaje::moverSpriteEnX() {
 	float factorT = 0;	//El truncamiento de la variable factor
 	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
-		sprites[estado]->getNextFrame();
+		//sprites[estado]->getNextFrame();
 		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
 			serr++;
 		}
@@ -234,9 +237,9 @@ void Personaje::moverSpriteEnY() {
 	float factorT = 0;	//El truncamiento de la variable factor
 	
 	if (((ePot.second >= 1)/*&&(serr != 1))||((serr == 1)&&(delta.first == 0)&&(ePot.second >= 1)*/)) {
-		if ((delta.first == 0)/*&&(serr != 1)*/) { // evito actualizar dos veces en diagonal
-			sprites[estado]->getNextFrame();
-		}
+		//if ((delta.first == 0)/*&&(serr != 1)*/) { // evito actualizar dos veces en diagonal
+		//	sprites[estado]->getNextFrame();
+		//}
 		serr = 0;
 		factorT = std::floor(ePot.second);
 		ePot.second -= factorT;
