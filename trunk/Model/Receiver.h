@@ -15,11 +15,17 @@ private:
 
 	bool inyectUserIDonReceive;
 
+	std::string reminder;
+
 	InstructionQueue* instructionQueue;
 
 	void setConnectionOK(bool connectionOK);
 
 	bool isInyectUserIDonReceive();
+
+	std::string getReminder();
+
+	void setReminder(std::string reminder);
 
 	InstructionQueue* getInstructionQueue();
 

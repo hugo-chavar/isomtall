@@ -136,6 +136,10 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				{
 					if (!chat.isTyping())
 						//Game::instance().personaje()->setIsActivo();
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"DUMMY STATE");
+						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().personaje()->setIsActivo(false);
 					break;
 				}
