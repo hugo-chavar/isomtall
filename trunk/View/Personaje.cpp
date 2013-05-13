@@ -127,7 +127,9 @@ void Personaje::animar() {
 void Personaje::update() {
 	this->setFreezed(!modelo->getIsActivo());
 	this->mover();
-	this->animar();
+	if (this->isCenteredInTile()) {
+		this->animar();
+	}
 	modelo->update();
 	sprites[estado]->actualizarFrame();
 	//if (!this->isCenteredInTile() {
