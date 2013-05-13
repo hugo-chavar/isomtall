@@ -30,6 +30,10 @@ void SpriteAnimado::actualizarFrame() {
 		this->avanzarFrames();
 }
 
+void SpriteAnimado::getNextFrame() {
+	this->avanzarFrames();
+}
+
 //void SpriteAnimado::cargarFrames(AnimatedEntity * entity) {
 //	unsigned i = 0;
 //	entity->imagesPaths()->restartCurrentPosition();
