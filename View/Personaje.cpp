@@ -158,7 +158,7 @@ void Personaje::mover() {
 	calcularSigTileAMover();
 	calcularvelocidadRelativa(factor);
 	if (estado != ERROR) {
-		sprites[estado]->actualizarFrame();
+		//sprites[estado]->getNextFrame();
 		moverSprite(factor);
 	}
 }
@@ -190,22 +190,22 @@ void Personaje::calcularSigTileAMover(){
 void Personaje::moverSprite(std::pair<float, float>& factor){
 	
 	if (delta.first != 0) { //Hay movimieto en x
-		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
-			serr++;
-		}
 		ePot.first = ePot.first + factor.first;	//Aumento la cantidad de movimiento, cuantos pixels se va a mover
 		moverSpriteEnX(); //Mueve en x
 	}
-	if (((delta.second != 0)&&(serr != 1))||((serr == 1)&&(delta.first == 0))) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
-		serr = 0;																	//O si esta activada la corrección pero se completo el movimineto en x
-		ePot.second = ePot.second + factor.second;									//Caso en que la velocidad no es entera
-		moverSpriteEnY();
+	if (delta.second != 0) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
+		ePot.second = ePot.second + factor.second;									//O si esta activada la corrección pero se completo el movimineto en x
+		moverSpriteEnY();															//Caso en que la velocidad no es entera
 	}
 }
 
 void Personaje::moverSpriteEnX() {
 	float factorT = 0;	//El truncamiento de la variable factor
 	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
+		sprites[estado]->getNextFrame();
+		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
+			serr++;
+		}
 		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera
 		ePot.first -= factorT;	//Saco la cantidad entera de la cantidad de movimiento
 		if (delta.first < 0) {	//Si me muevo hacia las x negativas
@@ -232,7 +232,12 @@ void Personaje::moverSpriteEnX() {
 
 void Personaje::moverSpriteEnY() {
 	float factorT = 0;	//El truncamiento de la variable factor
-	if (ePot.second >= 1) {
+	
+	if (((ePot.second >= 1)/*&&(serr != 1))||((serr == 1)&&(delta.first == 0)&&(ePot.second >= 1)*/)) {
+		if ((delta.first == 0)/*&&(serr != 1)*/) { // evito actualizar dos veces en diagonal
+			sprites[estado]->getNextFrame();
+		}
+		serr = 0;
 		factorT = std::floor(ePot.second);
 		ePot.second -= factorT;
 		if (delta.second < 0) {
@@ -275,16 +280,18 @@ void Personaje::setDestino(int xTile, int yTile){
 }
 
 void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
+	float deltaTime = Game::instance().time()->getDeltaTime();
+
 	if (delta.first != 0){ //Hay movimiento en x
 		if (delta.second != 0) { //Diagonal
-			factor.first = static_cast<float>(velocidad *0.707);
-			factor.second = static_cast<float>(velocidad *0.707);
+			factor.first = static_cast<float>((velocidad*deltaTime) *0.707);
+			factor.second = static_cast<float>((velocidad*deltaTime) *0.707/2);
 		} else { //Horizontal
-			factor.first = velocidad;
+			factor.first = (velocidad*deltaTime);
 		}
 	} else { //No hay movimiento en x
 		if (delta.second != 0){ //Vertical
-			factor.second = (velocidad/2);
+			factor.second = ((velocidad*deltaTime)/2);
 		} else {//Quieto
 			factor.first = 0;
 			factor.second = 0;
