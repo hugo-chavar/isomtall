@@ -22,6 +22,7 @@ public:
 	int signal();
 
 	~ConditionVariable();
+
 };
 
 #endif // _CONDITIONVARIABLE_H_

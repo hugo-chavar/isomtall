@@ -5,6 +5,8 @@
 #include "InstructionQueue.h"
 #include "stringUtilities.h"
 
+#define TAMBUFFER 1024
+
 class ClientUpdater {
 private:
 	std::string version;
@@ -22,6 +24,8 @@ private:
 	void crearDirectorios(std::string directorios,std::string path);
 
 	void ClientUpdater::receiveFile(std::ofstream* archivo,Instruction instructionIn);
+
+	void sendConfirmation();
 
 public:
 	ClientUpdater();
