@@ -77,7 +77,7 @@ void ClientUpdater::sendConfirmation()
 void ClientUpdater::updateClient() {
 	Instruction instructionIn;
 	Instruction instructionOut;
-	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
+	Socket* newSocket = new Socket(inet_addr(this->getServerIp().c_str()),this->getServerPort(),0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);
@@ -128,6 +128,22 @@ void ClientUpdater::updateClient() {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
+}
+
+void ClientUpdater::setServerPort(int port) {
+	this->serverPort = port;
+}
+
+void ClientUpdater::setServerIp(std::string ip) {
+	this->serverIp = ip;
+}
+
+int ClientUpdater::getServerPort() {
+	return this->serverPort;
+}
+
+std::string ClientUpdater::getServerIp() {
+	return this->serverIp;
 }
 
 // ----------------------------------- DESTRUCTOR ----------------------------------------
