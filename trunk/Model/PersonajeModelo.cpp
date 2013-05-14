@@ -183,30 +183,48 @@ int PersonajeModelo::siCaminaDetenerse() {
 	return cambio;
 }
 
+//int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
+//	Pathfinder pathF;
+//	int cambio = SIN_CAMBIO;
+//	double coste = 0;
+//	float costeF = 0;
+//
+//	if (target == current) {
+//		return (this->quedarseQuieto(velocidadAni));
+//	}
+//	if (esNecesarioCalcularNuevoPath()) {
+//		posMov = 0;
+//		caminoSize = 0;
+//		limpiarPath();
+//		targetParcial.first = target.first;
+//		targetParcial.second = target.second;
+//		caminoSize = pathF.getPath(current.first, current.second, targetParcial.first, targetParcial.second, xPath, yPath);
+//		if (caminoSize == 0) { //Si no se tiene que mover, seteo el destino en los parciales
+//			target.first = targetParcial.first;
+//			target.second = targetParcial.second;
+//		}
+//		if (caminoSize <  0) {
+//			return (this->quedarseQuieto(velocidadAni));
+//		}
+//	}
+//	if (posMov < caminoSize) {
+//		this->moverse(destino, velocidadAni);
+//	} else {
+//		return (this->quedarseQuieto(velocidadAni));
+//	}
+//	cambio = ESTADO_MOVIMIENTO;
+//	estado = cambiarEstado(destino.first, destino.second, cambio);
+//	return estado;
+//}
+
 int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
-	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
 	double coste = 0;
 	float costeF = 0;
 
-	if (target == current) {
+	/*if (target == current) {
 		return (this->quedarseQuieto(velocidadAni));
-	}
-	if (esNecesarioCalcularNuevoPath()) {
-		posMov = 0;
-		caminoSize = 0;
-		limpiarPath();
-		targetParcial.first = target.first;
-		targetParcial.second = target.second;
-		caminoSize = pathF.getPath(current.first, current.second, targetParcial.first, targetParcial.second, xPath, yPath);
-		if (caminoSize == 0) { //Si no se tiene que mover, seteo el destino en los parciales
-			target.first = targetParcial.first;
-			target.second = targetParcial.second;
-		}
-		if (caminoSize <  0) {
-			return (this->quedarseQuieto(velocidadAni));
-		}
-	}
+	}*/
 	if (posMov < caminoSize) {
 		this->moverse(destino, velocidadAni);
 	} else {
@@ -216,6 +234,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	estado = cambiarEstado(destino.first, destino.second, cambio);
 	return estado;
 }
+
 
 bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	if ((xPath == NULL)&&(yPath == NULL)) { //Si no hay camino seteado
@@ -414,16 +433,18 @@ void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
 	if ( datosUpdate[0] > 0 ) {
 		this->caminoSize = datosUpdate[0];
 		if (this->xPath != NULL) {
-			delete [] this->xPath;
-			this->xPath = new int[caminoSize];
-		}
-		if (this->yPath != NULL) {
-			this->yPath = new int[caminoSize];
 			delete [] this->yPath;
 		}
+		if (this->yPath == NULL) {
+			delete [] this->yPath;
+		}
+		this->xPath = new int[caminoSize];
+		this->yPath = new int[caminoSize];
 		for (int i = 0; i < caminoSize; ++i) {
 			xPath[i] = datosUpdate[i+1];
 			yPath[i] = datosUpdate[i+2];
 		}
+		targetParcial.first = xPath[caminoSize -1 ];
+		targetParcial.second = yPath[caminoSize -1 ];
 	}
 }
