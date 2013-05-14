@@ -444,6 +444,7 @@ void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
 			xPath[i] = datosUpdate[i+1];
 			yPath[i] = datosUpdate[i+2];
 		}
+		posMov=0;
 		targetParcial.first = xPath[caminoSize -1 ];
 		targetParcial.second = yPath[caminoSize -1 ];
 	}
