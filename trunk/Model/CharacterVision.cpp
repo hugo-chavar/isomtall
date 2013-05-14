@@ -1,6 +1,7 @@
 #include "CharacterVision.h"
 #include "Game.h"
 #include "TileModel.h"
+#include "StringUtilities.h"
 
 CharacterVision::CharacterVision() {
 	mapKnowledge.clear();
@@ -17,13 +18,11 @@ void CharacterVision::setRangeVision(int value) {
 void CharacterVision::initialize() {
 	this->mapWidth = Game::instance().world()->width();
 	this->mapHeight = Game::instance().world()->height();
-	//this->prevPosition = this->position;
 	for (int i = 0; i < this->mapHeight; i++) {
 		bitset <MAX_STAGE_SIZE_X> line;
 		line.reset();
 		mapKnowledge.push_back(line);
 	}
-	//this->setKnown(this->position);
 	vision.initialize(this->position, this->rangeVision);
 	vision.fill();
 	pair<int, int > aux;
@@ -46,8 +45,7 @@ void CharacterVision::updatePosition(pair<int, int> pos) {
 	pair<int, int > aux;
 	while (vision.hasNext()) {
 		aux = vision.next();
-		
-			this->setKnown(aux);
+		this->setKnown(aux);
 	}
 	this->position = pos;
 }
@@ -74,4 +72,29 @@ void CharacterVision::setKnown(pair<int, int> pos){
 
 bool CharacterVision::isInsideVision(pair<int, int> pos) {
 	return vision.inside(pos);
+}
+
+string CharacterVision::toString() {
+	pair<int, int> pos;
+	string out = "";
+	for (pos.first = 0; pos.first < this->mapHeight; pos.first++) {
+		for (pos.second = 0; pos.second < this->mapWidth; pos.second++) {
+			if (this->testPosition(pos)){
+				out.append(stringUtilities::pairIntToString(pos));
+				out.append(":");
+			}
+		}
+	}
+	return out;
+}
+
+void CharacterVision::fromString(string data) {
+	vector <string> auxVector;
+	pair<int, int> pos;
+	auxVector.clear();
+	stringUtilities::splitString(data, auxVector, ':');
+	for (vector <string>::iterator it = auxVector.begin(); it != auxVector.end(); ++it) {
+		pos = stringUtilities::stringToPairInt(*it);
+		this->setKnown(pos);
+	}
 }

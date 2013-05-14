@@ -80,7 +80,6 @@
     <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Frame.cpp" />
     <ClCompile Include="Personaje.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteAnimado.cpp" />
@@ -100,7 +99,6 @@
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="Frame.h" />
     <ClInclude Include="Personaje.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteAnimado.h" />

@@ -17,11 +17,13 @@ public:
 	~CharacterVision();
 	void setRangeVision(int value);
 	void initialize();
-	void setPosition(pair<int, int>);
-	void updatePosition(pair<int, int>);
-	bool testPosition(pair<int, int>);
-	void setKnown(pair<int, int> );
+	void setPosition(pair<int, int> pos);
+	void updatePosition(pair<int, int> pos);
+	bool testPosition(pair<int, int> pos);
+	void setKnown(pair<int, int> pos);
 	bool isInsideVision(pair<int, int> pos);
+	string toString();
+	void fromString(string data);
 private:
 	vector <bitset<MAX_STAGE_SIZE_X> > mapKnowledge;
 	int rangeVision;
