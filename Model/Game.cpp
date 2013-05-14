@@ -39,12 +39,12 @@ bool Game::initialize() {
 	_configuration = yParser.getConfig();
 	//selecciono el primero del primer stage
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
-
 	//si hubieron problemas salgo
 	if( (!_configuration) || (!_personaje) )
 		return false;
 
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
+	personajes.insert(std::pair<string,PersonajeModelo*>(nombreJugador,_personaje));
 	_personaje->createVision(_configuration->visionRange());
 	this->_personaje->setName(this->playerName);
 	this->_time.initializeTime();
