@@ -4,6 +4,7 @@
 #include "Game.h"
 #include "SDL_ttf.h"
 #include "Instruction.h"
+#include "../Common/stringUtilities.h"
 
 Engine::Engine() {
 	this->running = true;
@@ -138,7 +139,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						//Game::instance().personaje()->setIsActivo();
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"DUMMY STATE");
+						//TODO: Create an option header
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"f");
 						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().personaje()->setIsActivo(false);
 					break;
@@ -147,18 +149,33 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				{
 					if (!chat.isTyping())
 						//Game::instance().personaje()->setIsActivo();
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						//TODO: Create an option header
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"w");
+						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().personaje()->setIsActivo(true);
 					break;
 				}
 			case SDLK_a:
 				{
 					if (!chat.isTyping())
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						//TODO: Create an option header
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"a");
+						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().personaje()->animar('a');
 					break;
 				}
 			case SDLK_s:
 				{
 					if (!chat.isTyping())
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						//TODO: Create an option header
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"s");
+						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().personaje()->animar('s');
 					break;
 				}
@@ -174,8 +191,10 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						chat.setIsTyping(false);
 					else
 						instruction.clear();
+						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
+						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,"DUMMY DESTINATION");
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
 						Game::instance().getModelUpdater()->addInstruction(instruction);
 						Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
 					break;
