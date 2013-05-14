@@ -39,8 +39,10 @@ public:
 	pair<int,int> pixelToTileCoordinatesInStage(pair<int,int> pixelCoordinates,float cameraX,float cameraY);
 	pair<int,int> pixelToTileCoordinates(pair<int,int> pixelCoordinates);
 	bool isInsideWorld(pair<int,int> tileCoordinates);
+	//Reemplazar luego una por otra
 	void destino(int x,int y,float cameraX,float cameraY);
-
+	std::pair<int, int> destination(int x,int y,float cameraX,float cameraY);
+	//
 	PersonajeModelo* modelMainCharacters(unsigned );
 	TileModel* getFirstTile();
 	void insertMainCharacter(PersonajeModelo* );
