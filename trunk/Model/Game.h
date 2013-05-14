@@ -34,6 +34,7 @@ public:
 	EntityObject* entityObjectAt(unsigned pos);
 	PersonajeModelo * personaje();
 	Configuration* configuration();
+	PersonajeModelo* getPersonaje(string name);
 
 private:
 	Game();
@@ -43,6 +44,7 @@ private:
 	PersonajeModelo * _personaje;
 	model::Login _login;
 	ModelUpdater _modelUpdater;
+	map <string,PersonajeModelo*> personajes;
 };
 
 #endif

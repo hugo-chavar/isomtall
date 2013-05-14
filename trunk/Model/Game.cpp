@@ -103,3 +103,14 @@ bool Game::insidePlayerVision(std::pair<int,int> pos){
 bool Game::isKnownByPlayer(std::pair<int,int> pos) {
 	return this->_personaje->getVision()->testPosition(pos);
 }
+
+PersonajeModelo* Game::getPersonaje(string name)
+{
+	PersonajeModelo* personaje = NULL;
+	std::map<std::string,PersonajeModelo*>::iterator it = this->personajes.find(name);
+
+	if (it != this->personajes.end())
+		personaje = it->second;
+
+	return personaje;
+}

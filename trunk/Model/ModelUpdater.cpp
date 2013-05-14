@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "Game.h"
+
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
 ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
@@ -96,7 +98,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_UPDATE:
-			this->simulationsUpdate(instructionIn);
+			this->simulationUpdate(instructionIn);
 			//std::cout << instructionIn.serialize() << std::endl;
 		break;
 		case OPCODE_CONNECTION_ERROR:
@@ -112,17 +114,18 @@ void* ModelUpdater::run() {
 	return NULL;
 }
 
-//Ejemplo de recepcion player,carlos, tileX=1,tileY=2 ~ player,pedro, tileX=5,tileY=2 ~ stage,..."
-void ModelUpdater::simulationsUpdate(Instruction& instructionIn)
+//Ejemplo de recepcion player, tileX,animacion(0 si no esta animando):player, tileX,animacion(0 si no esta animando) "
+
+void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 {
-	std::string serializedSimulations=instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
-	std::vector<std::string> simulations_packages;
+	std::string serializedSimulation=instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
+	std::vector<std::string> player_simulations;
 
-	stringUtilities::splitString(serializedSimulations,simulations_packages,'~');
+	stringUtilities::splitString(serializedSimulation,player_simulations,':');
 
-	for(int i=0;i<simulations_packages.size();i++)
+	for(int i=0;i<player_simulations.size();i++)
 	{
-		this->simulate(simulations_packages[i]);
+		this->simulate(player_simulations[i]);
 	}
 
 }
@@ -131,21 +134,16 @@ void ModelUpdater::simulate(std::string simulation_package)
 {
 	std::vector<std::string> simulation_fields;
 	stringUtilities::splitString(simulation_package,simulation_fields,',');
-	if(simulation_fields[0]=="player")
+	PersonajeModelo* personaje=Game::instance().getPersonaje(simulation_fields[0]);
+	if(personaje)
 	{
-		//PersonajeModelo* modelo = Game::instance().personaje(simulation_fields[1]);
-		//modelo->updatePJModel(simulation_fields);
-		//Personaje* personaje = GameView::instance().getPersonaje(simulation_fields[1]);
-		//personaje->update();
+		int tileX=stringUtilities::stringToInt(simulation_fields[1]);
+		int tileY=stringUtilities::stringToInt(simulation_fields[2]);
+		Game::instance().personaje()->setDestino(tileX,tileY);
+		if(simulation_fields[2]!="0")
+			Game::instance().personaje()->animar(simulation_fields[2].front());
+		//fresado?
 	}
-	else if(simulation_fields[0]=="stage")
-	{
-		//lo que haga falta actualizar en el mapa
-	}
-
-	//Anidar if aqui si se puede mandar otro tipo de actualizacion
-
-
 }
 
 
