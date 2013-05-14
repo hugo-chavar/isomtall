@@ -20,6 +20,7 @@
 #define MOVIMIENTO 20
 #define FREEZAR 30
 #define ATACAR 40
+#define DEFENDER 50
 
 //Orientacion
 
@@ -66,6 +67,14 @@
 #define ATTACK_SOE 29
 #define ATTACK_E 30
 #define ATTACK_O 31
+#define DEFEND_N 32
+#define DEFEND_NE 33
+#define DEFEND_NOE 34
+#define DEFEND_S 35
+#define DEFEND_SE 36
+#define DEFEND_SOE 37
+#define DEFEND_E 38
+#define DEFEND_O 39
 
 //Parado esperando
 
@@ -108,5 +117,15 @@
 #define ATACAR_SOE 45
 #define ATACAR_E 46
 #define ATACAR_O 47
+
+//Defender
+#define DEFENDER_N 50
+#define DEFENDER_NE 51
+#define DEFENDER_NOE 52
+#define DEFENDER_S 53
+#define DEFENDER_SE 54
+#define DEFENDER_SOE 55
+#define DEFENDER_E 56
+#define DEFENDER_O 57
 
 #endif

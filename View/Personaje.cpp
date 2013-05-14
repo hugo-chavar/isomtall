@@ -102,7 +102,7 @@ void Personaje::setFreezed(bool value) {
 //}
 
 void Personaje::detenerAnimacion() {
-	sprites[estado]->actualizarFrame();
+	//sprites[estado]->actualizarFrame();
 	modelo->terminarAnimacion();
 	int animacion = modelo->getEstado();
 	estado = procesarAnimacion(animacion);
@@ -116,6 +116,7 @@ void Personaje::animar() {
 	int animacion = modelo->getEstado();
 	if (procesarAnimacion(animacion) != estado) {
 		sprites[estado]->reiniciar();
+		sprites[procesarAnimacion(animacion)]->reiniciar();
 	}
 	estado = procesarAnimacion(animacion);
 	if (sprites[estado]->ultimoFrame()) {
@@ -378,6 +379,14 @@ int Personaje::procesarAnimacion(int animacion) {
 	case ATACAR_SOE: return ATTACK_SOE;
 	case ATACAR_E: return ATTACK_E;
 	case ATACAR_O: return ATTACK_O;
+	case DEFENDER_N: return DEFEND_N;
+	case DEFENDER_NE: return DEFEND_NE;
+	case DEFENDER_NOE: return DEFEND_NOE;
+	case DEFENDER_S: return DEFEND_S;
+	case DEFENDER_SE: return DEFEND_SE;
+	case DEFENDER_SOE: return DEFEND_SOE;
+	case DEFENDER_E: return DEFEND_E;
+	case DEFENDER_O: return DEFEND_O;
 	default: return ESTADO_ERROR;
 	}
 }

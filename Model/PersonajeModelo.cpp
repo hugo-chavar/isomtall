@@ -3,6 +3,7 @@
 #include "PersonajeModelo.h"
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
+#include "../Common/stringUtilities.h"
 #include "Game.h"
 
 using namespace common;
@@ -54,6 +55,16 @@ void PersonajeModelo::atacar() {
 	}
 }
 
+void PersonajeModelo::defender() {
+	animacionActual = DEFENDER;
+	targetParcial = target = current;
+	if (estado >= MOVIMIENTO) {
+		estado = estado + DEFENDER - MOVIMIENTO;
+	} else {
+		estado = estado + DEFENDER - PARADO;
+	}
+}
+
 bool PersonajeModelo::estaAnimandose() {
 	return this->isAnimating;
 }
@@ -62,9 +73,15 @@ void PersonajeModelo::animar(char opcion) {
 	if ((isActivo)&&(animacionActual == SIN_CAMBIO)) {
 		
 		switch (opcion) {
-		case 'a': {
+		case ('a'): {
 			this->setAnimating(true);
 			this->atacar();
+			break;
+				  }
+		case ('s'): {
+			this->setAnimating(true);
+			this->defender();
+			break;
 				  }
 		default:;
 		}
@@ -401,4 +418,22 @@ std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
 
 void PersonajeModelo::setAnimating(bool value) {
 	this->isAnimating = value;
+}
+
+void PersonajeModelo::updatePJModel(std::vector<std::string>& datosUpdate) {
+	if ( stringUtilities::stringToInt (datosUpdate[3]) > 0 ) {
+		this->caminoSize = stringUtilities::stringToInt (datosUpdate[3]);
+		if (this->xPath != NULL) {
+			delete [] this->xPath;
+			this->xPath = new int[caminoSize];
+		}
+		if (this->yPath != NULL) {
+			this->yPath = new int[caminoSize];
+			delete [] this->yPath;
+		}
+		for (int i = 0; i < (caminoSize -1); ++i) {
+			xPath[i] = stringUtilities::stringToInt (datosUpdate[4+i*2]);
+			yPath[i] = stringUtilities::stringToInt (datosUpdate[5+i*2]);
+		}
+	}
 }

@@ -133,7 +133,10 @@ void ModelUpdater::simulate(std::string simulation_package)
 	stringUtilities::splitString(simulation_package,simulation_fields,',');
 	if(simulation_fields[0]=="player")
 	{
-		//Personaje* personaje=GameView::instance().getPersonaje(simulation_fields[1]);
+		//PersonajeModelo* modelo = Game::instance().personaje(simulation_fields[1]);
+		//modelo->updatePJModel(simulation_fields);
+		//Personaje* personaje = GameView::instance().getPersonaje(simulation_fields[1]);
+		//personaje->update();
 	}
 	else if(simulation_fields[0]=="stage")
 	{

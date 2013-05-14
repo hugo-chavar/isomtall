@@ -41,6 +41,7 @@ public:
 	void update();
 	std::pair<int, int> obtenerFrentePersonaje();
 	void setAnimating(bool value);
+	void updatePJModel(std::vector <std::string>& datosUpdate);
 private:
 
 	int siCaminaDetenerse();
@@ -53,6 +54,7 @@ private:
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
 	//void activarDesactivar();
 	void atacar();
+	void defender();
 
 	void initialize(int pos_x, int pos_y);
 	
