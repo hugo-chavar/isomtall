@@ -1,6 +1,6 @@
 pantalla:
     - ancho: 800 
-    - alto: xxxx
+    - alto: 600
 
 configuracion: 
     - vel_personaje: 100
@@ -73,12 +73,7 @@ entidades:
       ancho_base: 3 
       alto_base: 3 
       pixel_ref_x: 122
-      pixel_ref_y: 104 
-
-    - nombre: orco 
-      imagen: path/a/imagen/
-      fps: 10 
-      delay: 5 
+      pixel_ref_y: 104
 
     - nombre: pelota 
       imagen: ../Images/pelota/
@@ -119,10 +114,7 @@ entidades:
       imagen: ../Images/personaje/
       pixel_ref_x: 32
       pixel_ref_y: 32 
-      fps: 10 
-
-    - nombre: tierra 
-      imagen: path/a/imagen.png 
+      fps: 10
    
     - nombre: agua 
       imagen: ../Images/pisoAgua0.png 

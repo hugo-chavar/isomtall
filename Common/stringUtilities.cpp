@@ -143,8 +143,6 @@ namespace stringUtilities {
 		return auxPair;
 	}
 
-
-
 	int replaceStringForChar(char charR,char* buff,std::string replaced,std::string toConvert)
 	{
 		std::vector<int> posiciones; 
