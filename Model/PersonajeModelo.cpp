@@ -410,9 +410,9 @@ void PersonajeModelo::setAnimating(bool value) {
 	this->isAnimating = value;
 }
 
-void PersonajeModelo::updatePJModel(std::vector<std::string>& datosUpdate) {
-	if ( stringUtilities::stringToInt (datosUpdate[3]) > 0 ) {
-		this->caminoSize = stringUtilities::stringToInt (datosUpdate[3]);
+void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
+	if ( datosUpdate[0] > 0 ) {
+		this->caminoSize = datosUpdate[0];
 		if (this->xPath != NULL) {
 			delete [] this->xPath;
 			this->xPath = new int[caminoSize];
@@ -421,9 +421,9 @@ void PersonajeModelo::updatePJModel(std::vector<std::string>& datosUpdate) {
 			this->yPath = new int[caminoSize];
 			delete [] this->yPath;
 		}
-		for (int i = 0; i < (caminoSize -1); ++i) {
-			xPath[i] = stringUtilities::stringToInt (datosUpdate[4+i*2]);
-			yPath[i] = stringUtilities::stringToInt (datosUpdate[5+i*2]);
+		for (int i = 0; i < caminoSize; ++i) {
+			xPath[i] = datosUpdate[i+1];
+			yPath[i] = datosUpdate[i+2];
 		}
 	}
 }

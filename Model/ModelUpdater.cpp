@@ -114,7 +114,7 @@ void* ModelUpdater::run() {
 	return NULL;
 }
 
-//Ejemplo de recepcion player, tileX,animacion(0 si no esta animando):player, tileX,animacion(0 si no esta animando) "
+//Ejemplo de recepcion player,Xpath,Ypath tileX, tileY,animacion(0 si no esta animando):player, tileX, tileY,animacion(0 si no esta animando) "
 
 void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 {
@@ -137,12 +137,19 @@ void ModelUpdater::simulate(std::string simulation_package)
 	PersonajeModelo* personaje=Game::instance().getPersonaje(simulation_fields[0]);
 	if(personaje)
 	{
-		int tileX=stringUtilities::stringToInt(simulation_fields[1]);
-		int tileY=stringUtilities::stringToInt(simulation_fields[2]);
-		Game::instance().personaje()->setDestino(tileX,tileY);
+		int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
+		std::vector<int> datosUpdate;
+		datosUpdate.push_back(pathTiles);
+		for(int i=2;i<pathTiles*2;i++)
+		{
+		int tileX=stringUtilities::stringToInt(simulation_fields[i]);
+		datosUpdate.push_back(tileX);
+		int tileY=stringUtilities::stringToInt(simulation_fields[i+1]);
+		datosUpdate.push_back(tileX);
+		}
+		personaje->updatePJModel(datosUpdate);
 		if(simulation_fields[2]!="0")
 			Game::instance().personaje()->animar(simulation_fields[2].front());
-		//fresado?
 	}
 }
 
