@@ -7,7 +7,7 @@
 using namespace common;
 
 int main(int argc, char *argv[]) {
-	string playerName;
+	std::string playerName;
 	if (argc < 2){
 		std::cout << "Nombre jugador no ingresado"<<std::endl;
 		playerName = "Default Name";
@@ -15,9 +15,13 @@ int main(int argc, char *argv[]) {
 		//porner if playername largo
 		playerName = argv[1];
 	}
+	int serverPort = 9443; // obtener desde otro archivo de config
+	std::string serverIp = "127.0.0.1"; // obtener desde otro archivo de config
 	WSAData ws;
 	WSAStartup(MAKEWORD(2,2),&ws);
 	ClientUpdater clientUpdater;
+	clientUpdater.setServerIp(serverIp);
+	clientUpdater.setServerPort(serverPort);
 	clientUpdater.updateClient();
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");

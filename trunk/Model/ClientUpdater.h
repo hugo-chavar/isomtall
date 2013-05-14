@@ -15,6 +15,10 @@ private:
 
 	InstructionQueue instructionQueue;
 
+	std::string serverIp;
+
+	int serverPort;
+
 	std::string& getVersion();
 
 	Connector& getConnector();
@@ -31,6 +35,14 @@ public:
 	ClientUpdater();
 
 	void updateClient();
+
+	void setServerPort(int portNumber);
+
+	void setServerIp(std::string ip);
+
+	int getServerPort();
+
+	std::string getServerIp();
 
 	~ClientUpdater();
 };
