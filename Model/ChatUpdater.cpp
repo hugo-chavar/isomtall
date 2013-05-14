@@ -42,6 +42,8 @@ std::list<std::string>& ChatUpdater::getMessagesList() {
 
 void ChatUpdater::updateChatModel() {
 	Instruction instructionIn;
+	int port;
+	std::string ip;
 	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
 
 	if (newSocket->connectTo() != -1) {

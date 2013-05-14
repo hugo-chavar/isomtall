@@ -25,7 +25,7 @@ public:
 	TimeManager* time();
 	model::Login* getLogin();
 	ModelUpdater* getModelUpdater();
-	bool initialize(string nombreJugador);
+	bool initialize(string nombreJugador); //cambiar
 	bool insidePlayerVision(std::pair<int,int> );
 	bool isKnownByPlayer(std::pair<int,int> );
 	EntLists allEntities;
@@ -35,6 +35,8 @@ public:
 	PersonajeModelo * personaje();
 	Configuration* configuration();
 	PersonajeModelo* getPersonaje(string name);
+	void setPlayerName(string name);
+	string getPlayerName();
 
 private:
 	Game();

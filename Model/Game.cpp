@@ -114,3 +114,13 @@ PersonajeModelo* Game::getPersonaje(string name)
 
 	return personaje;
 }
+
+void Game::setPlayerName(string name) {
+	//TODO: andy
+}
+
+string Game::getPlayerName() {
+	//TODO: andy
+	string aux = "harcoded";
+	return aux;
+}
