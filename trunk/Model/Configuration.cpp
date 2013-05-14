@@ -6,7 +6,8 @@ Configuration::Configuration(){
 	_cameraScrollSpeed = DEFAULT_SCROLL_SPEED;
 	_cameraWidth = DEFAULT_SCREEN_WIDTH;
 	_cameraHeight = DEFAULT_SCREEN_HEIGHT;
-	_serverPort = DEFAULT_SERVER_PORT;
+	//_serverPort = DEFAULT_SERVER_PORT;
+	//_serverPort = DEFAULT_SERVER_IP;
 	_visionRange = DEFAULT_VISION_RANGE;
 	_mainCharacterSpeed = DEFAULT_MAIN_CHARACTER_SPEED;
 }
