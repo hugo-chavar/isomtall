@@ -22,7 +22,7 @@ int main(int argc, char *argv[]) {
 	ClientUpdater clientUpdater;
 	clientUpdater.setServerIp(serverIp);
 	clientUpdater.setServerPort(serverPort);
-	clientUpdater.updateClient();
+	//clientUpdater.updateClient();
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");
 	Game::instance().setPlayerName(playerName);
