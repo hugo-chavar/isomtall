@@ -42,6 +42,7 @@ InstructionQueue& ModelUpdater::getInstructionQueue() {
 
 void ModelUpdater::updateModel() {
 	Instruction instructionIn;
+	Instruction instructionOut;
 	int port = Game::instance().configuration()->serverPort();
 	std::string ipAddress = Game::instance().configuration()->serverIp();
 	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
@@ -55,6 +56,15 @@ void ModelUpdater::updateModel() {
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
 				this->processInstruction(instructionIn);
 			}
+			/*Inicio codigo que pincha*/
+			if(Game::instance().personaje()->getIsInCenterTile()) {
+				instructionOut.clear();
+				instructionOut.setOpCode(OPCODE_SIMULATION_UPDATE);
+				std::pair<int, int> pos = Game::instance().personaje()->getPosition();
+				instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,stringUtilities::pairIntToString(pos));
+				this->getConnector().addInstruction(instructionOut);
+			}
+			/*Fin codigo que pincha*/
 		} while (!this->isStopping());
 
 		if (!this->isForceStop()) {

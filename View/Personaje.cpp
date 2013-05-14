@@ -179,6 +179,7 @@ void Personaje::calcularSigTileAMover(){
 		serr = 0;
 		tileActual = modelo->getPosition();
 		//modelo->getCurrent(tileActual);
+		modelo->setIsInCenterTile(true);
 		animacion = modelo->mover(tile, velocidad);
 		estado = procesarAnimacion(animacion);
 		if (estadoAnterior != estado) {
@@ -188,6 +189,7 @@ void Personaje::calcularSigTileAMover(){
 		//std::string aux = stringUtilities::floatToString(velocidad);
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
+			modelo->setIsInCenterTile(false);
 			modelo->setCurrent(tile.first, tile.second);
 		}
 	}
