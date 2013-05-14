@@ -39,7 +39,7 @@ struct Screen {
 struct Config {
 	float main_character_speed;
 	int scroll_margin;
-	int port;
+	//int port;
 	int vision_range;
 };
 
@@ -75,7 +75,7 @@ class YAMLParser {
 
 private:
 	Screen screen;
-	Configuration * config;
+	Configuration config;
 	Config configuration;
 	EntLists entities;
 	Stages stages;
@@ -91,7 +91,6 @@ private:
 	void manageStageCase();
 	bool entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, EntityObject* entityObjectType, AnimatedEntity* animatedEntityType);
 
-
 public:
 	YAMLParser();
 	~YAMLParser();
@@ -105,7 +104,7 @@ public:
 
 	//conexion con el modelo logico
 	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
-	Configuration* getConfig();
+	Configuration getConfig();
 
 };
 

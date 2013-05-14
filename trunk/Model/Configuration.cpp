@@ -11,6 +11,28 @@ Configuration::Configuration(){
 	_mainCharacterSpeed = DEFAULT_MAIN_CHARACTER_SPEED;
 }
 
+Configuration::Configuration(const Configuration &source){
+	_cameraScrollSpeed = source._cameraScrollSpeed;
+	_cameraWidth = source._cameraWidth;
+	_cameraHeight = source._cameraHeight;
+	//_serverPort = source._serverPort;
+	_visionRange = source._visionRange;
+	_mainCharacterSpeed = source._mainCharacterSpeed;
+	//la ip se setea en otro punto.. no copiarla
+}
+
+Configuration& Configuration::operator=(const Configuration &source){
+	_cameraScrollSpeed = source._cameraScrollSpeed;
+	_cameraWidth = source._cameraWidth;
+	_cameraHeight = source._cameraHeight;
+	//_serverPort = source._serverPort;
+	_visionRange = source._visionRange;
+	_mainCharacterSpeed = source._mainCharacterSpeed;
+	//la ip se setea en otro punto.. no copiarla
+	return *this;
+}
+
+
 Configuration::~Configuration() {
 
 }
@@ -107,4 +129,12 @@ void Configuration::mainCharacterSpeed(float value) {
 
 unsigned int Configuration::visionRange() {
 	return _visionRange;
+}
+
+std::string Configuration::serverIp() {
+	return _serverIp;
+}
+
+void Configuration::serverIp(std::string ip) {
+	_serverIp = ip;
 }
