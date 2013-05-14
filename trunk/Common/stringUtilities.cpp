@@ -152,9 +152,9 @@ namespace stringUtilities {
 			posiciones.push_back(posicion);
 			posicion=toConvert.find(replaced,posicion+1);
 		}
-		int i=0;
+		unsigned i=0;
 		int chars=0;
-		int pos=0;
+		unsigned pos=0;
 		while(i<posiciones.size())
 		{	
 			while(pos<posiciones[i])

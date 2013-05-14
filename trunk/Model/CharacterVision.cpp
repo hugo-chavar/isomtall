@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "TileModel.h"
 #include "StringUtilities.h"
+#include "Logger.h"
 
 CharacterVision::CharacterVision() {
 	mapKnowledge.clear();
@@ -23,6 +24,7 @@ void CharacterVision::initialize() {
 		line.reset();
 		mapKnowledge.push_back(line);
 	}
+
 	vision.initialize(this->position, this->rangeVision);
 	vision.fill();
 	pair<int, int > aux;
@@ -85,6 +87,7 @@ string CharacterVision::toString() {
 			}
 		}
 	}
+	//common::Logger::instance().log(out);
 	return out;
 }
 

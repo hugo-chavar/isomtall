@@ -166,11 +166,6 @@ void PersonajeModelo::setVelocidad(float vel) {
 	velocidad = vel;
 }
 
-//void PersonajeModelo::getCurrent(std::pair<int, int>& actual) {
-//	actual.first = current.first;
-//	actual.second = current.second;
-//}
-
 int PersonajeModelo::getEstado() {
 	return estado;
 }
@@ -235,7 +230,7 @@ bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	return false;
 }
 
-void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad){
+void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad) {
 	double coste = 0;
 	float costeF = 0;
 
@@ -319,17 +314,12 @@ int PersonajeModelo::obtenerOrientacion(int x, int y) {
 }
 
 PersonajeModelo::~PersonajeModelo(){
-	//if (xPath != NULL) {
-	//	delete [] xPath;
-	//	xPath = NULL;
-	//}
-	//if (yPath != NULL) {
-	//	delete [] yPath;
-	//	yPath = NULL;
-	//}
+
 	this->limpiarPath();
-	if (this->vision)
+	if (this->vision){
+		this->vision->toString();
 		delete this->vision;
+	}
 }
 
 void PersonajeModelo::setName(string nombreJugador) {
