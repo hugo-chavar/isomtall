@@ -37,7 +37,7 @@ bool Game::initialize() {
 	ClientUpdater clientUpdater;
 	clientUpdater.setServerIp(serverIpAddress);
 	clientUpdater.setServerPort(serverPortNumber);
-	//clientUpdater.updateClient();
+	clientUpdater.updateClient();
 	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
