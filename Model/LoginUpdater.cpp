@@ -1,6 +1,8 @@
 #pragma warning(disable: 4355)
 #pragma warning(disable: 4512)
+
 #include "LoginUpdater.h"
+#include "Game.h"
 
 #include <iostream>
 
@@ -42,7 +44,9 @@ std::list<std::string>& LoginUpdater::getMessagesList() {
 
 void LoginUpdater::updateLoginModel() {
 	Instruction instructionIn;
-	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
+	int port = Game::instance().configuration()->serverPort();
+	std::string ipAddress = Game::instance().configuration()->serverIp();
+	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);

@@ -41,7 +41,7 @@ public:
 private:
 	Game();
 	StageModel _world;
-	Configuration* _configuration;
+	Configuration _configuration;
 	TimeManager _time;
 	PersonajeModelo * _personaje;
 	model::Login _login;

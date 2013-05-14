@@ -11,8 +11,8 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
-	if (config)
-		delete config;
+	//if (config)
+	//	delete config;
 
 	for (unsigned i=0; i<entities.vEntitiesObject.size(); i++)
 		delete entities.vEntitiesObject[i];
@@ -70,7 +70,7 @@ bool managePositiveFloatCase(const Node& node, float &result, string context, st
 			result = defaultValue;
 		}
 	} catch (KeyNotFound) {
-		if ((force == YES) || (force == YES_IGNORE_LOG)){  //fuerzo el valor x default
+		if ((force == YES) || (force == YES_IGNORE_LOG)) {  //fuerzo el valor x default
 			result = defaultValue;
 			if (force == YES_IGNORE_LOG)
 				return true;
@@ -123,20 +123,20 @@ void operator >> (const Node& node, Screen& screen) {
 
 void operator >> (const Node& node, Config& configuration) {
 	string field;
-	bool mainCharacterSpeedFound = false, scrollMarginFound = false, visionRangeFound = false, serverPortFound = false;
+	bool mainCharacterSpeedFound = false, scrollMarginFound = false, visionRangeFound = false;//, serverPortFound = false;
 	
 	for(unsigned int i=0; i<node.size(); i++) {
-		if (! mainCharacterSpeedFound){
+		if (! mainCharacterSpeedFound) {
 			mainCharacterSpeedFound = managePositiveFloatCase(node[i],configuration.main_character_speed,"configuracion","","vel_personaje",DEFAULT_MAIN_CHARACTER_SPEED, ONLY_INVALID);
 		}
 
-		if (!visionRangeFound){
+		if (!visionRangeFound) {
 			visionRangeFound = managePositiveIntCase(node[i], configuration.vision_range,"configuracion", "","vision_personaje",DEFAULT_VISION_RANGE, ONLY_INVALID);
 		}
-		if (!serverPortFound){
-			serverPortFound = managePositiveIntCase(node[i], configuration.port,"configuracion", "","puerto_servidor",DEFAULT_SERVER_PORT, ONLY_INVALID);
-		}
-		if (!scrollMarginFound){
+		//if (!serverPortFound){
+		//	serverPortFound = managePositiveIntCase(node[i], configuration.port,"configuracion", "","puerto_servidor",DEFAULT_SERVER_PORT, ONLY_INVALID);
+		//}
+		if (!scrollMarginFound) {
 			scrollMarginFound = managePositiveIntCase(node[i], configuration.scroll_margin,"configuracion", "","margen_scroll",DEFAULT_SCROLL_MARGIN, ONLY_INVALID);
 		}
 	}
@@ -150,14 +150,14 @@ void operator >> (const Node& node, Config& configuration) {
 		configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
 	}
 
-	if (!visionRangeFound){
+	if (!visionRangeFound) {
 		Logger::instance().logFieldNotDefined("configuración", "vision_personaje", "");
 		configuration.vision_range = DEFAULT_VISION_RANGE;
 	}
-	if (!serverPortFound){
-		Logger::instance().logFieldNotDefined("configuración", "puerto_servidor", "");
-		configuration.port = DEFAULT_SERVER_PORT;
-	}
+	//if (!serverPortFound){
+	//	Logger::instance().logFieldNotDefined("configuración", "puerto_servidor", "");
+	//	configuration.port = DEFAULT_SERVER_PORT;
+	//}
 
 }
 
@@ -471,7 +471,7 @@ Config YAMLParser::generateDefaultConfiguration() {
 	Config configuration;
 	configuration.main_character_speed = DEFAULT_MAIN_CHARACTER_SPEED;
 	configuration.scroll_margin = DEFAULT_SCROLL_MARGIN;
-	configuration.port = DEFAULT_SERVER_PORT;
+	//configuration.port = DEFAULT_SERVER_PORT;
 	configuration.vision_range = DEFAULT_VISION_RANGE;
 	return configuration;
 }
@@ -649,7 +649,7 @@ void YAMLParser::parse() {
 		else
 			yamlFilesFound = true;
 	}
-	config = new Configuration();
+	//config = new Configuration();
 	EntityObject *entity_default = new EntityObject();
 	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
 	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
@@ -719,12 +719,12 @@ void YAMLParser::parse() {
 			Logger::instance().logSyntaxError(inputFilePath,parserException.what());
 			loadEverythingByDefault();
 		};
-		config->serverPort(configuration.port);
-		config->cameraMarginScroll(configuration.scroll_margin);
-		config->cameraWidth(screen.width);
-		config->cameraHeight(screen.height);
-		config->visionRange(configuration.vision_range);
-		config->mainCharacterSpeed(configuration.main_character_speed);
+		//config.serverPort(configuration.port);
+		config.cameraMarginScroll(configuration.scroll_margin);
+		config.cameraWidth(screen.width);
+		config.cameraHeight(screen.height);
+		config.visionRange(configuration.vision_range);
+		config.mainCharacterSpeed(configuration.main_character_speed);
 	}
 
 }
@@ -741,7 +741,7 @@ PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
 	return stages.vStages[stage].modelMainCharacters(pers);
 }
 
-Configuration* YAMLParser::getConfig(){
+Configuration YAMLParser::getConfig(){
 	return config;
 }
 

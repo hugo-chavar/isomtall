@@ -42,7 +42,9 @@ InstructionQueue& ModelUpdater::getInstructionQueue() {
 
 void ModelUpdater::updateModel() {
 	Instruction instructionIn;
-	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
+	int port = Game::instance().configuration()->serverPort();
+	std::string ipAddress = Game::instance().configuration()->serverIp();
+	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);

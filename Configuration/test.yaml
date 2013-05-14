@@ -6,7 +6,6 @@ configuracion:
     - vel_personaje: 100
     - margen_scroll: 50
     - vision_personaje: 5
-    - puerto_servidor: 3500
      
 entidades:
     - nombre: arbol 
@@ -26,13 +25,6 @@ entidades:
       pixel_ref_y: 100
       fps: 15
       delay: 3000
-
-    - nombre: test1		
-      imagen: ../Images/Capilla Roja0.png		
-      ancho_base: 5		
-      alto_base: 5		
-      pixel_ref_x: 196		
-      pixel_ref_y: 107
 
     - nombre: fuente
       imagen: ../Images/fuente/
@@ -74,11 +66,6 @@ entidades:
       alto_base: 3 
       pixel_ref_x: 122
       pixel_ref_y: 104
-
-    - nombre: pelota 
-      imagen: ../Images/pelota/
-      fps: 10 
-      delay: 5 
        
     - nombre: frodo 
       imagen: ../Images/personajeVampiro/
@@ -168,7 +155,6 @@ escenarios:
          - {x: 5, y: 0, entidad: arbol}
          - {x: 0, y: 9, entidad: pelota}
          - {x: 30, y: 55, entidad: tierra} 
-         - {x: -30, y: 55, entidad: tierra}
          - {x: 0, y: 22, entidad: agua}
          - {x: 1, y: 22, entidad: agua}
          - {x: 2, y: 22, entidad: agua}
@@ -205,7 +191,6 @@ escenarios:
          - {x: 21, y: 26, entidad: agua}
          - {x: 21, y: 27, entidad: agua}
          - {x: 21, y: 28, entidad: agua}
-         - {y: 1, entidad: piso2921}
          - {x: 22, y: 26, entidad: agua}
          - {x: 22, y: 27, entidad: agua}
          - {x: 22, y: 28, entidad: agua}  

@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "Constants.h"
+#include "ClientUpdater.h"
 
 
 Game::Game() {
@@ -31,19 +32,27 @@ ModelUpdater* Game::getModelUpdater() {
 }
 
 bool Game::initialize() {
+	int serverPortNumber = 9443; // obtener desde otro archivo de config
+	std::string serverIpAddress = "127.0.0.1"; // obtener desde otro archivo de config
+	ClientUpdater clientUpdater;
+	clientUpdater.setServerIp(serverIpAddress);
+	clientUpdater.setServerPort(serverPortNumber);
+	//clientUpdater.updateClient();
 	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
 	unsigned personActual = 0;
 	allEntities = yParser.allLists();
 	_configuration = yParser.getConfig();
+	_configuration.serverPort(serverPortNumber);
+	_configuration.serverIp(serverIpAddress);
 	//selecciono el primero del primer stage
 	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
 	//si hubieron problemas salgo
-	if( (!_configuration) || (!_personaje) )
+	if (!_personaje)
 		return false;
-	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
-	_personaje->createVision(_configuration->visionRange());
+	_personaje->setVelocidad(_configuration.mainCharacterSpeed());
+	_personaje->createVision(_configuration.visionRange());
 	this->_personaje->setName(this->playerName);
 	personajes.insert(std::pair<string,PersonajeModelo*>(this->playerName,_personaje));
 	this->_time.initializeTime();
@@ -76,13 +85,14 @@ PersonajeModelo * Game::personaje() {
 }
 
 Configuration* Game::configuration() {
-	if (_configuration)
-			return _configuration;
-	Logger::instance().nullPointer("Configuration* Game::configuration");
-	return NULL;
+	return &_configuration;
+	//if (_configuration)
+	//		return _configuration;
+	//Logger::instance().nullPointer("Configuration* Game::configuration");
+	//return NULL;
 }
 
-bool Game::insidePlayerVision(std::pair<int,int> pos){
+bool Game::insidePlayerVision(std::pair<int,int> pos) {
 	bool inside = this->_personaje->getVision()->isInsideVision(pos);
 
 	if (!inside) {
@@ -103,8 +113,7 @@ bool Game::isKnownByPlayer(std::pair<int,int> pos) {
 	return this->_personaje->getVision()->testPosition(pos);
 }
 
-PersonajeModelo* Game::getPersonaje(string name)
-{
+PersonajeModelo* Game::getPersonaje(string name) {
 	PersonajeModelo* personaje = NULL;
 	std::map<std::string,PersonajeModelo*>::iterator it = this->personajes.find(name);
 

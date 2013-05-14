@@ -9,6 +9,8 @@ class Configuration	{
 public:
 	Configuration();
 	~Configuration();
+	Configuration(const Configuration&);
+	Configuration& operator=(const Configuration&);
 	unsigned int cameraWidth();
 	unsigned int cameraHeight();
 	void cameraWidth(int);
@@ -19,12 +21,15 @@ public:
 	void initialize(int dimentionX, int dimentionY, int scrollMargin);
 	unsigned int serverPort();
 	void serverPort(int);
+	std::string serverIp();
+	void serverIp(std::string);
 	unsigned int visionRange();
 	void visionRange(int);
 	float mainCharacterSpeed();
 	void mainCharacterSpeed(float value);
 private:
 	unsigned int _serverPort;
+	std::string _serverIp;
 	unsigned int _cameraWidth;
 	unsigned int _cameraHeight;
 	unsigned int _cameraMarginScroll;
