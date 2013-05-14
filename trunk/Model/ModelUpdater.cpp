@@ -145,7 +145,7 @@ void ModelUpdater::simulate(std::string simulation_package)
 		int tileX=stringUtilities::stringToInt(simulation_fields[i*2+2]);
 		datosUpdate.push_back(tileX);
 		int tileY=stringUtilities::stringToInt(simulation_fields[i*2+3]);
-		datosUpdate.push_back(tileX);
+		datosUpdate.push_back(tileY);
 		}
 		personaje->updatePJModel(datosUpdate);
 		if(simulation_fields[2+pathTiles*2]!="0")

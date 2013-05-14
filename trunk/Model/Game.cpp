@@ -42,7 +42,6 @@ bool Game::initialize() {
 	//si hubieron problemas salgo
 	if( (!_configuration) || (!_personaje) )
 		return false;
-
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
 	_personaje->createVision(_configuration->visionRange());
 	this->_personaje->setName(this->playerName);
