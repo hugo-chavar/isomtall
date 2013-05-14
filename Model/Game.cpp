@@ -44,9 +44,9 @@ bool Game::initialize() {
 		return false;
 
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
-	personajes.insert(std::pair<string,PersonajeModelo*>(nombreJugador,_personaje));
 	_personaje->createVision(_configuration->visionRange());
 	this->_personaje->setName(this->playerName);
+	personajes.insert(std::pair<string,PersonajeModelo*>(this->playerName,_personaje));
 	this->_time.initializeTime();
 	_login.initialize();
 	this->getModelUpdater()->startUpdating();
