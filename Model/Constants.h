@@ -3,8 +3,10 @@
 
 #define LOGFILE "../game.log"
 #define CONFIGFILE_DIRECTORY "../Configuration/"
+#define CONNECTION_DIRECTORY "../Connection/"
 #define CONFIGFILE_EXTENSION ".yaml"
-#define DEFAULT_SERVER_PORT 3500
+#define DEFAULT_SERVER_PORT 9443
+#define DEFAULT_SERVER_IP "127.0.0.1"
 #define DEFAULT_VISION_RANGE 5
 
 #define IMAGES_EXTENSION ".png"

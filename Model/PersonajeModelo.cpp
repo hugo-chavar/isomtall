@@ -33,6 +33,7 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	orientacion = SUR;
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
+	this->vision = NULL;
 }
 
 

@@ -32,13 +32,17 @@ ModelUpdater* Game::getModelUpdater() {
 }
 
 bool Game::initialize() {
-	int serverPortNumber = 9443; // obtener desde otro archivo de config
-	std::string serverIpAddress = "127.0.0.1"; // obtener desde otro archivo de config
+	YAMLParser connectionParser;
+	connectionParser.parse(CONNECTION_DIRECTORY, true);
+	int serverPortNumber = connectionParser.getConfigPort();
+	std::string serverIpAddress = connectionParser.getConfigIp();
+	//int serverPortNumber = 9443;
+	//std::string serverIpAddress = "127.0.0.1";
 	ClientUpdater clientUpdater;
 	clientUpdater.setServerIp(serverIpAddress);
 	clientUpdater.setServerPort(serverPortNumber);
 	//clientUpdater.updateClient();
-	yParser.parse();
+	yParser.parse(CONFIGFILE_DIRECTORY, false);
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
 	unsigned personActual = 0;

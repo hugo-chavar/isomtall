@@ -43,6 +43,11 @@ struct Config {
 	int vision_range;
 };
 
+struct Connection {
+	int port;
+	std::string ip;
+};
+
 struct Entities {
 	vector <EntityObject*> vEntitiesObject;
 	vector <AnimatedEntity*> vAnimatedEntities;
@@ -75,8 +80,9 @@ class YAMLParser {
 
 private:
 	Screen screen;
-	Configuration config;
+	Configuration game_config;
 	Config configuration;
+	Connection connection;
 	EntLists entities;
 	Stages stages;
 
@@ -95,17 +101,16 @@ public:
 	YAMLParser();
 	~YAMLParser();
 
-	void parse();
+	void parse(string directory, bool connecting);
 	vector <StageModel> vStages();
 	EntLists allLists();
 
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);
-
-	//conexion con el modelo logico
 	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
 	Configuration getConfig();
-
+	int getConfigPort();
+	std::string getConfigIp();
 };
 
 

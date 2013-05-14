@@ -11,9 +11,6 @@ YAMLParser::YAMLParser() {
 }
 
 YAMLParser::~YAMLParser() {
-	//if (config)
-	//	delete config;
-
 	for (unsigned i=0; i<entities.vEntitiesObject.size(); i++)
 		delete entities.vEntitiesObject[i];
 	entities.vEntitiesObject.clear();
@@ -101,7 +98,7 @@ void operator >> (const Node& node, Screen& screen) {
 	string field;
 	bool widthFound = false, heightFound = false;
 
-	for(unsigned int i=0; i<node.size(); i++) {
+	for(unsigned int i = 0; i < node.size(); i++) {
 		if (!widthFound) {
 			widthFound = managePositiveIntCase(node[i],screen.width, "pantalla","","ancho", DEFAULT_SCREEN_WIDTH, ONLY_INVALID);
 		}
@@ -159,6 +156,37 @@ void operator >> (const Node& node, Config& configuration) {
 	//	configuration.port = DEFAULT_SERVER_PORT;
 	//}
 
+}
+
+void operator >> (const Node& node, Connection& connection) {
+	string field;
+	bool serverPortFound = false, serverIpFound = false;
+	
+	for(unsigned int i = 0; i < node.size(); i++) {
+		if (! serverPortFound) {
+			serverPortFound = managePositiveIntCase(node[i], connection.port, "connection", "", "server_port", DEFAULT_SERVER_PORT, ONLY_INVALID);
+		}
+		if (!serverIpFound) {
+			field = "server_ip";
+			try {
+				node[i][field] >> connection.ip;
+				if (connection.ip == "~")
+					connection.ip = "";
+			} catch (KeyNotFound) {
+				connection.ip = "";
+			}
+			if (connection.ip != "")
+				serverIpFound = true;
+			//serverIpFound = managePositiveIntCase(node[i], connection.ip, "connection", "","server_ip", DEFAULT_SERVER_IP, ONLY_INVALID);
+		}
+	}
+
+	if (serverPortFound) {
+		Logger::instance().logFieldNotDefined("connection", "server_port", "");
+	}
+	if (!serverIpFound) {
+		Logger::instance().logFieldNotDefined("connection", "server_ip", "");
+	}
 }
 
 
@@ -638,94 +666,129 @@ void YAMLParser::loadEverythingByDefault() {
 	manageStageCase();
 }
 
-void YAMLParser::parse() {
+void YAMLParser::parse(string directory, bool connecting) {
 	bool yamlFilesFound = false,screenFound = false, stagesFound = false, entitiesFound = false, configurationFound = false;
 	Node doc;
 	DirList yamlFiles;
 	yamlFiles.setExtensionRequired(CONFIGFILE_EXTENSION);
-	if (yamlFiles.createFromDirectory(CONFIGFILE_DIRECTORY)) {
+	if (yamlFiles.createFromDirectory(directory)) {
 		if (yamlFiles.empty())
 			Logger::instance().log("Parser Error: No '.yaml' files found.");
 		else
 			yamlFilesFound = true;
 	}
-	//config = new Configuration();
-	EntityObject *entity_default = new EntityObject();
-	entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
-	AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
-	entities.vAnimatedEntities.push_back(animatedEntity_default);
-	
-	if (!yamlFilesFound)
-		loadEverythingByDefault();
-	else {
+	if (!connecting) {
+		EntityObject *entity_default = new EntityObject();
+		entities.vEntitiesObject.push_back(entity_default); // Cargo en la primera posición una entidad default.
+		AnimatedEntity* animatedEntity_default = new AnimatedEntity() ;
+		entities.vAnimatedEntities.push_back(animatedEntity_default);
+
+
+		if (!yamlFilesFound)
+			loadEverythingByDefault();
+		else {
+			string inputFilePath = yamlFiles.nextFullPath();
+			ifstream inputFile(inputFilePath);
+			Parser parser(inputFile);
+
+
+
+			try {
+				parser.GetNextDocument(doc);
+				// tratamiento de archivos de cliente con datos de conexion
+				//try {
+				//	doc["connection"] >> connection;
+				//	//si esta levantando un cliente, solo parseo datos de conexion
+				//	return;
+				//} catch (KeyNotFound) { }
+				//catch (Exception& parserException ) {
+				//	Logger::instance().logUnexpected(parserException.what());
+				//};
+				////si el codigo continua, no era un archivo de conexion.
+
+				try {
+					doc["pantalla"] >> screen;
+					screenFound = true;
+				} catch (KeyNotFound) { }
+				catch (Exception& parserException ) {
+					Logger::instance().logUnexpected(parserException.what());
+				};
+				if (!screenFound) {
+					Logger::instance().log("Parser Error: Field 'pantalla' is not defined.");
+					screen = generateDefaultScreen();
+				}
+
+				try {
+					doc["configuracion"] >> configuration;
+					configurationFound = true;
+				} catch (KeyNotFound) { }
+				catch (Exception& parserException ) {
+					Logger::instance().logUnexpected(parserException.what());
+				};
+				if (!configurationFound) {
+					Logger::instance().log("Parser Error: Field 'configuracion' is not defined.");
+					configuration = generateDefaultConfiguration();
+				}
+
+				try {
+					doc["entidades"] >> entities;
+					manageEntityCase();
+					entitiesFound = true;
+				} catch (KeyNotFound) { }
+				catch (Exception& parserException ) {
+					Logger::instance().logUnexpected(parserException.what());
+				};
+				if (!entitiesFound) {
+					Logger::instance().log("Parser Error: Field 'entidades' is not defined.");
+					manageEntityCase();
+				}
+
+				try {
+					doc["escenarios"] >> stages;
+					manageStageCase();
+					stagesFound = true;
+				} catch (KeyNotFound) { }
+				catch (Exception& parserException ) {
+					Logger::instance().logUnexpected(parserException.what());
+				};
+				if (!stagesFound) {
+					Logger::instance().log("Parser Error: Field 'escenarios' is not defined.");
+					manageStageCase();
+				}
+
+			} catch (Exception& parserException) { // Error de sintaxis.
+				Logger::instance().logSyntaxError(inputFilePath,parserException.what());
+				loadEverythingByDefault();
+			}; //try..catch
+			//config.serverPort(configuration.port);
+			game_config.cameraMarginScroll(configuration.scroll_margin);
+			game_config.cameraWidth(screen.width);
+			game_config.cameraHeight(screen.height);
+			game_config.visionRange(configuration.vision_range);
+			game_config.mainCharacterSpeed(configuration.main_character_speed);
+		} //else
+	} else { //if !conecting
+		Logger::instance().log("Getting connection data.");
 		string inputFilePath = yamlFiles.nextFullPath();
 		ifstream inputFile(inputFilePath);
 		Parser parser(inputFile);
-		
 		try {
 			parser.GetNextDocument(doc);
-			
+			// tratamiento de archivos de cliente con datos de conexion
 			try {
-				doc["pantalla"] >> screen;
-				screenFound = true;
+				doc["connection"] >> connection;
+				game_config.serverPort(connection.port);
+				game_config.serverIp(connection.ip);
 			} catch (KeyNotFound) { }
 			catch (Exception& parserException ) {
 				Logger::instance().logUnexpected(parserException.what());
 			};
-			if (!screenFound) {
-				Logger::instance().log("Parser Error: Field 'pantalla' is not defined.");
-				screen = generateDefaultScreen();
-			}
-
-			try {
-				doc["configuracion"] >> configuration;
-				configurationFound = true;
-			} catch (KeyNotFound) { }
-			catch (Exception& parserException ) {
-				Logger::instance().logUnexpected(parserException.what());
-			};
-			if (!configurationFound) {
-				Logger::instance().log("Parser Error: Field 'configuracion' is not defined.");
-				configuration = generateDefaultConfiguration();
-			}
-
-			try {
-				doc["entidades"] >> entities;
-				manageEntityCase();
-				entitiesFound = true;
-			} catch (KeyNotFound) { }
-			catch (Exception& parserException ) {
-				Logger::instance().logUnexpected(parserException.what());
-			};
-			if (!entitiesFound) {
-				Logger::instance().log("Parser Error: Field 'entidades' is not defined.");
-				manageEntityCase();
-			}
-
-			try {
-				doc["escenarios"] >> stages;
-				manageStageCase();
-				stagesFound = true;
-			} catch (KeyNotFound) { }
-			catch (Exception& parserException ) {
-				Logger::instance().logUnexpected(parserException.what());
-			};
-			if (!stagesFound) {
-				Logger::instance().log("Parser Error: Field 'escenarios' is not defined.");
-				manageStageCase();
-			}
-		
 		} catch (Exception& parserException) { // Error de sintaxis.
 			Logger::instance().logSyntaxError(inputFilePath,parserException.what());
-			loadEverythingByDefault();
-		};
-		//config.serverPort(configuration.port);
-		config.cameraMarginScroll(configuration.scroll_margin);
-		config.cameraWidth(screen.width);
-		config.cameraHeight(screen.height);
-		config.visionRange(configuration.vision_range);
-		config.mainCharacterSpeed(configuration.main_character_speed);
+		}; //try..catch
+
 	}
+	
 
 }
 
@@ -742,7 +805,16 @@ PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
 }
 
 Configuration YAMLParser::getConfig(){
-	return config;
+	return game_config;
+}
+
+
+int YAMLParser::getConfigPort(){
+	return game_config.serverPort();
+}
+
+std::string YAMLParser::getConfigIp(){
+	return game_config.serverIp();
 }
 
 EntLists YAMLParser::allLists(){
