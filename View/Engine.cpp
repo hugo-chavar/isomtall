@@ -85,7 +85,6 @@ void Engine::initialize() {
 		textInitialized = false;
 
 	if (cameraInitialized){
-		//Aca iria el initialize de Game view
 		mapInitialized = worldView.initialize();
 		chatInitialized = chat.initialize(camera);
 		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());

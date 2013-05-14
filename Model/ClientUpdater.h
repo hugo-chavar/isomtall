@@ -5,7 +5,7 @@
 #include "InstructionQueue.h"
 #include "stringUtilities.h"
 
-#define TAMBUFFER 1024
+#define TAMBUFFER 10240
 
 class ClientUpdater {
 private:
