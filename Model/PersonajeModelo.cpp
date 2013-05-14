@@ -222,9 +222,9 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	double coste = 0;
 	float costeF = 0;
 
-	/*if (target == current) {
+	if (target == current) {
 		return (this->quedarseQuieto(velocidadAni));
-	}*/
+	}
 	if (posMov < caminoSize) {
 		this->moverse(destino, velocidadAni);
 	} else {
@@ -445,7 +445,7 @@ void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
 			yPath[i] = datosUpdate[i+2];
 		}
 		posMov=0;
-		targetParcial.first = xPath[caminoSize -1 ];
-		targetParcial.second = yPath[caminoSize -1 ];
+		target.first = targetParcial.first = xPath[caminoSize -1 ];
+		target.second = targetParcial.second = yPath[caminoSize -1 ];
 	}
 }
