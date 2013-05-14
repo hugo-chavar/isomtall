@@ -42,6 +42,7 @@ public:
 	std::pair<int, int> obtenerFrentePersonaje();
 	void setAnimating(bool value);
 	void updatePJModel(std::vector<int>& datosUpdate);
+
 private:
 
 	int siCaminaDetenerse();

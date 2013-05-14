@@ -140,16 +140,16 @@ void ModelUpdater::simulate(std::string simulation_package)
 		int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
 		std::vector<int> datosUpdate;
 		datosUpdate.push_back(pathTiles);
-		for(int i=2;i<pathTiles*2;i++)
+		for(int i=0;i<pathTiles;i++)
 		{
-		int tileX=stringUtilities::stringToInt(simulation_fields[i]);
+		int tileX=stringUtilities::stringToInt(simulation_fields[i*2+2]);
 		datosUpdate.push_back(tileX);
-		int tileY=stringUtilities::stringToInt(simulation_fields[i+1]);
+		int tileY=stringUtilities::stringToInt(simulation_fields[i*2+3]);
 		datosUpdate.push_back(tileX);
 		}
 		personaje->updatePJModel(datosUpdate);
-		if(simulation_fields[2]!="0")
-			Game::instance().personaje()->animar(simulation_fields[2].front());
+		if(simulation_fields[2+pathTiles*2]!="0")
+			Game::instance().personaje()->animar(simulation_fields[2+pathTiles*2].front());
 	}
 }
 
