@@ -33,20 +33,20 @@ int Engine::execute() {
  
 	Instruction instruction;
 	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
 	Game::instance().getLogin()->getLoginUpdater().addInstruction(instruction);
 	Sleep(2000);
 	if (!Game::instance().getLogin()->isLoggedIn())
 		return EXIT_FAILURE;
 
 	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
 	this->chat.modelChat->getMessagesList().push_back("Connecting to chat");
 	this->chat.modelChat->getChatUpdater().addInstruction(instruction);
 
 	instruction.clear();
 	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,"harcoded");
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
 	Game::instance().getModelUpdater()->addInstruction(instruction);
 
 	while(this->isRunning()) {
@@ -73,8 +73,7 @@ void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
 
-	string nombreJugador="harcoded";
-	Game::instance().initialize(nombreJugador);
+	Game::instance().initialize();
 
 	bool cameraInitialized = this->camera.initialize();
 	bool mapInitialized = false;

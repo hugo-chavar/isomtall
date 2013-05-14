@@ -30,7 +30,7 @@ ModelUpdater* Game::getModelUpdater() {
 	return &this->_modelUpdater;
 }
 
-bool Game::initialize(string nombreJugador) {
+bool Game::initialize() {
 	yParser.parse();
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
@@ -45,8 +45,8 @@ bool Game::initialize(string nombreJugador) {
 		return false;
 
 	_personaje->setVelocidad(_configuration->mainCharacterSpeed());
-	_personaje->setName(nombreJugador);
 	_personaje->createVision(_configuration->visionRange());
+	this->_personaje->setName(this->playerName);
 	this->_time.initializeTime();
 	_login.initialize();
 	this->getModelUpdater()->startUpdating();
@@ -116,11 +116,10 @@ PersonajeModelo* Game::getPersonaje(string name)
 }
 
 void Game::setPlayerName(string name) {
-	//TODO: andy
+	this->playerName=name;
 }
 
 string Game::getPlayerName() {
-	//TODO: andy
-	string aux = "harcoded";
-	return aux;
+
+	return this->playerName;
 }
