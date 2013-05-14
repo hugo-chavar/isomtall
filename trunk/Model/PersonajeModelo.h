@@ -42,6 +42,8 @@ public:
 	std::pair<int, int> obtenerFrentePersonaje();
 	void setAnimating(bool value);
 	void updatePJModel(std::vector<int>& datosUpdate);
+	bool getIsInCenterTile();
+	void setIsInCenterTile(bool);
 
 private:
 
@@ -75,6 +77,7 @@ private:
 	AnimatedEntity * animation;
 	string name;
 	CharacterVision* vision;
+	bool isInCenterTile;
 };
 
 

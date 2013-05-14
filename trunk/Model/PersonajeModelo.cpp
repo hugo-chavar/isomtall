@@ -33,7 +33,6 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	orientacion = SUR;
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
-	this->vision = NULL;
 }
 
 
@@ -449,4 +448,14 @@ void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
 		target.first = targetParcial.first = xPath[caminoSize -1 ];
 		target.second = targetParcial.second = yPath[caminoSize -1 ];
 	}
+}
+
+bool PersonajeModelo::getIsInCenterTile()
+{
+	return this->isInCenterTile;
+}
+
+void PersonajeModelo::setIsInCenterTile(bool is)
+{
+	this->isInCenterTile=is;
 }
