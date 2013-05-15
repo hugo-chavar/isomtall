@@ -7,10 +7,12 @@
 
 Instruction::Instruction() {
 	this->opCode = OPCODE_NO_OPCODE;
+	this->broadcastId = 0;
 }
 
 void Instruction::clear() {
 	this->setOpCode(OPCODE_NO_OPCODE);
+	this->setBroadcastId(0);
 	this->getArguments().clear();
 }
 
@@ -20,6 +22,14 @@ void Instruction::setOpCode(unsigned int opCode) {
 
 unsigned int Instruction::getOpCode() const {
 	return this->opCode;
+}
+
+unsigned int Instruction::getBroadcastId() {
+	return this->broadcastId;
+}
+
+void Instruction::setBroadcastId(unsigned int broadcastId) {
+	this->broadcastId = broadcastId;
 }
 
 std::map<unsigned int,std::string>& Instruction::getArguments() {
