@@ -39,7 +39,9 @@ enum opCode_t {
 	OPCODE_CLIENT_COMMAND,
 	OPCODE_DISCONNECT,
 	OPCODE_CHAT_MESSAGE_IN,
-	OPCODE_CHAT_MESSAGE_OUT
+	OPCODE_CHAT_MESSAGE_OUT,
+	OPCODE_INIT_SYNCHRONIZE,
+	OPCODE_INVALID_CHARACTER
 };
 #endif
 
@@ -62,7 +64,9 @@ enum instructionArgumentKey_t {
 	INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,
 	INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,
 	INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE,
-	INSTRUCTION_ARGUMENT_KEY_DUMMY
+	INSTRUCTION_ARGUMENT_KEY_DUMMY,
+	INSTRUCTION_ARGUMENT_KEY_VISION,
+	INSTRUCTION_ARGUMENT_KEY_CHARACTER 
 };
 #endif
 
@@ -91,7 +95,7 @@ public:
 
 	unsigned int getBroadcastId();
 
-	void setBroadcastId(unsigned int broadcastId);
+    void setBroadcastId(unsigned int broadcastId);
 
 	void insertArgument(unsigned int key,std::string value);
 

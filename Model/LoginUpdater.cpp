@@ -113,6 +113,12 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
+		case OPCODE_INVALID_CHARACTER:
+			this->setStopping(true);//TEMPORARY
+			this->getMessagesListMutex().lock();
+			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ERROR));
+			this->getMessagesListMutex().unlock();
+			break;
 		case OPCODE_CONNECTION_ERROR:
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setStopping(true);
