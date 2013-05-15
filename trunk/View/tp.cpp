@@ -8,12 +8,19 @@ using namespace common;
 
 int main(int argc, char *argv[]) {
 	std::string playerName;
+	std::string playerCharacterName;
 	if (argc < 2){
 		std::cout << "Nombre jugador no ingresado"<<std::endl;
 		playerName = "Default Name";
 	} else {
 		//porner if playername largo
 		playerName = argv[1];
+	}
+		if (argc < 3){
+		std::cout << "Personaje no elegido"<<std::endl;
+		playerCharacterName = "Default";
+	} else {
+		playerCharacterName = argv[2];
 	}
 	//int serverPort = 9443; // obtener desde otro archivo de config
 	//std::string serverIp = "127.0.0.1"; // obtener desde otro archivo de config
@@ -26,6 +33,7 @@ int main(int argc, char *argv[]) {
 	Logger::instance().setFile(LOGFILE);
 	Logger::instance().log("Iniciando el juego..");
 	Game::instance().setPlayerName(playerName);
+	Game::instance().setPlayerCharacterName(playerCharacterName);
     Engine engine;
 //	if (!Game::instance().initialize(nombreJugador))
 //		return 1;

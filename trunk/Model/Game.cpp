@@ -135,3 +135,12 @@ string Game::getPlayerName() {
 
 	return this->playerName;
 }
+
+void Game::setPlayerCharacterName(string char_name)
+{
+	playerCharacterName=char_name;
+}
+string Game::getPlayerCharacterName()
+{
+	return this->playerCharacterName;
+}

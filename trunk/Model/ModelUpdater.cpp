@@ -103,15 +103,23 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
+			{
 			this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
-		break;
+			}
+			break;
+		case OPCODE_INIT_SYNCHRONIZE:
+			{
+			std::pair<int, int> pair=stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
+			Game::instance().personaje()->setCurrent(pair.first,pair.second);
+			Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
+			}
+			break;
 		case OPCODE_CLIENT_COMMAND:
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_UPDATE:
 			this->simulationUpdate(instructionIn);
-			//std::cout << instructionIn.serialize() << std::endl;
 		break;
 		case OPCODE_CONNECTION_ERROR:
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
@@ -147,6 +155,7 @@ void ModelUpdater::simulate(std::string simulation_package)
 	std::vector<std::string> simulation_fields;
 	stringUtilities::splitString(simulation_package,simulation_fields,',');
 	PersonajeModelo* personaje=Game::instance().getPersonaje(simulation_fields[0]);
+	
 	if(personaje)
 	{
 		int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
