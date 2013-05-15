@@ -24,6 +24,8 @@ public:
 
 	void setSocket(Socket* socket);
 
+	void setBroadcastConditionVariable(ConditionVariable* broadcastConditionVariable);
+
 	bool isConnectionOK();
 
 	std::string getUserID();
@@ -33,6 +35,8 @@ public:
 	void setInstructionQueue(InstructionQueue* instructionQueue);
 
 	void addInstruction(Instruction& instruction);
+
+	void addBroadcast(Instruction& instruction);
 
 	void startConnector();
 

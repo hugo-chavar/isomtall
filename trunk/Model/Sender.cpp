@@ -1,10 +1,12 @@
 #include "Sender.h"
 
+#include <iostream>
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
 Sender::Sender(Socket* socket) {
 	this->socket = socket;
 	this->forceStop = false;
+	this->broadcastConditionVariable = NULL;
 }
 
 // ----------------------------------- PRIVATE METHODS -----------------------------------
@@ -21,6 +23,10 @@ InstructionQueue& Sender::getInstructionQueue() {
 	return this->instructionQueue;
 }
 
+ConditionVariable* Sender::getBroadcastConditionVariable() {
+	return this->broadcastConditionVariable;
+}
+
 void Sender::send(){
 	Instruction instruction;
 	std::string mensaje;
@@ -29,6 +35,21 @@ void Sender::send(){
 		instruction = this->getInstructionQueue().getNextInstruction(true);
 		if (instruction.getOpCode() != OPCODE_NO_OPCODE) {
 			mensaje = instruction.serialize();
+
+			if (instruction.getBroadcastId() != 0) {
+				if (this->getBroadcastConditionVariable() != NULL) {
+					this->getBroadcastConditionVariable()->getConditionMutex().lock();
+					//std::cout << "lock3" << std::endl;
+					if (this->getBroadcastConditionVariable()->getBroadcastId() == instruction.getBroadcastId() ) {
+						this->getBroadcastConditionVariable()->wait();
+					}
+					this->getBroadcastConditionVariable()->getConditionMutex().unlock();
+					//std::cout << "unlock3" << std::endl;
+				} else {
+					std::cout << "WARNING: INSTRUCTION MARKED AS BROADCAST BUT NO BROADCAST CONDITION VARIABLE IS SET" << std::endl;
+				}
+			}
+
 			this->sendMessage(mensaje);
 		}
 	} while (!this->isStopping());
@@ -76,12 +97,21 @@ void Sender::setSocket(Socket* socket) {
 	this->socket = socket;
 }
 
+void Sender::setBroadcastConditionVariable(ConditionVariable* broadcastConditionVariable) {
+	this->broadcastConditionVariable = broadcastConditionVariable;
+}
+
 void Sender::startSending() {
 	this->start();
 }
 
 void Sender::addInstruction(Instruction& instruction) {
 	this->getInstructionQueue().addInstruction(instruction);
+}
+
+void Sender::addBroadcast(Instruction& instruction) {
+	instruction.setBroadcastId(this->getBroadcastConditionVariable()->getNextBroadcastId());
+	this->addInstruction(instruction);
 }
 
 void Sender::stopSending(bool forceStop){

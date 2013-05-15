@@ -13,11 +13,15 @@ private:
 
 	InstructionQueue instructionQueue;
 
+	ConditionVariable* broadcastConditionVariable;
+
 	bool isForceStop();
 
 	void setForceStop(bool forceStop);
 
 	InstructionQueue& getInstructionQueue();
+
+	ConditionVariable* getBroadcastConditionVariable();
 
 	void send();
 
@@ -32,9 +36,13 @@ public:
 
 	void setSocket(Socket* socket);
 
+	void setBroadcastConditionVariable(ConditionVariable* broadcastConditionVariable);
+
 	void startSending();
 
 	void addInstruction(Instruction& instruction);
+
+	void addBroadcast(Instruction& instruction);
 
 	void stopSending(bool forceStop);
 

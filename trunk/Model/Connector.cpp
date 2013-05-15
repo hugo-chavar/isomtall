@@ -20,6 +20,10 @@ void Connector::setSocket(Socket* socket) {
 	this->getReceiver().setSocket(socket);
 }
 
+void Connector::setBroadcastConditionVariable(ConditionVariable* broadcastConditionVariable) {
+	this->getSender().setBroadcastConditionVariable(broadcastConditionVariable);
+}
+
 Sender& Connector::getSender() {
 	return this->sender;
 }
@@ -45,6 +49,10 @@ void Connector::setInstructionQueue(InstructionQueue* instructionQueue) {
 
 void Connector::addInstruction(Instruction& instruction) {
 	this->getSender().addInstruction(instruction);
+}
+
+void Connector::addBroadcast(Instruction& instruction) {
+	this->getSender().addBroadcast(instruction);
 }
 
 void Connector::startConnector() {

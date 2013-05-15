@@ -74,6 +74,8 @@ class Instruction : public Serializable {
 private:
 	unsigned int opCode;
 
+	unsigned int broadcastId;
+
 	std::map<unsigned int,std::string> arguments;
 
 	std::map<unsigned int,std::string>& getArguments();
@@ -86,6 +88,10 @@ public:
 	unsigned int getOpCode() const;
 
 	void setOpCode(unsigned int opCode);
+
+	unsigned int getBroadcastId();
+
+	void setBroadcastId(unsigned int broadcastId);
 
 	void insertArgument(unsigned int key,std::string value);
 
