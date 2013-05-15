@@ -56,15 +56,15 @@ void ModelUpdater::updateModel() {
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
 				this->processInstruction(instructionIn);
 			}
-			/*Inicio codigo que pincha*/
-			if(Game::instance().personaje()->getIsInCenterTile()) {
+			/*Inicio codigo que parece ya no pinchar*/
+			if(Game::instance().personaje()->getIsInCenterTile() && this->isConnected()) {
 				instructionOut.clear();
 				instructionOut.setOpCode(OPCODE_SIMULATION_UPDATE);
 				std::pair<int, int> pos = Game::instance().personaje()->getPosition();
 				instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,stringUtilities::pairIntToString(pos));
 				this->getConnector().addInstruction(instructionOut);
 			}
-			/*Fin codigo que pincha*/
+			/*Fin codigo que parece ya no pinchar*/
 		} while (!this->isStopping());
 
 		if (!this->isForceStop()) {
