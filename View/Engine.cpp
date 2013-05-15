@@ -34,7 +34,7 @@ int Engine::execute() {
 	Instruction instruction;
 	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
 	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
-	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER ,Game::instance().getPlayerCharacterName());
+	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER ,Game::instance().getPlayerCharacterId());
 	Game::instance().getLogin()->getLoginUpdater().addInstruction(instruction);
 	Sleep(2000);
 	if (!Game::instance().getLogin()->isLoggedIn())

@@ -136,11 +136,11 @@ string Game::getPlayerName() {
 	return this->playerName;
 }
 
-void Game::setPlayerCharacterName(string char_name)
+void Game::setPlayerCharacterId(string char_id)
 {
-	playerCharacterName=char_name;
+	playerCharacterId=char_id;
 }
-string Game::getPlayerCharacterName()
+string Game::getPlayerCharacterId()
 {
-	return this->playerCharacterName;
+	return this->playerCharacterId;
 }

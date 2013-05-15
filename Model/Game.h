@@ -37,8 +37,8 @@ public:
 	PersonajeModelo* getPersonaje(string name);
 	void setPlayerName(string name);
 	string getPlayerName();
-	void setPlayerCharacterName(string char_name);
-	string getPlayerCharacterName();
+	void setPlayerCharacterId(string char_id);
+	string getPlayerCharacterId();
 
 private:
 	Game();
@@ -50,7 +50,7 @@ private:
 	ModelUpdater _modelUpdater;
 	map <string,PersonajeModelo*> personajes;
 	string playerName;
-	string playerCharacterName;
+	string playerCharacterId;
 };
 
 #endif
