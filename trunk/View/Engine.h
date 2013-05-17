@@ -5,7 +5,8 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "Chat.h"
-
+#include "ModelUpdater.h"
+#include "Login.h"
 
 class Engine {
 	private:
@@ -13,16 +14,20 @@ class Engine {
 
 		unsigned int desiredFPS;
 
+		ModelUpdater _modelUpdater;
+
+		model::Login _login;
+
 	public:
 		Engine();
 	
 		//TODO: Create getter/setter
-		view::Stage worldView;
+		//view::Stage worldView;
 
 		//TODO: Create getter/setter
-		Camera camera;
+		//Camera camera;
 
-		view::Chat chat;
+		//view::Chat chat;
 	
 		bool isRunning();
 
@@ -41,6 +46,10 @@ class Engine {
 		void cleanUp();
 
 		~Engine();
+
+		ModelUpdater* getModelUpdater();
+
+		model::Login* getLogin();
 };
 
 #endif //_ENGINE_H_

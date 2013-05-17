@@ -1,145 +1,141 @@
+#pragma warning(disable: 4355)
+#pragma warning(disable: 4512)
+
 #include "Chat.h"
 
-view::Chat::Chat() { }
+// ----------------------------------- CONSTRUCTOR ---------------------------------------
 
-view::Chat::~Chat() {
-	SDL_FreeSurface(closeButton);
-	delete modelChat;
+model::Chat::Chat() : chatUpdater(this->getMessagesListMutex(), this->getMessagesList()) {
+//	this->socket = NULL;
+//	this->loggedIn = false;
+	this->inputBuffer = "";
+	to = "";
 }
 
-SDL_Surface *load_surface(string filename)
-{
-    //The image that's loaded
-    SDL_Surface* loadedImage = NULL;
+// ----------------------------------- PRIVATE METHODS -----------------------------------
 
-    //The optimized image that will be used
-    SDL_Surface* optimizedImage = NULL;
-
-    //Load the image
-    loadedImage = IMG_Load(filename.c_str());
-
-    //If the image loaded
-    if(loadedImage!=NULL)
-    {
-        //Create an optimized image
-        optimizedImage = SDL_DisplayFormat(loadedImage);
-
-        //Free the old image
-        SDL_FreeSurface(loadedImage);
-
-        //If the image was optimized just fine
-        if(optimizedImage!=NULL)
-        {
-            //Map the color key
-            Uint32 colorkey = SDL_MapRGB(optimizedImage->format, 0, 0xFF, 0xFF);
-
-            //Set all pixels of color R 0, G 0xFF, B 0xFF to be transparent
-            SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY, colorkey);
-        }
-    }
-
-    //Return the optimized image
-    return optimizedImage;
+ChatUpdater& model::Chat::getChatUpdater() {
+	return this->chatUpdater;
 }
 
-bool view::Chat::initializeCloseButton() {
-	closeButton = load_surface("../Images/closeButton.png");
-	if (closeButton==NULL) {
-		return false;
+std::string model::Chat::getTo() {
+	return this->to;
+}
+
+// ----------------------------------- PUBLIC METHODS ------------------------------------
+
+bool model::Chat::isConnected() {
+	return this->getChatUpdater().isConnected();
+}
+
+/*
+void model::Chat::setLoggedIn(bool loggedIn) {
+	this->loggedIn = loggedIn;
+}
+*/
+
+std::string model::Chat::getInputBuffer() {
+	return this->inputBuffer;
+}
+
+void model::Chat::setInputBuffer(std::string inputBuffer) {
+	this->inputBuffer = inputBuffer;
+}
+
+Mutex& model::Chat::getMessagesListMutex() {
+	return this->messagesListMutex;
+}
+
+std::list<std::string>& model::Chat::getMessagesList() {
+	return this ->messagesList;
+}
+
+/*
+Socket* model::Chat::getSocket() {
+	return this->socket;
+}
+
+void model::Chat::setSocket(Socket* socket) {
+	this->socket = socket;
+}
+
+Sender* model::Chat::getSender() {
+	return this->sender;
+}
+
+void model::Chat::setSender(Sender* sender) {
+	this->sender = sender;
+}
+
+Receiver* model::Chat::getReceiver() {
+	return this->receiver;
+}
+
+void model::Chat::setReceiver(Receiver* receiver) {
+	this->receiver = receiver;
+}
+*/
+
+
+void model::Chat::setTo(std::string to) {
+	this->to = to;
+}
+
+void model::Chat::sendMessage() {
+	Instruction instruction;
+
+	if (this->isConnected()) {
+		instruction.setOpCode(OPCODE_CHAT_MESSAGE_OUT);
+		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_MESSAGE,this->getInputBuffer());
+		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_TO,this->getTo());
+		this->getChatUpdater().addInstruction(instruction);
+		this->inputBuffer = "";
 	}
-	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()+6);
-	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
-	closeButtonRect.w = static_cast<Uint16>(closeButton->w);
-	closeButtonRect.h = static_cast<Uint16>(closeButton->h);
-	return true;
 }
 
-bool view::Chat::initialize(Camera &camera) {
-	//Ver si es el lugar adecuado para hacerlo
-	modelChat = new model::Chat();
-	modelChat->initialize();
-	SDL_Color textboxColor;
-	textboxColor.r = 0;
-	textboxColor.g = 0;
-	textboxColor.b = 0;
-	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5,16))
-		return false;
-	textbox.setOffsetX(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5);
-	SDL_Color nameColor;
-	nameColor.r = 0;
-	nameColor.g = 0;
-	nameColor.b = 0;
-	if (!nameBox.initialize("../Images/nameBox.png", nameColor, "../Fonts/arial.ttf", camera.getOffsetX()+5, camera.getOffsetY()+5,16,1))
-		return false;
-	SDL_Color messagesColor;
-	messagesColor.r = 0;
-	messagesColor.g = 0;
-	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5,10,5))
-		return false;
-	if (!initializeCloseButton())
-		return false;
-	return true;
+void model::Chat::initialize() {
+//	Instruction instruction;
+	this->getChatUpdater().startUpdating();
+
+/*	WSAData ws;
+	WSAStartup(MAKEWORD(2,2),&ws);
+
+	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
+	if (newSocket->connectTo() != -1) {
+		this->getMessagesList().push_back("user name?");
+
+		this->setSocket(newSocket);
+
+		Sender* newSender = new Sender(this->getSocket());
+		Receiver* newReceiver = new Receiver(this->getSocket(),this->getMessagesListMutex(),this->getMessagesList(),this->isLoggedIn());
+
+		this->setSender(newSender);
+		this->getSender()->startSending();
+	
+		this->setReceiver(newReceiver);
+		this->getReceiver()->startReceiving();
+
+
+	} else {
+		this->getMessagesList().push_back("SERVER UNREACHABLE");
+	}*/
 }
 
-bool view::Chat::isTyping() {
-	return typing;
+void model::Chat::update() {
+	//NOTHING TO DO HERE FOR NOW;
 }
 
-void view::Chat::setIsTyping(bool state) {
-	typing = state;
-}
+void model::Chat::cleanUp() {
+	Instruction instructionOut;
 
-void view::Chat::render(Camera &camera) {
-	nameBox.render(camera);
-	messagesBox.render(camera);
-	textbox.render(camera);
-	camera.render(closeButtonRect, closeButton);
-}
-
-void view::Chat::update(Camera &camera) {
-	this->receiveMsgs();
-	nameBox.update(camera.getOffsetX()+5, camera.getOffsetY()+5);
-	textbox.update(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-35, camera.getOffsetY()+5);
-	messagesBox.update(textbox.getOffsetX(), textbox.getOffsetY()+textbox.getHeight()+5);
-	closeButtonRect.x = static_cast<Sint16>(textbox.getOffsetX()+textbox.getWidth()+6);
-	closeButtonRect.y = static_cast<Sint16>(textbox.getOffsetY()+textbox.getHeight()-closeButton->h-5);
-}
-
-void view::Chat::type(SDL_Event *sdlEvent) {
-	textbox.handleInput(sdlEvent);
-}
-
-void view::Chat::cleanInput() {
-	textbox.cleanTextBox();
-}
-
-bool view::Chat::isClosing(float x, float y) {
-	if ((x>=closeButtonRect.x) && (x<=(closeButtonRect.x+closeButtonRect.w)) && (y>=closeButtonRect.y) && (y<=(closeButtonRect.y+closeButtonRect.h)))
-		return true;
-	return false;
-}
-
-void view::Chat::sendMessage()
-{
-	modelChat->setInputBuffer(this->textbox.getText());
-	modelChat->setTo(this->nameBox.getLines()[0]->getStrText());
-	modelChat->sendMessage();
-	this->cleanInput();
-}
-
-void view::Chat::receiveMsgs()
-{
-	if (modelChat->getMessagesListMutex().tryLock()) {
-		for (std::list<std::string>::iterator it = modelChat->getMessagesList().begin(); it != modelChat->getMessagesList().end(); ++it) {
-			messagesBox.addLine((*it));
-		}
+	if (this->isConnected()) {
+		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_CHAT);
+		this->getChatUpdater().addInstruction(instructionOut);
+		this->getChatUpdater().stopUpdating(false);
 	}
-	modelChat->getMessagesList().clear();
-	modelChat->getMessagesListMutex().unlock();
+
+
 }
 
-void view::Chat::setTo(string To)
-{
-	this->nameBox.addLine(To);
+model::Chat::~Chat() {
 }
