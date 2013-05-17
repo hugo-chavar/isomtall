@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "Constants.h"
-#include "ClientUpdater.h"
+//#include "ClientUpdater.h"
 
 
 Game::Game() {
@@ -23,13 +23,9 @@ TimeManager* Game::time() {
 	return &_time;
 }
 
-model::Login* Game::getLogin() {
-	return &_login;
-}
-
-ModelUpdater* Game::getModelUpdater() {
-	return &this->_modelUpdater;
-}
+//model::Login* Game::getLogin() {
+//	return &_login;
+//}
 
 bool Game::initialize() {
 	YAMLParser connectionParser;
@@ -38,10 +34,12 @@ bool Game::initialize() {
 	std::string serverIpAddress = connectionParser.getConfigIp();
 	//int serverPortNumber = 9443;
 	//std::string serverIpAddress = "127.0.0.1";
-	ClientUpdater clientUpdater;
-	clientUpdater.setServerIp(serverIpAddress);
-	clientUpdater.setServerPort(serverPortNumber);
-	//clientUpdater.updateClient();
+
+	//ClientUpdater clientUpdater;
+	//clientUpdater.setServerIp(serverIpAddress);
+	//clientUpdater.setServerPort(serverPortNumber);
+	////clientUpdater.updateClient();
+
 	yParser.parse(CONFIGFILE_DIRECTORY, false);
 	_world = yParser.vStages()[0];
 	unsigned stageActual = 0;
@@ -60,8 +58,7 @@ bool Game::initialize() {
 	this->_personaje->setName(this->playerName);
 	personajes.insert(std::pair<string,PersonajeModelo*>(this->playerName,_personaje));
 	this->_time.initializeTime();
-	_login.initialize();
-	this->getModelUpdater()->startUpdating();
+	//_login.initialize();
 	return true;
 }
 

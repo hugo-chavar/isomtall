@@ -1,46 +1,78 @@
-#ifndef _CHAT_H_
-#define _CHAT_H_
+#ifndef _MODEL_CHAT_H_
+#define _MODEL_CHAT_H_
 
-#include "Camera.h"
-#include "Textbox.h"
-#include "StaticTextBox.h"
-#include "../Model/Chat.h"
+#pragma warning(disable: 4512)
 
+#include <list>
+#include <string>
 
-namespace view {
+#include "ChatUpdater.h"
 
+namespace model {
 	class Chat {
+		private:
+//			bool loggedIn;
 
-	public:
-		Chat();
-		~Chat();
-		bool initialize(Camera &camera);
-		bool isTyping();
-		void setIsTyping(bool state);
-		virtual void render(Camera &camera);
-		virtual void update(Camera &camera);
-		void type(SDL_Event *sdlEvent);
-		void cleanInput();
-		bool isClosing(float x, float y);
-		void sendMessage();
-		void setTo(string To);
+			ChatUpdater chatUpdater;
 
+			std::string inputBuffer;
 
-		model::Chat * modelChat;
-	private:
-		Textbox textbox;
-		StaticTextBox nameBox;
-		StaticTextBox messagesBox;
-		SDL_Surface *closeButton;
-		SDL_Rect closeButtonRect;
-		bool typing;
-		bool initializeCloseButton();
-//		model::Chat * modelChat;
-		void receiveMsgs();
+			Mutex messagesListMutex;
 
+			std::list<std::string> messagesList;
+
+//			Socket* socket;
+
+//			Sender* sender;
+
+//			Receiver* receiver;
+
+			std::string to;
+
+//			void setLoggedIn(bool loggedIn);
+
+//			Socket* getSocket();
+
+//			void setSocket(Socket* socket);
+
+//			Sender* getSender();
+
+//			void setSender(Sender* sender);
+
+//			Receiver* getReceiver();
+
+//			void setReceiver(Receiver* receiver);
+
+			std::string getTo();
+
+		public:
+			Chat();
+
+			//TEMPORARY. THIS SHOULD BE PRIVATE.
+			ChatUpdater& getChatUpdater();
+
+			bool isConnected();
+
+			std::string getInputBuffer();
+
+			void setInputBuffer(std::string inputBuffer);
+
+			Mutex& getMessagesListMutex();
+
+			std::list<std::string>& getMessagesList();
+
+			void setTo(std::string to);
+
+			void sendMessage();
+
+			void initialize();
+
+			void update();
+
+			void cleanUp();
+
+			~Chat();
 	};
+} // namespace model
 
-}
-
-
-#endif
+#endif // _MODEL_CHAT_H_

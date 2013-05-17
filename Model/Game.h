@@ -10,10 +10,9 @@
 #include "StageModel.h"
 #include "..\View\TimeManager.h"
 #include "..\Model\YAMLParser.h"
-#include "Login.h"
-#include "Connector.h"
+//#include "Login.h"
+//#include "Connector.h"
 #include "InstructionQueue.h"
-#include "ModelUpdater.h"
 
 class Game
 {
@@ -23,8 +22,6 @@ public:
 	static Game& instance();
 	StageModel* world();
 	TimeManager* time();
-	model::Login* getLogin();
-	ModelUpdater* getModelUpdater();
 	bool initialize(); 
 	bool insidePlayerVision(std::pair<int,int> );
 	bool isKnownByPlayer(std::pair<int,int> );
@@ -46,8 +43,6 @@ private:
 	Configuration _configuration;
 	TimeManager _time;
 	PersonajeModelo * _personaje;
-	model::Login _login;
-	ModelUpdater _modelUpdater;
 	map <string,PersonajeModelo*> personajes;
 	string playerName;
 	string playerCharacterId;

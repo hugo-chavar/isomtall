@@ -2,9 +2,10 @@
 
 #include "StringUtilities.h"
 
-#include <iostream>
-
 #include "Game.h"
+#include "GameView.h"
+
+#include <iostream>
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
@@ -154,23 +155,34 @@ void ModelUpdater::simulate(std::string simulation_package)
 {
 	std::vector<std::string> simulation_fields;
 	stringUtilities::splitString(simulation_package,simulation_fields,',');
-	PersonajeModelo* personaje=Game::instance().getPersonaje(simulation_fields[0]);
+	Personaje* personaje=GameView::instance().getPersonaje(simulation_fields[0]);
 	
 	if(personaje)
 	{
-		int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
-		std::vector<int> datosUpdate;
-		datosUpdate.push_back(pathTiles);
-		for(int i=0;i<pathTiles;i++)
-		{
-		int tileX=stringUtilities::stringToInt(simulation_fields[i*2+2]);
-		datosUpdate.push_back(tileX);
-		int tileY=stringUtilities::stringToInt(simulation_fields[i*2+3]);
-		datosUpdate.push_back(tileY);
-		}
-		personaje->updatePJModel(datosUpdate);
-		if(simulation_fields[2+pathTiles*2]!="0")
-			Game::instance().personaje()->animar(simulation_fields[2+pathTiles*2].front());
+		simulation_package.erase(0,simulation_package.find_first_of(',')+1);
+		//Deberia quedar esto solo
+		//personaje->fromString(simulation_package);
+
+
+
+		//int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
+		//std::vector<int> datosUpdate;
+		//datosUpdate.push_back(pathTiles);
+		//for(int i=0;i<pathTiles;i++)
+		//{
+		//int tileX=stringUtilities::stringToInt(simulation_fields[i*2+2]);
+		//datosUpdate.push_back(tileX);
+		//int tileY=stringUtilities::stringToInt(simulation_fields[i*2+3]);
+		//datosUpdate.push_back(tileY);
+		//}
+		////personaje->updatePJModel(datosUpdate);
+		//if(simulation_fields[2+pathTiles*2]!="0")
+		//	Game::instance().personaje()->animar(simulation_fields[2+pathTiles*2].front());
+	}
+	else
+	{
+		//simulation_fields[0]=name,simulation_fields[1]=char_id
+		GameView::instance().addPersonaje(simulation_fields[0],simulation_fields[1]);
 	}
 }
 

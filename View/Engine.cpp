@@ -2,6 +2,7 @@
 
 #include "Surface.h"
 #include "Game.h"
+#include "GameView.h"
 #include "SDL_ttf.h"
 #include "Instruction.h"
 #include "../Common/stringUtilities.h"
@@ -10,7 +11,6 @@ Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	this->desiredFPS = 100;
-	this->chat.setIsTyping(false);
 
 	//WSAData ws;
 	//WSAStartup(MAKEWORD(2,2),&ws);
@@ -35,20 +35,20 @@ int Engine::execute() {
 	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
 	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
 	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER ,Game::instance().getPlayerCharacterId());
-	Game::instance().getLogin()->getLoginUpdater().addInstruction(instruction);
+	this->getLogin()->getLoginUpdater().addInstruction(instruction);
 	Sleep(2000);
-	if (!Game::instance().getLogin()->isLoggedIn())
+	if (!this->getLogin()->isLoggedIn())
 		return EXIT_FAILURE;
 
 	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
 	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
-	this->chat.modelChat->getMessagesList().push_back("Connecting to chat");
-	this->chat.modelChat->getChatUpdater().addInstruction(instruction);
+	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
+	GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
 
 	instruction.clear();
 	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
 	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
-	Game::instance().getModelUpdater()->addInstruction(instruction);
+	this->getModelUpdater()->addInstruction(instruction);
 
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
@@ -74,41 +74,54 @@ void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
 
+	//descarga de archivos
+	YAMLParser connectionParser;
+	connectionParser.parse(CONNECTION_DIRECTORY, true);
+	int serverPortNumber = connectionParser.getConfigPort();
+	std::string serverIpAddress = connectionParser.getConfigIp();
+	ClientUpdater clientUpdater;
+	clientUpdater.setServerIp(serverIpAddress);
+	clientUpdater.setServerPort(serverPortNumber);
+	//clientUpdater.updateClient();
+	
 	Game::instance().initialize();
+	this->running=GameView::instance().initialize();
+	this->getModelUpdater()->startUpdating();
+	this->_login.initialize();
 
-	bool cameraInitialized = this->camera.initialize();
-	bool mapInitialized = false;
-	bool textInitialized = true;
-	bool chatInitialized = false;
+	//bool cameraInitialized = this->camera.initialize();
+	//bool mapInitialized = false;
+	//bool textInitialized = true;
+	//bool chatInitialized = false;
 
-	//Initialize SDL_ttf
-	if (TTF_Init()==-1)
-		textInitialized = false;
+	////Initialize SDL_ttf
+	//if (TTF_Init()==-1)
+	//	textInitialized = false;
 
-	if (cameraInitialized){
-		mapInitialized = worldView.initialize();
-		chatInitialized = chat.initialize(camera);
-		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
-	}
+	//if (cameraInitialized){
+	//	mapInitialized = worldView.initialize();
+	//	chatInitialized = chat.initialize(camera);
+	//	worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+	//}
 
-	//si hubo errores de inicializacion salgo
-	running = mapInitialized & cameraInitialized & textInitialized; 
+	////si hubo errores de inicializacion salgo
+	//running = mapInitialized & cameraInitialized & textInitialized; 
 
-	if (running) {
-		std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
-		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
-		this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
-	}
+	//if (running) {
+	//	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
+	//	this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
+	//	this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
+	//}
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
 	Instruction instruction;
 	
-	if (chat.isTyping()) {
-		chat.type(sdlEvent);
+	if (GameView::instance().getChat()->isTyping()) {
+		GameView::instance().getChat()->type(sdlEvent);
 		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
 			// ENVIAR MENSAJE...
-			chat.sendMessage();
+			GameView::instance().getChat()->sendMessage();
 		}
 	}
 
@@ -135,47 +148,47 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				}
 			case SDLK_f:
 				{
-					if (!chat.isTyping())
+					if (!GameView::instance().getChat()->isTyping())
 						//Game::instance().personaje()->setIsActivo();
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"f");
-						Game::instance().getModelUpdater()->addInstruction(instruction);
-						Game::instance().personaje()->setIsActivo(false);
+						this->getModelUpdater()->addInstruction(instruction);
+						//Game::instance().personaje()->setIsActivo(false);
 					break;
 				}
 			case SDLK_w:
 				{
-					if (!chat.isTyping())
+					if (!GameView::instance().getChat()->isTyping())
 						//Game::instance().personaje()->setIsActivo();
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"w");
-						Game::instance().getModelUpdater()->addInstruction(instruction);
-						Game::instance().personaje()->setIsActivo(true);
+						this->getModelUpdater()->addInstruction(instruction);
+						//Game::instance().personaje()->setIsActivo(true);
 					break;
 				}
 			case SDLK_a:
 				{
-					if (!chat.isTyping())
+					if (!GameView::instance().getChat()->isTyping())
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"a");
-						Game::instance().getModelUpdater()->addInstruction(instruction);
+						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('a');
 					break;
 				}
 			case SDLK_s:
 				{
-					if (!chat.isTyping())
+					if (!GameView::instance().getChat()->isTyping())
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"s");
-						Game::instance().getModelUpdater()->addInstruction(instruction);
+						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('s');
 					break;
 				}
@@ -187,24 +200,24 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		case SDL_MOUSEBUTTONDOWN: {
 			switch(sdlEvent->button.button) {
 				case SDL_BUTTON_LEFT: {
-					if (chat.isClosing(sdlEvent->button.x+camera.getOffsetX(), sdlEvent->button.y+camera.getOffsetY()))
-						chat.setIsTyping(false);
+					if (GameView::instance().getChat()->isClosing(sdlEvent->button.x+GameView::instance().getCamera()->getOffsetX(), sdlEvent->button.y+GameView::instance().getCamera()->getOffsetY()))
+						GameView::instance().getChat()->setIsTyping(false);
 					else
 						instruction.clear();
-						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
+						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY());
 						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
-						Game::instance().getModelUpdater()->addInstruction(instruction);
+						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
 					break;
 				}
 				case SDL_BUTTON_RIGHT: {
 					string To="";
-					if(Game::instance().world()->isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY()))
+					if(Game::instance().world()->isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY()))
 					{
-					chat.setTo(To);
-					chat.setIsTyping(true);
+					GameView::instance().getChat()->setTo(To);
+					GameView::instance().getChat()->setIsTyping(true);
 					}
 					break;
 				}
@@ -216,36 +229,33 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 }
 
 void Engine::update() {
-	this->camera.update();
+	/*this->camera.update();
 	this->worldView.update();
-	this->chat.update(camera);
+	this->chat.update(camera);*/
+	GameView::instance().update();
 }
 
 void Engine::render() {
-	SDL_FillRect(this->camera.cameraSurface,NULL,0);
 
-	this->worldView.render(this->camera);
-
-	if (chat.isTyping())
-		this->chat.render(this->camera);
-
-	SDL_Flip(this->camera.cameraSurface);
+	GameView::instance().render();
 }
 
 void Engine::cleanUp() {
 	Instruction instructionOut;
 
-	this->camera.cleanUp();
+	//this->camera.cleanUp();
 
-	Game::instance().getLogin()->cleanUp();
+	GameView::instance().cleanUp();
 
-	this->chat.modelChat->cleanUp();
+	this->_login.cleanUp();
+
+	//this->chat.modelChat->cleanUp();
 
 	
-	if (Game::instance().getModelUpdater()->isConnected()) {
+	if (this->getModelUpdater()->isConnected()) {
 		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
-		Game::instance().getModelUpdater()->addInstruction(instructionOut);
-		Game::instance().getModelUpdater()->stopUpdating(false);
+		this->getModelUpdater()->addInstruction(instructionOut);
+		this->getModelUpdater()->stopUpdating(false);
 	}
 
 	SDL_Quit();
@@ -253,4 +263,12 @@ void Engine::cleanUp() {
 
 Engine::~Engine() {
 	WSACleanup();
+}
+
+ModelUpdater* Engine::getModelUpdater() {
+	return &this->_modelUpdater;
+}
+
+model::Login* Engine::getLogin() {
+	return &_login;
 }

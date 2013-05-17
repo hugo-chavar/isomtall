@@ -163,7 +163,7 @@ void Personaje::mover() {
 	
 	calcularSigTileAMover();
 	calcularvelocidadRelativa(factor);
-	if (estado != ERROR) {
+	if (estado != ESTADO_ERROR) {
 		//sprites[estado]->getNextFrame();
 		moverSprite(factor);
 	}
