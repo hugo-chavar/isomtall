@@ -10,7 +10,8 @@ GameView::~GameView(void)
 {
 	std::map<std::string,Personaje*>::iterator it=personajes.begin();
 	for(it;it!=personajes.end();it++) {
-		delete (*it).second;
+		if (it->second != this->worldView.personaje())
+			delete (*it).second;
 	}
 }
 
@@ -73,12 +74,17 @@ Personaje* GameView::getPersonaje(string name)
 	return personaje;
 }
 
+//Falta implementar este metodo
 void GameView::addPersonaje(string name,string char_id){
 	Personaje* personaje=new Personaje(NULL);
 	this->personajes.insert(std::pair<string,Personaje *>(name,personaje));
 	//Aca deberia relacionarle al personaje su sprite, a partir del char_id, el cual deberia ya estar cargado en memoria
 }
 
+void GameView::addPersonaje(string name,Personaje * personaje)
+{
+this->personajes.insert(std::pair<string,Personaje *>(name,personaje));
+}
 
 Personaje* GameView::getMyPersonaje()
 {

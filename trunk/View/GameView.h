@@ -14,7 +14,8 @@ public:
 	view::Stage* getWorldView();
 	Personaje* getMyPersonaje();
 	Personaje* getPersonaje(string name);
-	void addPersonaje(string name,string char_id);
+	void addPersonaje(string name,string char_id);//ver como hacerlo
+	void addPersonaje(string name,Personaje * personaje);
 	view::ChatView* getChat();
 	Camera* getCamera();
 	static GameView& instance();

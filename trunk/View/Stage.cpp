@@ -3,6 +3,7 @@
 #include "EntityObject.h"
 #include "DataTypes.h"
 #include "TileModel.h"
+#include "GameView.h"
 
 #define START_LEVEL 0
 #define EXTRA_TILES_TO_RENDER 9
@@ -110,6 +111,7 @@ bool view::Stage::initialize() {
 		return false;
 	}
 	_personaje = new Personaje(Game::instance().personaje());
+	GameView::instance().addPersonaje(Game::instance().personaje()->getName(),_personaje);
 	_personaje->loadSprites();
 
 	return true;
