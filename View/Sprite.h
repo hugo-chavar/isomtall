@@ -36,6 +36,8 @@ public:
 	view::Surface* getSurfaceAt(int state);
 	view::Surface* getCurrentSurface();
 	void addSurface(std::string path);
+	int getSurfaceWidth();
+	int getSurfaceHeight();
 };
 
 #endif

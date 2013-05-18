@@ -4,10 +4,9 @@ StaticTextBox::StaticTextBox() { }
 
 StaticTextBox::~StaticTextBox() {
 	SDL_FreeSurface(_box);
-	for (unsigned i =0;i<lines.size();i++)
-	{
-	lines[i]->liberar();
-	delete lines[i];
+	for (unsigned i =0;i < lines.size(); i++)	{
+		lines[i]->liberar();
+		delete lines[i];
 	}
 }
 
@@ -23,7 +22,7 @@ SDL_Surface *load_SDLimage(string filename)
     loadedImage = IMG_Load(filename.c_str());
 
     //If the image loaded
-    if(loadedImage!=NULL)
+    if(loadedImage != NULL)
     {
         //Create an optimized image
         optimizedImage = SDL_DisplayFormat(loadedImage);
@@ -52,11 +51,11 @@ bool StaticTextBox::load(string imagePath, char *fontPath, int textSize) {
 	//Open the font
 	_font = TTF_OpenFont(fontPath, textSize);
 	//If there was a problem in loading the background
-	if (_box==NULL) {
+	if (_box == NULL) {
 		return false;
 	}
 	//If there was an error in loading the font
-	if (_font==NULL) {
+	if (_font == NULL) {
 		return false;
 	}
 	//If everything loaded fine
@@ -127,18 +126,15 @@ int StaticTextBox::getWidth() {
 //	return this->_strText[pos];
 //}
 
-void StaticTextBox::addLine(string newMsg)
-{
+void StaticTextBox::addLine(string newMsg) {
 	lines.push_back(new Line(newMsg,_font,this->_textColor));
-	if(lines.size()> maxLines)
-	{
-	lines[0]->liberar();
-	delete lines[0];
-	lines.erase(lines.begin());
+	if (lines.size() > maxLines) {
+		lines[0]->liberar();
+		delete lines[0];
+		lines.erase(lines.begin());
 	}
 }
 
-vector<Line *> StaticTextBox::getLines()
-{
+vector <Line *> StaticTextBox::getLines() {
 	return this->lines;
 }
