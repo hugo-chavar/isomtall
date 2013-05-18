@@ -34,6 +34,8 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
 	this->vision = NULL;
+	/*mapKeyPressedToAnimation['a'] = ATACAR;
+	mapKeyPressedToAnimation['s'] = DEFENDER;*/
 }
 
 
@@ -46,28 +48,17 @@ void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
 	animation = ae;
 }
 
-void PersonajeModelo::atacar() {
-	animacionActual = ATACAR;
+void PersonajeModelo::changeToAnimation(int animationNumber) {
 	targetParcial = target = current;
 	if (estado >= MOVIMIENTO) {
-		estado = estado + ATACAR - MOVIMIENTO;
+		this->changeToState(animationNumber - MOVIMIENTO);
 	} else {
-		estado = estado + ATACAR - PARADO;
+		this->changeToState(animationNumber - PARADO);
 	}
 }
 
-void PersonajeModelo::defender() {
-	animacionActual = DEFENDER;
-	targetParcial = target = current;
-	if (estado >= MOVIMIENTO) {
-		estado = estado + DEFENDER - MOVIMIENTO;
-	} else {
-		estado = estado + DEFENDER - PARADO;
-	}
-}
-
-bool PersonajeModelo::estaAnimandose() {
-	return this->isAnimating;
+void PersonajeModelo::changeToState(int addedState) {
+	this->estado += addedState;
 }
 
 void PersonajeModelo::animar(char opcion) {
@@ -76,17 +67,22 @@ void PersonajeModelo::animar(char opcion) {
 		switch (opcion) {
 		case ('a'): {
 			this->setAnimating(true);
-			this->atacar();
+			this->changeToAnimation(ATACAR);
 			break;
 				  }
 		case ('s'): {
 			this->setAnimating(true);
-			this->defender();
+			this->changeToAnimation(DEFENDER);
 			break;
 				  }
 		default:;
 		}
 	}
+}
+
+
+bool PersonajeModelo::estaAnimandose() {
+	return this->isAnimating;
 }
 
 void PersonajeModelo::terminarAnimacion() {
@@ -105,19 +101,19 @@ AnimatedEntity* PersonajeModelo::getAnimation() {
 }
 
 string PersonajeModelo::nextDirectory() {
-	return animation->nextDirectory();
+	return this->animation->nextDirectory();
 }
 
 int PersonajeModelo::fps() {
-	return animation->fps();
+	return this->animation->fps();
 }
 
 int PersonajeModelo::delay() {
-	return animation->delay();
+	return this->animation->delay();
 }
 
 void PersonajeModelo::setDestino(int x, int y) {
-	if ((isActivo)&&(!this->estaAnimandose())) {
+	if ((isActivo) && (!this->estaAnimandose())) {
 		target.first = x;
 		target.second = y;
 		targetParcial.first = x;
@@ -127,6 +123,10 @@ void PersonajeModelo::setDestino(int x, int y) {
 
 void PersonajeModelo::setEstado(int state) {
 	estado = state;
+}
+
+int PersonajeModelo::getEstado() {
+	return estado;
 }
 
 void PersonajeModelo::setIsActivo(bool active) {
@@ -165,10 +165,6 @@ bool PersonajeModelo::getIsActivo() {
 
 void PersonajeModelo::setVelocidad(float vel) {
 	velocidad = vel;
-}
-
-int PersonajeModelo::getEstado() {
-	return estado;
 }
 
 float PersonajeModelo::getVelocidad() {
@@ -383,82 +379,10 @@ std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
 		posicionSig.first++;
 	
 	return posicionSig;
-
-	//if (orientacion == NORTE) {
-	//	posicionSig.first = current.first - 1;
-	//	posicionSig.second = current.second - 1;
-	//	return posicionSig;
-	//}
-	//if (orientacion == NORESTE) {
-	//	posicionSig.first = current.first;
-	//	posicionSig.second = current.second - 1;
-	//	return posicionSig;
-	//}
-	//if (orientacion == ESTE) {
-	//	posicionSig.first = current.first + 1;
-	//	posicionSig.second = current.second - 1;
-	//	return posicionSig;
-	//}
-	//if (orientacion == NOROESTE) {
-	//	posicionSig.first = current.first - 1;
-	//	posicionSig.second = current.second;
-	//	return posicionSig;
-	//}
-	//if (orientacion == SUDESTE) {
-	//	posicionSig.first = current.first + 1;
-	//	posicionSig.second = current.second;
-	//	return posicionSig;
-	//}
-	//if (orientacion == OESTE) {
-	//	posicionSig.first = current.first - 1;
-	//	posicionSig.second = current.second + 1;
-	//	return posicionSig;
-	//}
-	//if (orientacion == SUDOESTE) {
-	//	posicionSig.first = current.first;
-	//	posicionSig.second = current.second + 1;
-	//	return posicionSig;
-	//}
-	//if (orientacion == SUR) {
-	//	posicionSig.first = current.first + 1;
-	//	posicionSig.second = current.second + 1;
-	//	return posicionSig;
-	//}
 }
 
 void PersonajeModelo::setAnimating(bool value) {
 	this->isAnimating = value;
-}
-
-void PersonajeModelo::updatePJModel(std::vector<int>& datosUpdate) {
-	if ( datosUpdate[0] > 0 ) {
-		this->caminoSize = datosUpdate[0];
-		if (this->xPath != NULL) {
-			delete [] this->yPath;
-		}
-		if (this->yPath == NULL) {
-			delete [] this->yPath;
-		}
-		this->xPath = new int[caminoSize];
-		this->yPath = new int[caminoSize];
-		for (int i = 0; i < caminoSize; ++i) {
-			xPath[i] = datosUpdate[i+1];
-			yPath[i] = datosUpdate[i+2];
-		}
-		posMov=0;
-		target.first = targetParcial.first = xPath[caminoSize -1 ];
-		target.second = targetParcial.second = yPath[caminoSize -1 ];
-	}
-}
-
-bool PersonajeModelo::getIsInCenterTile()
-{
-	return this->isInCenterTile;
-}
-
-void PersonajeModelo::setIsInCenterTile(bool is)
-{
-	this->isInCenterTile=is;
 }
 
 int PersonajeModelo::getRefPixelX() {

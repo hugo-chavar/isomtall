@@ -28,10 +28,8 @@ public:
 	void setPixelPosition(std::pair<int, int> pixel);
 	std::pair<int, int> getPixelPosition();
 	int getCurrentSpritePosition();
-private:
-	//determina en que posicion del vector de sprites esta el sprite del estado actual
-	//int procesarAnimacion(int animacion);
 
+private:
 	int getSpritePosition(int currentAnimationNumber);
 	void calcularvelocidadRelativa(std::pair<float, float>& factor);
 	void mover();
@@ -41,7 +39,6 @@ private:
 	void moverSpriteEnX();
 	void moverSpriteEnY();
 	bool isCenteredInTile();
-	//void freezar();
 	void animar();
 	void detenerAnimacion();
 	void crearNombre(string textoNombre);
@@ -50,7 +47,6 @@ private:
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual
-	//int estado; //estado actual, si se mueve y en que dirección
 	int currentSpritePosition;
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y

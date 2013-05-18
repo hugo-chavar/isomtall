@@ -38,6 +38,7 @@ bool GameView::initialize()
 	bool running = mapInitialized & cameraInitialized & textInitialized; 
 
 	if (running) {
+		//TODO: cambiar por this->camera.setCenterPixel(worldView.personaje()->getPixelPosition());
 		std::pair<int,int> posPersonaje=worldView.personaje()->getPixelPosition();
 		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
 		this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));

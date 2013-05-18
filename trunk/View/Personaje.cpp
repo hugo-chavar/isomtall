@@ -10,7 +10,6 @@
 Personaje::Personaje(PersonajeModelo* pj) {
 	modelo = pj;
 	tileActual = pj->getPosition();
-	//pj->getCurrent(tileActual);
 	this->currentSpritePosition = this->getSpritePosition(pj->getEstado());
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
@@ -72,10 +71,7 @@ void Personaje::addNextSprite(AnimatedEntity* entity) {
 void Personaje::addFirstSprite(AnimatedEntity* entity) {
 	SpriteAnimado* newSprite = new SpriteAnimado(entity);
 	sprites.push_back(newSprite);
-	this->setRectangle(tileActual, newSprite);
-	/*spriteRect = posicionIsometricaPorTiles(tileActual.first, tileActual.second,newSprite);
-	spriteRect.w = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = static_cast<Uint16>(newSprite->getFrameActual()->getSuperficie()->h);*/
+	this->setRectangle(modelo->getPosition(), newSprite);
 }
 
 bool Personaje::isCenteredInTile() {
@@ -95,11 +91,6 @@ void Personaje::setFreezed(bool value) {
 //	this->freezedSpriteState = -1;
 //}
 
-//void Personaje::freezar() {
-//	int currentAnimationNumber = modelo->getEstado();
-//	this->currentSpritePosition = this->getSpritePosition(currentAnimationNumber);
-//	sprites[this->currentSpritePosition]->actualizarFrame();
-//}
 
 void Personaje::detenerAnimacion() {
 	modelo->terminarAnimacion();
@@ -131,24 +122,6 @@ void Personaje::update() {
 	}
 	modelo->update();
 	sprites[this->currentSpritePosition]->actualizarFrame();
-	//if (!this->isCenteredInTile() {
-	//	this->mover();
-	//} else {
-	//	if (!this->isFreezed()) {
-	//		this->animar();
-	//		this->mover();
-	//	}
-	//}
-	//if ((modelo->getIsActivo())||(!(this->isCenteredInTile()))) {
-	//	if ((modelo->estaAnimando())&&(this->isCenteredInTile())) {
-	//		this->animar();
-	//	} else {
-	//		this->mover();
-	//	}
-	//} else {
-	//	this->setFreezed(true);
-	//}
-	
 }
 
 void Personaje::mover() {
@@ -175,8 +148,6 @@ void Personaje::calcularSigTileAMover(){
 	if (this->isCenteredInTile()) {
 		serr = 0;
 		tileActual = modelo->getPosition();
-		//modelo->getCurrent(tileActual);
-		modelo->setIsInCenterTile(true);
 		currentAnimationNumber = modelo->mover(tile, velocidad);
 		this->currentSpritePosition = this->getSpritePosition(currentAnimationNumber);
 		if (previousSpritePosition != this->currentSpritePosition) {
@@ -186,7 +157,7 @@ void Personaje::calcularSigTileAMover(){
 		//std::string aux = stringUtilities::floatToString(velocidad);
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
-			modelo->setIsInCenterTile(false);
+			//modelo->setIsInCenterTile(false);
 			modelo->setCurrent(tile.first, tile.second);
 		}
 	}
@@ -268,7 +239,7 @@ void Personaje::render(Camera& camera) {
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	//camera.render(this->spriteRect, sprites[estado]->getFrameActual()->getSuperficie(this->freezed));
+	//TODO: mejorar siguientes 3 lineas..
 	if (this->freezed)
 		camera.render(spriteRect,sprites[this->currentSpritePosition]->getSurfaceAt(freezedSpriteState)->getShadow());
 	camera.render(this->spriteRect, sprites[this->currentSpritePosition]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
@@ -395,13 +366,6 @@ PersonajeModelo* Personaje::personajeModelo(){
 	return modelo;
 }
 
-//std::pair<int,int> Personaje::posicion(){
-//	std::pair<int,int> pos;
-//	pos.first = spriteRect.x;
-//	pos.second = spriteRect.y;
-//	return pos;
-//}
-
 std::pair<int,int> Personaje::getPosicionEnTiles(){
 	return modelo->getPosition();
 }
@@ -425,10 +389,9 @@ std::pair<int,int> Personaje::getPosicionAnteriorEnTiles(){
 //tilex, tiley, pixelx, pixely, isFreezed, nro_status, nro_surface
 std::string Personaje::toString() {
 	std::string out;
-	std::pair<int,int> pixels;
-	out = stringUtilities::pairIntToString(tileActual);
+	out = stringUtilities::pairIntToString(modelo->getPosition());
 	out.append(";");
-	out.append(stringUtilities::pairIntToString(pixels));
+	out.append(stringUtilities::pairIntToString(this->getPixelPosition()));
 	out.append(";");
 	if (this->isFreezed()) {
 		out.append("F");

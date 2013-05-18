@@ -110,8 +110,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
-				std::pair<int, int> pair = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
-				Game::instance().personaje()->setCurrent(pair.first,pair.second);
+				//TODO: simplificar
+				std::pair<int, int> currentPosition = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
+				Game::instance().personaje()->setCurrent(currentPosition.first, currentPosition.second);
+				Game::instance().personaje()->getVision()->setPosition(currentPosition);
 				Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
 			}
 			break;
@@ -123,6 +125,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->simulationUpdate(instructionIn);
 		break;
 		case OPCODE_CONNECTION_ERROR:
+			//TODO: Yami.. mostrar cartelito
 			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);

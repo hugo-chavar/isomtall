@@ -40,6 +40,7 @@ void Circle::clear() {
 }
 
 void Circle::initialize(std::pair<int, int> center, int range) {
+	this->clear();
 	int x = range, y = 0;
 	int xChange = 1 - range*2;
 	int yChange = 0;
