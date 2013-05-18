@@ -44,6 +44,8 @@ public:
 	void updatePJModel(std::vector<int>& datosUpdate);
 	bool getIsInCenterTile();
 	void setIsInCenterTile(bool);
+	int getRefPixelX();
+	int getRefPixelY();
 
 private:
 

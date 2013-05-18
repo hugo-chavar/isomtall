@@ -460,3 +460,11 @@ void PersonajeModelo::setIsInCenterTile(bool is)
 {
 	this->isInCenterTile=is;
 }
+
+int PersonajeModelo::getRefPixelX() {
+	return this->animation->pixelRefX();
+}
+
+int PersonajeModelo::getRefPixelY() {
+	return this->animation->pixelRefY();
+}

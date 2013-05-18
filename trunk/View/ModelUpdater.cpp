@@ -1,7 +1,7 @@
 #include "ModelUpdater.h"
+#pragma warning(disable: 4355)
 
 #include "StringUtilities.h"
-
 #include "Game.h"
 #include "GameView.h"
 
@@ -58,13 +58,13 @@ void ModelUpdater::updateModel() {
 				this->processInstruction(instructionIn);
 			}
 			/*Inicio codigo que parece ya no pinchar*/
-			if(Game::instance().personaje()->getIsInCenterTile() && this->isConnected()) {
-				instructionOut.clear();
-				instructionOut.setOpCode(OPCODE_SIMULATION_UPDATE);
-				std::pair<int, int> pos = Game::instance().personaje()->getPosition();
-				instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,stringUtilities::pairIntToString(pos));
-				this->getConnector().addInstruction(instructionOut);
-			}
+			//if(Game::instance().personaje()->getIsInCenterTile() && this->isConnected()) {
+			//	instructionOut.clear();
+			//	instructionOut.setOpCode(OPCODE_SIMULATION_UPDATE);
+			//	std::pair<int, int> pos = Game::instance().personaje()->getPosition();
+			//	instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,stringUtilities::pairIntToString(pos));
+			//	this->getConnector().addInstruction(instructionOut);
+			//}
 			/*Fin codigo que parece ya no pinchar*/
 		} while (!this->isStopping());
 
@@ -105,14 +105,14 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			{
-			this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
+				this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
 			}
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
-			std::pair<int, int> pair=stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
-			Game::instance().personaje()->setCurrent(pair.first,pair.second);
-			Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
+				std::pair<int, int> pair = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
+				Game::instance().personaje()->setCurrent(pair.first,pair.second);
+				Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
@@ -144,8 +144,7 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 
 	stringUtilities::splitString(serializedSimulation,player_simulations,':');
 
-	for(int i=0;i<player_simulations.size();i++)
-	{
+	for(unsigned i = 0; i < player_simulations.size(); i++) {
 		this->simulate(player_simulations[i]);
 	}
 
