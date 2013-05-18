@@ -16,6 +16,7 @@ public:
 	CharacterVision();
 	~CharacterVision();
 	void setRangeVision(int value);
+	void increaseRangeVision(int value);
 	void initialize();
 	void setPosition(pair<int, int> pos);
 	void updatePosition(pair<int, int> pos);
@@ -25,11 +26,12 @@ public:
 	string toString();
 	void fromString(string data);
 private:
+	void updateVision();
 	vector <bitset<MAX_STAGE_SIZE_X> > mapKnowledge;
 	int rangeVision;
 	int mapHeight;
 	int mapWidth;
-	pair<int, int > position;
+	pair <int, int > position;
 	Circle vision;
 };
 

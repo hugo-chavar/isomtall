@@ -16,6 +16,11 @@ void CharacterVision::setRangeVision(int value) {
 	this->rangeVision = value;
 }
 
+void CharacterVision::increaseRangeVision(int value) {
+	this->rangeVision += value;
+	this->updateVision();
+}
+
 void CharacterVision::initialize() {
 	this->mapWidth = Game::instance().world()->width();
 	this->mapHeight = Game::instance().world()->height();
@@ -24,14 +29,7 @@ void CharacterVision::initialize() {
 		line.reset();
 		mapKnowledge.push_back(line);
 	}
-
-	vision.initialize(this->position, this->rangeVision);
-	vision.fill();
-	pair<int, int > aux;
-	while (vision.hasNext()) {
-		aux = vision.next();
-		this->setKnown(aux);
-	}
+	this->updateVision();
 }
 
 void CharacterVision::setPosition(pair<int, int> pos) {
@@ -41,15 +39,18 @@ void CharacterVision::setPosition(pair<int, int> pos) {
 void CharacterVision::updatePosition(pair<int, int> pos) {
 	if (pos == this->position)
 		return;
-	vision.clear();
-	vision.initialize(pos, this->rangeVision);
+	this->setPosition(pos);
+	this->updateVision();
+}
+
+void CharacterVision::updateVision() {
+	vision.initialize(this->position, this->rangeVision);
 	vision.fill();
 	pair<int, int > aux;
 	while (vision.hasNext()) {
 		aux = vision.next();
 		this->setKnown(aux);
 	}
-	this->position = pos;
 }
 
 bool CharacterVision::testPosition(pair<int, int> pos) {
@@ -62,7 +63,7 @@ void CharacterVision::setKnown(pair<int, int> pos){
 			return;
 		this->mapKnowledge[pos.second].set(pos.first);
 		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
-		if (relatedTile){
+		if (relatedTile) {
 			while (relatedTile != Game::instance().world()->getTileAt(pos) ) {
 				pair<int, int> posRelated = relatedTile->getPosition();
 				this->mapKnowledge[posRelated.second].set(posRelated.first);
@@ -78,16 +79,15 @@ bool CharacterVision::isInsideVision(pair<int, int> pos) {
 
 string CharacterVision::toString() {
 	pair<int, int> pos;
-	string out = "";
+	string out = stringUtilities::intToString(this->rangeVision);
 	for (pos.first = 0; pos.first < this->mapHeight; pos.first++) {
 		for (pos.second = 0; pos.second < this->mapWidth; pos.second++) {
-			if (this->testPosition(pos)){
-				out.append(stringUtilities::pairIntToString(pos));
+			if ((this->testPosition(pos)) && (!vision.inside(pos)) ) {
 				out.append(":");
+				out.append(stringUtilities::pairIntToString(pos));
 			}
 		}
 	}
-	//common::Logger::instance().log(out);
 	return out;
 }
 
@@ -96,7 +96,10 @@ void CharacterVision::fromString(string data) {
 	pair<int, int> pos;
 	auxVector.clear();
 	stringUtilities::splitString(data, auxVector, ':');
-	for (vector <string>::iterator it = auxVector.begin(); it != auxVector.end(); ++it) {
+	vector <string>::iterator it = auxVector.begin();
+	this->rangeVision = stringUtilities::stringToInt(*it);
+	it++;
+	for (; it != auxVector.end(); it++) {
 		pos = stringUtilities::stringToPairInt(*it);
 		this->setKnown(pos);
 	}

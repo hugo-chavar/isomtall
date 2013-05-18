@@ -13,37 +13,35 @@ class PersonajeModelo {
 public:
 	PersonajeModelo();
 	PersonajeModelo(int ActualX, int ActualY);
+	~PersonajeModelo();
+
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
-	//void getCurrent(std::pair<int, int>& actual);
 	void setIsActivo(bool active);
 	bool getIsActivo();
 	int getEstado();
 	float getVelocidad();
-	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad
-	~PersonajeModelo();											//del movimiento, la corrección de la vista no se la hace
-	string nextDirectory();
+	bool estaAnimandose();
+	void terminarAnimacion();
+	void animar(char opcion);
+	std::pair<int, int> obtenerFrentePersonaje();
+	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
+	
+	std::string nextDirectory();
 	bool hasDirectoryRemaining();
 	void setAnimation(AnimatedEntity* entity);
 	AnimatedEntity* getAnimation();
 	int fps();
 	int delay();
-	bool estaAnimandose();
-	void terminarAnimacion();
-	void animar(char opcion);
-	string getName();
+	std::string getName();
 	void setName(string nombreJugador);
 	std::pair<int, int> getPosition();
 	void createVision(int range);
 	CharacterVision* getVision();
 	void update();
-	std::pair<int, int> obtenerFrentePersonaje();
 	void setAnimating(bool value);
-	void updatePJModel(std::vector<int>& datosUpdate);
-	bool getIsInCenterTile();
-	void setIsInCenterTile(bool);
 	int getRefPixelX();
 	int getRefPixelY();
 
@@ -62,6 +60,8 @@ private:
 	void defender();
 
 	void initialize(int pos_x, int pos_y);
+	void changeToState(int addedState);
+	void changeToAnimation(int animationNumber);
 	
 	std::pair<int, int> current;
 	std::pair<int, int> target;
@@ -77,9 +77,10 @@ private:
 	float velocidad;
 	bool isActivo;
 	AnimatedEntity * animation;
-	string name;
+	std::string name;
 	CharacterVision* vision;
-	bool isInCenterTile;
+	//bool isInCenterTile;
+	//std::map< char, int > mapKeyPressedToAnimation;
 };
 
 
