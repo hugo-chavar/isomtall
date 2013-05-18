@@ -164,8 +164,7 @@ void ModelUpdater::simulate(std::string simulation_package)
 	if(personaje)
 	{
 		simulation_package.erase(0,simulation_package.find_first_of(',')+1);
-		//Deberia quedar esto solo
-		//personaje->fromString(simulation_package);
+		personaje->updateFromString(simulation_package);
 
 
 

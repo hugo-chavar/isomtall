@@ -13,12 +13,12 @@ int main(int argc, char *argv[]) {
 		std::cout << "Nombre jugador no ingresado"<<std::endl;
 		playerName = "Default Name";
 	} else {
-		//porner if playername largo
+		//poner if playername largo
 		playerName = argv[1];
 	}
 	if (argc < 3){
 		std::cout << "Personaje no elegido"<<std::endl;
-		playerCharacterId = "-1";
+		playerCharacterId = "0";
 	} else {
 		playerCharacterId = argv[2];
 	}
