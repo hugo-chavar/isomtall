@@ -111,10 +111,12 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
 				//TODO: simplificar
-				std::pair<int, int> currentPosition = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
-				Game::instance().personaje()->setCurrent(currentPosition.first, currentPosition.second);
-				Game::instance().personaje()->getVision()->setPosition(currentPosition);
-				Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
+				//std::pair<int, int> currentPosition = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
+				//Game::instance().personaje()->setCurrent(currentPosition.first, currentPosition.second);
+				//Game::instance().personaje()->getVision()->setPosition(currentPosition);
+				//Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
+				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
+				GameView::instance().getMyPersonaje()->initFromString(syncData);
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
@@ -156,8 +158,8 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 void ModelUpdater::simulate(std::string simulation_package)
 {
 	std::vector<std::string> simulation_fields;
-	stringUtilities::splitString(simulation_package,simulation_fields,',');
-	Personaje* personaje=GameView::instance().getPersonaje(simulation_fields[0]);
+	stringUtilities::splitString(simulation_package, simulation_fields, ',');
+	Personaje* personaje = GameView::instance().getPersonaje(simulation_fields[0]);
 	
 	if(personaje)
 	{

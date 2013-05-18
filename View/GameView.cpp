@@ -9,8 +9,7 @@ GameView::GameView(void)
 GameView::~GameView(void)
 {
 	std::map<std::string,Personaje*>::iterator it=personajes.begin();
-	for(it;it!=personajes.end();it++)
-	{
+	for(it;it!=personajes.end();it++) {
 		delete (*it).second;
 	}
 }

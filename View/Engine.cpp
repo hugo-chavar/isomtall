@@ -85,7 +85,7 @@ void Engine::initialize() {
 	//clientUpdater.updateClient();
 	
 	Game::instance().initialize();
-	this->running=GameView::instance().initialize();
+	this->running = GameView::instance().initialize();
 	this->getModelUpdater()->startUpdating();
 	this->_login.initialize();
 
