@@ -13,7 +13,6 @@ public:
 	~Personaje();
 	void update();
 	void render(Camera& camera);
-	void setDestino(int xTile, int yTile);
 	PersonajeModelo* personajeModelo();
 	void loadSprites();
 	void clearSprites() ;
@@ -23,14 +22,20 @@ public:
 	std::pair<int,int> getPosicionAnteriorEnTiles();
 	void setFreezed(bool value);
 	void setAnimating(bool value);
-	std::string toString();
-	void fromString(std::string data);
+	std::string updateToString();
+	void updateFromString(std::string data);
+	std::string initToString();
+	void initFromString(std::string data);
 	void setPixelPosition(std::pair<int, int> pixel);
 	std::pair<int, int> getPixelPosition();
 	int getCurrentSpritePosition();
+	void setCurrentSpritePosition(int pos);
+
+	//TODO: refactor, check if needed
+	void setDestino(int xTile, int yTile);
 
 private:
-	int getSpritePosition(int currentAnimationNumber);
+	int calculateSpritePosition(int currentAnimationNumber);
 	void calcularvelocidadRelativa(std::pair<float, float>& factor);
 	void mover();
 	void calcularSigTileAMover();

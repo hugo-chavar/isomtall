@@ -67,26 +67,15 @@ void SpriteAnimado::avanzarFrames() {
 bool SpriteAnimado::tiempoFrameCumplido(float delta) {
 	return ((SDL_GetTicks() - comienzo_frame) >= ((1000/fps) + delta));
 }
-//
-//void SpriteAnimado::loadSurfaces(EntityObject * entity) {
-//	AnimatedEntity* auxEntity = (AnimatedEntity*)entity;
-//	view::Surface* auxSurface;
-//	auxEntity->imagesPaths()->restartCurrentPosition();
-//	while (auxEntity->imagesPaths()->hasNext()) {
-//		auxSurface = new view::Surface();
-//		auxSurface->load(entity->imagePath());
-//		surfaces.push_back(auxSurface);
-//	}
-//}
 
 void SpriteAnimado::loadSurfaces() {
 	AnimatedEntity* auxEntity = (AnimatedEntity*)spriteEntity;
-	//view::Surface* auxSurface;
 	auxEntity->imagesPaths()->restartCurrentPosition();
 	while (auxEntity->imagesPaths()->hasNext()) {
 		this->addSurface(auxEntity->imagesPaths()->nextFullPath());
-		//auxSurface = new view::Surface();
-		//auxSurface->load(auxEntity->imagesPaths()->nextFullPath());
-		//surfaces.push_back(auxSurface);
 	}
+}
+
+void SpriteAnimado::setCurrentState(unsigned state) {
+	estado = state;
 }
