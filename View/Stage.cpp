@@ -238,9 +238,14 @@ void view::Stage::render(Camera& camera) {
 	renderHelper.startRenderingEntities();
 	while (renderHelper.hasLevelsToRender()) {
 		renderHelper.renderNextLevel(camera);
-		//TODO: falta refactorizar este if...
-		//if (renderHelper.shouldRenderThis(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))
-		//	_personaje->render(camera);
+		GameView::instance().startRenderingCharacters();
+		Personaje* p = GameView::instance().nextCharacter();
+		while (p) {
+			if (renderHelper.shouldRenderThis(p->getPosicionEnTiles(),p->getPosicionAnteriorEnTiles()))
+				p->render(camera);
+			p = GameView::instance().nextCharacter();
+		}
+
 	}
 }
 

@@ -28,13 +28,15 @@ public:
 	void update();
 	bool insidePlayerVision(std::pair<int,int> pos);
 	bool isKnownByPlayer(std::pair<int,int> pos);
-
+	void startRenderingCharacters();
+	Personaje* nextCharacter();
 private:
 	view::Camera camera;
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
 	map <string, Personaje*> personajes;
+	map <string, Personaje*>::iterator itPersonajes;
 	string playerName; //este atributo se repite dentro del Personaje del cliente.
 	string playerCharacterId;
 	CharacterFactory characterFactory;
