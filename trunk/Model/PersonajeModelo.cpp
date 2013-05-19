@@ -4,6 +4,7 @@
 #include "Pathfinder.h"
 #include "PersonajeConstantes.h"
 #include "../Common/stringUtilities.h"
+#include "OpcionesJuego.h"
 #include "Game.h"
 
 using namespace common;
@@ -84,12 +85,12 @@ void PersonajeModelo::animar(char opcion) {
 	if ((isActivo )&& (animacionActual == SIN_CAMBIO)) {
 		
 		switch (opcion) {
-		case ('a'): {
+		case (OPCION_ATACAR): {
 			this->setAnimating(true);
 			this->changeToAnimation(ATACAR);
 			break;
 				  }
-		case ('s'): {
+		case (OPCION_DEFENDER): {
 			this->setAnimating(true);
 			this->changeToAnimation(DEFENDER);
 			break;

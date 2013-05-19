@@ -6,6 +6,7 @@
 #include "SDL_ttf.h"
 #include "Instruction.h"
 #include "../Common/stringUtilities.h"
+#include "../Model/OpcionesJuego.h"
 
 Engine::Engine() {
 	this->running = true;
@@ -181,7 +182,9 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"a");
+						string opcion_caracter;
+						opcion_caracter.push_back(OPCION_ATACAR);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('a');
 					break;
@@ -192,7 +195,9 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"s");
+						string opcion_caracter;
+						opcion_caracter.push_back(OPCION_DEFENDER);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('s');
 					break;
