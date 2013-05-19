@@ -153,3 +153,16 @@ bool GameView::insidePlayerVision(std::pair<int,int> pos) {
 bool GameView::isKnownByPlayer(std::pair<int,int> pos) { 
 	return  this->getMyPersonaje()->personajeModelo()->getVision()->testPosition(pos);
 }
+
+void GameView::startRenderingCharacters() { 
+	this->itPersonajes = this->personajes.begin();
+}
+
+Personaje* GameView::nextCharacter() { 
+	Personaje* aux = NULL;
+	if (this->itPersonajes != this->personajes.end()) {
+		aux = this->itPersonajes->second;
+		this->itPersonajes++;
+	}
+	return aux;
+}

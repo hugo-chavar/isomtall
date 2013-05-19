@@ -371,18 +371,18 @@ std::pair<int,int> Personaje::getPosicionEnTiles() {
 }
 
 std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
-	float deltaAbsX = std::abs(delta.first);
-	float deltaAbsY = std::abs(delta.second);
+	//float deltaAbsX = std::abs(delta.first);
+	//float deltaAbsY = std::abs(delta.second);
 
-	if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
-		return this->getPosicionEnTiles();
-	}
-	if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
-		return this->getPosicionEnTiles();
-	}
-	if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
-		return this->getPosicionEnTiles();
-	}
+	//if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
+	//	return this->getPosicionEnTiles();
+	//}
+	//if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
+	//	return this->getPosicionEnTiles();
+	//}
+	//if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
+	//	return this->getPosicionEnTiles();
+	//}
 	return tileActual;
 }
 
@@ -410,6 +410,7 @@ void Personaje::updateFromString(std::string data) {
 	vector <std::string> splittedData;
 	stringUtilities::splitString(data, splittedData, ';');
 	std::pair<int,int> tilePosition = stringUtilities::stringToPairInt(splittedData[0]);
+	this->tileActual = modelo->getPosition();
 	this->modelo->setCurrent(tilePosition.first, tilePosition.second);
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
 	this->setPixelPosition(pixels);
