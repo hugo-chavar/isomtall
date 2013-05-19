@@ -4,24 +4,26 @@
 #include <set>
 #include <list>
 
+using namespace std;
+
 class Circle {
 public:
 	Circle();
-	Circle(std::pair<int, int>, int);
+	Circle(pair<int, int>, int);
 	~Circle();
-	bool inside(std::pair<int, int>);
-	void initialize(std::pair<int, int>, int);
+	bool inside(pair<int, int>);
+	void initialize(pair<int, int>, int);
 	void clear();
 	void fill();
 	bool hasNext();
-	std::pair<int, int> next();
+	pair<int, int> next();
 private:
 	//bool comparator(std::pair<int, int>, std::pair<int, int> );
-	std::set <std::pair<int, int> > limits;
-	std::set <std::pair<int, int> >::iterator itlim;
-	std::list <std::pair<int, int> > orderedLimits;
+	set <pair<int, int> > limits;
+	set <pair<int, int> >::iterator itlim;
+	list <pair<int, int> > orderedLimits;
 	//std::list <std::list <std::pair<int, int> > > levels;
-	std::pair<int, int> center;
+	pair<int, int> center;
 };
 
 

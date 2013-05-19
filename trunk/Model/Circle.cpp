@@ -2,7 +2,7 @@
 #include <iterator>
 
 
-bool comparator(std::pair<int, int> p1, std::pair<int, int> p2 ) {
+bool comparator(pair<int, int> p1, pair<int, int> p2 ) {
 	if ( (p1.second > p2.second) || ((p1.second == p2.second) && (p1.first < p2.first)))
 		return true;
 	return false;
@@ -11,15 +11,15 @@ bool comparator(std::pair<int, int> p1, std::pair<int, int> p2 ) {
 Circle::Circle() {
 }
 
-Circle::Circle(std::pair<int, int> center, int range) {
+Circle::Circle(pair<int, int> center, int range) {
 	this->initialize(center, range);
 }
 
 Circle::~Circle() {
 }
 
-bool Circle::inside(std::pair<int, int> pos) {
-	std::list <std::pair<int, int> >::iterator it = orderedLimits.begin();
+bool Circle::inside(pair<int, int> pos) {
+	list <pair<int, int> >::iterator it = orderedLimits.begin();
 	while ( (it != orderedLimits.end()) && ((*it).second > pos.second)) {
 		it++;
 	}
@@ -39,7 +39,7 @@ void Circle::clear() {
 	orderedLimits.clear();
 }
 
-void Circle::initialize(std::pair<int, int> center, int range) {
+void Circle::initialize(pair<int, int> center, int range) {
 	this->clear();
 	int x = range, y = 0;
 	int xChange = 1 - range*2;
@@ -47,14 +47,14 @@ void Circle::initialize(std::pair<int, int> center, int range) {
 	int rangeError = 0;
 
 	while (x >= y) {
-		limits.insert(std::make_pair(x + center.first, y + center.second));
-		limits.insert(std::make_pair(y + center.first, x + center.second));
-		limits.insert(std::make_pair(-x + center.first, y + center.second));
-		limits.insert(std::make_pair(-y + center.first, x + center.second));
-		limits.insert(std::make_pair(-x + center.first, -y + center.second));
-		limits.insert(std::make_pair(-y + center.first, -x + center.second));
-		limits.insert(std::make_pair(x + center.first, -y + center.second));
-		limits.insert(std::make_pair(y + center.first, -x + center.second));
+		limits.insert(make_pair(x + center.first, y + center.second));
+		limits.insert(make_pair(y + center.first, x + center.second));
+		limits.insert(make_pair(-x + center.first, y + center.second));
+		limits.insert(make_pair(-y + center.first, x + center.second));
+		limits.insert(make_pair(-x + center.first, -y + center.second));
+		limits.insert(make_pair(-y + center.first, -x + center.second));
+		limits.insert(make_pair(x + center.first, -y + center.second));
+		limits.insert(make_pair(y + center.first, -x + center.second));
 
 		y++;
 		rangeError += yChange;
@@ -66,17 +66,17 @@ void Circle::initialize(std::pair<int, int> center, int range) {
 			xChange += 2;
 		}
 	}
-	std::copy(limits.begin(), limits.end(), std::inserter(orderedLimits, orderedLimits.begin()));
+	copy(limits.begin(), limits.end(), std::inserter(orderedLimits, orderedLimits.begin()));
 	orderedLimits.sort(comparator);
 }
 
 void Circle::fill() {
 	if (orderedLimits.size() < 5)
 		return;
-	std::list <std::pair<int, int> >::iterator itBegin = orderedLimits.begin();
-	std::list <std::pair<int, int> >::iterator itEnd;
-	std::pair<int, int> pos1;
-	std::pair<int, int> pos2 = orderedLimits.back();
+	list <pair<int, int> >::iterator itBegin = orderedLimits.begin();
+	list <pair<int, int> >::iterator itEnd;
+	pair<int, int> pos1;
+	pair<int, int> pos2 = orderedLimits.back();
 	int maxValueY = (*itBegin).second;
 	int minValueY = (pos2.second >= -1) ? pos2.second : -1;
 
@@ -106,8 +106,8 @@ bool Circle::hasNext() {
 	return itlim != limits.end();
 }
 
-std::pair<int, int> Circle::next() {
-	std::pair<int, int> aux = (*itlim);
+pair<int, int> Circle::next() {
+	pair<int, int> aux = (*itlim);
 	itlim++;
 	return aux;
 }

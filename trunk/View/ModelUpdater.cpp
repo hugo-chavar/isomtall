@@ -185,7 +185,7 @@ void ModelUpdater::simulate(std::string simulation_package)
 	else
 	{
 		//simulation_fields[0]=name,simulation_fields[1]=char_id
-		GameView::instance().addPersonaje(simulation_fields[0],simulation_fields[1]);
+		GameView::instance().newPersonaje(simulation_fields[0],simulation_fields[1]);
 	}
 }
 

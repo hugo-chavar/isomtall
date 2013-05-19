@@ -16,6 +16,25 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	this->initialize(ActualX, ActualY);
 }
 
+PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
+	this->current = source.current;
+	this->target = source.target;
+	this->targetParcial = source.targetParcial;
+	this->xPath = source.xPath;
+	this->yPath = source.yPath;
+	this->posMov = source.posMov;
+	this->caminoSize = source.caminoSize;
+	this->velocidad = source.velocidad;
+	this->orientacion = source.orientacion;
+	this->animacionActual = source.animacionActual;
+	this->estado = source.estado;
+	this->animation = source.animation;
+	this->isActivo = source.isActivo;
+	this->isAnimating = source.isAnimating;
+	this->vision = NULL;
+	return *this;
+}
+
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	current.first = pos_x;
 	current.second = pos_y;
@@ -62,7 +81,7 @@ void PersonajeModelo::changeToState(int addedState) {
 }
 
 void PersonajeModelo::animar(char opcion) {
-	if ((isActivo)&&(animacionActual == SIN_CAMBIO)) {
+	if ((isActivo )&& (animacionActual == SIN_CAMBIO)) {
 		
 		switch (opcion) {
 		case ('a'): {
@@ -87,7 +106,7 @@ bool PersonajeModelo::estaAnimandose() {
 
 void PersonajeModelo::terminarAnimacion() {
 	this->setAnimating(false);
-	estado = estado - animacionActual + PARADO;
+	this->changeToState(PARADO - animacionActual);
 	animacionActual = SIN_CAMBIO;
 }
 
@@ -330,10 +349,8 @@ int PersonajeModelo::obtenerOrientacion(int x, int y) {
 }
 
 PersonajeModelo::~PersonajeModelo(){
-
 	this->limpiarPath();
 	if (this->vision){
-		this->vision->toString();
 		delete this->vision;
 	}
 }

@@ -17,7 +17,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	crearNombre(modelo->getName());
+	crearNombre(this->getPlayerName());
 
 	//this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
 
@@ -57,7 +57,7 @@ void Personaje::loadSprites() {
 
 void Personaje::clearSprites() {
 	vector<SpriteAnimado*>::iterator it;
-	for (it = sprites.begin(); it != sprites.end(); it++){
+	for (it = sprites.begin(); it != sprites.end(); it++) {
 		delete *it;
 	}
 	sprites.clear();
@@ -248,7 +248,7 @@ void Personaje::render(Camera& camera) {
 	camera.render(cuadroMensaje, this->nombre);
 }
 
-void Personaje::setDestino(int xTile, int yTile){
+void Personaje::setDestino(int xTile, int yTile) {
 	modelo->setDestino(xTile, yTile);
 }
 
@@ -272,7 +272,6 @@ void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
 
 	}
 }
-
 
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
 	if ((currentAnimationNumber < MOVIMIENTO)||(currentAnimationNumber >= (MOVIMIENTO + FACTOR_ORIENTACION))) {
@@ -363,15 +362,15 @@ Personaje::~Personaje(){
 	SDL_FreeSurface( nombre );
 }
 
-PersonajeModelo* Personaje::personajeModelo(){
+PersonajeModelo* Personaje::personajeModelo() {
 	return modelo;
 }
 
-std::pair<int,int> Personaje::getPosicionEnTiles(){
+std::pair<int,int> Personaje::getPosicionEnTiles() {
 	return modelo->getPosition();
 }
 
-std::pair<int,int> Personaje::getPosicionAnteriorEnTiles(){
+std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
 	float deltaAbsX = std::abs(delta.first);
 	float deltaAbsY = std::abs(delta.second);
 
@@ -411,7 +410,9 @@ void Personaje::updateFromString(std::string data) {
 	vector <std::string> splittedData;
 	stringUtilities::splitString(data, splittedData, ';');
 	std::pair<int,int> tilePosition = stringUtilities::stringToPairInt(splittedData[0]);
+	this->modelo->setCurrent(tilePosition.first, tilePosition.second);
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
+	this->setPixelPosition(pixels);
 	this->setFreezed(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	sprites[this->getCurrentSpritePosition()]->setCurrentState(stringUtilities::stringToInt(splittedData[4]));
@@ -448,4 +449,12 @@ void Personaje::initFromString(std::string data) {
 	stringUtilities::splitString(data, splittedData, '~');
 	this->updateFromString(splittedData[0]);
 	this->modelo->getVision()->fromString(splittedData[1]);
+}
+
+void Personaje::setPlayerName(std::string name) {
+	this->playerName = name;
+}
+
+std::string Personaje::getPlayerName() {
+	return this->playerName;
 }

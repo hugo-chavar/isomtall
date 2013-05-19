@@ -205,3 +205,6 @@ escenarios:
          - tipoEntidad: frodo
            x: 5 
            y: 3 
+         - tipoEntidad: personajedefault
+           x: 8 
+           y: 8 

@@ -14,7 +14,7 @@ public:
 	PersonajeModelo();
 	PersonajeModelo(int ActualX, int ActualY);
 	~PersonajeModelo();
-
+	PersonajeModelo& operator=(const PersonajeModelo&);
 	void setEstado(int state);
 	void setCurrent(int x, int y);
 	void setDestino(int x, int y);

@@ -516,6 +516,7 @@ PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setAnimation(entities.vAnimatedEntities[0]); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
+	mainCharacter->setName("DEFAULT");
 	return mainCharacter;
 }
 
@@ -614,7 +615,7 @@ void YAMLParser::loadEntitiesToMap(int stage_index) {
 
 void YAMLParser::loadMainCharacters(int stage_index) {
 	sStage stage_aux = stages.vStages_aux[stage_index];
-	for(unsigned int j=0; j < stage_aux.vMainCharacters_aux.size(); j++) {
+	for(unsigned int j = 0; j < stage_aux.vMainCharacters_aux.size(); j++) {
 		sMainCharacter mainCharacter_aux = stage_aux.vMainCharacters_aux[j];
 		AnimatedEntity *animatedEntityType = findAnimatedEntityType(mainCharacter_aux.entityType);
 		if (!animatedEntityType)
@@ -625,6 +626,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 				mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
 				mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
 				mainCharacter->setAnimation(animatedEntityType);
+				mainCharacter->setName(mainCharacter_aux.entityType);
 				stage_aux.vMainCharacters.push_back(mainCharacter);
 			}
 			else {
@@ -760,7 +762,6 @@ void YAMLParser::parse(string directory, bool connecting) {
 				Logger::instance().logSyntaxError(inputFilePath,parserException.what());
 				loadEverythingByDefault();
 			}; //try..catch
-			//config.serverPort(configuration.port);
 			game_config.cameraMarginScroll(configuration.scroll_margin);
 			game_config.cameraWidth(screen.width);
 			game_config.cameraHeight(screen.height);
@@ -788,21 +789,19 @@ void YAMLParser::parse(string directory, bool connecting) {
 		}; //try..catch
 
 	}
-	
-
 }
 
 vector <StageModel> YAMLParser::vStages() {
 	return stages.vStages;
 }
 
-PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
-	if ((stage >= stages.vStages.size()) || (stages.vStages[stage].modelMainCharacters(pers) == NULL)){
-		Logger::instance().nullPointer("function PersonajeModelo* YAMLParser::modelMainCharacters");
-		return NULL;
-	}
-	return stages.vStages[stage].modelMainCharacters(pers);
-}
+//PersonajeModelo* YAMLParser::modelMainCharacters(unsigned stage, unsigned pers){
+//	if ((stage >= stages.vStages.size()) || (stages.vStages[stage].modelMainCharacters(pers) == NULL)){
+//		Logger::instance().nullPointer("function PersonajeModelo* YAMLParser::modelMainCharacters");
+//		return NULL;
+//	}
+//	return stages.vStages[stage].modelMainCharacters(pers);
+//}
 
 Configuration YAMLParser::getConfig(){
 	return game_config;
