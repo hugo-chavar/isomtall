@@ -199,6 +199,8 @@ void DirList::setExtensionRequired(string ext){
 
 void DirList::restartCurrentPosition() {
 	_currentPosition = 0;
+	_currentPositionDir = 0;
+	iteradorDir = directories.begin();
 	iterador = files.begin();
 }
 
