@@ -44,7 +44,7 @@ public:
 	void setAnimating(bool value);
 	int getRefPixelX();
 	int getRefPixelY();
-
+	void restartDirectories();
 private:
 
 	int siCaminaDetenerse();
