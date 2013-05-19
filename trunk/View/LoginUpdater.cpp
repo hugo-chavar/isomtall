@@ -3,7 +3,7 @@
 
 #include "LoginUpdater.h"
 #include "Game.h"
-
+#include "stringUtilities.h"
 #include <iostream>
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
@@ -104,6 +104,7 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_LOGIN_OK:
 			this->setLoggedIn(true);
+			Game::instance().setStageNumber(stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER)));
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_GREETING));
 			this->getMessagesListMutex().unlock();
@@ -155,6 +156,29 @@ void LoginUpdater::stopUpdating(bool forceStop) {
 	this->join();
 	this->getConnector().stopConnector(forceStop);
 	this->setLoggedIn(false);
+}
+
+void LoginUpdater::initialize()
+{
+	Instruction instructionIn;
+	int port = Game::instance().configuration()->serverPort();
+	std::string ipAddress = Game::instance().configuration()->serverIp();
+	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
+
+	if (newSocket->connectTo() != -1) {
+		this->getConnector().setSocket(newSocket);
+		this->getConnector().startConnector();
+	do{
+		instructionIn = this->getInstructionQueue().getNextInstruction(true);
+		this->processInstruction(instructionIn);
+		}
+	while (instructionIn.getOpCode()!= OPCODE_LOGIN_OK && instructionIn.getOpCode()!=OPCODE_INVALID_CHARACTER && instructionIn.getOpCode()!=OPCODE_USERID_NOT_AVAILABLE && this->getConnector().isConnectionOK());
+	} else {
+		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
+		std::cout << "SERVER UNREACHABLE" << std::endl;
+	}
+	delete newSocket;
+
 }
 
 // ----------------------------------- DESTRUCTOR ----------------------------------------

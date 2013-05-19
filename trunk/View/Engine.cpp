@@ -30,16 +30,11 @@ int Engine::execute() {
 	SDL_Event sdlEvent;
 
 	this->initialize();
- 
-	Instruction instruction;
-	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
-	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
-	this->getLogin()->getLoginUpdater().addInstruction(instruction);
-	Sleep(2000);
+
 	if (!this->getLogin()->isLoggedIn())
 		return EXIT_FAILURE;
 
+	Instruction instruction;
 	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
 	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
 	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
@@ -83,13 +78,21 @@ void Engine::initialize() {
 	clientUpdater.setServerIp(serverIpAddress);
 	clientUpdater.setServerPort(serverPortNumber);
 	//clientUpdater.updateClient();
-	
-	Game::instance().initialize();
+
 	Game::instance().configuration()->serverPort(serverPortNumber);
 	Game::instance().configuration()->serverIp(serverIpAddress);
+
+	Instruction instruction;
+	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
+	this->getLogin()->getLoginUpdater().addInstruction(instruction);
+	this->_login.initialize();
+
+	Game::instance().initialize();
+
 	this->running = GameView::instance().initialize();
 	this->getModelUpdater()->startUpdating();
-	this->_login.initialize();
 
 	//bool cameraInitialized = this->camera.initialize();
 	//bool mapInitialized = false;

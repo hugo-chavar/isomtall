@@ -52,6 +52,8 @@ public:
 
 	void stopUpdating(bool forceStop);
 
+	void initialize();
+
 	~LoginUpdater();
 };
 
