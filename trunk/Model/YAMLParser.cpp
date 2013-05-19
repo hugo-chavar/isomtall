@@ -637,8 +637,9 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 	}
 	if (stage_aux.vMainCharacters.size() <= 0) { // Verifico que para cada escenario exista al menos un protagonista.
 		Logger::instance().logFieldNotDefined(stage_aux.name, "protagonista", "stage");
-		stage_aux.vMainCharacters.push_back(generateDefaultMainCharacter());
+		
 	}
+	stage_aux.vMainCharacters.push_back(generateDefaultMainCharacter());
 	stages.vStages_aux[stage_index] = stage_aux;
 }
 
