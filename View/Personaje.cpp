@@ -42,6 +42,7 @@ void Personaje::loadSprites() {
 	AnimatedEntity* animatedEntity;
 	animatedEntity = new AnimatedEntity();
 	animatedEntity->copy(modelo->getAnimation());
+	modelo->restartDirectories();
 	animatedEntity->loadImages(modelo->nextDirectory());
 	this->addFirstSprite(animatedEntity);
 

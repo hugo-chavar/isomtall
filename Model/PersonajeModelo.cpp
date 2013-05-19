@@ -410,3 +410,7 @@ int PersonajeModelo::getRefPixelX() {
 int PersonajeModelo::getRefPixelY() {
 	return this->animation->pixelRefY();
 }
+
+void PersonajeModelo::restartDirectories() {
+	this->animation->imagesPaths()->restartCurrentPosition();
+}
