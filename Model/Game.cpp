@@ -32,7 +32,7 @@ bool Game::initialize() {
 	//connectionParser.parse(CONNECTION_DIRECTORY, true);
 	//int serverPortNumber = connectionParser.getConfigPort();
 	//std::string serverIpAddress = connectionParser.getConfigIp();
-
+	this->setStageNumber(0);
 	yParser.parse(CONFIGFILE_DIRECTORY, false);
 	_world = yParser.vStages()[this->getStageNumber()];
 	_world.loadNamedChars();

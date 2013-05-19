@@ -31,6 +31,7 @@ bool GameView::initialize() {
 		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
 	}
 	this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
+	this->addPersonaje(this->getPlayerName(), this->personaje);
 
 	//si hubo errores de inicializacion salgo
 	bool running = mapInitialized & cameraInitialized & textInitialized; 

@@ -34,7 +34,7 @@ public:
 	std::string getPlayerName();
 
 	//TODO: refactor, check if needed
-	void setDestino(int xTile, int yTile);
+	//void setDestino(int xTile, int yTile);
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);

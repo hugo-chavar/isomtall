@@ -158,12 +158,12 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 void ModelUpdater::simulate(std::string simulation_package)
 {
 	std::vector<std::string> simulation_fields;
-	stringUtilities::splitString(simulation_package, simulation_fields, ',');
+	stringUtilities::splitString(simulation_package, simulation_fields, ';');
 	Personaje* personaje = GameView::instance().getPersonaje(simulation_fields[0]);
 	
 	if(personaje)
 	{
-		simulation_package.erase(0,simulation_package.find_first_of(',')+1);
+		simulation_package.erase(0,simulation_package.find_first_of(';')+1);
 		personaje->updateFromString(simulation_package);
 
 

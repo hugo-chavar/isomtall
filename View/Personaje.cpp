@@ -247,10 +247,10 @@ void Personaje::render(Camera& camera) {
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
 }
-
-void Personaje::setDestino(int xTile, int yTile) {
-	modelo->setDestino(xTile, yTile);
-}
+//
+//void Personaje::setDestino(int xTile, int yTile) {
+//	modelo->setDestino(xTile, yTile);
+//}
 
 void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
 	float deltaTime = Game::instance().time()->getDeltaTime();
@@ -388,8 +388,8 @@ std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
 
 //tilex, tiley; pixelx, pixely; isFreezed; nro_status; nro_surface
 std::string Personaje::updateToString() {
-	std::string out;
-	out = stringUtilities::pairIntToString(modelo->getPosition());
+
+	std::string out = stringUtilities::pairIntToString(modelo->getPosition());
 	out.append(";");
 	out.append(stringUtilities::pairIntToString(this->getPixelPosition()));
 	out.append(";");
@@ -437,6 +437,8 @@ void Personaje::setPixelPosition(std::pair<int,int> pixel) {
 
 //tilex,tiley;pixelx,pixely;isFreezed;nro_status;nro_surface~datos_vision
 std::string Personaje::initToString() {
+	//std::string out = modelo->getName() ;
+	//out.append(";");
 	std::string out = this->updateToString();
 	out.append("~");
 	out.append(this->modelo->getVision()->toString());
@@ -446,9 +448,10 @@ std::string Personaje::initToString() {
 //tilex,tiley;pixelx,pixely;isFreezed;nro_status;nro_surface~datos_vision
 void Personaje::initFromString(std::string data) {
 	vector <std::string> splittedData;
+	//modelo
 	stringUtilities::splitString(data, splittedData, '~');
-	this->updateFromString(splittedData[0]);
-	this->modelo->getVision()->fromString(splittedData[1]);
+	this->updateFromString(splittedData[1]);
+	this->modelo->getVision()->fromString(splittedData[2]);
 }
 
 void Personaje::setPlayerName(std::string name) {
