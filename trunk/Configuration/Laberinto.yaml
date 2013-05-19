@@ -1,0 +1,386 @@
+pantalla:
+    - ancho: 800 
+    - alto: 600
+
+configuracion: 
+    - vel_personaje: 2.5
+    - margen_scroll: 500
+    - vision_personaje: 50
+    - puerto_servidor: 3500
+     
+entidades:
+    - nombre: arbol 
+      imagen: ../Images/arbol/
+      ancho_base: 1 
+      alto_base: 1 
+      pixel_ref_x: 32.0 
+      pixel_ref_y: 32
+      fps: 15
+      delay: 1000
+   
+    - nombre: arbolRojo 
+      imagen: ../Images/arbolRojo.png
+      ancho_base: 1 
+      alto_base: 1 
+      pixel_ref_x: 53
+      pixel_ref_y: 112
+       
+    - nombre: molino
+      imagen: ../Images/molino/
+      ancho_base: 2
+      alto_base: 2 
+      pixel_ref_x: 64
+      pixel_ref_y: 124
+      fps: 15
+      delay: 3000
+
+    - nombre: capillaRoja		
+      imagen: ../Images/CapillaRoja0.png
+      ancho_base: 5		
+      alto_base: 5		
+      pixel_ref_x: 98	
+      pixel_ref_y: 89
+
+    - nombre: fuente
+      imagen: ../Images/fuente/
+      ancho_base: 3
+      alto_base: 3 
+      pixel_ref_x: 64
+      pixel_ref_y: 64
+      fps: 15
+      delay: 3000
+
+    - nombre: watermill
+      imagen: ../Images/watermill/
+      ancho_base: 5
+      alto_base: 5 
+      pixel_ref_x: 124
+      pixel_ref_y: 106
+      fps: 15
+      delay: 0
+
+    - nombre: bandera
+      imagen: ../Images/bandera/
+      ancho_base: 1
+      alto_base: 1 
+      pixel_ref_x: 18
+      pixel_ref_y: 72
+      fps: 30
+      delay: 3000
+
+    - nombre: medieval
+      imagen: ../Images/medieval.png
+      ancho_base: 3 
+      alto_base: 3 
+      pixel_ref_x: 122
+      pixel_ref_y: 104 
+       
+    - nombre: frodo 
+      imagen: ../Images/personajeVampiro/
+      pixel_ref_x: 48
+      pixel_ref_y: 64
+      fps: 30 
+       
+    - nombre: caballo
+      imagen: ../Images/personajeCaballo/
+      pixel_ref_x: 74
+      pixel_ref_y: 80
+      fps: 10 
+
+    - nombre: caballoC
+      imagen: ../Images/caballo/
+      ancho_base: 3 
+      alto_base: 1 
+      pixel_ref_x: 40
+      pixel_ref_y: 60
+      fps: 10
+      delay: 3000
+
+    - nombre: caballoR
+      imagen: ../Images/caballoR/
+      ancho_base: 2 
+      alto_base: 2 
+      pixel_ref_x: 80
+      pixel_ref_y: 55
+      fps: 10
+      delay: 3000  
+
+    - nombre: personajedefault
+      imagen: ../Images/personaje/
+      pixel_ref_x: 32
+      pixel_ref_y: 32 
+      fps: 10 
+   
+    - nombre: agua 
+      imagen: ../Images/pisoAgua0.png
+
+    - nombre: piedra 
+      imagen: ../Images/pisoPiedra0.png
+
+    - nombre: piso2921 
+      imagen: ../Images/piso2921.png
+
+    - nombre: piso041 
+      imagen: ../Images/piso041.png
+
+    - nombre: piso5050 
+      imagen: ../Images/piso050.png
+       
+escenarios: 
+    - nombre: bosque_encantado 
+      size_x: 50
+      size_y: 50 
+      entidadesDef:  
+         - {x: 0, y: 1, entidad: arbol}
+         - {x: 0, y: 2, entidad: arbol}
+         - {x: 0, y: 3, entidad: arbol}
+         - {x: 0, y: 4, entidad: arbol}
+         - {x: 0, y: 5, entidad: arbol}
+         - {x: 0, y: 6, entidad: arbol}
+         - {x: 0, y: 7, entidad: arbol}
+         - {x: 0, y: 8, entidad: arbol}
+         - {x: 0, y: 9, entidad: arbol}
+         - {x: 0, y: 10, entidad: arbol}
+         - {x: 0, y: 11, entidad: arbol}
+         - {x: 0, y: 12, entidad: arbol}
+         - {x: 0, y: 13, entidad: arbol}
+         - {x: 0, y: 14, entidad: arbol}
+         - {x: 0, y: 15, entidad: arbol}
+         - {x: 0, y: 16, entidad: arbol}
+         - {x: 1, y: 7, entidad: arbol}
+         - {x: 1, y: 16, entidad: arbol}
+         - {x: 2, y: 1, entidad: arbol}
+         - {x: 2, y: 2, entidad: arbol}
+         - {x: 2, y: 3, entidad: arbol}
+         - {x: 2, y: 4, entidad: arbol}
+         - {x: 2, y: 7, entidad: arbol}
+         - {x: 2, y: 10, entidad: arbol}
+         - {x: 2, y: 11, entidad: arbol}
+         - {x: 2, y: 12, entidad: arbol}
+         - {x: 2, y: 13, entidad: arbol}
+         - {x: 2, y: 14, entidad: arbol}
+         - {x: 2, y: 16, entidad: arbol}
+         - {x: 3, y: 4, entidad: arbol}
+         - {x: 3, y: 7, entidad: arbol}
+         - {x: 3, y: 10, entidad: arbol}
+         - {x: 3, y: 14, entidad: arbol}
+         - {x: 3, y: 16, entidad: arbol}
+         - {x: 4, y: 0, entidad: arbol}
+         - {x: 4, y: 1, entidad: arbol}
+         - {x: 4, y: 4, entidad: arbol}
+         - {x: 4, y: 7, entidad: arbol}
+         - {x: 4, y: 10, entidad: arbol}
+         - {x: 4, y: 14, entidad: arbol}
+         - {x: 4, y: 16, entidad: arbol}
+         - {x: 5, y: 1, entidad: arbol}
+         - {x: 5, y: 4, entidad: arbol}
+         - {x: 5, y: 7, entidad: arbol}
+         - {x: 5, y: 10, entidad: arbol}
+         - {x: 5, y: 14, entidad: arbol}
+         - {x: 5, y: 16, entidad: arbol}
+         - {x: 6, y: 1, entidad: arbol}
+         - {x: 6, y: 2, entidad: arbol}
+         - {x: 6, y: 3, entidad: arbol}
+         - {x: 6, y: 4, entidad: arbol}
+         - {x: 6, y: 7, entidad: arbol}
+         - {x: 6, y: 10, entidad: arbol}
+         - {x: 6, y: 14, entidad: arbol}
+         - {x: 6, y: 16, entidad: arbol}
+         - {x: 7, y: 1, entidad: arbol}
+         - {x: 7, y: 10, entidad: arbol}
+         - {x: 7, y: 14, entidad: arbol}
+         - {x: 7, y: 16, entidad: arbol}
+         - {x: 8, y: 1, entidad: arbol}
+         - {x: 8, y: 2, entidad: arbol}
+         - {x: 8, y: 3, entidad: arbol}
+         - {x: 8, y: 4, entidad: arbol}
+         - {x: 8, y: 5, entidad: arbol}
+         - {x: 8, y: 6, entidad: arbol}
+         - {x: 8, y: 7, entidad: arbol}
+         - {x: 8, y: 8, entidad: arbol}
+         - {x: 8, y: 9, entidad: arbol}
+         - {x: 8, y: 10, entidad: arbol}
+         - {x: 8, y: 14, entidad: arbol}
+         - {x: 8, y: 16, entidad: arbol}
+         - {x: 9, y: 14, entidad: arbol}
+         - {x: 9, y: 16, entidad: arbol}
+		 
+         - {x: 0, y: 0, entidad: piedra}
+         - {x: 1, y: 0, entidad: piedra}
+         - {x: 1, y: 1, entidad: piedra}
+         - {x: 1, y: 2, entidad: piedra}
+         - {x: 1, y: 3, entidad: piedra}
+         - {x: 1, y: 4, entidad: piedra}
+         - {x: 1, y: 5, entidad: piedra}
+         - {x: 1, y: 6, entidad: piedra}
+         - {x: 1, y: 8, entidad: piedra}
+         - {x: 1, y: 9, entidad: piedra}
+         - {x: 1, y: 10, entidad: piedra}
+         - {x: 1, y: 11, entidad: piedra}
+         - {x: 1, y: 12, entidad: piedra}
+         - {x: 1, y: 13, entidad: piedra}
+         - {x: 1, y: 14, entidad: piedra}
+         - {x: 1, y: 15, entidad: piedra}
+         - {x: 2, y: 0, entidad: piedra}
+         - {x: 2, y: 5, entidad: piedra}
+         - {x: 2, y: 6, entidad: piedra}
+         - {x: 2, y: 8, entidad: piedra}
+         - {x: 2, y: 9, entidad: piedra}
+         - {x: 2, y: 15, entidad: piedra}
+         - {x: 3, y: 0, entidad: piedra}
+         - {x: 3, y: 1, entidad: piedra}
+         - {x: 3, y: 2, entidad: piedra}
+         - {x: 3, y: 3, entidad: piedra}
+         - {x: 3, y: 5, entidad: piedra}
+         - {x: 3, y: 6, entidad: piedra}
+         - {x: 3, y: 8, entidad: piedra}
+         - {x: 3, y: 9, entidad: piedra}
+         - {x: 3, y: 11, entidad: piedra}
+         - {x: 3, y: 12, entidad: piedra}
+         - {x: 3, y: 13, entidad: piedra}
+         - {x: 3, y: 15, entidad: piedra}
+         - {x: 4, y: 2, entidad: piedra}
+         - {x: 4, y: 3, entidad: piedra}
+         - {x: 4, y: 5, entidad: piedra}
+         - {x: 4, y: 6, entidad: piedra}
+         - {x: 4, y: 8, entidad: piedra}
+         - {x: 4, y: 9, entidad: piedra}
+         - {x: 4, y: 11, entidad: piedra}
+         - {x: 4, y: 12, entidad: piedra}
+         - {x: 4, y: 13, entidad: piedra}
+         - {x: 4, y: 15, entidad: piedra}
+         - {x: 5, y: 0, entidad: piedra}
+         - {x: 5, y: 2, entidad: piedra}
+         - {x: 5, y: 3, entidad: piedra}
+         - {x: 5, y: 5, entidad: piedra}
+         - {x: 5, y: 6, entidad: piedra}
+         - {x: 5, y: 8, entidad: piedra}
+         - {x: 5, y: 9, entidad: piedra}
+         - {x: 5, y: 11, entidad: piedra}
+         - {x: 5, y: 12, entidad: piedra}
+         - {x: 5, y: 13, entidad: piedra}
+         - {x: 5, y: 15, entidad: piedra}
+         - {x: 6, y: 0, entidad: piedra}
+         - {x: 6, y: 5, entidad: piedra}
+         - {x: 6, y: 6, entidad: piedra}
+         - {x: 6, y: 8, entidad: piedra}
+         - {x: 6, y: 9, entidad: piedra}
+         - {x: 6, y: 11, entidad: piedra}
+         - {x: 6, y: 12, entidad: piedra}
+         - {x: 6, y: 13, entidad: piedra}
+         - {x: 6, y: 15, entidad: piedra}
+         - {x: 7, y: 0, entidad: piedra}
+         - {x: 7, y: 2, entidad: piedra}
+         - {x: 7, y: 3, entidad: piedra}
+         - {x: 7, y: 4, entidad: piedra}
+         - {x: 7, y: 5, entidad: piedra}
+         - {x: 7, y: 6, entidad: piedra}
+         - {x: 7, y: 7, entidad: piedra}
+         - {x: 7, y: 8, entidad: piedra}
+         - {x: 7, y: 9, entidad: piedra}
+         - {x: 7, y: 11, entidad: piedra}
+         - {x: 7, y: 12, entidad: piedra}
+         - {x: 7, y: 13, entidad: piedra}
+         - {x: 7, y: 15, entidad: piedra}
+         - {x: 8, y: 0, entidad: piedra}
+         - {x: 8, y: 11, entidad: piedra}
+         - {x: 8, y: 12, entidad: piedra}
+         - {x: 8, y: 13, entidad: piedra}
+         - {x: 8, y: 15, entidad: piedra}
+         - {x: 9, y: 0, entidad: piedra}
+         - {x: 9, y: 1, entidad: piedra}
+         - {x: 9, y: 2, entidad: piedra}
+         - {x: 9, y: 3, entidad: piedra}
+         - {x: 9, y: 4, entidad: piedra}
+         - {x: 9, y: 5, entidad: piedra}
+         - {x: 9, y: 6, entidad: piedra}
+         - {x: 9, y: 7, entidad: piedra}
+         - {x: 9, y: 8, entidad: piedra}
+         - {x: 9, y: 9, entidad: piedra}
+         - {x: 9, y: 10, entidad: piedra}
+         - {x: 9, y: 11, entidad: piedra}
+         - {x: 9, y: 12, entidad: piedra}
+         - {x: 9, y: 13, entidad: piedra}
+         - {x: 9, y: 15, entidad: piedra}
+         - {x: 10, y: 0, entidad: piedra}
+         - {x: 10, y: 1, entidad: piedra}
+         - {x: 10, y: 2, entidad: piedra}
+         - {x: 10, y: 3, entidad: piedra}
+         - {x: 10, y: 4, entidad: piedra}
+         - {x: 10, y: 5, entidad: piedra}
+         - {x: 10, y: 6, entidad: piedra}
+         - {x: 10, y: 7, entidad: piedra}
+         - {x: 10, y: 8, entidad: piedra}
+         - {x: 10, y: 9, entidad: piedra}
+         - {x: 10, y: 10, entidad: piedra}
+         - {x: 10, y: 11, entidad: piedra}
+         - {x: 10, y: 12, entidad: piedra}
+         - {x: 10, y: 13, entidad: piedra}
+         - {x: 10, y: 14, entidad: piedra}
+         - {x: 10, y: 15, entidad: piedra}
+         - {x: 10, y: 16, entidad: piedra}
+         - {x: 0, y: 41, entidad: piso041}
+         - {x: 99, y: 99, entidad: bandera}
+         - {x: 9, y: 9, entidad: bandera}
+         - {x: 15, y: 15, entidad: fuente} 
+         - {x: 20, y: 20, entidad: caballo}
+         - {x: 0, y: 50, entidad: piso5050}
+         - {x: 10, y: 15, entidad: tierra} 
+         - {x: 50, y: 50, entidad: agua}
+         - {x: 0, y: 12, entidad: arbol}
+         - {x: 6, y: 50, entidad: agua}
+         - {x: 5, y: 50, entidad: agua}
+         - {x: 4, y: 50, entidad: agua}
+         - {x: 3, y: 50, entidad: agua}
+         - {x: 47, y: 50, entidad: agua}
+         - {x: 30, y: 50, entidad: tierra} 
+         - {x: 0, y: 22, entidad: agua}
+         - {x: 1, y: 22, entidad: agua}
+         - {x: 2, y: 22, entidad: agua}
+         - {x: 3, y: 22, entidad: agua}
+         - {x: 5, y: 22, entidad: piedra} 
+         - {x: 0, y: 23, entidad: agua}
+         - {x: 1, y: 23, entidad: agua}
+         - {x: 2, y: 23, entidad: agua}
+         - {x: 3, y: 23, entidad: agua}
+         - {x: 5, y: 23, entidad: piedra}
+         - {x: 0, y: 24, entidad: agua}
+         - {x: 1, y: 24, entidad: agua}
+         - {x: 2, y: 24, entidad: agua}
+         - {x: 3, y: 24, entidad: agua}
+         - {x: 4, y: 24, entidad: piedra}
+         - {x: 5, y: 24, entidad: piedra}
+         - {x: 4, y: 20, entidad: piedra}
+         - {x: 4, y: 21, entidad: piedra}
+         - {x: 4, y: 22, entidad: piedra}
+         - {x: 5, y: 22, entidad: piedra}
+         - {x: 5, y: 22, entidad: piedra}
+         - {x: 5, y: 23, entidad: piedra}
+         - {x: 4, y: 23, entidad: agua}
+         - {x: 0, y: 24, entidad: piedra}
+         - {x: 1, y: 24, entidad: piedra}
+         - {x: 2, y: 24, entidad: piedra}
+         - {x: 3, y: 24, entidad: piedra}
+         - {x: 0, y: 27, entidad: watermill}
+         - {x: 15, y: 30, entidad: bandera}
+         - {x: 20, y: 26, entidad: agua}
+         - {x: 20, y: 27, entidad: agua}
+         - {x: 20, y: 28, entidad: agua}
+         - {x: 21, y: 26, entidad: agua}
+         - {x: 21, y: 27, entidad: agua}
+         - {x: 21, y: 28, entidad: agua}
+         - {x: 22, y: 26, entidad: agua}
+         - {x: 22, y: 27, entidad: agua}
+         - {x: 22, y: 28, entidad: agua}  
+         - {x: 20, y: 25, entidad: medieval} 
+         - {x: 20, y: 16, entidad: fuente} 
+         - {x: 58, y: 58, entidad: molino}
+         - {x: 20, y: 1, entidad: caballoC}
+         - {x: 25, y: 1, entidad: caballoR}
+      protagonista: 
+         - tipoEntidad: caballo
+           x: 0 
+           y: 0 
+         - tipoEntidad: frodo
+           x: 3 
+           y: 3 
