@@ -210,6 +210,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					else
 						instruction.clear();
 						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY());
+						if ((tileDestino.first < 0)||(tileDestino.second < 0)) {
+							break; }
 						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
