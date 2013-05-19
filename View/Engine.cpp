@@ -33,21 +33,21 @@ int Engine::execute() {
  
 	Instruction instruction;
 	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
-	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER ,Game::instance().getPlayerCharacterId());
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
 	this->getLogin()->getLoginUpdater().addInstruction(instruction);
 	Sleep(2000);
 	if (!this->getLogin()->isLoggedIn())
 		return EXIT_FAILURE;
 
 	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
 	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
 	GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
 
 	instruction.clear();
 	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,Game::instance().getPlayerName());
+	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
 	this->getModelUpdater()->addInstruction(instruction);
 
 	while(this->isRunning()) {
@@ -85,7 +85,9 @@ void Engine::initialize() {
 	//clientUpdater.updateClient();
 	
 	Game::instance().initialize();
-	this->running=GameView::instance().initialize();
+	Game::instance().configuration()->serverPort(serverPortNumber);
+	Game::instance().configuration()->serverIp(serverIpAddress);
+	this->running = GameView::instance().initialize();
 	this->getModelUpdater()->startUpdating();
 	this->_login.initialize();
 

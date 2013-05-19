@@ -29,13 +29,14 @@ namespace view {
 		void render(Camera& camera);
 		bool initialize();
 		void setTilesInCamera(int h, int v);
-		Personaje* personaje();
-		map <string,Personaje*> personajes;//agrego diccionario de personajes
+		StageModel* getWorldModel();
+		//Personaje* personaje(); //ojo con repetir esto por todos lados solo para llenar espacios.. debe estar solo en gameView
+		//map <string,Personaje*> personajes;//agrego diccionario de personajes
 	private:
 		vector<Sprite*> spriteArray;
-		Personaje* _personaje;
+		//Personaje* _personaje;
 		StageModel* worldModel;
-		map<string,int> mapEntityToSprite;
+		map<string, int> mapEntityToSprite;
 		map<KeyPair, TileView*> tilesMap;
 		TileView* firstTile;
 		vector <TileView*> tileLevels;

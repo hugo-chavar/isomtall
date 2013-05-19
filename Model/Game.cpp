@@ -28,37 +28,31 @@ TimeManager* Game::time() {
 //}
 
 bool Game::initialize() {
-	YAMLParser connectionParser;
-	connectionParser.parse(CONNECTION_DIRECTORY, true);
-	int serverPortNumber = connectionParser.getConfigPort();
-	std::string serverIpAddress = connectionParser.getConfigIp();
-	//int serverPortNumber = 9443;
-	//std::string serverIpAddress = "127.0.0.1";
-
-	//ClientUpdater clientUpdater;
-	//clientUpdater.setServerIp(serverIpAddress);
-	//clientUpdater.setServerPort(serverPortNumber);
-	////clientUpdater.updateClient();
+	//YAMLParser connectionParser;
+	//connectionParser.parse(CONNECTION_DIRECTORY, true);
+	//int serverPortNumber = connectionParser.getConfigPort();
+	//std::string serverIpAddress = connectionParser.getConfigIp();
 
 	yParser.parse(CONFIGFILE_DIRECTORY, false);
-	_world = yParser.vStages()[0];
-	unsigned stageActual = 0;
-	unsigned personActual = 0;
+	_world = yParser.vStages()[this->getStageNumber()];
+	_world.loadNamedChars();
+	//unsigned stageActual = 0;
+	//unsigned personActual = 0;
 	allEntities = yParser.allLists();
 	_configuration = yParser.getConfig();
-	_configuration.serverPort(serverPortNumber);
-	_configuration.serverIp(serverIpAddress);
+	//_configuration.serverPort(serverPortNumber);
+	//_configuration.serverIp(serverIpAddress);
 	//selecciono el primero del primer stage
-	_personaje = yParser.modelMainCharacters(stageActual,personActual); 
-	//si hubieron problemas salgo
-	if (!_personaje)
-		return false;
-	_personaje->setVelocidad(_configuration.mainCharacterSpeed());
-	_personaje->createVision(_configuration.visionRange());
-	this->_personaje->setName(this->playerName);
-	personajes.insert(std::pair<string,PersonajeModelo*>(this->playerName,_personaje));
+	//_personaje = characterFactory.createCharacter("frodo");
+	////_personaje = yParser.modelMainCharacters(stageActual,personActual); 
+	////si hubieron problemas salgo
+	//if (!_personaje)
+	//	return false;
+	//_personaje->setVelocidad(_configuration.mainCharacterSpeed());
+	//_personaje->createVision(_configuration.visionRange());
+	//this->_personaje->setName(this->playerName);
+	//personajes.insert(std::make_pair<string,PersonajeModelo*>(this->playerName, _personaje));
 	this->_time.initializeTime();
-	//_login.initialize();
 	return true;
 }
 
@@ -77,67 +71,73 @@ AnimatedEntity* Game::animatedEntityAt(unsigned pos) {
 	return NULL;
 }
 
-PersonajeModelo * Game::personaje() {
-	if (this->_personaje){
-		return this->_personaje;
-	}
-	Logger::instance().nullPointer("function PersonajeModelo * Game::personaje");
-	return NULL;
-}
+//PersonajeModelo * Game::personaje() {
+//	if (this->_personaje){
+//		return this->_personaje;
+//	}
+//	Logger::instance().nullPointer("function PersonajeModelo * Game::personaje");
+//	return NULL;
+//}
 
 Configuration* Game::configuration() {
 	return &_configuration;
-	//if (_configuration)
-	//		return _configuration;
-	//Logger::instance().nullPointer("Configuration* Game::configuration");
-	//return NULL;
+}
+//
+//CharacterFactory* getCharacterFactory() {
+//	return &characterFactory;
+//}
+
+//bool Game::insidePlayerVision(std::pair<int,int> pos) {
+//	bool inside = this->_personaje->getVision()->isInsideVision(pos);
+//
+//	if (!inside) {
+//		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
+//		if (relatedTile) {//TODO: mejorar para optimizar codigo
+//			// preguntar si es drawable() e ir salteando..
+//			while ( (!inside) && (relatedTile != Game::instance().world()->getTileAt(pos)) ) {
+//				pair<int, int> posRelated = relatedTile->getPosition();
+//				inside = this->_personaje->getVision()->isInsideVision(posRelated);
+//				relatedTile = relatedTile->getRelatedTile();
+//			}
+//		}
+//	}
+//	return inside;
+//}
+//
+//bool Game::isKnownByPlayer(std::pair<int,int> pos) {
+//	return this->_personaje->getVision()->testPosition(pos);
+//}
+
+//PersonajeModelo* Game::getPersonaje(string name) {
+//	PersonajeModelo* personaje = NULL;
+//	std::map<std::string,PersonajeModelo*>::iterator it = this->personajes.find(name);
+//
+//	if (it != this->personajes.end())
+//		personaje = it->second;
+//
+//	return personaje;
+//}
+//
+//void Game::setPlayerName(string name) {
+//	this->playerName = name;
+//}
+//
+//string Game::getPlayerName() {
+//	return this->playerName;
+//}
+//
+//void Game::setPlayerCharacterId(string char_id) {
+//	playerCharacterId = char_id;
+//}
+//
+//string Game::getPlayerCharacterId() {
+//	return this->playerCharacterId;
+//}
+
+int Game::getStageNumber() {
+	return this->stageNumber;
 }
 
-bool Game::insidePlayerVision(std::pair<int,int> pos) {
-	bool inside = this->_personaje->getVision()->isInsideVision(pos);
-
-	if (!inside) {
-		TileModel* relatedTile = Game::instance().world()->getTileAt(pos)->getRelatedTile();
-		if (relatedTile) {//TODO: mejorar para optimizar codigo
-			// preguntar si es drawable() e ir salteando..
-			while ( (!inside) && (relatedTile != Game::instance().world()->getTileAt(pos)) ) {
-				pair<int, int> posRelated = relatedTile->getPosition();
-				inside = this->_personaje->getVision()->isInsideVision(posRelated);
-				relatedTile = relatedTile->getRelatedTile();
-			}
-		}
-	}
-	return inside;
-}
-
-bool Game::isKnownByPlayer(std::pair<int,int> pos) {
-	return this->_personaje->getVision()->testPosition(pos);
-}
-
-PersonajeModelo* Game::getPersonaje(string name) {
-	PersonajeModelo* personaje = NULL;
-	std::map<std::string,PersonajeModelo*>::iterator it = this->personajes.find(name);
-
-	if (it != this->personajes.end())
-		personaje = it->second;
-
-	return personaje;
-}
-
-void Game::setPlayerName(string name) {
-	this->playerName=name;
-}
-
-string Game::getPlayerName() {
-
-	return this->playerName;
-}
-
-void Game::setPlayerCharacterId(string char_id)
-{
-	playerCharacterId=char_id;
-}
-string Game::getPlayerCharacterId()
-{
-	return this->playerCharacterId;
+void Game::setStageNumber(int stageNo) {
+	this->stageNumber = stageNo;
 }

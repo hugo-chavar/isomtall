@@ -4,9 +4,9 @@
 #include "Stage.h"
 #include "ChatView.h"
 #include "ClientUpdater.h"
+#include "CharacterFactory.h"
 
-class GameView
-{
+class GameView {
 public:
 	GameView(void);
 	~GameView(void);
@@ -14,7 +14,7 @@ public:
 	view::Stage* getWorldView();
 	Personaje* getMyPersonaje();
 	Personaje* getPersonaje(string name);
-	void addPersonaje(string name,string char_id);//ver como hacerlo
+	void newPersonaje(string name,string char_id);//ver como hacerlo  <---- Listo!
 	void addPersonaje(string name,Personaje * personaje);
 	view::ChatView* getChat();
 	Camera* getCamera();
@@ -26,15 +26,17 @@ public:
 	void cleanUp();
 	void render();
 	void update();
-
+	bool insidePlayerVision(std::pair<int,int> pos);
+	bool isKnownByPlayer(std::pair<int,int> pos);
 
 private:
 	view::Camera camera;
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
-	map <string,Personaje*> personajes;//agrego diccionario de personajes
-	std::string playerName;
-	std::string playerCharacterId;
+	map <string, Personaje*> personajes;
+	string playerName; //este atributo se repite dentro del Personaje del cliente.
+	string playerCharacterId;
+	CharacterFactory characterFactory;
 };
 

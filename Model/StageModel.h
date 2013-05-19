@@ -43,9 +43,9 @@ public:
 	void destino(int x,int y,float cameraX,float cameraY);
 	std::pair<int, int> destination(int x,int y,float cameraX,float cameraY);
 	//
-	PersonajeModelo* modelMainCharacters(unsigned );
+	//PersonajeModelo* modelMainCharacters(unsigned );
 	TileModel* getFirstTile();
-	void insertMainCharacter(PersonajeModelo* );
+	//void insertMainCharacter(PersonajeModelo* );
 	void clearStage();
 	void generateMap();
 	int maxLevels();
@@ -56,7 +56,9 @@ public:
 	void markRelatedTiles(TileModel* );
 	void resolveRelatedTiles(TileModel* );
 	//void StageModel::resolveBolckedEntities(TileModel* tile);
-	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
+	bool isThereAChar(string &name,int x, int y, float cameraX, float cameraY);
+	void loadNamedChars();
+	PersonajeModelo* getCharacter(string name);
 private:
 	string _name;
 	unsigned int _width;
@@ -68,6 +70,7 @@ private:
 	TileModel* firstTile;
 	vector <TileModel*> tileLevels;
 	vector <PersonajeModelo*> _vMainCharacters;
+	map <string,PersonajeModelo*> mapMainCharacters;
 };
 
 #endif //_STAGEMODEL_H_

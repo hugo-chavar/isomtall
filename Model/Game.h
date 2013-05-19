@@ -8,14 +8,14 @@
 #include "PersonajeModelo.h"
 #include "Configuration.h"
 #include "StageModel.h"
-#include "..\View\TimeManager.h"
-#include "..\Model\YAMLParser.h"
+#include "../View/TimeManager.h"
+#include "YAMLParser.h"
 //#include "Login.h"
 //#include "Connector.h"
 #include "InstructionQueue.h"
 
-class Game
-{
+
+class Game {
 public:
 	~Game();
 
@@ -23,29 +23,33 @@ public:
 	StageModel* world();
 	TimeManager* time();
 	bool initialize(); 
-	bool insidePlayerVision(std::pair<int,int> );
-	bool isKnownByPlayer(std::pair<int,int> );
+	//bool insidePlayerVision(std::pair<int,int> );
+	//bool isKnownByPlayer(std::pair<int,int> );
 	EntLists allEntities;
 	YAMLParser yParser;
 	AnimatedEntity* animatedEntityAt(unsigned pos);
 	EntityObject* entityObjectAt(unsigned pos);
-	PersonajeModelo * personaje();
+	//PersonajeModelo * personaje();
 	Configuration* configuration();
-	PersonajeModelo* getPersonaje(string name);
-	void setPlayerName(string name);
-	string getPlayerName();
-	void setPlayerCharacterId(string char_id);
-	string getPlayerCharacterId();
+	//PersonajeModelo* getPersonaje(string name);
+	//void setPlayerName(string name);
+	//string getPlayerName();
+	//void setPlayerCharacterId(string char_id);
+	//string getPlayerCharacterId();
+	int getStageNumber();
+	void setStageNumber(int stageNo);
 
 private:
 	Game();
 	StageModel _world;
 	Configuration _configuration;
 	TimeManager _time;
-	PersonajeModelo * _personaje;
-	map <string,PersonajeModelo*> personajes;
-	string playerName;
-	string playerCharacterId;
+	//PersonajeModelo * _personaje;
+	//map <string,PersonajeModelo*> personajesEnJuego;
+	//string playerName;
+	//string playerCharacterId;
+	
+	int stageNumber;
 };
 
 #endif

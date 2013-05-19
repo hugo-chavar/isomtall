@@ -1,5 +1,5 @@
 #include "RenderHelper.h"
-#include "Game.h"
+#include "GameView.h"
 
 using namespace view;
 
@@ -69,7 +69,7 @@ bool RenderHelper::belongsToLevel(pair<int,int> currentPos) {
 bool RenderHelper::shouldRenderThis(pair<int,int> currentPos, pair<int,int> previousPos) {
 	pair<int,int> aux = this->maxLevel(currentPos, previousPos);
 	if (this->belongsToLevel(aux))
-		return (Game::instance().insidePlayerVision(currentPos) || Game::instance().insidePlayerVision(previousPos));
+		return (GameView::instance().insidePlayerVision(currentPos) || GameView::instance().insidePlayerVision(previousPos));
 	return false;
 }
 
@@ -84,9 +84,9 @@ void RenderHelper::renderNextLevel(Camera& camera) {
 		return;
 	TileView* tile;
 	tile = (*levelIterator).first;
-	bool isInsidePlayerVision = Game::instance().insidePlayerVision(tile->getPosition());
+	bool isInsidePlayerVision = GameView::instance().insidePlayerVision(tile->getPosition());
 	while ((tile) && (tile != (*levelIterator).second) ) {
-		if ( isInsidePlayerVision  || (Game::instance().isKnownByPlayer(tile->getPosition()))) {
+		if ( isInsidePlayerVision  || (GameView::instance().isKnownByPlayer(tile->getPosition()))) {
 			tile->renderEntity(camera);
 			//if (!isInsidePlayerVision)
 			//	tile->renderFog(camera);
@@ -95,7 +95,7 @@ void RenderHelper::renderNextLevel(Camera& camera) {
 		//}
 		tile = tile->getNextTile();
 		if (tile)
-			isInsidePlayerVision = Game::instance().insidePlayerVision(tile->getPosition());
+			isInsidePlayerVision = GameView::instance().insidePlayerVision(tile->getPosition());
 	}
 	levelIterator++;
 
@@ -106,10 +106,10 @@ void RenderHelper::renderGround(Camera& camera) {
 	for (levelIterator = limits.begin(); levelIterator != limits.end(); levelIterator++){
 		tile = (*levelIterator).first;
 		while (tile != (*levelIterator).second ){
-			if (Game::instance().insidePlayerVision(tile->getPosition())){
+			if (GameView::instance().insidePlayerVision(tile->getPosition())){
 				tile->setFreezed(false);
 				tile->renderGround(camera);
-			} else if (Game::instance().isKnownByPlayer(tile->getPosition())){
+			} else if (GameView::instance().isKnownByPlayer(tile->getPosition())){
 				//aplico niebla
 				tile->setFreezed(true);
 				tile->renderGround(camera);

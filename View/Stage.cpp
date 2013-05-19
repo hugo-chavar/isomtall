@@ -9,7 +9,7 @@
 #define EXTRA_TILES_TO_RENDER 9
 
 view::Stage::Stage() {
-	_personaje = NULL;
+//	_personaje = NULL;
 }
 
 view::Stage::~Stage() {
@@ -18,15 +18,11 @@ view::Stage::~Stage() {
 	}
 
 	spriteArray.clear();
-	if (_personaje){
-		delete _personaje;
-		_personaje = NULL;
-	}
-	deleteStage();
-	//if (this->fog){
-	//	this->fog->free();
-	//	delete this->fog;
+	//if (_personaje){
+	//	delete _personaje;
+	//	_personaje = NULL;
 	//}
+	deleteStage();
 }
 
 void view::Stage::loadSprites() {
@@ -107,12 +103,12 @@ bool view::Stage::initialize() {
 	this->loadSprites();
 	this->generateStage();
 
-	if (!Game::instance().personaje()){
-		return false;
-	}
-	_personaje = new Personaje(Game::instance().personaje());
-	GameView::instance().addPersonaje(Game::instance().personaje()->getName(),_personaje);
-	_personaje->loadSprites();
+	//if (!Game::instance().personaje()){
+	//	return false;
+	//}
+	//_personaje = new Personaje(Game::instance().personaje());
+	//GameView::instance().addPersonaje(Game::instance().personaje()->getName(),_personaje);
+	//_personaje->loadSprites();
 
 	return true;
 }
@@ -120,12 +116,12 @@ bool view::Stage::initialize() {
 void view::Stage::update() {
 	this->updateSprites();
 	this->updateTiles();
-	_personaje->update();
+	//_personaje->update(); //llamar en algun lado.. despues
 }
-
-Personaje* view::Stage::personaje() {
-	return _personaje;
-}
+//
+//Personaje* view::Stage::personaje() {
+//	return _personaje;
+//}
 
 TileView* view::Stage::getTileAt(KeyPair k) {
 	return tilesMap.at(k);
@@ -180,7 +176,7 @@ int view::Stage::fixStartLevel(int endLevel, std::pair<int,int> &ref) {
 		if ((endLevel - minLevelsInCamera) > START_LEVEL) {
 			ref.first -= minLevelsInCamera - (endLevel - level);
 			level = this->fixLevel(ref);
-		}else {
+		} else {
 			level = START_LEVEL;
 		}
 	}
@@ -234,21 +230,17 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2) {
 			leftBottom.second--;
 		}
 	}
-
 }
 
 void view::Stage::render(Camera& camera) {
 	this->calculateTilesToRender(camera);
 	renderHelper.renderGround(camera);
 	renderHelper.startRenderingEntities();
-	int a = 0;
 	while (renderHelper.hasLevelsToRender()) {
-		a++;
-		if (a == 53)
-			a--;
 		renderHelper.renderNextLevel(camera);
-		if (renderHelper.shouldRenderThis(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))
-			_personaje->render(camera);
+		//TODO: falta refactorizar este if...
+		//if (renderHelper.shouldRenderThis(_personaje->getPosicionEnTiles(),_personaje->getPosicionAnteriorEnTiles()))
+		//	_personaje->render(camera);
 	}
 }
 
@@ -276,4 +268,8 @@ void Stage::updateSprites() {
 	for (unsigned i = 0 ; i < spriteArray.size(); i++) {
 		spriteArray[i]->actualizarFrame();
 	}
+}
+
+StageModel* Stage::getWorldModel() {
+	return this->worldModel;
 }

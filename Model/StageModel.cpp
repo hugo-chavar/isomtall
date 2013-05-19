@@ -44,19 +44,19 @@ string StageModel::name() const {
 	return _name;
 }
 
-unsigned int StageModel::width() const{
+unsigned int StageModel::width() const {
 	return _width;
 }
 
-unsigned int StageModel::height() const{
+unsigned int StageModel::height() const {
 	return _height;
 }
 
-void StageModel::height(unsigned int value){
+void StageModel::height(unsigned int value) {
 	_height = value;
 }
 
-void StageModel::width(unsigned int value){
+void StageModel::width(unsigned int value) {
 	_width = value;
 }
 
@@ -68,27 +68,27 @@ vector <PersonajeModelo*>* StageModel::vMainCharacters() {
 	return &_vMainCharacters;
 }
 
-unsigned int StageModel::tileWidth() const{
+unsigned int StageModel::tileWidth() const {
 	return _tileWidth;
 }
 
-unsigned int StageModel::tileHeight() const{
+unsigned int StageModel::tileHeight() const {
 	return _tileHeight;
 }
 
-void StageModel::tileHeight(unsigned int value){
+void StageModel::tileHeight(unsigned int value) {
 	_tileHeight = value;
 }
 
-void StageModel::tileWidth(unsigned int value){
+void StageModel::tileWidth(unsigned int value) {
 	_tileWidth = value;
 }
 
-void StageModel::name(string value){
+void StageModel::name(string value) {
 	_name = value;
 }
 
-unsigned int StageModel::cost(unsigned int x, unsigned int y){
+unsigned int StageModel::cost(unsigned int x, unsigned int y) {
 	TileModel* tile = _tilesMap->at(make_pair(x,y));
 	if ( (tile->getOtherEntity()) || (tile->getRelatedTile()))
 		return 0;
@@ -125,27 +125,27 @@ bool StageModel::isInsideWorld(pair<int,int> tileCoordinates) {
 
 //Unir mas tarde
 
-void StageModel::destino(int x,int y,float cameraX,float cameraY){
-	std::pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
-	if(isInsideWorld(destino)) 
-		Game::instance().personaje()->setDestino(destino.first,destino.second);
-}
+//void StageModel::destino(int x,int y,float cameraX,float cameraY){
+//	pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
+//	if(isInsideWorld(destino)) 
+//		Game::instance().personaje()->setDestino(destino.first,destino.second);
+//}
 
-std::pair<int, int> StageModel::destination(int x,int y,float cameraX,float cameraY) {
-	std::pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
+pair<int, int> StageModel::destination(int x,int y,float cameraX,float cameraY) {
+	pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
 	return destino;
 }
 //Unir mas tarde
 
-void StageModel::insertMainCharacter(PersonajeModelo* pm){
-	_vMainCharacters.push_back(pm);
-}
+//void StageModel::insertMainCharacter(PersonajeModelo* pm){
+//	_vMainCharacters.push_back(pm);
+//}
 
-PersonajeModelo* StageModel::modelMainCharacters(unsigned pos){
-	if (_vMainCharacters.size() > pos)
-		return _vMainCharacters[pos];
-	return NULL;
-}
+//PersonajeModelo* StageModel::modelMainCharacters(unsigned pos){
+//	if (_vMainCharacters.size() > pos)
+//		return _vMainCharacters[pos];
+//	return NULL;
+//}
 
 void StageModel::clearStage(){
 	for (unsigned j=0; j < (this->_vMainCharacters.size()); j++)
@@ -191,12 +191,7 @@ void StageModel::resolveRelatedTiles(TileModel* tile){
 	}
 }
 
-//void StageModel::resolveBolckedEntities(TileModel* tile){
-//	//TODO: en caso de ser necesario
-//	return;
-//}
-
-void StageModel::generateMap(){
+void StageModel::generateMap() {
 	KeyPair tilePos;
 	tilePos.first = 0;
 	tilePos.second = 0;
@@ -235,7 +230,7 @@ void StageModel::generateMap(){
 	}
 }
 
-void StageModel::markRelatedTiles(TileModel* tile){
+void StageModel::markRelatedTiles(TileModel* tile) {
 	bool hasCenter = false;
 	EntityObject* entity = tile->getOtherEntity();
 	KeyPair tilePos, centerTilePos, refTilePos;
@@ -263,7 +258,7 @@ void StageModel::markRelatedTiles(TileModel* tile){
 	currentTile  = tile;
 	unsigned currentLevel = 1;
 	while ( currentLevel <= levels ){
-		if (currentLevel < static_cast<unsigned>(entity->baseHeight())){
+		if (currentLevel < static_cast<unsigned>(entity->baseHeight())) {
 			tilePos.first = refTilePos.first;
 			tilePos.second = refTilePos.second + currentLevel;
 		} else {
@@ -273,7 +268,7 @@ void StageModel::markRelatedTiles(TileModel* tile){
 		while ( (tilePos.first <= (refTilePos.first + currentLevel)) && (tilePos.first <= (refTilePos.first + entity->baseWidth() -1)) ){
 			prevTile = currentTile;
 			currentTile  = _tilesMap->at(tilePos);
-			if ( (!hasCenter) || (currentTile != centerTile)){
+			if ( (!hasCenter) || (currentTile != centerTile)) {
 				currentTile->setUndrawable();
 				prevTile->setRelatedTile(currentTile);
 			} else {
@@ -288,35 +283,34 @@ void StageModel::markRelatedTiles(TileModel* tile){
 	centerTile->setDrawable();
 }
 
-void StageModel::insertEntity(KeyPair k, EntityObject* e){
+void StageModel::insertEntity(KeyPair k, EntityObject* e) {
 	TileModel* tile = _tilesMap->at(k);
 	tile->addEntity(e);
 	resolveRelatedTiles(tile);
 }
 
-TileModel* StageModel::getTileAt(KeyPair k){
+TileModel* StageModel::getTileAt(KeyPair k) {
 	return _tilesMap->at(k);
 }
 
-TileModel* StageModel::getFirstTile(){
+TileModel* StageModel::getFirstTile() {
 	return this->firstTile;
 }
 
-bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY)
-{
-	std::pair<int,int> pixelCoordinates;
-	pixelCoordinates.first =x;
-	pixelCoordinates.second =y;
-	std::pair<int,int> tilePos=pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
+bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY) {
+	pair<int,int> pixelCoordinates;
+	pixelCoordinates.first = x;
+	pixelCoordinates.second = y;
+	pair<int,int> tilePos = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
 	if(isInsideWorld(tilePos))
 	{
-		for(unsigned i=0;i<_vMainCharacters.size();i++)
+		for(unsigned i = 0; i < _vMainCharacters.size(); i++)
 		{
-			std::pair<int,int> posChar = _vMainCharacters[i]->getPosition();
+			pair<int,int> posChar = _vMainCharacters[i]->getPosition();
 			//_vMainCharacters[i]->getCurrent(posChar);
-			if(posChar==tilePos)
+			if(posChar == tilePos)
 			{
-				name=_vMainCharacters[i]->getName();
+				name = _vMainCharacters[i]->getName();
 				return true;
 			}
 		}
@@ -324,11 +318,33 @@ bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float came
 	return false;
 }
 
-void StageModel::setSize(unsigned w, unsigned h){
+void StageModel::setSize(unsigned w, unsigned h) {
 	this->height(h);
 	if (w > MAX_STAGE_SIZE_X)
 		this->width(MAX_STAGE_SIZE_X);
 	else
 		this->width(w);
 
+}
+
+void StageModel::loadNamedChars() {
+	vector <PersonajeModelo*>::iterator it = _vMainCharacters.begin();
+	for (; it != _vMainCharacters.end(); it++ ) {
+		mapMainCharacters.insert(make_pair((*it)->getName(), (*it)));
+	}
+}
+
+PersonajeModelo* StageModel::getCharacter(string name) {
+	PersonajeModelo* character = NULL;
+	map <string,PersonajeModelo*>::iterator it;
+	it = mapMainCharacters.find(name);
+	if(it != mapMainCharacters.end()) {
+		character = it->second;
+	} else {
+		it = mapMainCharacters.find("DEFAULT");
+		if(it != mapMainCharacters.end()) {
+			character = it->second;
+		}
+	}
+	return character;
 }

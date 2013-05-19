@@ -66,6 +66,7 @@ struct sStage {
 	vector <EntityDef> vEntitiesDef;
 	vector <sMainCharacter> vMainCharacters_aux;
 	vector <PersonajeModelo*> vMainCharacters;
+	map <string,PersonajeModelo*> mapMainCharacters;
 };
 
 struct Stages {
@@ -107,7 +108,7 @@ public:
 
 	AnimatedEntity* findAnimatedEntityType(string name);
 	EntityObject* findEntityObjectType(string name);
-	PersonajeModelo* modelMainCharacters(unsigned, unsigned);
+	/*PersonajeModelo* modelMainCharacters(unsigned, unsigned);*/
 	Configuration getConfig();
 	int getConfigPort();
 	std::string getConfigIp();
