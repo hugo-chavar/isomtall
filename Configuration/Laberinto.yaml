@@ -4,7 +4,7 @@ pantalla:
 
 configuracion: 
     - vel_personaje: 0.2
-    - margen_scroll: 100
+    - margen_scroll: 500
     - vision_personaje: 5
     - puerto_servidor: 3500
      
@@ -377,6 +377,18 @@ escenarios:
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 1, entidad: caballoC}
          - {x: 25, y: 1, entidad: caballoR}
+    - nombre: bosque_loco 
+      size_x: 10
+      size_y: 10 
+      entidadesDef:  
+         - {x: 0, y: 1, entidad: arbol}
+         - {x: 0, y: 2, entidad: arbol}
+         - {x: 0, y: 3, entidad: arbol}
+         - {x: 0, y: 4, entidad: arbol}
+         - {x: 0, y: 5, entidad: arbol}
+         - {x: 0, y: 6, entidad: arbol}
+         - {x: 0, y: 7, entidad: arbol}
+
       protagonista: 
          - tipoEntidad: caballo
            x: 0 
