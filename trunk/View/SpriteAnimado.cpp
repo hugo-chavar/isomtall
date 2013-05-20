@@ -1,4 +1,5 @@
 #include "SpriteAnimado.h"
+#include "GameView.h"
 
 SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
 	//this->inicializar(entity->pixelRefX(),entity->pixelRefY(),entity->baseWidth(),entity->baseHeight());

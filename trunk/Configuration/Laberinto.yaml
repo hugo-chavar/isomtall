@@ -3,7 +3,7 @@ pantalla:
     - alto: 600
 
 configuracion: 
-    - vel_personaje: 0.05
+    - vel_personaje: 0.2
     - margen_scroll: 100
     - vision_personaje: 5
     - puerto_servidor: 3500
