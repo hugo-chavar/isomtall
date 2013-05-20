@@ -5,7 +5,7 @@ pantalla:
 configuracion: 
     - vel_personaje: 0.2
     - margen_scroll: 500
-    - vision_personaje: 4
+    - vision_personaje: 25
     - puerto_servidor: 3500
      
 entidades:
@@ -377,13 +377,15 @@ escenarios:
          - {x: 58, y: 58, entidad: molino}
          - {x: 20, y: 1, entidad: caballoC}
          - {x: 25, y: 1, entidad: caballoR}
-      protagonista: 
+
+	protagonista: 
          - tipoEntidad: caballo
            x: 0 
            y: 0 
          - tipoEntidad: frodo
            x: 3 
            y: 3 
+
     - nombre: bosque_loco 
       size_x: 10
       size_y: 10 
