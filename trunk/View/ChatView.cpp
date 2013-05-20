@@ -130,13 +130,19 @@ void view::ChatView::sendMessage()
 
 void view::ChatView::receiveMsgs()
 {
+	bool recibido=false;
 	if (modelChat->getMessagesListMutex().tryLock()) {
 		for (std::list<std::string>::iterator it = modelChat->getMessagesList().begin(); it != modelChat->getMessagesList().end(); ++it) {
 			messagesBox.addLine((*it));
+			recibido=true;
 		}
 	}
 	modelChat->getMessagesList().clear();
 	modelChat->getMessagesListMutex().unlock();
+	if(recibido)
+	{
+		this->setIsTyping(true);
+	}
 }
 
 void view::ChatView::setTo(string To)

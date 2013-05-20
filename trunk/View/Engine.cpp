@@ -181,6 +181,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			case SDLK_a:
 				{
 					if (!GameView::instance().getChat()->isTyping())
+					{
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
@@ -189,11 +190,13 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('a');
+					}
 					break;
 				}
 			case SDLK_s:
 				{
 					if (!GameView::instance().getChat()->isTyping())
+					{
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						//TODO: Create an option header
@@ -202,6 +205,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
 						//Game::instance().personaje()->animar('s');
+					}
 					break;
 				}
 			default:

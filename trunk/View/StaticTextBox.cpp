@@ -78,6 +78,7 @@ bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char
 	_textRects[0]->y = _boxRect.y+5;
 	_textRects[0]->w = _boxRect.w;
 	_textRects[0]->h = _boxRect.h;*/
+	this->addLine("");
 	return true;
 }
 
