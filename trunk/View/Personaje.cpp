@@ -17,8 +17,9 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	crearNombre(this->getPlayerName());
-
+	if (!(this->getPlayerName().empty())) {
+		crearNombre(this->getPlayerName());
+	}
 	//this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
 
 	this->setFreezed(false);
@@ -459,6 +460,8 @@ void Personaje::initFromString(std::string data) {
 
 void Personaje::setPlayerName(std::string name) {
 	this->playerName = name;
+	crearNombre(this->getPlayerName());
+
 }
 
 std::string Personaje::getPlayerName() {
