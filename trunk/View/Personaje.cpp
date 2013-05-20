@@ -5,6 +5,7 @@
 #include "StringUtilities.h"
 
 #include "Game.h"
+#include "GameView.h"
 
 
 Personaje::Personaje(PersonajeModelo* pj) {
@@ -107,12 +108,24 @@ void Personaje::animar() {
 		return;
 	int currentAnimationNumber = modelo->getEstado();
 	if (this->calculateSpritePosition(currentAnimationNumber) != this->getCurrentSpritePosition()) {
-		sprites[this->getCurrentSpritePosition()]->reiniciar();
-		sprites[this->calculateSpritePosition(currentAnimationNumber)]->reiniciar();
+		if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+			GameView::instance().getErrorImage()->reiniciar();
+		} else {
+			sprites[this->getCurrentSpritePosition()]->reiniciar();
+		}
+		if (this->calculateSpritePosition(currentAnimationNumber) > (sprites.size()-1)) {
+			GameView::instance().getErrorImage()->reiniciar();
+		} else {
+			sprites[this->calculateSpritePosition(currentAnimationNumber)]->reiniciar();
+		}
 	}
 	this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
-	if (sprites[this->getCurrentSpritePosition()]->ultimoFrame()) {
-		this->detenerAnimacion();
+	if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+		if (GameView::instance().getErrorImage()->ultimoFrame())
+			this->detenerAnimacion();
+	} else {
+		if (sprites[this->getCurrentSpritePosition()]->ultimoFrame())
+			this->detenerAnimacion();
 	}
 }
 
@@ -243,9 +256,18 @@ void Personaje::render(Camera& camera) {
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
 	//TODO: mejorar siguientes 3 lineas..
-	if (this->freezed)
-		camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getShadow());
-	camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+	if (this->freezed) {
+		if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+			camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getShadow());
+		} else {
+			camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getShadow());
+		}
+	}
+	if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+	} else {
+		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+	}
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
 }
@@ -403,7 +425,11 @@ std::string Personaje::updateToString() {
 	out.append(";");
 	out.append(stringUtilities::intToString(this->getCurrentSpritePosition()));
 	out.append(";");
-	out.append(stringUtilities::intToString(sprites[this->getCurrentSpritePosition()]->getCurrentState()));
+	if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+		out.append(stringUtilities::intToString(GameView::instance().getErrorImage()->getCurrentState()));
+	} else {
+		out.append(stringUtilities::intToString(sprites[this->getCurrentSpritePosition()]->getCurrentState()));
+	}
 	return out;
 }
 
@@ -418,7 +444,11 @@ void Personaje::updateFromString(std::string data) {
 	this->setPixelPosition(pixels);
 	this->setFreezed(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
-	sprites[this->getCurrentSpritePosition()]->setCurrentState(stringUtilities::stringToInt(splittedData[4]));
+	if (this->getCurrentSpritePosition() > (sprites.size()-1)) {
+		GameView::instance().getErrorImage()->setCurrentState(stringUtilities::stringToInt(splittedData[4]));
+	} else {
+		sprites[this->getCurrentSpritePosition()]->setCurrentState(stringUtilities::stringToInt(splittedData[4]));
+	}
 	this->update();
 }
 
@@ -460,8 +490,9 @@ void Personaje::initFromString(std::string data) {
 
 void Personaje::setPlayerName(std::string name) {
 	this->playerName = name;
-	crearNombre(this->getPlayerName());
-
+	if (!(this->getPlayerName().empty())) {
+		crearNombre(this->getPlayerName());
+	}
 }
 
 std::string Personaje::getPlayerName() {
