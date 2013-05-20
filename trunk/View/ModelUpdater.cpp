@@ -164,7 +164,8 @@ void ModelUpdater::simulate(std::string simulation_package)
 	if(personaje)
 	{
 		simulation_package.erase(0,simulation_package.find_first_of(';')+1);
-		personaje->updateFromString(simulation_package);
+		if (simulation_package.size() > 0)
+			personaje->updateFromString(simulation_package);
 
 
 
