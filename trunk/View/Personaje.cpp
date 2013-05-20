@@ -116,13 +116,13 @@ void Personaje::animar() {
 }
 
 void Personaje::update() {
-	this->setFreezed(!modelo->getIsActivo());
-	this->mover();
-	if (this->isCenteredInTile()) {
-		this->animar();
-	}
+	//this->setFreezed(!modelo->getIsActivo());
+	//this->mover();
+	//if (this->isCenteredInTile()) {
+	//	this->animar();
+	//}
 	modelo->update();
-	sprites[this->getCurrentSpritePosition()]->actualizarFrame();
+	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
 }
 
 void Personaje::mover() {
@@ -418,6 +418,7 @@ void Personaje::updateFromString(std::string data) {
 	this->setFreezed(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	sprites[this->getCurrentSpritePosition()]->setCurrentState(stringUtilities::stringToInt(splittedData[4]));
+	this->update();
 }
 
 int Personaje::getCurrentSpritePosition() {
