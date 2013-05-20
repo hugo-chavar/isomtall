@@ -52,6 +52,8 @@ int Engine::execute() {
 		while(SDL_PollEvent(&sdlEvent)) {
 			this->onEvent(&sdlEvent);
 		}
+		
+		GameView::instance().setConnected(_modelUpdater.isConnected());
 
 		this->update();
 

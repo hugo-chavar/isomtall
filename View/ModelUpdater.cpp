@@ -127,8 +127,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->simulationUpdate(instructionIn);
 		break;
 		case OPCODE_CONNECTION_ERROR:
-			//TODO: Yami.. mostrar cartelito
-			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
+			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);
 		break;

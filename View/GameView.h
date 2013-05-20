@@ -5,6 +5,7 @@
 #include "ChatView.h"
 #include "ClientUpdater.h"
 #include "CharacterFactory.h"
+#include "Notification.h"
 
 class GameView {
 public:
@@ -30,6 +31,7 @@ public:
 	bool isKnownByPlayer(std::pair<int,int> pos);
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
+	void setConnected(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 
 private:
@@ -37,6 +39,8 @@ private:
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
+	view::Notification notification;
+	bool connected;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;
 	string playerName; //este atributo se repite dentro del Personaje del cliente.

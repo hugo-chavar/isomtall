@@ -18,6 +18,8 @@ bool GameView::initialize() {
 	bool mapInitialized = false;
 	bool textInitialized = true;
 	bool chatInitialized = false;
+	bool notificationInitialized = false;
+	connected = true;
 
 	this->chat.setIsTyping(false);
 
@@ -29,6 +31,7 @@ bool GameView::initialize() {
 		mapInitialized = worldView.initialize();
 		chatInitialized = chat.initialize(camera);
 		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+		notificationInitialized = notification.initialize(camera);
 	}
 	this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
 	this->addPersonaje(this->getPlayerName(), this->personaje);
@@ -117,11 +120,17 @@ void GameView::cleanUp() {
 	this->chat.modelChat->cleanUp();
 }
 
+void GameView::setConnected(bool state) {
+	this->connected = state;
+}
+
 void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface,NULL,0);
 	this->worldView.render(this->camera);
 	if (chat.isTyping())
 		this->chat.render(this->camera);
+	if (!connected)
+		this->notification.render(this->camera);
 	SDL_Flip(this->camera.cameraSurface);
 
 }
@@ -130,6 +139,10 @@ void GameView::update() {
 	this->camera.update();
 	this->worldView.update();
 	this->chat.update(camera);
+	if (!connected) {
+		this->notification.addNotification("CONNECTION WITH SERVER LOST");
+		this->notification.update(camera);
+	}
 	//agregar update personajes
 }
 
