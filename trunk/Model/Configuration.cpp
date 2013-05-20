@@ -14,6 +14,7 @@ Configuration::Configuration(){
 
 Configuration::Configuration(const Configuration &source){
 	this->_cameraScrollSpeed = source._cameraScrollSpeed;
+	this->_cameraMarginScroll = source._cameraMarginScroll;
 	this->_cameraWidth = source._cameraWidth;
 	this->_cameraHeight = source._cameraHeight;
 	//_serverPort = source._serverPort;
@@ -23,6 +24,7 @@ Configuration::Configuration(const Configuration &source){
 }
 
 Configuration& Configuration::operator=(const Configuration &source){
+	this->_cameraMarginScroll = source._cameraMarginScroll;
 	this->_cameraScrollSpeed = source._cameraScrollSpeed;
 	this->_cameraWidth = source._cameraWidth;
 	this->_cameraHeight = source._cameraHeight;
