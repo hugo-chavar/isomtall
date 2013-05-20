@@ -11,6 +11,9 @@ GameView::~GameView(void) {
 		//if (it->second != this->worldView.personaje()) Andy para que estaba este if???
 			delete (*it).second;
 	}
+	if (errorImage != NULL) {
+		delete errorImage;
+	}
 }
 
 bool GameView::initialize() {
@@ -44,6 +47,14 @@ bool GameView::initialize() {
 		std::pair<int,int> posPersonaje = this->personaje->getPixelPosition();
 		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
 		this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
+
+		AnimatedEntity errorEntity;
+	
+		errorEntity.loadImages(ERROR_ANIMATED_DIR);
+
+		errorEntity.delay(0);
+
+		errorImage = new SpriteAnimado(&errorEntity);
 	}
 	return running;
 }
@@ -134,6 +145,11 @@ void GameView::render() {
 	SDL_Flip(this->camera.cameraSurface);
 
 }
+
+SpriteAnimado* GameView::getErrorImage() {
+	return errorImage;
+}
+
 
 void GameView::update() {
 	this->camera.update();

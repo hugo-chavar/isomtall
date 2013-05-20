@@ -33,6 +33,7 @@ public:
 	Personaje* nextCharacter();
 	void setConnected(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
+	SpriteAnimado* getErrorImage();
 
 private:
 	view::Camera camera;
@@ -46,5 +47,6 @@ private:
 	string playerName; //este atributo se repite dentro del Personaje del cliente.
 	string playerCharacterId;
 	CharacterFactory characterFactory;
+	SpriteAnimado* errorImage;
 };
 
