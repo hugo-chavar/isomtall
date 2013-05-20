@@ -38,13 +38,13 @@ public:
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
-	void calcularvelocidadRelativa(std::pair<float, float>& factor);
+	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
 	void mover();
 	void calcularSigTileAMover();
 	//realiza el desplazamiento en x y en y del sprite, de un tile a otro
-	void moverSprite(std::pair<float, float>& factor);
-	void moverSpriteEnX();
-	void moverSpriteEnY();
+	//void moverSprite(std::pair<float, float>& factor);
+	//void moverSpriteEnX();
+	//void moverSpriteEnY();
 	bool isCenteredInTile();
 	void animar();
 	void detenerAnimacion();
