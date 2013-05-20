@@ -84,6 +84,7 @@
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="LoginUpdater.cpp" />
     <ClCompile Include="ModelUpdater.cpp" />
+    <ClCompile Include="Notification.cpp" />
     <ClCompile Include="Receiver.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
     <ClCompile Include="Sender.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="Login.h" />
     <ClInclude Include="LoginUpdater.h" />
     <ClInclude Include="ModelUpdater.h" />
+    <ClInclude Include="Notification.h" />
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClInclude Include="Sender.h" />
