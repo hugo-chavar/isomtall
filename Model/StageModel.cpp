@@ -297,26 +297,26 @@ TileModel* StageModel::getFirstTile() {
 	return this->firstTile;
 }
 
-bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY) {
-	pair<int,int> pixelCoordinates;
-	pixelCoordinates.first = x;
-	pixelCoordinates.second = y;
-	pair<int,int> tilePos = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-	if(isInsideWorld(tilePos))
-	{
-		for(unsigned i = 0; i < _vMainCharacters.size(); i++)
-		{
-			pair<int,int> posChar = _vMainCharacters[i]->getPosition();
-			//_vMainCharacters[i]->getCurrent(posChar);
-			if(posChar == tilePos)
-			{
-				name = _vMainCharacters[i]->getName();
-				return true;
-			}
-		}
-	}
-	return false;
-}
+//bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY) {
+//	pair<int,int> pixelCoordinates;
+//	pixelCoordinates.first = x;
+//	pixelCoordinates.second = y;
+//	pair<int,int> tilePos = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
+//	if(isInsideWorld(tilePos))
+//	{
+//		for(unsigned i = 0; i < _vMainCharacters.size(); i++)
+//		{
+//			pair<int,int> posChar = _vMainCharacters[i]->getPosition();
+//			//_vMainCharacters[i]->getCurrent(posChar);
+//			if(posChar == tilePos)
+//			{
+//				name = _vMainCharacters[i]->getName();
+//				return true;
+//			}
+//		}
+//	}
+//	return false;
+//}
 
 void StageModel::setSize(unsigned w, unsigned h) {
 	this->height(h);

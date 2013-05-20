@@ -56,7 +56,7 @@ public:
 	void markRelatedTiles(TileModel* );
 	void resolveRelatedTiles(TileModel* );
 	//void StageModel::resolveBolckedEntities(TileModel* tile);
-	bool isThereAChar(string &name,int x, int y, float cameraX, float cameraY);
+	//bool isThereAChar(string &name,int x, int y, float cameraX, float cameraY);
 	void loadNamedChars();
 	PersonajeModelo* getCharacter(string name);
 private:

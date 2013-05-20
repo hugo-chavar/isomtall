@@ -30,6 +30,8 @@ public:
 	bool isKnownByPlayer(std::pair<int,int> pos);
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
+	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
+
 private:
 	view::Camera camera;
 	view::Stage worldView;
