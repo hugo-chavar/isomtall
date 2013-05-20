@@ -166,3 +166,21 @@ Personaje* GameView::nextCharacter() {
 	}
 	return aux;
 }
+
+bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float cameraY) {
+	pair<int,int> tilePos = Game::instance().world()->destination(x,y,cameraX,cameraY);
+	if(Game::instance().world()->isInsideWorld(tilePos))
+	{
+		map <string, Personaje*>::iterator it;
+		for(it=this->personajes.begin(); it!=this->personajes.end(); it++)
+		{
+			pair<int,int> posChar = (*it).second->getPosicionEnTiles();
+			if(posChar == tilePos)
+			{
+				name = (*it).first;
+				return true;
+			}
+		}
+	}
+	return false;
+}

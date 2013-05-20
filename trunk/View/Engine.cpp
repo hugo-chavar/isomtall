@@ -226,7 +226,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				}
 				case SDL_BUTTON_RIGHT: {
 					string To="";
-					if(Game::instance().world()->isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY()))
+					if(GameView::instance().isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY()))
 					{
 					GameView::instance().getChat()->setTo(To);
 					GameView::instance().getChat()->setIsTyping(true);
