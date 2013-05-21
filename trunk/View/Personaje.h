@@ -32,7 +32,7 @@ public:
 	void setCurrentSpritePosition(int pos);
 	void setPlayerName(std::string name);
 	std::string getPlayerName();
-
+	bool isCenteredInTile();
 	//TODO: refactor, check if needed
 	//void setDestino(int xTile, int yTile);
 
@@ -45,7 +45,7 @@ private:
 	//void moverSprite(std::pair<float, float>& factor);
 	//void moverSpriteEnX();
 	//void moverSpriteEnY();
-	bool isCenteredInTile();
+	void setCenteredInTile(bool centroTile);
 	void animar();
 	void detenerAnimacion();
 	void crearNombre(string textoNombre);
@@ -58,7 +58,7 @@ private:
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y
 	int serr; //variable usada para coordinar el movimiento en x y en y en la diagonal
-
+	bool centeredInTile;
 	std::string playerName;
 };
 #endif
