@@ -9,6 +9,8 @@ class ModelUpdater : public Thread {
 private:
 	bool connected;
 
+	bool serverReached;
+
 	unsigned int activatedAt;
 
 	bool forceStop;
@@ -18,6 +20,8 @@ private:
 	InstructionQueue instructionQueue;
 
 	void setConnected(bool connected);
+	
+	void setServerReached(bool serverReached);
 
 	void setActivatedAt(unsigned int activatedAt);
 
@@ -43,6 +47,8 @@ public:
 	ModelUpdater();
 
 	bool isConnected();
+
+	bool hasServerBeenReached();
 
 	unsigned int getActivatedAt();
 

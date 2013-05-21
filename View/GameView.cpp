@@ -139,6 +139,10 @@ void GameView::setLoggedIn(bool state) {
 	this->loggedIn = state;
 }
 
+void GameView::setServerReached(bool state) {
+	this->serverReached = state;
+}
+
 void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface,NULL,0);
 	this->worldView.render(this->camera);
@@ -159,13 +163,21 @@ void GameView::update() {
 	this->camera.update();
 	this->worldView.update();
 	this->chat.update(camera);
-	if ((!connected) && (loggedIn)) {
-		this->notification.addNotification("CONNECTION WITH SERVER LOST");
+	if (!serverReached) {
+		this->notification.addNotification("SERVER UNREACHABLE");
 		this->notification.update(camera);
 	}
-	if ((!connected) && (!loggedIn)) {
-		this->notification.addNotification("CONNECTING TO SERVER");
-		this->notification.update(camera);
+	else {
+		if (!connected) {
+			if (loggedIn) {
+				this->notification.addNotification("CONNECTION WITH SERVER LOST");
+				this->notification.update(camera);
+			}
+			else {
+				this->notification.addNotification("CONNECTING TO SERVER");
+				this->notification.update(camera);
+			}
+		}
 	}
 	//agregar update personajes
 }
