@@ -156,30 +156,30 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					running = false;
 					break;
 				}
-			case SDLK_f:
-				{
-					if (!GameView::instance().getChat()->isTyping())
-						//Game::instance().personaje()->setIsActivo();
-						instruction.clear();
-						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						//TODO: Create an option header
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"f");
-						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().personaje()->setIsActivo(false);
-					break;
-				}
-			case SDLK_w:
-				{
-					if (!GameView::instance().getChat()->isTyping())
-						//Game::instance().personaje()->setIsActivo();
-						instruction.clear();
-						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						//TODO: Create an option header
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"w");
-						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().personaje()->setIsActivo(true);
-					break;
-				}
+			//case SDLK_f:
+			//	{
+			//		if (!GameView::instance().getChat()->isTyping())
+			//			//Game::instance().personaje()->setIsActivo();
+			//			instruction.clear();
+			//			instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+			//			//TODO: Create an option header
+			//			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"f");
+			//			this->getModelUpdater()->addInstruction(instruction);
+			//			//Game::instance().personaje()->setIsActivo(false);
+			//		break;
+			//	}
+			//case SDLK_w:
+			//	{
+			//		if (!GameView::instance().getChat()->isTyping())
+			//			//Game::instance().personaje()->setIsActivo();
+			//			instruction.clear();
+			//			instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+			//			//TODO: Create an option header
+			//			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"w");
+			//			this->getModelUpdater()->addInstruction(instruction);
+			//			//Game::instance().personaje()->setIsActivo(true);
+			//		break;
+			//	}
 			case SDLK_a:
 				{
 					if (!GameView::instance().getChat()->isTyping())
@@ -236,8 +236,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					string To="";
 					if(GameView::instance().isThereAChar(To,sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY()))
 					{
-					GameView::instance().getChat()->setTo(To);
-					GameView::instance().getChat()->setIsTyping(true);
+						GameView::instance().getChat()->setTo(To);
+						GameView::instance().getChat()->setIsTyping(true);
 					}
 					break;
 				}
