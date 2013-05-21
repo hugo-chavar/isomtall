@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 	std::string playerCharacterId;
 	if (argc < 2){
 		std::cout << "Nombre jugador no ingresado"<<std::endl;
-		playerName = "Default Name";
+		playerName = "DefaultName";
 	} else {
 		//poner if playername largo
 		playerName = argv[1];
