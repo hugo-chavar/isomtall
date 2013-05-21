@@ -22,7 +22,7 @@ bool GameView::initialize() {
 	bool textInitialized = true;
 	bool chatInitialized = false;
 	bool notificationInitialized = false;
-	connected = true;
+	//connected = true;
 
 	this->chat.setIsTyping(false);
 
@@ -135,6 +135,10 @@ void GameView::setConnected(bool state) {
 	this->connected = state;
 }
 
+void GameView::setLoggedIn(bool state) {
+	this->loggedIn = state;
+}
+
 void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface,NULL,0);
 	this->worldView.render(this->camera);
@@ -155,8 +159,12 @@ void GameView::update() {
 	this->camera.update();
 	this->worldView.update();
 	this->chat.update(camera);
-	if (!connected) {
+	if ((!connected) && (loggedIn)) {
 		this->notification.addNotification("CONNECTION WITH SERVER LOST");
+		this->notification.update(camera);
+	}
+	if ((!connected) && (!loggedIn)) {
+		this->notification.addNotification("CONNECTING TO SERVER");
 		this->notification.update(camera);
 	}
 	//agregar update personajes
