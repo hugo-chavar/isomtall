@@ -23,9 +23,11 @@ namespace common
 		void logFatalError(string line);
 		void nullPointer(string line);
 		void setFile(string path);
+		void logWithoutTimeStamp(string line);
 		
 	private:
 		Logger();
+		std::string Logger::timeStamp();
 
 		ofstream fd;
 	};
