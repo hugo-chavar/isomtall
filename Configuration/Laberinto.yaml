@@ -5,7 +5,7 @@ pantalla:
 configuracion: 
     - vel_personaje: 0.2
     - margen_scroll: 500
-    - vision_personaje: 4
+    - vision_personaje: 30
     - puerto_servidor: 3500
      
 entidades:

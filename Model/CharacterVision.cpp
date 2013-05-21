@@ -1,5 +1,6 @@
 #include "CharacterVision.h"
 #include "Game.h"
+#include "../View/GameView.h"
 #include "TileModel.h"
 #include "StringUtilities.h"
 #include "Logger.h"
@@ -44,6 +45,8 @@ void CharacterVision::updatePosition(pair<int, int> pos) {
 }
 
 void CharacterVision::updateVision() {
+	if ((GameView::instance().getMyPersonaje() != NULL)&&(!GameView::instance().getMyPersonaje()->isCenteredInTile()))
+		return;
 	vision.initialize(this->position, this->rangeVision);
 	vision.fill();
 	pair<int, int > aux;
