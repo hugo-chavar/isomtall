@@ -52,7 +52,7 @@ public:
 
 	void stopUpdating(bool forceStop);
 
-	void initialize();
+	bool initialize();
 
 	~LoginUpdater();
 };

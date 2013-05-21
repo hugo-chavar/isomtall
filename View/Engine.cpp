@@ -269,7 +269,7 @@ void Engine::cleanUp() {
 
 	this->_login.cleanUp();
 
-	//this->chat.modelChat->cleanUp();
+	//GameView::instance().getChat()->modelChat->cleanUp();
 
 	
 	if (this->getModelUpdater()->isConnected()) {

@@ -44,13 +44,13 @@ std::list<std::string>& LoginUpdater::getMessagesList() {
 
 void LoginUpdater::updateLoginModel() {
 	Instruction instructionIn;
-	int port = Game::instance().configuration()->serverPort();
-	std::string ipAddress = Game::instance().configuration()->serverIp();
-	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
+	//int port = Game::instance().configuration()->serverPort();
+	//std::string ipAddress = Game::instance().configuration()->serverIp();
+	//Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
 
-	if (newSocket->connectTo() != -1) {
-		this->getConnector().setSocket(newSocket);
-		this->getConnector().startConnector();
+	//if (newSocket->connectTo() != -1) {
+	//	this->getConnector().setSocket(newSocket);
+	//	this->getConnector().startConnector();
 
 		do {
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
@@ -81,10 +81,10 @@ void LoginUpdater::updateLoginModel() {
 			}
 		}
 		*/
-	} else {
-		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		std::cout << "SERVER UNREACHABLE" << std::endl;
-	}
+	//} else {
+	//	//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
+	//	std::cout << "SERVER UNREACHABLE" << std::endl;
+	//}
 }
 
 void LoginUpdater::processInstruction(Instruction& instructionIn) {
@@ -158,7 +158,7 @@ void LoginUpdater::stopUpdating(bool forceStop) {
 	this->setLoggedIn(false);
 }
 
-void LoginUpdater::initialize()
+bool LoginUpdater::initialize()
 {
 	Instruction instructionIn;
 	int port = Game::instance().configuration()->serverPort();
@@ -176,9 +176,9 @@ void LoginUpdater::initialize()
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		std::cout << "SERVER UNREACHABLE" << std::endl;
+		return false;
 	}
-	delete newSocket;
-
+	return true;
 }
 
 // ----------------------------------- DESTRUCTOR ----------------------------------------
