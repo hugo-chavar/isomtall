@@ -32,6 +32,7 @@ public:
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
 	void setConnected(bool state);
+	void setLoggedIn(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
 
@@ -42,6 +43,7 @@ private:
 	view::ChatView chat;
 	view::Notification notification;
 	bool connected;
+	bool loggedIn;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;
 	string playerName; //este atributo se repite dentro del Personaje del cliente.
