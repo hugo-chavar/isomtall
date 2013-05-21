@@ -481,6 +481,7 @@ std::string Personaje::initToString() {
 
 //tilex,tiley;pixelx,pixely;isFreezed;nro_status;nro_surface~datos_vision
 void Personaje::initFromString(std::string data) {
+	Logger::instance().log(data);
 	vector <std::string> splittedData;
 	//modelo
 	stringUtilities::splitString(data, splittedData, '~');

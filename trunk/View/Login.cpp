@@ -30,8 +30,8 @@ std::list<std::string>& model::Login::getMessagesList() {
 }
 
 void model::Login::initialize() {
-	this->getLoginUpdater().initialize();
-	this->getLoginUpdater().startUpdating();
+	if(this->getLoginUpdater().initialize())
+			this->getLoginUpdater().startUpdating();
 
 }
 
