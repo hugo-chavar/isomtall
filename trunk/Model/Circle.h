@@ -2,7 +2,8 @@
 #define _CIRCLE_H_
 
 #include <set>
-#include <list>
+//#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -18,11 +19,10 @@ public:
 	bool hasNext();
 	pair<int, int> next();
 private:
-	//bool comparator(std::pair<int, int>, std::pair<int, int> );
 	set <pair<int, int> > limits;
 	set <pair<int, int> >::iterator itlim;
-	list <pair<int, int> > orderedLimits;
-	//std::list <std::list <std::pair<int, int> > > levels;
+	//list <pair<int, int> > orderedLimits;
+	vector <pair<int, int> > orderedLimits;
 	pair<int, int> center;
 };
 

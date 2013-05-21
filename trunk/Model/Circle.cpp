@@ -1,5 +1,6 @@
 #include "Circle.h"
 #include <iterator>
+#include <algorithm>
 
 
 bool comparator(pair<int, int> p1, pair<int, int> p2 ) {
@@ -19,8 +20,13 @@ Circle::~Circle() {
 }
 
 bool Circle::inside(pair<int, int> pos) {
-	list <pair<int, int> >::iterator it = orderedLimits.begin();
-	while ( (it != orderedLimits.end()) && ((*it).second > pos.second)) {
+	vector <pair<int, int> >::iterator it;
+	pair<int, int> aux;
+	it = orderedLimits.begin();
+	//bool valueNotFound = (*it).second > pos.second;
+	while ( (it != orderedLimits.end()) && ((*it).second > pos.second) ) {
+		//aux = *it;
+		//valueNotFound = aux.second > pos.second;
 		it++;
 	}
 	if ( ((*it).second != pos.second) || ((*it).first > pos.first))
@@ -28,15 +34,18 @@ bool Circle::inside(pair<int, int> pos) {
 	while ((it != orderedLimits.end()) && ((*it).second == pos.second) && ((*it).first < pos.first) ) {
 		it++;
 	}
-	if ((*it).first < pos.first)
+	if (it != orderedLimits.end())  {
+		if ((*it).first < pos.first)
+			return false;
+		return true;
+	} else {
 		return false;
-
-	return true;
+	}
 }
 
 void Circle::clear() {
 	limits.clear();
-	orderedLimits.clear();
+	//orderedLimits.clear();
 }
 
 void Circle::initialize(pair<int, int> center, int range) {
@@ -66,15 +75,18 @@ void Circle::initialize(pair<int, int> center, int range) {
 			xChange += 2;
 		}
 	}
-	copy(limits.begin(), limits.end(), std::inserter(orderedLimits, orderedLimits.begin()));
-	orderedLimits.sort(comparator);
+	vector <pair<int, int> > aux;
+	std::copy(limits.begin(), limits.end(), std::inserter(aux, aux.begin()));
+	std::sort (aux.begin(), aux.end(), comparator);
+	orderedLimits.assign(aux.begin(),aux.end());
+	//orderedLimits.sort(comparator);
 }
 
 void Circle::fill() {
 	if (orderedLimits.size() < 5)
 		return;
-	list <pair<int, int> >::iterator itBegin = orderedLimits.begin();
-	list <pair<int, int> >::iterator itEnd;
+	vector <pair<int, int> >::iterator itBegin = orderedLimits.begin();
+	vector <pair<int, int> >::iterator itEnd;
 	pair<int, int> pos1;
 	pair<int, int> pos2 = orderedLimits.back();
 	int maxValueY = (*itBegin).second;
