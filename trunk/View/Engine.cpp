@@ -57,6 +57,8 @@ int Engine::execute() {
 
 		GameView::instance().setLoggedIn(_login.isLoggedIn());
 
+		GameView::instance().setServerReached(_modelUpdater.hasServerBeenReached());
+
 		this->update();
 
 		this->render();

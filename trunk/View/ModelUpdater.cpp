@@ -20,6 +20,9 @@ void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
 }
 
+void ModelUpdater::setServerReached(bool serverReached) {
+	this->serverReached = serverReached;
+}
 
 void ModelUpdater::setActivatedAt(unsigned int activatedAt) {
 	this->activatedAt = activatedAt;
@@ -49,6 +52,7 @@ void ModelUpdater::updateModel() {
 	Socket* newSocket = new Socket(inet_addr(ipAddress.c_str()),port,0);
 
 	if (newSocket->connectTo() != -1) {
+		this->setServerReached(true);
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
 
@@ -77,8 +81,9 @@ void ModelUpdater::updateModel() {
 			} while (instructionIn.getOpCode() != OPCODE_NO_OPCODE);
 		}
 	} else {
+		this->setServerReached(false);
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		std::cout << "SERVER UNREACHABLE" << std::endl;
+		//std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
 }
 
@@ -194,6 +199,10 @@ void ModelUpdater::simulate(std::string simulation_package)
 
 bool ModelUpdater::isConnected() {
 	return this->connected;
+}
+
+bool ModelUpdater::hasServerBeenReached() {
+	return this->serverReached;
 }
 
 unsigned int ModelUpdater::getActivatedAt() {
