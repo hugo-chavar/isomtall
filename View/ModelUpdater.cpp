@@ -107,6 +107,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
 			this->getConnector().addInstruction(instructionOut);
+			instructionOut.clear();
+			instructionOut.setOpCode(OPCODE_INIT_SYNCHRONIZE);
+			instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			{

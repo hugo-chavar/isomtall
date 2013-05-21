@@ -497,8 +497,8 @@ void Personaje::initFromString(std::string data) {
 	vector <std::string> splittedData;
 	//modelo
 	stringUtilities::splitString(data, splittedData, '~');
-	this->updateFromString(splittedData[1]);
-	this->modelo->getVision()->fromString(splittedData[2]);
+	this->updateFromString(splittedData[0]);
+	this->modelo->getVision()->fromString(splittedData[1]);
 }
 
 void Personaje::setPlayerName(std::string name) {
