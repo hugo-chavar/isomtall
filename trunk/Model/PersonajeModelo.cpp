@@ -380,7 +380,7 @@ CharacterVision* PersonajeModelo::getVision() {
 }
 
 void PersonajeModelo::update() {
-	this->vision->updatePosition(this->getPosition());
+	/*this->vision->updatePosition(this->getPosition());*/
 }
 
 std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
@@ -413,4 +413,8 @@ int PersonajeModelo::getRefPixelY() {
 
 void PersonajeModelo::restartDirectories() {
 	this->animation->imagesPaths()->restartCurrentPosition();
+}
+
+void PersonajeModelo::setPosition(std::pair<int, int> pos) {
+	this->current = pos;
 }

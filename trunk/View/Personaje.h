@@ -34,6 +34,9 @@ public:
 	void setPlayerName(std::string name);
 	std::string getPlayerName();
 	bool isCenteredInTile();
+	std::string idToString();
+	void setActive(bool value);
+	bool isActive();
 	//TODO: refactor, check if needed
 	//void setDestino(int xTile, int yTile);
 	void pushbackSimulation(string simulation_package);
@@ -64,5 +67,6 @@ private:
 	std::string playerName;
 	std::list <std::string> simulationQueue;
 	Mutex mutex;
+	bool active;
 };
 #endif

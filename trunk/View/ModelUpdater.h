@@ -47,6 +47,10 @@ private:
 
 	void simulate(std::string simulation_package);
 
+	void syncAllPlayer(Instruction& instructionIn);
+
+	void syncPlayer(std::string onePlayer);
+
 public:
 	ModelUpdater();
 

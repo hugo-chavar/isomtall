@@ -17,6 +17,11 @@ void CharacterVision::setRangeVision(int value) {
 	this->rangeVision = value;
 }
 
+int CharacterVision::getRangeVision() {
+	return this->rangeVision;
+}
+
+
 void CharacterVision::increaseRangeVision(int value) {
 	this->rangeVision += value;
 	this->updateVision();
@@ -95,11 +100,13 @@ string CharacterVision::toString() {
 }
 
 void CharacterVision::fromString(string data) {
+	common::Logger::instance().log(data);
 	vector <string> auxVector;
 	pair<int, int> pos;
 	auxVector.clear();
 	stringUtilities::splitString(data, auxVector, ':');
-	vector <string>::iterator it = auxVector.begin();
+	vector <string>::iterator it;
+	it = auxVector.begin();
 	this->rangeVision = stringUtilities::stringToInt(*it);
 	it++;
 	for (; it != auxVector.end(); it++) {

@@ -132,6 +132,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				//Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
 				GameView::instance().getMyPersonaje()->initFromString(syncData);
+				GameView::instance().getMyPersonaje()->setActive(true);
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
@@ -145,7 +146,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);
-		break;
+			break;
+		case OPCODE_CHARACTERS_SYNCHRONIZE:
+			syncAllPlayer(instructionIn);
+			break;
 	}
 }
 
@@ -156,9 +160,8 @@ void* ModelUpdater::run() {
 
 //Ejemplo de recepcion player,Xpath,Ypath tileX, tileY,animacion(0 si no esta animando):player, tileX, tileY,animacion(0 si no esta animando) "
 
-void ModelUpdater::simulationUpdate(Instruction& instructionIn)
-{
-	std::string serializedSimulation=instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
+void ModelUpdater::simulationUpdate(Instruction& instructionIn) {
+	std::string serializedSimulation = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
 	std::vector<std::string> player_simulations;
 
 	stringUtilities::splitString(serializedSimulation,player_simulations,':');
@@ -166,7 +169,6 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn)
 	for(unsigned i = 0; i < player_simulations.size(); i++) {
 		this->simulate(player_simulations[i]);
 	}
-
 }
 
 void ModelUpdater::simulate(std::string simulation_package)
@@ -175,35 +177,45 @@ void ModelUpdater::simulate(std::string simulation_package)
 	stringUtilities::splitString(simulation_package, simulation_fields, ';');
 	Personaje* personaje = GameView::instance().getPersonaje(simulation_fields[0]);
 	
-	if(personaje)
-	{
+	if(personaje) {
 		simulation_package.erase(0,simulation_package.find_first_of(';')+1);
 		if (simulation_package.size() > 0)
 		{
 			personaje->pushbackSimulation(simulation_package);
 			//personaje->updateFromString(simulation_package);
 		}
-
-
-
-		//int pathTiles=stringUtilities::stringToInt(simulation_fields[1]);
-		//std::vector<int> datosUpdate;
-		//datosUpdate.push_back(pathTiles);
-		//for(int i=0;i<pathTiles;i++)
-		//{
-		//int tileX=stringUtilities::stringToInt(simulation_fields[i*2+2]);
-		//datosUpdate.push_back(tileX);
-		//int tileY=stringUtilities::stringToInt(simulation_fields[i*2+3]);
-		//datosUpdate.push_back(tileY);
-		//}
-		////personaje->updatePJModel(datosUpdate);
-		//if(simulation_fields[2+pathTiles*2]!="0")
-		//	Game::instance().personaje()->animar(simulation_fields[2+pathTiles*2].front());
 	}
-	else
-	{
-		//simulation_fields[0]=name,simulation_fields[1]=char_id
-		GameView::instance().newPersonaje(simulation_fields[0],simulation_fields[6]);
+	//else
+	//{
+	//	//simulation_fields[0]=name,simulation_fields[1]=char_id
+	//	GameView::instance().newPersonaje(simulation_fields[0],simulation_fields[6]);
+	//}
+}
+
+
+void ModelUpdater::syncAllPlayer(Instruction& instructionIn) {
+	std::string serializedSimulation = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTERS_UPDATE);
+
+	std::vector<std::string> charactersInit;
+
+	stringUtilities::splitString(serializedSimulation,charactersInit,':');
+
+	for (unsigned i = 0; i < charactersInit.size(); i++) {
+		this->syncPlayer(charactersInit[i]);
+	}
+}
+
+void ModelUpdater::syncPlayer(std::string onePlayer) {
+	std::vector<std::string> playerFields;
+	stringUtilities::splitString(onePlayer, playerFields, ';');
+	Personaje* personaje = GameView::instance().getPersonaje(playerFields[0]);
+	
+	if ( !personaje) {
+		GameView::instance().newPersonaje(playerFields[0],playerFields[1]);
+		personaje = GameView::instance().getPersonaje(playerFields[0]);
+		//std::pair <int, int> pos = stringUtilities::stringToPairInt(playerFields[02]);
+		//personaje->personajeModelo()->setPosition(pos);
+		personaje->setActive(false);
 	}
 }
 
