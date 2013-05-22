@@ -222,7 +222,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				case SDL_BUTTON_LEFT: {
 					if (GameView::instance().getChat()->isClosing(sdlEvent->button.x+GameView::instance().getCamera()->getOffsetX(), sdlEvent->button.y+GameView::instance().getCamera()->getOffsetY()))
 						GameView::instance().getChat()->setIsTyping(false);
-					else
+					else {
 						instruction.clear();
 						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY());
 						if ((tileDestino.first < 0)||(tileDestino.second < 0)) {
@@ -231,7 +231,8 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
 						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY());
+						//Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY
+					}
 					break;
 				}
 				case SDL_BUTTON_RIGHT: {
