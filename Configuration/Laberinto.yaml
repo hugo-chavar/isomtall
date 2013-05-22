@@ -3,9 +3,9 @@ pantalla:
     - alto: 600
 
 configuracion: 
-    - vel_personaje: 0.2
+    - vel_personaje: 1
     - margen_scroll: 500
-    - vision_personaje: 30
+    - vision_personaje: 4
     - puerto_servidor: 3500
      
 entidades:
@@ -79,7 +79,7 @@ entidades:
       imagen: ../Images/personajeVampiro/
       pixel_ref_x: 48
       pixel_ref_y: 64
-      fps: 30 
+      fps: 10 
        
     - nombre: caballo
       imagen: ../Images/personajeCaballo/

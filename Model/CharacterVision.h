@@ -16,6 +16,7 @@ public:
 	CharacterVision();
 	~CharacterVision();
 	void setRangeVision(int value);
+	int getRangeVision();
 	void increaseRangeVision(int value);
 	void initialize();
 	void setPosition(pair<int, int> pos);

@@ -31,7 +31,9 @@ void Logger::setFile(string path)
 
 void Logger::log(string line)
 {
-	string message = "["+ this->timeStamp()+"] ";
+	string time_stamp = this->timeStamp();
+	time_stamp.pop_back();
+	string message = "["+ time_stamp+"] ";
 	message.append(line);
 	this->logWithoutTimeStamp(message);
 }

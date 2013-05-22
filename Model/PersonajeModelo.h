@@ -45,6 +45,7 @@ public:
 	int getRefPixelX();
 	int getRefPixelY();
 	void restartDirectories();
+	void setPosition(std::pair<int, int> pos);
 private:
 
 	int siCaminaDetenerse();
