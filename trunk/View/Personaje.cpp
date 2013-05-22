@@ -7,6 +7,8 @@
 #include "Game.h"
 #include "GameView.h"
 
+#define TOLERANCE 13500
+
 
 Personaje::Personaje(PersonajeModelo* pj) {
 	modelo = pj;
@@ -136,10 +138,18 @@ void Personaje::animar() {
 }
 
 void Personaje::update() {
+	bool updated=false;
 	this->mutex.lock();
-	if(this->simulationQueue.size()>0)
+	while(this->simulationQueue.size()>0 && !updated)
 	{
-		this->updateFromString(this->simulationQueue.front());
+		std::string simulate=this->simulationQueue.front();
+		string ticksReceive=simulate.substr(simulate.find_last_of(";")+1);
+		int currentTime = static_cast<int>(SDL_GetTicks()) + GameView::instance().getActivatedAt();
+		common::Logger::instance().log("Tolerancia="+stringUtilities::intToString(currentTime-stringUtilities::stringToInt(ticksReceive)));
+		if(currentTime-stringUtilities::stringToInt(ticksReceive)<=TOLERANCE){
+			this->updateFromString(this->simulationQueue.front());
+			updated=true;
+		}
 		this->simulationQueue.pop_front();
 	}
 	this->mutex.unlock();
@@ -536,7 +546,9 @@ std::string Personaje::getPlayerName() {
 
 void Personaje::pushbackSimulation(string simulation_package)
 {
+	this->mutex.lock();
 	this->simulationQueue.push_back(simulation_package);
+	this->mutex.unlock();
 }
 
 std::string Personaje::idToString() {

@@ -243,3 +243,11 @@ bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float camera
 	}
 	return false;
 }
+
+void GameView::setActivatedAt(int activeAt){
+	this->activatedAt=activeAt;
+}
+
+int GameView::getActivatedAt(){
+	return this->activatedAt;
+}

@@ -36,6 +36,8 @@ public:
 	void setServerReached(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
+	void setActivatedAt(int activeAt);
+	int getActivatedAt();
 
 private:
 	view::Camera camera;
@@ -52,5 +54,6 @@ private:
 	string playerCharacterId;
 	CharacterFactory characterFactory;
 	SpriteAnimado* errorImage;
+	int activatedAt;
 };
 
