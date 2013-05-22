@@ -7,8 +7,6 @@
 #include "Game.h"
 #include "GameView.h"
 
-#define TOLERANCE 13500
-
 
 Personaje::Personaje(PersonajeModelo* pj) {
 	modelo = pj;
@@ -138,21 +136,13 @@ void Personaje::animar() {
 }
 
 void Personaje::update() {
-	bool updated=false;
-	this->mutex.lock();
-	while(this->simulationQueue.size()>0 && !updated)
-	{
-		std::string simulate=this->simulationQueue.front();
-		string ticksReceive=simulate.substr(simulate.find_last_of(";")+1);
-		int currentTime = static_cast<int>(SDL_GetTicks()) + GameView::instance().getActivatedAt();
-		common::Logger::instance().log("Tolerancia="+stringUtilities::intToString(currentTime-stringUtilities::stringToInt(ticksReceive)));
-		if(currentTime-stringUtilities::stringToInt(ticksReceive)<=TOLERANCE){
-			this->updateFromString(this->simulationQueue.front());
-			updated=true;
-		}
-		this->simulationQueue.pop_front();
-	}
-	this->mutex.unlock();
+	//this->mutex.lock();
+	//if(this->simulationQueue.size()>0)
+	//{
+	//	this->updateFromString(this->simulationQueue.front());
+	//	this->simulationQueue.pop_front();
+	//}
+	//this->mutex.unlock();
 	//this->setFreezed(!modelo->getIsActivo());
 	//this->mover();
 	if (this->isCenteredInTile()) {
@@ -493,7 +483,7 @@ void Personaje::updateFromString(std::string data) {
 	}
 	this->setCenteredInTile(splittedData[5] == "T");
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
-	modelo->update();
+	this->update();
 	this->setActive(true);
 }
 
@@ -546,9 +536,7 @@ std::string Personaje::getPlayerName() {
 
 void Personaje::pushbackSimulation(string simulation_package)
 {
-	this->mutex.lock();
 	this->simulationQueue.push_back(simulation_package);
-	this->mutex.unlock();
 }
 
 std::string Personaje::idToString() {
