@@ -32,7 +32,7 @@ public:
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
 	void setConnected(bool state);
-	void setLoggedIn(bool state);
+	void setFirstConnection(bool state);
 	void setServerReached(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
@@ -44,7 +44,7 @@ private:
 	view::ChatView chat;
 	view::Notification notification;
 	bool connected;
-	bool loggedIn;
+	bool firstConnection;
 	bool serverReached;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;

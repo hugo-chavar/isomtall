@@ -32,8 +32,8 @@ int Engine::execute() {
 
 	this->initialize();
 
-	if (!this->getLogin()->isLoggedIn())
-		return EXIT_FAILURE;
+	//if (!this->getLogin()->isLoggedIn())
+	//	return EXIT_FAILURE;
 
 	Instruction instruction;
 	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
@@ -55,7 +55,7 @@ int Engine::execute() {
 		
 		GameView::instance().setConnected(_modelUpdater.isConnected());
 
-		GameView::instance().setLoggedIn(_login.isLoggedIn());
+		GameView::instance().setFirstConnection(_modelUpdater.isFirstConnection());
 
 		GameView::instance().setServerReached(_modelUpdater.hasServerBeenReached());
 

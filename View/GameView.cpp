@@ -22,6 +22,8 @@ bool GameView::initialize() {
 	bool textInitialized = true;
 	bool chatInitialized = false;
 	bool notificationInitialized = false;
+	this->serverReached = true;
+	this->firstConnection = false;
 	//connected = true;
 
 	this->chat.setIsTyping(false);
@@ -135,8 +137,8 @@ void GameView::setConnected(bool state) {
 	this->connected = state;
 }
 
-void GameView::setLoggedIn(bool state) {
-	this->loggedIn = state;
+void GameView::setFirstConnection(bool state) {
+	this->firstConnection = state;
 }
 
 void GameView::setServerReached(bool state) {
@@ -164,17 +166,17 @@ void GameView::update() {
 	this->worldView.update();
 	this->chat.update(camera);
 	if (!serverReached) {
-		this->notification.addNotification("SERVER UNREACHABLE");
+		this->notification.addNotification("        SERVER UNREACHABLE");
 		this->notification.update(camera);
 	}
 	else {
-		if (!connected) {
-			if (loggedIn) {
+		if (!this->connected) {
+			if (this->firstConnection) {
 				this->notification.addNotification("CONNECTION WITH SERVER LOST");
 				this->notification.update(camera);
 			}
 			else {
-				this->notification.addNotification("CONNECTING TO SERVER");
+				this->notification.addNotification("      CONNECTING TO SERVER");
 				this->notification.update(camera);
 			}
 		}

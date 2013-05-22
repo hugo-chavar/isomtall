@@ -11,6 +11,7 @@
 
 ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 	this->connected = false;
+	this->firstConnection = false;
 	this->activatedAt = 0;
 }
 
@@ -18,6 +19,10 @@ ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 
 void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
+}
+
+void ModelUpdater::setFirstConnection(bool firstConnection) {
+	this->firstConnection = firstConnection;
 }
 
 void ModelUpdater::setServerReached(bool serverReached) {
@@ -103,6 +108,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
+			this->setFirstConnection(true);
 			this->setConnected(true);
 			std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
@@ -203,6 +209,10 @@ void ModelUpdater::simulate(std::string simulation_package)
 
 bool ModelUpdater::isConnected() {
 	return this->connected;
+}
+
+bool ModelUpdater::isFirstConnection() {
+	return this->firstConnection;
 }
 
 bool ModelUpdater::hasServerBeenReached() {
