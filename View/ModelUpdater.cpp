@@ -121,6 +121,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			{
 				this->setActivatedAt(stringUtilities::stringToInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT)));
+				GameView::instance().setActivatedAt(this->activatedAt);
 			}
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
@@ -165,9 +166,9 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn) {
 	std::vector<std::string> player_simulations;
 
 	stringUtilities::splitString(serializedSimulation,player_simulations,':');
-
-	for(unsigned i = 0; i < player_simulations.size(); i++) {
-		this->simulate(player_simulations[i]);
+	//en la ultima posicion viene el SDL_GetTicks
+	for(unsigned i = 0; i < player_simulations.size()-1; i++) {
+		this->simulate(player_simulations[i]+";"+player_simulations.back());
 	}
 }
 
