@@ -179,7 +179,10 @@ void ModelUpdater::simulate(std::string simulation_package)
 	{
 		simulation_package.erase(0,simulation_package.find_first_of(';')+1);
 		if (simulation_package.size() > 0)
-			personaje->updateFromString(simulation_package);
+		{
+			personaje->pushbackSimulation(simulation_package);
+			//personaje->updateFromString(simulation_package);
+		}
 
 
 

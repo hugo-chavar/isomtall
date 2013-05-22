@@ -165,6 +165,14 @@ void GameView::update() {
 	this->camera.update();
 	this->worldView.update();
 	this->chat.update(camera);
+
+	Personaje* personaje = NULL;
+	map<string, Personaje*>::iterator it;
+	for(it = this->personajes.begin();it!=personajes.end();it++)
+	{
+		(*it).second->update();
+	}
+
 	if (!serverReached) {
 		this->notification.addNotification("        SERVER UNREACHABLE");
 		this->notification.update(camera);

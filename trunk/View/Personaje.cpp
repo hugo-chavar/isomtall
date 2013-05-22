@@ -135,14 +135,24 @@ void Personaje::animar() {
 }
 
 void Personaje::update() {
-	//this->setFreezed(!modelo->getIsActivo());
-	//this->mover();
-	//if (this->isCenteredInTile()) {
-	//	this->animar();
-	//}
-	modelo->update();
-	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
+	this->mutex.lock();
+	if(this->simulationQueue.size()>0)
+	{
+		this->updateFromString(this->simulationQueue.front());
+		this->simulationQueue.pop_front();
+	}
+	this->mutex.unlock();
 }
+
+//void Personaje::updateModel() {
+//	//this->setFreezed(!modelo->getIsActivo());
+//	//this->mover();
+//	//if (this->isCenteredInTile()) {
+//	//	this->animar();
+//	//}
+//	modelo->update();
+//	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
+//}
 
 //void Personaje::mover() {
 //	if (this->isCenteredInTile() && (this->isFreezed() || this->modelo->estaAnimandose()))
@@ -266,12 +276,14 @@ void Personaje::render(Camera& camera) {
 			camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getShadow());
 		} else {
 			camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getShadow());
+			//common::Logger::instance().log("Personaje posicion:"+stringUtilities::pairIntToString(this->getPixelPosition())+" posicionTile:"+stringUtilities::pairIntToString(this->getPosicionEnTiles())+" SpritePosition:"+stringUtilities::intToString(this->getCurrentSpritePosition()));
 		}
 	}
 	if (this->getCurrentSpritePosition() > (signed)(sprites.size()-1)) {
 		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
 	} else {
 		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+		//common::Logger::instance().log("Personaje posicion:"+stringUtilities::pairIntToString(this->getPixelPosition())+" posicionTile:"+stringUtilities::pairIntToString(this->getPosicionEnTiles())+" SpritePosition:"+stringUtilities::intToString(this->getCurrentSpritePosition()));
 	}
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
@@ -461,7 +473,8 @@ void Personaje::updateFromString(std::string data) {
 		sprites[this->getCurrentSpritePosition()]->setCurrentState(stringUtilities::stringToInt(splittedData[3]));
 	}
 	this->setCenteredInTile(splittedData[4] == "T");
-	this->update();
+	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
+	modelo->update();
 }
 
 int Personaje::getCurrentSpritePosition() {
@@ -510,4 +523,9 @@ void Personaje::setPlayerName(std::string name) {
 
 std::string Personaje::getPlayerName() {
 	return this->playerName;
+}
+
+void Personaje::pushbackSimulation(string simulation_package)
+{
+	this->simulationQueue.push_back(simulation_package);
 }

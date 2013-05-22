@@ -6,6 +6,7 @@
 #include "SpriteAnimado.h"
 #include "PersonajeModelo.h"
 #include "Entity.h"
+#include "Mutex.h"
 
 class Personaje : public Entity {
 public:
@@ -35,6 +36,7 @@ public:
 	bool isCenteredInTile();
 	//TODO: refactor, check if needed
 	//void setDestino(int xTile, int yTile);
+	void pushbackSimulation(string simulation_package);
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
@@ -60,5 +62,7 @@ private:
 	int serr; //variable usada para coordinar el movimiento en x y en y en la diagonal
 	bool centeredInTile;
 	std::string playerName;
+	std::list <std::string> simulationQueue;
+	Mutex mutex;
 };
 #endif
