@@ -12,7 +12,7 @@ class Engine {
 	private:
 		bool running;
 
-		unsigned int desiredFPS;
+		Uint32 desiredFPS;
 
 		ModelUpdater _modelUpdater;
 
@@ -31,7 +31,7 @@ class Engine {
 	
 		bool isRunning();
 
-		unsigned int getDesiredFPS();
+		Uint32 getDesiredFPS();
 
 		int execute();
 

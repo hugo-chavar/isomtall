@@ -21,13 +21,13 @@ bool Engine::isRunning() {
 	return this->running;
 }
 
-unsigned int Engine::getDesiredFPS() {
+Uint32 Engine::getDesiredFPS() {
 	return this->desiredFPS;
 }
 
 int Engine::execute() {
-	float milisecondsTonextFrame = static_cast<float>(1000/this->getDesiredFPS());
-	unsigned int frameStartedAt = 0;
+	Uint32 milisecondsTonextFrame = 1000/this->getDesiredFPS();
+	Uint32 frameStartedAt = 0;
 	SDL_Event sdlEvent;
 
 	this->initialize();
@@ -64,7 +64,7 @@ int Engine::execute() {
 		this->render();
 
 		if (milisecondsTonextFrame >= SDL_GetTicks() - frameStartedAt)
-			SDL_Delay(static_cast<unsigned int>(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)));
+			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
 	}
 
 	this->cleanUp();
