@@ -84,7 +84,7 @@ void Engine::initialize() {
 	ClientUpdater clientUpdater;
 	clientUpdater.setServerIp(serverIpAddress);
 	clientUpdater.setServerPort(serverPortNumber);
-	//clientUpdater.updateClient();
+	clientUpdater.updateClient();
 
 	Game::instance().configuration()->serverPort(serverPortNumber);
 	Game::instance().configuration()->serverIp(serverIpAddress);
