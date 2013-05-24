@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <fstream>
+#include "Logger.h"
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
@@ -85,20 +86,20 @@ void ClientUpdater::updateClient() {
 				case OPCODE_UPDATE_FILE:
 					{
 					receiveFile(&archivo,instructionIn);
-					this->sendConfirmation();
+					//this->sendConfirmation();
 					}
 				break;
 				case OPCODE_UPDATE_FILE_START:
 					{
 						path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
 						archivo.open(path,std::ios::binary);
-						this->sendConfirmation();
+						//this->sendConfirmation();
 					//ABRO ARCHIVO
 					}
 				break;
 				case OPCODE_UPDATE_FILE_COMPLETE:
 					archivo.close();
-					this->sendConfirmation();
+					//this->sendConfirmation();
 					//DEBO PARARME EN EL DIRECTORIO DEL NUEVO ARCHIVO A RECIBIR
 				break;
 				case OPCODE_UPDATE_DIRECTORY:
@@ -106,7 +107,7 @@ void ClientUpdater::updateClient() {
 						std::string directorios = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_DIR);
 						path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
 						this->crearDirectorios(directorios,path);
-						this->sendConfirmation();
+						//this->sendConfirmation();
 						//DEBO RECIBIR ARBOL DE DIRECTORIOS A PROCESAR
 					}
 				break;
@@ -117,6 +118,8 @@ void ClientUpdater::updateClient() {
 		instructionOut.setOpCode(OPCODE_DISCONNECT);
 		this->getConnector().addInstruction(instructionOut);
 		this->getConnector().stopConnector(false);
+		if(archivo.is_open())
+			{archivo.close();}
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		//TODO: YAMILA
