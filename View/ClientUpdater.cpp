@@ -120,6 +120,10 @@ void ClientUpdater::updateClient() {
 		this->getConnector().stopConnector(false);
 		if(archivo.is_open())
 			{archivo.close();}
+		if(!this->getConnector().isConnectionOK())
+		{
+			//AQUI SE DEBERIA IMPRIMIR POR PANTALLA UN MSJ DE DESCONEXION
+		}
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		//TODO: YAMILA
