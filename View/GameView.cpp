@@ -3,12 +3,14 @@
 
 
 GameView::GameView(void) {
+	this->errorImage = NULL;
 }
 
 GameView::~GameView(void) {
-	map<string, Personaje*>::iterator it = personajes.begin();
+	map<string, Personaje*>::iterator it;
+	it = personajes.begin();
 	for( ;it != personajes.end(); it++) {
-		//if (it->second != this->worldView.personaje()) Andy para que estaba este if???
+		if ((*it).second)
 			delete (*it).second;
 	}
 	if (errorImage != NULL) {
@@ -80,7 +82,8 @@ view::ChatView* GameView::getChat() {
 
 Personaje* GameView::getPersonaje(string name) {
 	Personaje* personaje = NULL;
-	map<string, Personaje*>::iterator it = this->personajes.find(name);
+	map<string, Personaje*>::iterator it;
+	it = this->personajes.find(name);
 
 	if (it != this->personajes.end())
 		personaje = it->second;
@@ -88,16 +91,9 @@ Personaje* GameView::getPersonaje(string name) {
 	return personaje;
 }
 
-//Falta implementar este metodo
 void GameView::newPersonaje(string name, string char_id) {
-	//if (this->getPersonaje(name))
-	//	return; //si ya existe salgo, faltaria chequear si cambio de char_id.. pero eso es otro tema
-
 	Personaje* personaje = characterFactory.createViewCharacter(char_id, name);
-	//Aca deberia relacionarle al personaje su sprite, a partir del char_id, el cual deberia ya estar cargado en memoria
-	//Hugo: andy esto que decis lo hace automaticamente el characterFactory
 	this->addPersonaje(name, personaje);
-	
 }
 
 void GameView::addPersonaje(string name,Personaje * personaje) {

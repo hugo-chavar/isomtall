@@ -11,7 +11,7 @@
 Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
-	this->desiredFPS = 100;
+	this->desiredFPS = 20;
 
 	//WSAData ws;
 	//WSAStartup(MAKEWORD(2,2),&ws);
@@ -101,29 +101,6 @@ void Engine::initialize() {
 	this->running = GameView::instance().initialize();
 	this->getModelUpdater()->startUpdating();
 
-	//bool cameraInitialized = this->camera.initialize();
-	//bool mapInitialized = false;
-	//bool textInitialized = true;
-	//bool chatInitialized = false;
-
-	////Initialize SDL_ttf
-	//if (TTF_Init()==-1)
-	//	textInitialized = false;
-
-	//if (cameraInitialized){
-	//	mapInitialized = worldView.initialize();
-	//	chatInitialized = chat.initialize(camera);
-	//	worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
-	//}
-
-	////si hubo errores de inicializacion salgo
-	//running = mapInitialized & cameraInitialized & textInitialized; 
-
-	//if (running) {
-	//	std::pair<int,int> posPersonaje=worldView.personaje()->posicion();
-	//	this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
-	//	this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
-	//}
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
@@ -158,30 +135,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					running = false;
 					break;
 				}
-			//case SDLK_f:
-			//	{
-			//		if (!GameView::instance().getChat()->isTyping())
-			//			//Game::instance().personaje()->setIsActivo();
-			//			instruction.clear();
-			//			instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-			//			//TODO: Create an option header
-			//			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"f");
-			//			this->getModelUpdater()->addInstruction(instruction);
-			//			//Game::instance().personaje()->setIsActivo(false);
-			//		break;
-			//	}
-			//case SDLK_w:
-			//	{
-			//		if (!GameView::instance().getChat()->isTyping())
-			//			//Game::instance().personaje()->setIsActivo();
-			//			instruction.clear();
-			//			instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-			//			//TODO: Create an option header
-			//			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,"w");
-			//			this->getModelUpdater()->addInstruction(instruction);
-			//			//Game::instance().personaje()->setIsActivo(true);
-			//		break;
-			//	}
 			case SDLK_a:
 				{
 					if (!GameView::instance().getChat()->isTyping())
@@ -193,7 +146,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						opcion_caracter.push_back(OPCION_ATACAR);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().personaje()->animar('a');
 					}
 					break;
 				}
@@ -208,7 +160,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						opcion_caracter.push_back(OPCION_DEFENDER);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().personaje()->animar('s');
 					}
 					break;
 				}
@@ -225,13 +176,13 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					else {
 						instruction.clear();
 						std::pair<int, int> tileDestino = Game::instance().world()->destination(sdlEvent->button.x,sdlEvent->button.y,GameView::instance().getCamera()->getOffsetX(),GameView::instance().getCamera()->getOffsetY());
-						if ((tileDestino.first < 0)||(tileDestino.second < 0)) {
-							break; }
+						if (!(Game::instance().world())->isInsideWorld(tileDestino)) {
+							break; 
+						}
 						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
 						this->getModelUpdater()->addInstruction(instruction);
-						//Game::instance().world()->destino(sdlEvent->button.x,sdlEvent->button.y,this->camera.getOffsetX(),camera.getOffsetY
 					}
 					break;
 				}

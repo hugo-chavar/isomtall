@@ -66,15 +66,7 @@ void ModelUpdater::updateModel() {
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
 				this->processInstruction(instructionIn);
 			}
-			/*Inicio codigo que parece ya no pinchar*/
-			//if(Game::instance().personaje()->getIsInCenterTile() && this->isConnected()) {
-			//	instructionOut.clear();
-			//	instructionOut.setOpCode(OPCODE_SIMULATION_UPDATE);
-			//	std::pair<int, int> pos = Game::instance().personaje()->getPosition();
-			//	instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION,stringUtilities::pairIntToString(pos));
-			//	this->getConnector().addInstruction(instructionOut);
-			//}
-			/*Fin codigo que parece ya no pinchar*/
+
 		} while (!this->isStopping());
 
 		if (!this->isForceStop()) {
@@ -87,7 +79,7 @@ void ModelUpdater::updateModel() {
 		}
 	} else {
 		this->setServerReached(false);
-		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
+
 		//std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
 }
@@ -125,11 +117,6 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
-				//TODO: simplificar
-				//std::pair<int, int> currentPosition = stringUtilities::stringToPairInt(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CURRENT_POSITION));
-				//Game::instance().personaje()->setCurrent(currentPosition.first, currentPosition.second);
-				//Game::instance().personaje()->getVision()->setPosition(currentPosition);
-				//Game::instance().personaje()->getVision()->fromString(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_VISION));
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
 				GameView::instance().getMyPersonaje()->initFromString(syncData);
 				GameView::instance().getMyPersonaje()->setActive(true);

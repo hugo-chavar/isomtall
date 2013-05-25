@@ -23,10 +23,7 @@ bool Circle::inside(pair<int, int> pos) {
 	vector <pair<int, int> >::iterator it;
 	pair<int, int> aux;
 	it = orderedLimits.begin();
-	//bool valueNotFound = (*it).second > pos.second;
 	while ( (it != orderedLimits.end()) && ((*it).second > pos.second) ) {
-		//aux = *it;
-		//valueNotFound = aux.second > pos.second;
 		it++;
 	}
 	if ( ((*it).second != pos.second) || ((*it).first > pos.first))
@@ -45,7 +42,6 @@ bool Circle::inside(pair<int, int> pos) {
 
 void Circle::clear() {
 	limits.clear();
-	//orderedLimits.clear();
 }
 
 void Circle::initialize(pair<int, int> center, int range) {
@@ -79,13 +75,13 @@ void Circle::initialize(pair<int, int> center, int range) {
 	std::copy(limits.begin(), limits.end(), std::inserter(aux, aux.begin()));
 	std::sort (aux.begin(), aux.end(), comparator);
 	orderedLimits.assign(aux.begin(),aux.end());
-	//orderedLimits.sort(comparator);
 }
 
 void Circle::fill() {
 	if (orderedLimits.size() < 5)
 		return;
-	vector <pair<int, int> >::iterator itBegin = orderedLimits.begin();
+	vector <pair<int, int> >::iterator itBegin;
+	itBegin = orderedLimits.begin();
 	vector <pair<int, int> >::iterator itEnd;
 	pair<int, int> pos1;
 	pair<int, int> pos2 = orderedLimits.back();

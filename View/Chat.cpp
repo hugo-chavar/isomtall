@@ -94,31 +94,7 @@ void model::Chat::sendMessage() {
 }
 
 void model::Chat::initialize() {
-//	Instruction instruction;
 	this->getChatUpdater().startUpdating();
-
-/*	WSAData ws;
-	WSAStartup(MAKEWORD(2,2),&ws);
-
-	Socket* newSocket = new Socket(inet_addr("127.0.0.1"),9443,0);
-	if (newSocket->connectTo() != -1) {
-		this->getMessagesList().push_back("user name?");
-
-		this->setSocket(newSocket);
-
-		Sender* newSender = new Sender(this->getSocket());
-		Receiver* newReceiver = new Receiver(this->getSocket(),this->getMessagesListMutex(),this->getMessagesList(),this->isLoggedIn());
-
-		this->setSender(newSender);
-		this->getSender()->startSending();
-	
-		this->setReceiver(newReceiver);
-		this->getReceiver()->startReceiving();
-
-
-	} else {
-		this->getMessagesList().push_back("SERVER UNREACHABLE");
-	}*/
 }
 
 void model::Chat::update() {

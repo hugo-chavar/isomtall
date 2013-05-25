@@ -328,7 +328,8 @@ void StageModel::setSize(unsigned w, unsigned h) {
 }
 
 void StageModel::loadNamedChars() {
-	vector <PersonajeModelo*>::iterator it = _vMainCharacters.begin();
+	vector <PersonajeModelo*>::iterator it;
+	it = _vMainCharacters.begin();
 	for (; it != _vMainCharacters.end(); it++ ) {
 		mapMainCharacters.insert(make_pair((*it)->getName(), (*it)));
 	}

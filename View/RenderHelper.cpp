@@ -103,7 +103,8 @@ void RenderHelper::renderNextLevel(Camera& camera) {
 
 void RenderHelper::renderGround(Camera& camera) {
 	TileView* tile;
-	for (levelIterator = limits.begin(); levelIterator != limits.end(); levelIterator++){
+	levelIterator = limits.begin();
+	for (; levelIterator != limits.end(); levelIterator++){
 		tile = (*levelIterator).first;
 		while (tile != (*levelIterator).second ){
 			if (GameView::instance().insidePlayerVision(tile->getPosition())){
