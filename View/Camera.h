@@ -18,6 +18,11 @@ namespace view {
 		void setScrollSpeed(unsigned int scrollSpeed);
 		void setScrollBoxSize(unsigned int scrollBoxSize);
 	public:
+		static const SDL_Color WHITE_COLOR;
+		static const SDL_Color RED_COLOR;
+		static const SDL_Color BLUE_COLOR;
+		static const SDL_Color BLACK_COLOR;
+		static const SDL_Color GREEN_COLOR;
 		Camera();
 		void setOffsetX(float offsetX);
 		void setOffsetY(float offsetY);

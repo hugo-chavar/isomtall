@@ -1,5 +1,7 @@
 #include "StaticTextBox.h"
 
+
+
 StaticTextBox::StaticTextBox() { }
 
 StaticTextBox::~StaticTextBox() {
@@ -65,7 +67,7 @@ bool StaticTextBox::load(string imagePath, char *fontPath, int textSize) {
 bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY,int textSize,int max_lines) {
 	if (!load(backgroundImagePath, fontPath,textSize))
 		return false;
-	_textColor = color;
+	this->setTextColor(color);
 	maxLines = max_lines;
 	//_strTexts.push_back("");
 	//_texts.push_back(NULL);
@@ -138,4 +140,8 @@ void StaticTextBox::addLine(string newMsg) {
 
 vector <Line *> StaticTextBox::getLines() {
 	return this->lines;
+}
+
+void StaticTextBox::setTextColor(SDL_Color color) {
+	this->_textColor = color;
 }
