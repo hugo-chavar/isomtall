@@ -16,7 +16,7 @@ namespace view {
 		virtual void render(Camera &camera);
 		virtual void update(Camera &camera);
 		void addNotification(string message);
-
+		void setColor(SDL_Color color);
 	private:
 		StaticTextBox box;
 

@@ -35,7 +35,7 @@ void Personaje::crearNombre(string textoNombre) {
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	SDL_Color textColor = { 255, 255, 255 };
+	SDL_Color textColor = Camera::WHITE_COLOR; //{ 255, 255, 255 }
 	font = TTF_OpenFont( FUENTE, 12 );
 	nombre = TTF_RenderText_Blended( font, textoNombre.c_str(), textColor );
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
@@ -136,15 +136,7 @@ void Personaje::animar() {
 }
 
 void Personaje::update() {
-	//this->mutex.lock();
-	//if(this->simulationQueue.size()>0)
-	//{
-	//	this->updateFromString(this->simulationQueue.front());
-	//	this->simulationQueue.pop_front();
-	//}
-	//this->mutex.unlock();
-	//this->setFreezed(!modelo->getIsActivo());
-	//this->mover();
+
 	if (this->isCenteredInTile()) {
 		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 	}
@@ -152,35 +144,9 @@ void Personaje::update() {
 	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
 }
 
-//void Personaje::updateModel() {
-//	//this->setFreezed(!modelo->getIsActivo());
-//	//this->mover();
-//	//if (this->isCenteredInTile()) {
-//	//	this->animar();
-//	//}
-//	modelo->update();
-//	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
-//}
-
-//void Personaje::mover() {
-//	if (this->isCenteredInTile() && (this->isFreezed() || this->modelo->estaAnimandose()))
-//		return;
-//
-//	std::pair<float, float> factor;	//Cuantos pixels se mueve por ciclo
-//	factor.first = 0;
-//	factor.second = 0;
-//	
-//	calcularSigTileAMover();
-//	calcularvelocidadRelativa(factor);
-//	if (this->getCurrentSpritePosition() != ESTADO_ERROR) {
-//		moverSprite(factor);
-//	}
-//}
-
-
 void Personaje::calcularSigTileAMover(){
-	int currentAnimationNumber = 0;	//animacion del personaje en el sistema de PersonajeModelo
-	std::pair<int, int> tile;	//Un tile
+	int currentAnimationNumber = 0;
+	std::pair<int, int> tile;
 	int previousSpritePosition = this->getCurrentSpritePosition();
 
 	if (this->isCenteredInTile()) {
@@ -296,32 +262,7 @@ void Personaje::render(Camera& camera) {
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
 }
-//
-//void Personaje::setDestino(int xTile, int yTile) {
-//	modelo->setDestino(xTile, yTile);
-//}
 
-//void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
-//	float deltaTime = Game::instance().time()->getDeltaTime();
-//
-//	if (delta.first != 0){ //Hay movimiento en x
-//		if (delta.second != 0) { //Diagonal
-//			factor.first = static_cast<float>((velocidad*deltaTime) *0.707);
-//			factor.second = static_cast<float>((velocidad*deltaTime) *0.707/2);
-//		} else { //Horizontal
-//			factor.first = (velocidad*deltaTime);
-//		}
-//	} else { //No hay movimiento en x
-//		if (delta.second != 0){ //Vertical
-//			factor.second = ((velocidad*deltaTime)/2);
-//		} else {//Quieto
-//			factor.first = 0;
-//			factor.second = 0;
-//		}
-//
-//	}
-//}
-//
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
 	if ((currentAnimationNumber < MOVIMIENTO)||(currentAnimationNumber >= (MOVIMIENTO + FACTOR_ORIENTACION))) {
 		delta.first = 0;
@@ -420,18 +361,6 @@ std::pair<int,int> Personaje::getPosicionEnTiles() {
 }
 
 std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
-	//float deltaAbsX = std::abs(delta.first);
-	//float deltaAbsY = std::abs(delta.second);
-
-	//if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
-	//	return this->getPosicionEnTiles();
-	//}
-	//if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
-	//	return this->getPosicionEnTiles();
-	//}
-	//if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
-	//	return this->getPosicionEnTiles();
-	//}
 	return tileActual;
 }
 
@@ -506,8 +435,6 @@ void Personaje::setPixelPosition(std::pair<int,int> pixel) {
 
 //tilex,tiley;pixelx,pixely;isFreezed;nro_status;nro_surface~datos_vision
 std::string Personaje::initToString() {
-	//std::string out = modelo->getName() ;
-	//out.append(";");
 	std::string out = this->updateToString();
 	out.append("~");
 	out.append(this->modelo->getVision()->toString());
@@ -534,17 +461,10 @@ std::string Personaje::getPlayerName() {
 	return this->playerName;
 }
 
-void Personaje::pushbackSimulation(string simulation_package)
-{
-	this->simulationQueue.push_back(simulation_package);
-}
-
 std::string Personaje::idToString() {
 	std::string out = this->getPlayerName();
 	out.append(";");
 	out.append(modelo->getName());
-	//out.append(";");
-	//out.append(stringUtilities::pairIntToString(modelo->getPosition()));
 	return out;
 }
 

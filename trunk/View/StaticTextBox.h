@@ -16,6 +16,7 @@ using namespace std;
 class StaticTextBox {
 
 public:
+
 	StaticTextBox();
 	~StaticTextBox();
 	bool initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY,int textSize,int maxLines);
@@ -30,6 +31,7 @@ public:
 	vector<Line *> getLines();
 	//string getText(int pos);
 	void addLine(string newMsg);
+	void setTextColor(SDL_Color color);
 
 private:
 	SDL_Surface *_box;

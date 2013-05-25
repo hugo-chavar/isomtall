@@ -162,26 +162,55 @@ void GameView::update() {
 	this->worldView.update();
 	this->chat.update(camera);
 
-	//Personaje* personaje = NULL;
-	//map<string, Personaje*>::iterator it;
-	//for(it = this->personajes.begin();it!=personajes.end();it++)
-	//{
-	//	(*it).second->update();
-	//}
+	/*STATUS_CONNECTING_TO_SERVER,
+	STATUS_SERVER_UNREACHEABLE,
+	STATUS_UPDATING_FILES,
+	STATUS_FILES_UPDATED_OK,
+	STATUS_UPDATING_CONNECTION_LOST,
+	STATUS_CONNECTING_TO_SIMULATION,
+	STATUS_SIMULATION_CONNECTED,
+	STATUS_SIMULATION_DISCONNECTED,
+	STATUS_SIMULATION_CONNECTION_LOST */
+
+	switch (this->getStatus()) {
+		case STATUS_CONNECTING_TO_SERVER:
+			this->notification.addNotification("        SERVER UNREACHABLE");
+			this->notification.update(camera);
+		break;
+		case STATUS_SERVER_UNREACHEABLE:
+			this->notification.addNotification("        SERVER UNREACHABLE");
+			this->notification.update(camera);
+		break;
+		case STATUS_UPDATING_FILES:
+			
+		break;
+		case STATUS_FILES_UPDATED_OK:
+			
+		break;
+		case STATUS_UPDATING_CONNECTION_LOST:
+			
+		break;
+		case STATUS_CONNECTING_TO_SIMULATION:
+			
+		break;
+	}
 
 	if (!serverReached) {
 		this->notification.addNotification("        SERVER UNREACHABLE");
 		this->notification.update(camera);
+		this->notification.setColor(Camera::BLACK_COLOR);
 	}
 	else {
 		if (!this->connected) {
 			if (this->firstConnection) {
 				this->notification.addNotification("CONNECTION WITH SERVER LOST");
 				this->notification.update(camera);
+				this->notification.setColor(Camera::RED_COLOR);
 			}
 			else {
 				this->notification.addNotification("      CONNECTING TO SERVER");
 				this->notification.update(camera);
+				this->notification.setColor(Camera::GREEN_COLOR);
 			}
 		}
 	}
@@ -238,4 +267,12 @@ bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float camera
 		}
 	}
 	return false;
+}
+
+void GameView::setStatus(gameStatus_t status) {
+	this->gameStatus = status;
+}
+
+gameStatus_t GameView::getStatus() {
+	return this->gameStatus;
 }

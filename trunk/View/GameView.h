@@ -70,5 +70,6 @@ private:
 	CharacterFactory characterFactory;
 	SpriteAnimado* errorImage;
 	int activatedAt;
+	gameStatus_t gameStatus;
 };
 

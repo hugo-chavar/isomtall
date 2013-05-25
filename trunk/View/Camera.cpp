@@ -6,6 +6,12 @@
 
 using namespace view;
 
+const SDL_Color Camera::WHITE_COLOR = {255, 255, 255};
+const SDL_Color Camera::BLUE_COLOR = {0, 0, 255};
+const SDL_Color Camera::BLACK_COLOR = {0, 0, 0};
+const SDL_Color Camera::RED_COLOR = {255, 0, 0};
+const SDL_Color Camera::GREEN_COLOR = {34, 177, 76};
+
 Camera::Camera() {
 	this->offsetX = 0;
 	this->offsetY = 0;

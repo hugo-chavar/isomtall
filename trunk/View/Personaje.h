@@ -39,7 +39,7 @@ public:
 	bool isActive();
 	//TODO: refactor, check if needed
 	//void setDestino(int xTile, int yTile);
-	void pushbackSimulation(string simulation_package);
+	//void pushbackSimulation(string simulation_package);
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
@@ -65,8 +65,8 @@ private:
 	int serr; //variable usada para coordinar el movimiento en x y en y en la diagonal
 	bool centeredInTile;
 	std::string playerName;
-	std::list <std::string> simulationQueue;
-	Mutex mutex;
+	//std::list <std::string> simulationQueue;
+	//Mutex mutex;
 	bool active;
 };
 #endif
