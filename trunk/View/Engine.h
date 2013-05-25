@@ -21,14 +21,6 @@ class Engine {
 	public:
 		Engine();
 	
-		//TODO: Create getter/setter
-		//view::Stage worldView;
-
-		//TODO: Create getter/setter
-		//Camera camera;
-
-		//view::Chat chat;
-	
 		bool isRunning();
 
 		Uint32 getDesiredFPS();

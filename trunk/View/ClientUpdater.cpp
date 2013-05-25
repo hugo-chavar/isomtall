@@ -123,11 +123,14 @@ void ClientUpdater::updateClient() {
 		if(!this->getConnector().isConnectionOK())
 		{
 			//AQUI SE DEBERIA IMPRIMIR POR PANTALLA UN MSJ DE DESCONEXION
+			std::cerr << "CLIENT UPDATER: CONNECTION LOST" << std::endl;
+		} else {
+			std::cerr << "CLIENT UPDATER: EVERYTHING WENT OK" << std::endl;
 		}
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		//TODO: YAMILA
-		std::cout << "SERVER UNREACHABLE" << std::endl;
+		std::cerr << "CLIENT UPDATER: SERVER UNREACHABLE" << std::endl;
 	}
 }
 

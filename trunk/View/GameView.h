@@ -7,6 +7,19 @@
 #include "CharacterFactory.h"
 #include "Notification.h"
 
+enum gameStatus_t {
+	STATUS_CONNECTING_TO_SERVER,
+	STATUS_SERVER_UNREACHEABLE,
+	STATUS_UPDATING_FILES,
+	STATUS_FILES_UPDATED_OK,
+	STATUS_UPDATING_CONNECTION_LOST,
+	STATUS_CONNECTING_TO_SIMULATION,
+	STATUS_SIMULATION_CONNECTED,
+	STATUS_SIMULATION_DISCONNECTED,
+	STATUS_SIMULATION_CONNECTION_LOST
+};
+
+
 class GameView {
 public:
 	GameView(void);
@@ -31,6 +44,8 @@ public:
 	bool isKnownByPlayer(std::pair<int,int> pos);
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
+	void setStatus(gameStatus_t status);
+	gameStatus_t getStatus();
 	void setConnected(bool state);
 	void setFirstConnection(bool state);
 	void setServerReached(bool state);
