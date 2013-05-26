@@ -54,4 +54,6 @@
 
 #define DEFAULT_FONT_PATH "../Fonts/Arial.ttf"
 
+#define DEFAULT_NOTIFICATIONBOX_PATH "../Connection/notificationBox.png"
+
 #endif

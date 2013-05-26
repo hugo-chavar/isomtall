@@ -80,6 +80,12 @@ entidades:
       pixel_ref_x: 48
       pixel_ref_y: 64
       fps: 10 
+
+    - nombre: mago 
+      imagen: ../Images/personajeMago/
+      pixel_ref_x: 65
+      pixel_ref_y: 70
+      fps: 10 
        
     - nombre: caballo
       imagen: ../Images/personajeCaballo/
@@ -204,6 +210,22 @@ escenarios:
          - {x: 8, y: 16, entidad: arbol}
          - {x: 9, y: 14, entidad: arbol}
          - {x: 9, y: 16, entidad: arbol}
+
+         - {x: 10, y: 10, entidad: arbol}
+         - {x: 10, y: 11, entidad: arbol}
+         - {x: 10, y: 12, entidad: arbol}
+         - {x: 10, y: 13, entidad: arbol}
+         - {x: 10, y: 14, entidad: arbol}
+         - {x: 11, y: 10, entidad: arbol}
+         - {x: 11, y: 14, entidad: arbol}
+         - {x: 12, y: 14, entidad: arbol}
+         - {x: 13, y: 10, entidad: arbol}
+         - {x: 13, y: 14, entidad: arbol}
+         - {x: 14, y: 10, entidad: arbol}
+         - {x: 14, y: 11, entidad: arbol}
+         - {x: 14, y: 12, entidad: arbol}
+         - {x: 14, y: 13, entidad: arbol}
+         - {x: 14, y: 14, entidad: arbol}
 		 
          - {x: 0, y: 0, entidad: piedra}
          - {x: 1, y: 0, entidad: piedra}
@@ -383,7 +405,10 @@ escenarios:
            y: 0 
          - tipoEntidad: frodo
            x: 3 
-           y: 3 
+           y: 3
+         - tipoEntidad: mago
+           x: 3 
+           y: 5
     - nombre: bosque_loco 
       size_x: 10
       size_y: 10 
