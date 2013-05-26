@@ -35,8 +35,8 @@ void Personaje::crearNombre(string textoNombre) {
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	SDL_Color textColor = Camera::WHITE_COLOR; //{ 255, 255, 255 }
-	font = TTF_OpenFont( FUENTE, 12 );
+	SDL_Color textColor = Camera::WHITE_COLOR;
+	font = TTF_OpenFont( DEFAULT_FONT_PATH, 12 );
 	nombre = TTF_RenderText_Blended( font, textoNombre.c_str(), textColor );
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	TTF_CloseFont( font );

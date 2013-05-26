@@ -32,17 +32,16 @@ public:
 	//string getText(int pos);
 	void addLine(string newMsg);
 	void setTextColor(SDL_Color color);
+	void setTextSize(int size);
 
 private:
 	SDL_Surface *_box;
 	SDL_Rect _boxRect;
 	SDL_Color _textColor;
+	int _textSize;
 	TTF_Font *_font;
 	unsigned maxLines;
 	vector<Line *> lines;
-	//vector<SDL_Surface *> _texts;//convendria encapsularlo
-	//vector<SDL_Rect *> _textRects;//convendria encapsularlo
-	//vector<string> _strTexts;//
 	bool load(string imagePath, char *fontPath, int textSize);
 
 };

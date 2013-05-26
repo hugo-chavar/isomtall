@@ -8,14 +8,13 @@
 #include "Notification.h"
 
 enum gameStatus_t {
-	STATUS_CONNECTING_TO_SERVER,
-	STATUS_SERVER_UNREACHEABLE,
 	STATUS_UPDATING_FILES,
-	STATUS_FILES_UPDATED_OK,
+	STATUS_SERVER_UNREACHEABLE,
 	STATUS_UPDATING_CONNECTION_LOST,
+	STATUS_FILES_UPDATED_OK,
+	STATUS_INIT_ERROR,
 	STATUS_CONNECTING_TO_SIMULATION,
 	STATUS_SIMULATION_CONNECTED,
-	STATUS_SIMULATION_DISCONNECTED,
 	STATUS_SIMULATION_CONNECTION_LOST
 };
 
@@ -46,9 +45,9 @@ public:
 	Personaje* nextCharacter();
 	void setStatus(gameStatus_t status);
 	gameStatus_t getStatus();
-	void setConnected(bool state);
-	void setFirstConnection(bool state);
-	void setServerReached(bool state);
+	//void setConnected(bool state);
+	//void setFirstConnection(bool state);
+	//void setServerReached(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
 	void setActivatedAt(int activeAt);
@@ -61,7 +60,7 @@ private:
 	view::ChatView chat;
 	view::Notification notification;
 	bool connected;
-	bool firstConnection;
+	//bool firstConnection;
 	bool serverReached;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;

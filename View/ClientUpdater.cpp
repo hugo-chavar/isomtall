@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include "Logger.h"
+#include "GameView.h"
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
@@ -114,22 +115,24 @@ void ClientUpdater::updateClient() {
 			}
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 		}
-		instructionOut.clear();
-		instructionOut.setOpCode(OPCODE_DISCONNECT);
-		this->getConnector().addInstruction(instructionOut);
-		this->getConnector().stopConnector(false);
-		if(archivo.is_open())
-			{archivo.close();}
-		if(!this->getConnector().isConnectionOK())
+		if(archivo.is_open()) {
+			archivo.close();
+		}
+		if(this->getConnector().isConnectionOK()){
+			instructionOut.clear();
+			instructionOut.setOpCode(OPCODE_DISCONNECT);
+			this->getConnector().addInstruction(instructionOut);
+			this->getConnector().stopConnector(false);
+			GameView::instance().setStatus(STATUS_FILES_UPDATED_OK);
+			std::cerr << "CLIENT UPDATER: EVERYTHING WENT OK" << std::endl;
+		} else//	if(!this->getConnector().isConnectionOK())
 		{
 			//AQUI SE DEBERIA IMPRIMIR POR PANTALLA UN MSJ DE DESCONEXION
+			GameView::instance().setStatus(STATUS_UPDATING_CONNECTION_LOST);
 			std::cerr << "CLIENT UPDATER: CONNECTION LOST" << std::endl;
-		} else {
-			std::cerr << "CLIENT UPDATER: EVERYTHING WENT OK" << std::endl;
 		}
 	} else {
-		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		//TODO: YAMILA
+		GameView::instance().setStatus(STATUS_SERVER_UNREACHEABLE);
 		std::cerr << "CLIENT UPDATER: SERVER UNREACHABLE" << std::endl;
 	}
 }

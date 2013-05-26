@@ -1,16 +1,12 @@
 #include "Notification.h"
+#include "Constants.h"
 
 view::Notification::Notification() { }
 
 view::Notification::~Notification() { }
 
 bool view::Notification::initialize(Camera &camera) {
-	//SDL_Color boxColor;
-	////boxColor.r = 255;
-	////boxColor.g = 0;
-	////boxColor.b = 0;
-	//boxColor = Camera::GREEN_COLOR;
-	if (!box.initialize("../Images/notificationBox.png", Camera::GREEN_COLOR, "../Fonts/arial.ttf", camera.getOffsetX()+(camera.getWidth()/2), camera.getOffsetY()+(camera.getHeight()/2), 24, 1))
+	if (!box.initialize("../Images/notificationBox.png", Camera::GREEN_COLOR, DEFAULT_FONT_PATH, camera.getOffsetX()+(camera.getWidth()/2), camera.getOffsetY()+(camera.getHeight()/2), 24, 1))
 		return false;
 	box.update(box.getOffsetX()-(box.getWidth()/2), box.getOffsetY()-(box.getHeight()/2));
 	return true;
@@ -30,4 +26,8 @@ void view::Notification::update(Camera &camera) {
 
 void view::Notification::setColor(SDL_Color color) {
 	box.setTextColor(color);
+}
+
+void view::Notification::setFontSize(int size) {
+	box.setTextSize(size);
 }

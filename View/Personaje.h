@@ -7,6 +7,7 @@
 #include "PersonajeModelo.h"
 #include "Entity.h"
 #include "Mutex.h"
+#include "Constants.h"
 
 class Personaje : public Entity {
 public:

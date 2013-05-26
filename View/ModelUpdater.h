@@ -9,7 +9,7 @@ class ModelUpdater : public Thread {
 private:
 	bool connected;
 
-	bool firstConnection;
+	bool errors;
 
 	bool serverReached;
 
@@ -23,7 +23,7 @@ private:
 
 	void setConnected(bool connected);
 
-	void setFirstConnection(bool firstConnection);
+	void setError(bool error);
 	
 	void setServerReached(bool serverReached);
 
@@ -56,7 +56,7 @@ public:
 
 	bool isConnected();
 
-	bool isFirstConnection();
+	bool thereAreErrors();
 
 	bool hasServerBeenReached();
 

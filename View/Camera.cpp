@@ -77,13 +77,14 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 	 //asi se centra la camara al principio
 	 this->setOffsetX(0);
 	 this->setOffsetY(0);
-	 this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	 if(this->cameraSurface==NULL)
-	 {
-		 width = DEFAULT_SCREEN_WIDTH;
-		 height = DEFAULT_SCREEN_HEIGHT;
-		 this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	 }
+	 this->startScreen(width,height);
+	 //this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	 //if(this->cameraSurface == NULL)
+	 //{
+		// width = DEFAULT_SCREEN_WIDTH;
+		// height = DEFAULT_SCREEN_HEIGHT;
+		// this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	 //}
 	 SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
 	 return true;
  }
@@ -155,6 +156,12 @@ void Camera::render(SDL_Rect spriteRec,SDL_Surface* surface)
 	}
 }
 
+void Camera::startScreen(unsigned width, unsigned height) {
+	this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	if(this->cameraSurface == NULL)	{
+		this->cameraSurface = SDL_SetVideoMode(DEFAULT_SCREEN_WIDTH,DEFAULT_SCREEN_HEIGHT,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
+	}
+}
 
 Camera::~Camera() {
 }

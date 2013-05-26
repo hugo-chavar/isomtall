@@ -17,6 +17,7 @@ namespace view {
 		virtual void update(Camera &camera);
 		void addNotification(string message);
 		void setColor(SDL_Color color);
+		void setFontSize(int size);
 	private:
 		StaticTextBox box;
 
