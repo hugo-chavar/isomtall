@@ -108,6 +108,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			instructionOut.clear();
 			instructionOut.setOpCode(OPCODE_INIT_SYNCHRONIZE);
 			instructionOut.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+			instructionOut.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
