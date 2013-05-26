@@ -6,7 +6,7 @@ view::Notification::Notification() { }
 view::Notification::~Notification() { }
 
 bool view::Notification::initialize(Camera &camera) {
-	if (!box.initialize("../Images/notificationBox.png", Camera::GREEN_COLOR, DEFAULT_FONT_PATH, camera.getOffsetX()+(camera.getWidth()/2), camera.getOffsetY()+(camera.getHeight()/2), 24, 1))
+	if (!box.initialize(DEFAULT_NOTIFICATIONBOX_PATH, Camera::GREEN_COLOR, DEFAULT_FONT_PATH, camera.getOffsetX()+(camera.getWidth()/2), camera.getOffsetY()+(camera.getHeight()/2), 24, 1))
 		return false;
 	box.update(box.getOffsetX()-(box.getWidth()/2), box.getOffsetY()-(box.getHeight()/2));
 	return true;
