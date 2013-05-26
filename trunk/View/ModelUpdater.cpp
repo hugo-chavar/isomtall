@@ -11,7 +11,7 @@
 
 ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 	this->connected = false;
-	this->firstConnection = false;
+	this->errors = false;
 	this->activatedAt = 0;
 }
 
@@ -21,8 +21,8 @@ void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
 }
 
-void ModelUpdater::setFirstConnection(bool firstConnection) {
-	this->firstConnection = firstConnection;
+void ModelUpdater::setError(bool error) {
+	this->errors = error;
 }
 
 void ModelUpdater::setServerReached(bool serverReached) {
@@ -58,6 +58,7 @@ void ModelUpdater::updateModel() {
 
 	if (newSocket->connectTo() != -1) {
 		this->setServerReached(true);
+		GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
 
@@ -100,7 +101,6 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
-			this->setFirstConnection(true);
 			this->setConnected(true);
 			std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
@@ -214,8 +214,8 @@ bool ModelUpdater::isConnected() {
 	return this->connected;
 }
 
-bool ModelUpdater::isFirstConnection() {
-	return this->firstConnection;
+bool ModelUpdater::thereAreErrors() {
+	return this->errors;
 }
 
 bool ModelUpdater::hasServerBeenReached() {

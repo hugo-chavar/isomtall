@@ -1,8 +1,11 @@
 #include "StaticTextBox.h"
+#include "Constants.h"
 
 
-
-StaticTextBox::StaticTextBox() { }
+StaticTextBox::StaticTextBox() {
+	this->_box = NULL;
+	this->_font = NULL;
+}
 
 StaticTextBox::~StaticTextBox() {
 	SDL_FreeSurface(_box);
@@ -10,6 +13,8 @@ StaticTextBox::~StaticTextBox() {
 		lines[i]->liberar();
 		delete lines[i];
 	}
+	if (_font)
+		TTF_CloseFont(_font);
 }
 
 SDL_Surface *load_SDLimage(string filename)
@@ -49,15 +54,15 @@ SDL_Surface *load_SDLimage(string filename)
 
 bool StaticTextBox::load(string imagePath, char *fontPath, int textSize) {
 	//Load images
-	_box = load_SDLimage(imagePath);
+	this->_box = load_SDLimage(imagePath);
 	//Open the font
-	_font = TTF_OpenFont(fontPath, textSize);
+	this->_font = TTF_OpenFont(fontPath, textSize);
 	//If there was a problem in loading the background
 	if (_box == NULL) {
 		return false;
 	}
 	//If there was an error in loading the font
-	if (_font == NULL) {
+	if (this->_font == NULL) {
 		return false;
 	}
 	//If everything loaded fine
@@ -68,7 +73,8 @@ bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color, char
 	if (!load(backgroundImagePath, fontPath,textSize))
 		return false;
 	this->setTextColor(color);
-	maxLines = max_lines;
+	this->setTextSize(textSize);
+	this->maxLines = max_lines;
 	//_strTexts.push_back("");
 	//_texts.push_back(NULL);
 	_boxRect.x = static_cast<Sint16>(offsetX);
@@ -94,22 +100,22 @@ void StaticTextBox::render(Camera &camera) {
 
 	//Escribo en el fondo las lineas adecuadas
 	camera.render(_boxRect, _box);
-	int max=lines.size()-1;
-	for(unsigned i=0;i<lines.size();i++) {
+	int max = this->lines.size() - 1;
+	for(unsigned i = 0; i < this->lines.size(); i++) {
 		SDL_Rect rect;
 		rect.x = static_cast<Sint16>(_boxRect.x+10);
 		rect.y = static_cast<Sint16>(_boxRect.y+5+(max-i)*TTF_FontLineSkip(_font));
-		camera.render(rect,lines[i]->getText());
+		camera.render(rect, lines[i]->getText());
 	}
 }
 
 void StaticTextBox::update(float offsetX, float offsetY) {
-	_boxRect.x = static_cast<Sint16>(offsetX);
-	_boxRect.y = static_cast<Sint16>(offsetY);
+	this->_boxRect.x = static_cast<Sint16>(offsetX);
+	this->_boxRect.y = static_cast<Sint16>(offsetY);
 }
 
 float StaticTextBox::getOffsetX() {
-	return _boxRect.x;
+	return this->_boxRect.x;
 }
 
 float StaticTextBox::getOffsetY() {
@@ -117,11 +123,11 @@ float StaticTextBox::getOffsetY() {
 }
 
 int StaticTextBox::getHeight() {
-	return _boxRect.h;
+	return this->_boxRect.h;
 }
 
 int StaticTextBox::getWidth() {
-	return _boxRect.w;
+	return this->_boxRect.w;
 }
 
 //string StaticTextBox::getText(int pos)
@@ -130,11 +136,11 @@ int StaticTextBox::getWidth() {
 //}
 
 void StaticTextBox::addLine(string newMsg) {
-	lines.push_back(new Line(newMsg,_font,this->_textColor));
-	if (lines.size() > maxLines) {
-		lines[0]->liberar();
-		delete lines[0];
-		lines.erase(lines.begin());
+	this->lines.push_back(new Line(newMsg, this->_font, this->_textColor));
+	if (lines.size() > this->maxLines) {
+		this->lines[0]->liberar();
+		delete this->lines[0];
+		this->lines.erase(this->lines.begin());
 	}
 }
 
@@ -144,4 +150,11 @@ vector <Line *> StaticTextBox::getLines() {
 
 void StaticTextBox::setTextColor(SDL_Color color) {
 	this->_textColor = color;
+}
+
+void StaticTextBox::setTextSize(int size) {
+	this->_textSize = size;
+	if (this->_font)
+		TTF_CloseFont(this->_font);
+	this->_font = TTF_OpenFont(DEFAULT_FONT_PATH, this->_textSize);
 }

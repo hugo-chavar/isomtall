@@ -52,4 +52,6 @@
 #define DEFAULT_STAGE_SIZE_Y 100
 #define MAX_STAGE_SIZE_X 1024 //para manejar la vision del personaje necesito un limite
 
+#define DEFAULT_FONT_PATH "../Fonts/Arial.ttf"
+
 #endif

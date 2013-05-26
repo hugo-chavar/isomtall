@@ -38,6 +38,7 @@ namespace view {
 		void update();
 		void cleanUp();
 		void render(SDL_Rect spriteRec,SDL_Surface* surface);
+		void startScreen(unsigned width, unsigned height);
 		~Camera();
 	};
 

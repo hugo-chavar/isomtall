@@ -25,28 +25,33 @@ bool GameView::initialize() {
 	bool chatInitialized = false;
 	bool notificationInitialized = false;
 	this->serverReached = true;
-	this->firstConnection = false;
+	//this->firstConnection = false;
 	//connected = true;
 
 	this->chat.setIsTyping(false);
 
 	//Initialize SDL_ttf
-	if (TTF_Init()==-1)
+	if (TTF_Init() == -1)
 		textInitialized = false;
 
-	if (cameraInitialized){
-		mapInitialized = worldView.initialize();
-		chatInitialized = chat.initialize(camera);
-		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+	if (cameraInitialized) {
 		notificationInitialized = notification.initialize(camera);
+		if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) || (this->getStatus() == STATUS_CONNECTING_TO_SIMULATION) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
+			mapInitialized = worldView.initialize();
+			chatInitialized = chat.initialize(camera);
+			worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+			this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
+			this->addPersonaje(this->getPlayerName(), this->personaje);
+			if (!mapInitialized)
+				this->setStatus(STATUS_INIT_ERROR);
+		}
 	}
-	this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
-	this->addPersonaje(this->getPlayerName(), this->personaje);
+	
 
 	//si hubo errores de inicializacion salgo
 	bool running = mapInitialized & cameraInitialized & textInitialized; 
 
-	if (running) {
+	if (mapInitialized) {
 		//TODO: cambiar por this->camera.setCenterPixel(worldView.personaje()->getPixelPosition());
 		std::pair<int,int> posPersonaje = this->personaje->getPixelPosition();
 		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
@@ -59,7 +64,9 @@ bool GameView::initialize() {
 		errorEntity.delay(0);
 
 		errorImage = new SpriteAnimado(&errorEntity);
+		this->setStatus(STATUS_CONNECTING_TO_SIMULATION);
 	}
+
 	return running;
 }
 
@@ -126,28 +133,35 @@ string GameView::getPlayerCharacterId() {
 
 void GameView::cleanUp() {
 	this->camera.cleanUp();
-	this->chat.modelChat->cleanUp();
+	if (this->getStatus() == STATUS_SIMULATION_CONNECTED) {
+		this->chat.modelChat->cleanUp();
+	}
 }
-
-void GameView::setConnected(bool state) {
-	this->connected = state;
-}
-
-void GameView::setFirstConnection(bool state) {
-	this->firstConnection = state;
-}
-
-void GameView::setServerReached(bool state) {
-	this->serverReached = state;
-}
+//
+//void GameView::setConnected(bool state) {
+//	this->connected = state;
+//}
+//
+//void GameView::setFirstConnection(bool state) {
+//	this->firstConnection = state;
+//}
+//
+//void GameView::setServerReached(bool state) {
+//	this->serverReached = state;
+//}
 
 void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface,NULL,0);
-	this->worldView.render(this->camera);
-	if (chat.isTyping())
-		this->chat.render(this->camera);
-	if (!connected)
+	if (this->getStatus() != STATUS_SIMULATION_CONNECTED) {
 		this->notification.render(this->camera);
+	} else {
+		this->worldView.render(this->camera);
+		if (chat.isTyping())
+			this->chat.render(this->camera);
+		//if (!connected)
+		//	this->notification.render(this->camera);
+	}
+
 	SDL_Flip(this->camera.cameraSurface);
 
 }
@@ -159,10 +173,9 @@ SpriteAnimado* GameView::getErrorImage() {
 
 void GameView::update() {
 	this->camera.update();
-	this->worldView.update();
-	this->chat.update(camera);
-
-	/*STATUS_CONNECTING_TO_SERVER,
+	/*
+	STATUS_INIT_ERROR,
+	STATUS_CONNECTING_TO_SERVER,
 	STATUS_SERVER_UNREACHEABLE,
 	STATUS_UPDATING_FILES,
 	STATUS_FILES_UPDATED_OK,
@@ -173,32 +186,60 @@ void GameView::update() {
 	STATUS_SIMULATION_CONNECTION_LOST */
 
 	switch (this->getStatus()) {
-		case STATUS_CONNECTING_TO_SERVER:
-			this->notification.addNotification("        SERVER UNREACHABLE");
+		case STATUS_INIT_ERROR:
+			this->notification.addNotification("      ERROR LOADING CLIENT");
 			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
+			this->notification.setFontSize(24);
 		break;
+		//case STATUS_UPDATING_CONNECTION_LOST:
+		//	this->notification.addNotification("      CONNECTING TO SERVER");
+		//	this->notification.update(camera);
+		//	this->notification.setColor(Camera::GREEN_COLOR);
+		//break;
 		case STATUS_SERVER_UNREACHEABLE:
 			this->notification.addNotification("        SERVER UNREACHABLE");
 			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
 		break;
 		case STATUS_UPDATING_FILES:
-			
+			this->notification.addNotification("        UPDATING FILES");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::BLACK_COLOR);
+			this->notification.setFontSize(24);
 		break;
 		case STATUS_FILES_UPDATED_OK:
 			
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
-			
+			this->notification.addNotification("UPDATED FAILED CONNECTION LOST");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
+			this->notification.setFontSize(20);
 		break;
-		case STATUS_CONNECTING_TO_SIMULATION:
-			
+		//case STATUS_CONNECTING_TO_SIMULATION:
+		//	this->notification.addNotification("      CONNECTING TO SIMULATION");
+		//	this->notification.update(camera);
+		//	this->notification.setColor(Camera::GREEN_COLOR);
+		//	this->notification.setFontSize(24);
+		//break;
+		case STATUS_SIMULATION_CONNECTED:
+			this->worldView.update();
+			this->chat.update(camera);
+		break;
+		case STATUS_SIMULATION_CONNECTION_LOST:
+			this->notification.addNotification("   SERVER CONNECTION LOST");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
+			this->notification.setFontSize(24);
 		break;
 	}
 
-	if (!serverReached) {
+	/*if (!serverReached) {
 		this->notification.addNotification("        SERVER UNREACHABLE");
 		this->notification.update(camera);
 		this->notification.setColor(Camera::BLACK_COLOR);
+		
 	}
 	else {
 		if (!this->connected) {
@@ -213,7 +254,7 @@ void GameView::update() {
 				this->notification.setColor(Camera::GREEN_COLOR);
 			}
 		}
-	}
+	}*/
 	//agregar update personajes
 }
 

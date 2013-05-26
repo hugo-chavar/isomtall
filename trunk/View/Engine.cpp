@@ -13,8 +13,6 @@ Engine::Engine() {
 	//TODO: must be either in the config file or an in-game parameter.
 	this->desiredFPS = 20;
 
-	//WSAData ws;
-	//WSAStartup(MAKEWORD(2,2),&ws);
 }
 
 bool Engine::isRunning() {
@@ -32,20 +30,19 @@ int Engine::execute() {
 
 	this->initialize();
 
-	//if (!this->getLogin()->isLoggedIn())
-	//	return EXIT_FAILURE;
+	if (GameView::instance().getStatus() == STATUS_CONNECTING_TO_SIMULATION) {
+		Instruction instruction;
+		instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
+		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+		GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
+		GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
 
-	Instruction instruction;
-	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
-	GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
-
-	instruction.clear();
-	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-	this->getModelUpdater()->addInstruction(instruction);
-
+		instruction.clear();
+		instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
+		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+		this->getModelUpdater()->addInstruction(instruction);
+		
+	}
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
@@ -53,11 +50,11 @@ int Engine::execute() {
 			this->onEvent(&sdlEvent);
 		}
 		
-		GameView::instance().setConnected(_modelUpdater.isConnected());
-
-		GameView::instance().setFirstConnection(_modelUpdater.isFirstConnection());
-
-		GameView::instance().setServerReached(_modelUpdater.hasServerBeenReached());
+		if (_modelUpdater.isConnected()) {
+			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+		} else if ((GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTED)&&(_modelUpdater.thereAreErrors())) {
+			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
+		}
 
 		this->update();
 
@@ -75,7 +72,7 @@ int Engine::execute() {
 void Engine::initialize() {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
-
+	GameView::instance().setStatus(STATUS_UPDATING_FILES);
 	//descarga de archivos
 	YAMLParser connectionParser;
 	connectionParser.parse(CONNECTION_DIRECTORY, true);
@@ -86,20 +83,22 @@ void Engine::initialize() {
 	clientUpdater.setServerPort(serverPortNumber);
 	clientUpdater.updateClient();
 
-	Game::instance().configuration()->serverPort(serverPortNumber);
-	Game::instance().configuration()->serverIp(serverIpAddress);
+	if (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK) {
 
-	Instruction instruction;
-	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
-	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
-	this->getLogin()->getLoginUpdater().addInstruction(instruction);
-	this->_login.initialize();
+		Game::instance().configuration()->serverPort(serverPortNumber);
+		Game::instance().configuration()->serverIp(serverIpAddress);
 
-	Game::instance().initialize();
+		Instruction instruction;
+		instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+		instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
+		this->getLogin()->getLoginUpdater().addInstruction(instruction);
+		this->_login.initialize();
+		this->getModelUpdater()->startUpdating();
+		Game::instance().initialize();
+	}
 
-	this->running = GameView::instance().initialize();
-	this->getModelUpdater()->startUpdating();
+	GameView::instance().initialize();
 
 }
 
@@ -203,9 +202,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 }
 
 void Engine::update() {
-	/*this->camera.update();
-	this->worldView.update();
-	this->chat.update(camera);*/
 	GameView::instance().update();
 }
 
@@ -217,15 +213,11 @@ void Engine::render() {
 void Engine::cleanUp() {
 	Instruction instructionOut;
 
-	//this->camera.cleanUp();
-
 	GameView::instance().cleanUp();
 
 	this->_login.cleanUp();
 
-	//GameView::instance().getChat()->modelChat->cleanUp();
 
-	
 	if (this->getModelUpdater()->isConnected()) {
 		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
 		this->getModelUpdater()->addInstruction(instructionOut);

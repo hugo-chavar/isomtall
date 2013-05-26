@@ -5,7 +5,7 @@
 
 //Fuente de texto
 
-#define FUENTE "../Fonts/Arial.ttf"
+//#define FUENTE "../Fonts/Arial.ttf"
 
 //Factor de separación. Permite que las orientaciones esten alineadas (p.e. norte siempre termina en 0)
 
