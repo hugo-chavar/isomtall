@@ -132,6 +132,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_CONNECTION_ERROR:
 			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
+			this->setError(true);
 			this->setConnected(false);
 			this->setStopping(true);
 			break;
