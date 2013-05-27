@@ -73,16 +73,19 @@ void ClientUpdater::updateClient() {
 	Instruction instructionIn;
 	Instruction instructionOut;
 	Socket* newSocket = new Socket(inet_addr(this->getServerIp().c_str()),this->getServerPort(),0);
+	bool keepUpdating = true;
 
 	if (newSocket->connectTo() != -1) {
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
 		instructionOut.setOpCode(OPCODE_UPDATE_REQUEST);
 		this->getConnector().addInstruction(instructionOut);
-		instructionIn = this->getInstructionQueue().getNextInstruction(true);
+		//instructionIn = this->getInstructionQueue().getNextInstruction(true);
 		std::ofstream archivo;
 		std::string path = "";
-		while (instructionIn.getOpCode() != OPCODE_UPDATE_COMPLETE && this->getConnector().isConnectionOK()) {
+		
+		do {
+			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 			switch (instructionIn.getOpCode()) {
 				case OPCODE_UPDATE_FILE:
 					{
@@ -112,25 +115,65 @@ void ClientUpdater::updateClient() {
 						//DEBO RECIBIR ARBOL DE DIRECTORIOS A PROCESAR
 					}
 				break;
+				case OPCODE_UPDATE_COMPLETE:
+					keepUpdating = false;
+					instructionOut.clear();
+					instructionOut.setOpCode(OPCODE_DISCONNECT);
+					this->getConnector().addInstruction(instructionOut);
+					this->getConnector().stopConnector(false);
+					GameView::instance().setStatus(STATUS_FILES_UPDATED_OK);
+					common::Logger::instance().log("Update Complete");
+					break;
+				case OPCODE_CONNECTION_ERROR:
+					if(archivo.is_open()) {
+						archivo.close();
+						}
+					GameView::instance().setStatus(STATUS_UPDATING_CONNECTION_LOST);
+					keepUpdating = false;
+					common::Logger::instance().log("Connection error");
+					break;
 			}
+		} while (instructionIn.getOpCode() != OPCODE_UPDATE_COMPLETE && keepUpdating);
+
+
+
+		/*
+		while (instructionIn.getOpCode() != OPCODE_UPDATE_COMPLETE && this->getConnector().isConnectionOK()) {
+			switch (instructionIn.getOpCode()) {
+				case OPCODE_UPDATE_FILE:
+					{
+					receiveFile(&archivo,instructionIn);
+					//this->sendConfirmation();
+					}
+				break
+				case OPCODE_UPDATE_FILE_START:
+					{
+						path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
+						archivo.open(path,std::ios::binary);
+						//this->sendConfirmation();
+					//ABRO ARCHIVO
+					}
+				break;
+				case OPCODE_UPDATE_FILE_COMPLETE:
+					archivo.close();
+					//this->sendConfirmation();
+					//DEBO PARARME EN EL DIRECTORIO DEL NUEVO ARCHIVO A RECIBIR
+				break;
+				case OPCODE_UPDATE_DIRECTORY:
+					{
+						std::string directorios = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_DIR);
+						path = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SERIALIZED_PATH);
+						this->crearDirectorios(directorios,path);
+						//this->sendConfirmation();
+						//DEBO RECIBIR ARBOL DE DIRECTORIOS A PROCESAR
+					}
+				break;
+			}
+			//common::Logger::instance().log("Pido nueva instruccion");
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
-		}
-		if(archivo.is_open()) {
-			archivo.close();
-		}
-		if(this->getConnector().isConnectionOK()){
-			instructionOut.clear();
-			instructionOut.setOpCode(OPCODE_DISCONNECT);
-			this->getConnector().addInstruction(instructionOut);
-			this->getConnector().stopConnector(false);
-			GameView::instance().setStatus(STATUS_FILES_UPDATED_OK);
-			std::cerr << "CLIENT UPDATER: EVERYTHING WENT OK" << std::endl;
-		} else//	if(!this->getConnector().isConnectionOK())
-		{
-			//AQUI SE DEBERIA IMPRIMIR POR PANTALLA UN MSJ DE DESCONEXION
-			GameView::instance().setStatus(STATUS_UPDATING_CONNECTION_LOST);
-			std::cerr << "CLIENT UPDATER: CONNECTION LOST" << std::endl;
-		}
+			//common::Logger::instance().log("Obtengo nueva instruccion");
+		}*/
+		//common::Logger::instance().log("Sali del while");
 	} else {
 		GameView::instance().setStatus(STATUS_SERVER_UNREACHEABLE);
 		std::cerr << "CLIENT UPDATER: SERVER UNREACHABLE" << std::endl;
