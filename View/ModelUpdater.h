@@ -2,7 +2,7 @@
 #define _MODEL_UPDATER_H_
 
 #include "Thread.h"
-#include "Connector.h"
+#include "SimulationConnector.h"
 #include "InstructionQueue.h"
 
 class ModelUpdater : public Thread {
@@ -17,7 +17,7 @@ private:
 
 	bool forceStop;
 
-	Connector connector;
+	SimulationConnector connector;
 
 	InstructionQueue instructionQueue;
 
@@ -33,7 +33,7 @@ private:
 
 	void setForceStop(bool forceStop);
 
-	Connector& getConnector();
+	SimulationConnector& getConnector();
 
 	InstructionQueue& getInstructionQueue();
 
