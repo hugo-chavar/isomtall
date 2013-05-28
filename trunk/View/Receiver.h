@@ -6,7 +6,7 @@
 #include "InstructionQueue.h"
 
 class Receiver : public Thread {
-private:
+protected:
 	Socket* socket;
 
 	std::string userID;
@@ -31,7 +31,7 @@ private:
 
 	void receive();
 
-	std::string receiveMessageFromSocket();
+	virtual std::string receiveMessageFromSocket();
 
 	void* run();
 

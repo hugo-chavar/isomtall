@@ -41,7 +41,7 @@ void ModelUpdater::setForceStop(bool forceStop) {
 	this->forceStop = forceStop;
 }
 
-Connector& ModelUpdater::getConnector() {
+SimulationConnector& ModelUpdater::getConnector() {
 	return this->connector;
 }
 
