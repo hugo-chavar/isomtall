@@ -88,6 +88,8 @@
     <ClCompile Include="Receiver.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
     <ClCompile Include="Sender.cpp" />
+    <ClCompile Include="SimulationConnector.cpp" />
+    <ClCompile Include="SimulationReceiver.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StaticTextBox.cpp" />
     <ClCompile Include="Textbox.cpp" />
@@ -119,6 +121,8 @@
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClInclude Include="Sender.h" />
+    <ClInclude Include="SimulationConnector.h" />
+    <ClInclude Include="SimulationReceiver.h" />
     <ClInclude Include="StaticTextBox.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Entity.h" />
