@@ -62,6 +62,7 @@ void Receiver::receive() {
 		this->getInstructionQueue()->addInstruction(instruction);
 
 		request = this->receiveMessageFromSocket();
+		
 	}
 }
 
@@ -79,7 +80,7 @@ std::string Receiver::receiveMessageFromSocket() {
 		messageEndPosition += messageEndTag.length();
 		message = this->getReminder().substr(0,messageEndPosition);
 		this->setReminder(this->getReminder().substr(messageEndPosition));
-
+		Sleep(20);
 		return message;
 	}
 
