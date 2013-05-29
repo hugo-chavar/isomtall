@@ -24,6 +24,7 @@ namespace common
 		void nullPointer(string line);
 		void setFile(string path);
 		void logWithoutTimeStamp(string line);
+		void close();
 		
 	private:
 		Logger();

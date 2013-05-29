@@ -98,7 +98,7 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_USERID_NOT_AVAILABLE:
-			GameView::instance().setStatus(STATUS_LOGIN_FAILED);
+			GameView::instance().setStatus(STATUS_LOGIN_USER_FAILED);
 			this->setStopping(true);//TEMPORARY
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ERROR));
@@ -172,7 +172,8 @@ bool LoginUpdater::initialize()
 	while (instructionIn.getOpCode()!= OPCODE_LOGIN_OK && instructionIn.getOpCode()!=OPCODE_USERID_NOT_AVAILABLE && this->getConnector().isConnectionOK());
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
-		std::cout << "SERVER UNREACHABLE" << std::endl;
+		GameView::instance().setStatus(STATUS_LOGIN_CONNECTION_LOST);
+		//std::cout << "SERVER UNREACHABLE" << std::endl;
 		return false;
 	}
 	return true;
