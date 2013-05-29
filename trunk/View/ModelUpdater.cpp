@@ -8,6 +8,12 @@
 #include "SDL.h"
 #include <iostream>
 
+bool comparator(pair<unsigned, int> p1, pair<unsigned, int> p2 ) {
+	if (p1.first < p2.first)
+		return true;
+	return false;
+}
+
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
 ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
@@ -17,6 +23,7 @@ ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 	this->diffDelay = 0;
 	this->lastServerDelay = 0;
 	this->startedAt = 0;
+	transmissionTimes.clear();
 }
 
 // ----------------------------------- PRIVATE METHODS -----------------------------------
@@ -24,10 +31,6 @@ ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
 }
-//
-//void ModelUpdater::setError(bool error) {
-//	this->errors = error;
-//}
 
 void ModelUpdater::setServerReached(bool serverReached) {
 	this->serverReached = serverReached;
@@ -103,6 +106,9 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 
 	instructionOut.clear();
 	switch (instructionIn.getOpCode()) {
+		case OPCODE_SYNCHRONIZE_CLOCK:
+			this->synchronizeClock(instructionIn);
+		break;
 		case OPCODE_CONNECT_TO_SIMULATION:
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
@@ -127,12 +133,13 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			{
-				std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
+				//TODO: ESTO SE CAMBIA POR SINCRONIZAR EL CLOCK
+				//std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
 				this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
-				common::Logger::instance().log("Server start: "+ serverStart);
-				unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
+				//common::Logger::instance().log("Server start: "+ serverStart);
+				//unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
 				this->setStartedAt(clientStart);
-				common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
+				//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 			}
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
@@ -140,7 +147,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
 				GameView::instance().getMyPersonaje()->initFromString(syncData);
 				GameView::instance().getMyPersonaje()->setActive(true);
-				this->requestSynchronize();
+				this->requestSynchronizeClock();
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
@@ -178,33 +185,34 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn) {
 	stringUtilities::splitString(serializedSimulation,player_simulations,':');
 	if (player_simulations.size() < 1)
 		return;
-	std::string stserverTicks = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
-	unsigned serverTicks = stringUtilities::stringToUnsigned(stserverTicks);
-	unsigned clientTicks = static_cast<unsigned>(SDL_GetTicks());
-	if ((this->startedAt < clientTicks) && (this->activatedAt < serverTicks)) {
-		std::string serTic = "ServerTicks. "+ stringUtilities::padLeft(stserverTicks,' ',10);
-		std::string cliTic = " CliTicks. "+ stringUtilities::padLeft(stringUtilities::unsignedToString(clientTicks),' ',10);
-		unsigned clientTickMove = clientTicks - this->startedAt;
-		std::string climov = " ClientTimeAdvance: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(clientTickMove),' ',10);
-		unsigned serverTickMove = serverTicks - this->activatedAt;
-		std::string sermov = " ServerTimeAdvance: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(serverTickMove),' ',10);
-		common::Logger::instance().log(serTic);
-		common::Logger::instance().log(cliTic);
-		common::Logger::instance().log(sermov);
-		common::Logger::instance().log(climov);
-		//std::string res = serTic + cliTic + climov + sermov;
-		std::string res = " RTT: " + stringUtilities::unsignedToString(this->calculateRTT(serverTickMove));
-		this->setDiffDelay(0);
-		if ((serverTickMove + this->calculateRTT(serverTickMove)) <= clientTickMove) {
-			this->setDiffDelay(clientTickMove - serverTickMove);
-			res.append(" Render?: N, Next Delay Decrease: " + stringUtilities::unsignedToString(this->getDiffDelay()));
-			common::Logger::instance().log(res);
-			return;
-		}
-		res.append(" Render?: S");
-		common::Logger::instance().log(res);
+	//std::string stserverTicks = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
+	//unsigned serverTicks = stringUtilities::stringToUnsigned(stserverTicks);
+	//unsigned clientTicks = static_cast<unsigned>(SDL_GetTicks());
+	//if ((this->startedAt < clientTicks) && (this->activatedAt < serverTicks)) {
+	//	std::string serTic = "ServerTicks. "+ stringUtilities::padLeft(stserverTicks,' ',10);
+	//	std::string cliTic = " CliTicks. "+ stringUtilities::padLeft(stringUtilities::unsignedToString(clientTicks),' ',10);
+	//	unsigned clientTickMove = clientTicks - this->startedAt;
+	//	std::string climov = " ClientTimeAdvance: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(clientTickMove),' ',10);
+	//	unsigned serverTickMove = serverTicks - this->activatedAt;
+	//	std::string sermov = " ServerTimeAdvance: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(serverTickMove),' ',10);
+	//	common::Logger::instance().log(serTic);
+	//	common::Logger::instance().log(cliTic);
+	//	common::Logger::instance().log(sermov);
+	//	common::Logger::instance().log(climov);
+	//	//std::string res = serTic + cliTic + climov + sermov;
+	//	std::string res = " RTT: " + stringUtilities::unsignedToString(this->calculateRTT(serverTickMove));
+	//	this->setDiffDelay(0);
+	//	if ((serverTickMove + 200) <= clientTickMove) {
+	//		this->setDiffDelay(clientTickMove - serverTickMove);
+	//		res.append(" Render?: N, Next Delay Decrease: " + stringUtilities::unsignedToString(this->getDiffDelay()));
+	//		common::Logger::instance().log(res);
+	//		//return;
+	//	} else {
+	//	res.append(" Render?: S");
+	//	common::Logger::instance().log(res);
+	//	}
 
-	}
+	//}
 	//common::Logger::instance().log(serializedSimulation);
 	//common::Logger::instance().log("Cliente: "+ stringUtilities::unsignedToString(static_cast<unsigned>(SDL_GetTicks())));
 	for(unsigned i = 0; i < player_simulations.size(); i++) {
@@ -269,11 +277,37 @@ unsigned ModelUpdater::calculateRTT(unsigned lastRTT) {
 	return result;
 }
 
-void ModelUpdater::requestSynchronize() {
+void ModelUpdater::requestSynchronizeClock() {
 	Instruction instructionOut;
 	instructionOut.clear();
-	instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
+	//instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
+	instructionOut.setOpCode(OPCODE_SYNCHRONIZE_CLOCK);
+	unsigned clientTicks = static_cast<unsigned>(SDL_GetTicks());
+	instructionOut.insertArgument( INSTRUCTION_ARGUMENT_KEY_CLIENT_TIME, stringUtilities::unsignedToString(clientTicks));
 	this->getConnector().addInstruction(instructionOut);
+
+}
+
+void ModelUpdater::synchronizeClock(Instruction& instructionIn) {
+	Instruction instructionOut;
+	unsigned newClientTicks = static_cast<unsigned>(SDL_GetTicks());
+	unsigned oldClientTicks = stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CLIENT_TIME));
+	unsigned serverTicks = stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT));
+	this->latency = (newClientTicks - oldClientTicks)/2;
+	if (serverTicks > newClientTicks) {
+		this->clientServerDeltaTime = static_cast<int>(serverTicks - newClientTicks + this->latency);
+	} else {
+		this->clientServerDeltaTime =  (static_cast<int>(newClientTicks - serverTicks - this->latency))*(-1);
+	}
+	transmissionTimes.push_back(std::make_pair<unsigned, int> (this->latency, this->clientServerDeltaTime ));
+	if (transmissionTimes.size() < 7) {
+		//SDL_Delay(200);
+		this->requestSynchronizeClock();
+	} else {
+		std::sort (transmissionTimes.begin(), transmissionTimes.end(), comparator);
+		this->latency = transmissionTimes[3].first;
+		this->clientServerDeltaTime = transmissionTimes[3].second;
+	}
 
 }
 
@@ -284,10 +318,6 @@ void ModelUpdater::requestSynchronize() {
 bool ModelUpdater::isConnected() {
 	return this->connected;
 }
-
-//bool ModelUpdater::thereAreErrors() {
-//	return this->errors;
-//}
 
 bool ModelUpdater::hasServerBeenReached() {
 	return this->serverReached;

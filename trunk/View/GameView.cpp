@@ -193,8 +193,14 @@ void GameView::update() {
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(24);
 		break;
-		case STATUS_LOGIN_FAILED:
+		case STATUS_LOGIN_USER_FAILED:
 			this->notification.addNotification(" LOGIN FAILED USER NAME UNAVAILABLE");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
+			this->notification.setFontSize(15);
+		break;
+		case STATUS_LOGIN_CONNECTION_LOST:
+			this->notification.addNotification(" LOGIN FAILED CONNECTION LOST");
 			this->notification.update(camera);
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(15);

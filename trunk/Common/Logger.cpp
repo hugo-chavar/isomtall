@@ -12,7 +12,7 @@ Logger::Logger()
 
 Logger::~Logger()
 {
-	fd.close();
+	this->close();
 }
 Logger& Logger::instance()
 {
@@ -118,4 +118,8 @@ void Logger::logWithoutTimeStamp(string line) {
 	if (fd)	{
 		fd << line << std::endl; 
 	}
+}
+
+void Logger::close() {
+	fd.close();
 }

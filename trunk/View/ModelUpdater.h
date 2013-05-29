@@ -4,6 +4,7 @@
 #include "Thread.h"
 #include "SimulationConnector.h"
 #include "InstructionQueue.h"
+#include <vector>
 
 class ModelUpdater : public Thread {
 private:
@@ -21,15 +22,19 @@ private:
 
 	unsigned int lastServerDelay;
 
+	unsigned int latency;
+
+	int clientServerDeltaTime;
+
 	bool forceStop;
 
 	SimulationConnector connector;
 
 	InstructionQueue instructionQueue;
 
-	void setConnected(bool connected);
+	std::vector<std::pair<unsigned, int> > transmissionTimes;
 
-	//void setError(bool error);
+	void setConnected(bool connected);
 	
 	void setServerReached(bool serverReached);
 
@@ -59,7 +64,9 @@ private:
 
 	void syncPlayer(std::string onePlayer);
 
-	void requestSynchronize();
+	void requestSynchronizeClock();
+
+	void synchronizeClock(Instruction& instructionIn);
 
 public:
 	ModelUpdater();
