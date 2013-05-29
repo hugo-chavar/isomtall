@@ -25,8 +25,6 @@ bool GameView::initialize() {
 	bool chatInitialized = false;
 	bool notificationInitialized = false;
 	this->serverReached = true;
-	//this->firstConnection = false;
-	//connected = true;
 
 	this->chat.setIsTyping(false);
 
@@ -36,7 +34,7 @@ bool GameView::initialize() {
 
 	if (cameraInitialized) {
 		notificationInitialized = notification.initialize(camera);
-		if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) || (this->getStatus() == STATUS_CONNECTING_TO_SIMULATION) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
+		if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
 			mapInitialized = worldView.initialize();
 			chatInitialized = chat.initialize(camera);
 			worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
@@ -64,7 +62,7 @@ bool GameView::initialize() {
 		errorEntity.delay(0);
 
 		errorImage = new SpriteAnimado(&errorEntity);
-		this->setStatus(STATUS_CONNECTING_TO_SIMULATION);
+		//this->setStatus(STATUS_CONNECTING_TO_SIMULATION);
 	}
 
 	return running;
@@ -133,33 +131,21 @@ string GameView::getPlayerCharacterId() {
 
 void GameView::cleanUp() {
 	this->camera.cleanUp();
-	if (this->getStatus() == STATUS_SIMULATION_CONNECTED) {
+	if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
 		this->chat.modelChat->cleanUp();
 	}
 }
-//
-//void GameView::setConnected(bool state) {
-//	this->connected = state;
-//}
-//
-//void GameView::setFirstConnection(bool state) {
-//	this->firstConnection = state;
-//}
-//
-//void GameView::setServerReached(bool state) {
-//	this->serverReached = state;
-//}
 
 void GameView::render() {
-	SDL_FillRect(this->camera.cameraSurface,NULL,0);
+
+	SDL_FillRect(this->camera.cameraSurface, NULL, 0);
+
 	if (this->getStatus() != STATUS_SIMULATION_CONNECTED) {
 		this->notification.render(this->camera);
 	} else {
 		this->worldView.render(this->camera);
 		if (chat.isTyping())
 			this->chat.render(this->camera);
-		//if (!connected)
-		//	this->notification.render(this->camera);
 	}
 
 	SDL_Flip(this->camera.cameraSurface);
@@ -172,18 +158,8 @@ SpriteAnimado* GameView::getErrorImage() {
 
 
 void GameView::update() {
+
 	this->camera.update();
-	/*
-	STATUS_INIT_ERROR,
-	STATUS_CONNECTING_TO_SERVER,
-	STATUS_SERVER_UNREACHEABLE,
-	STATUS_UPDATING_FILES,
-	STATUS_FILES_UPDATED_OK,
-	STATUS_UPDATING_CONNECTION_LOST,
-	STATUS_CONNECTING_TO_SIMULATION,
-	STATUS_SIMULATION_CONNECTED,
-	STATUS_SIMULATION_DISCONNECTED,
-	STATUS_SIMULATION_CONNECTION_LOST */
 
 	switch (this->getStatus()) {
 		case STATUS_INIT_ERROR:
@@ -192,11 +168,6 @@ void GameView::update() {
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(24);
 		break;
-		//case STATUS_UPDATING_CONNECTION_LOST:
-		//	this->notification.addNotification("      CONNECTING TO SERVER");
-		//	this->notification.update(camera);
-		//	this->notification.setColor(Camera::GREEN_COLOR);
-		//break;
 		case STATUS_SERVER_UNREACHEABLE:
 			this->notification.addNotification("        SERVER UNREACHABLE");
 			this->notification.update(camera);
@@ -217,12 +188,6 @@ void GameView::update() {
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(20);
 		break;
-		//case STATUS_CONNECTING_TO_SIMULATION:
-		//	this->notification.addNotification("      CONNECTING TO SIMULATION");
-		//	this->notification.update(camera);
-		//	this->notification.setColor(Camera::GREEN_COLOR);
-		//	this->notification.setFontSize(24);
-		//break;
 		case STATUS_SIMULATION_CONNECTED:
 			this->worldView.update();
 			this->chat.update(camera);
@@ -233,28 +198,14 @@ void GameView::update() {
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(24);
 		break;
+		case STATUS_LOGIN_FAILED:
+			this->notification.addNotification(" LOGIN FAILED USER NAME UNAVAILABLE");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::RED_COLOR);
+			this->notification.setFontSize(15);
+		break;
 	}
 
-	/*if (!serverReached) {
-		this->notification.addNotification("        SERVER UNREACHABLE");
-		this->notification.update(camera);
-		this->notification.setColor(Camera::BLACK_COLOR);
-		
-	}
-	else {
-		if (!this->connected) {
-			if (this->firstConnection) {
-				this->notification.addNotification("CONNECTION WITH SERVER LOST");
-				this->notification.update(camera);
-				this->notification.setColor(Camera::RED_COLOR);
-			}
-			else {
-				this->notification.addNotification("      CONNECTING TO SERVER");
-				this->notification.update(camera);
-				this->notification.setColor(Camera::GREEN_COLOR);
-			}
-		}
-	}*/
 	//agregar update personajes
 }
 

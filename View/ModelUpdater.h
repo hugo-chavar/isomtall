@@ -15,6 +15,12 @@ private:
 
 	unsigned int activatedAt;
 
+	unsigned int startedAt;
+
+	unsigned int diffDelay;
+
+	unsigned int lastServerDelay;
+
 	bool forceStop;
 
 	SimulationConnector connector;
@@ -28,6 +34,8 @@ private:
 	void setServerReached(bool serverReached);
 
 	void setActivatedAt(unsigned int activatedAt);
+
+	void setStartedAt(unsigned int startedAt);
 
 	bool isForceStop();
 
@@ -51,6 +59,8 @@ private:
 
 	void syncPlayer(std::string onePlayer);
 
+	void requestSynchronize();
+
 public:
 	ModelUpdater();
 
@@ -67,6 +77,12 @@ public:
 	void startUpdating();
 
 	void stopUpdating(bool forceStop);
+
+	unsigned calculateRTT(unsigned lastRTT);
+
+	void setDiffDelay(unsigned diff);
+
+	unsigned getDiffDelay();
 
 	~ModelUpdater();
 };

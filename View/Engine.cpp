@@ -30,7 +30,7 @@ int Engine::execute() {
 
 	this->initialize();
 
-	if (GameView::instance().getStatus() == STATUS_CONNECTING_TO_SIMULATION) {
+	if ((GameView::instance().getStatus() != STATUS_LOGIN_FAILED) && (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)) {
 		Instruction instruction;
 		instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
 		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
@@ -45,22 +45,24 @@ int Engine::execute() {
 	}
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
-		(Game::instance().time())->updateTime();
+		//(Game::instance().time())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
 			this->onEvent(&sdlEvent);
 		}
 		
-		if (_modelUpdater.isConnected()) {
-			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
-		} else if ((GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTED)&&(_modelUpdater.thereAreErrors())) {
-			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
-		}
+		//if ( !_modelUpdater.isConnected()) {
+		//	/*	GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+		//	} else */
+		//	if ((GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTED)&&(_modelUpdater.thereAreErrors())) {
+		//		GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
+		//	}
+		//}
 
 		this->update();
 
 		this->render();
 
-		if (milisecondsTonextFrame >= SDL_GetTicks() - frameStartedAt)
+		if (milisecondsTonextFrame >= SDL_GetTicks() - (frameStartedAt - _modelUpdater.getDiffDelay()))
 			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
 	}
 
