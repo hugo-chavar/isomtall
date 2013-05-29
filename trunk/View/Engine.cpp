@@ -45,7 +45,7 @@ int Engine::execute() {
 	}
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
-		//(Game::instance().time())->updateTime();
+		(Game::instance().time())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
 			this->onEvent(&sdlEvent);
 		}
