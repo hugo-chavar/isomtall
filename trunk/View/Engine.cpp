@@ -7,6 +7,7 @@
 #include "Instruction.h"
 #include "../Common/stringUtilities.h"
 #include "../Model/OpcionesJuego.h"
+#include "Logger.h"
 
 Engine::Engine() {
 	this->running = true;
@@ -29,10 +30,10 @@ int Engine::execute() {
 	SDL_Event sdlEvent;
 
 	this->initialize();
-
+	bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
 	bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
 	bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
-	if ( loginOK && simulationOK) {
+	if ( loginOK && simulationOK && filesOK) {
 		Instruction instruction;
 		instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
 		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
