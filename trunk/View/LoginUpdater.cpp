@@ -5,6 +5,7 @@
 #include "Game.h"
 #include "stringUtilities.h"
 #include <iostream>
+#include "GameView.h"
 
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
@@ -97,6 +98,7 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 			this->getConnector().addInstruction(instructionOut);
 		break;
 		case OPCODE_USERID_NOT_AVAILABLE:
+			GameView::instance().setStatus(STATUS_LOGIN_FAILED);
 			this->setStopping(true);//TEMPORARY
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ERROR));
@@ -114,14 +116,9 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 			instructionOut = instructionIn;
 			this->getConnector().addInstruction(instructionOut);
 		break;
-		case OPCODE_INVALID_CHARACTER:
-			this->setStopping(true);//TEMPORARY
-			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ERROR));
-			this->getMessagesListMutex().unlock();
-			break;
 		case OPCODE_CONNECTION_ERROR:
-			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
+			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
+			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
 			this->setStopping(true);
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back("CONNECTION WITH SERVER LOST");
@@ -172,7 +169,7 @@ bool LoginUpdater::initialize()
 		instructionIn = this->getInstructionQueue().getNextInstruction(true);
 		this->processInstruction(instructionIn);
 		}
-	while (instructionIn.getOpCode()!= OPCODE_LOGIN_OK && instructionIn.getOpCode()!=OPCODE_INVALID_CHARACTER && instructionIn.getOpCode()!=OPCODE_USERID_NOT_AVAILABLE && this->getConnector().isConnectionOK());
+	while (instructionIn.getOpCode()!= OPCODE_LOGIN_OK && instructionIn.getOpCode()!=OPCODE_USERID_NOT_AVAILABLE && this->getConnector().isConnectionOK());
 	} else {
 		//IDEALLY THIS SHOULD SHOW AN ERROR ON THE SCREEN. RIGHT NOW IT WILL JUST LOG THE ERROR.
 		std::cout << "SERVER UNREACHABLE" << std::endl;

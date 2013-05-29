@@ -13,7 +13,7 @@ enum gameStatus_t {
 	STATUS_UPDATING_CONNECTION_LOST,
 	STATUS_FILES_UPDATED_OK,
 	STATUS_INIT_ERROR,
-	STATUS_CONNECTING_TO_SIMULATION,
+	STATUS_LOGIN_FAILED,
 	STATUS_SIMULATION_CONNECTED,
 	STATUS_SIMULATION_CONNECTION_LOST
 };
@@ -27,7 +27,7 @@ public:
 	view::Stage* getWorldView();
 	Personaje* getMyPersonaje();
 	Personaje* getPersonaje(string name);
-	void newPersonaje(string name,string char_id);//ver como hacerlo  <---- Listo!
+	void newPersonaje(string name,string char_id);
 	void addPersonaje(string name,Personaje * personaje);
 	view::ChatView* getChat();
 	Camera* getCamera();
@@ -45,9 +45,6 @@ public:
 	Personaje* nextCharacter();
 	void setStatus(gameStatus_t status);
 	gameStatus_t getStatus();
-	//void setConnected(bool state);
-	//void setFirstConnection(bool state);
-	//void setServerReached(bool state);
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
 	void setActivatedAt(int activeAt);
