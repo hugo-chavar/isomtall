@@ -29,7 +29,7 @@ private:
 
 	void setConnected(bool connected);
 
-	void setError(bool error);
+	//void setError(bool error);
 	
 	void setServerReached(bool serverReached);
 
@@ -66,7 +66,7 @@ public:
 
 	bool isConnected();
 
-	bool thereAreErrors();
+	//bool thereAreErrors();
 
 	bool hasServerBeenReached();
 
