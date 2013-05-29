@@ -135,10 +135,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			{
 				//TODO: ESTO SE CAMBIA POR SINCRONIZAR EL CLOCK
 				//std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
-				this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
+				//this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
 				//common::Logger::instance().log("Server start: "+ serverStart);
 				//unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
-				this->setStartedAt(clientStart);
+				//this->setStartedAt(clientStart);
 				//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 			}
 			break;
