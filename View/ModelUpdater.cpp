@@ -24,10 +24,10 @@ ModelUpdater::ModelUpdater() : connector(NULL,&(this->getInstructionQueue())) {
 void ModelUpdater::setConnected(bool connected) {
 	this->connected = connected;
 }
-
-void ModelUpdater::setError(bool error) {
-	this->errors = error;
-}
+//
+//void ModelUpdater::setError(bool error) {
+//	this->errors = error;
+//}
 
 void ModelUpdater::setServerReached(bool serverReached) {
 	this->serverReached = serverReached;
@@ -153,7 +153,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_CONNECTION_ERROR:
 			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
-			this->setError(true);
+			//this->setError(true);
 			this->setConnected(false);
 			this->setStopping(true);
 			break;
@@ -285,9 +285,9 @@ bool ModelUpdater::isConnected() {
 	return this->connected;
 }
 
-bool ModelUpdater::thereAreErrors() {
-	return this->errors;
-}
+//bool ModelUpdater::thereAreErrors() {
+//	return this->errors;
+//}
 
 bool ModelUpdater::hasServerBeenReached() {
 	return this->serverReached;

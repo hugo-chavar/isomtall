@@ -54,15 +54,10 @@ bool GameView::initialize() {
 		std::pair<int,int> posPersonaje = this->personaje->getPixelPosition();
 		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
 		this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
-
 		AnimatedEntity errorEntity;
-	
 		errorEntity.loadImages(ERROR_ANIMATED_DIR);
-
 		errorEntity.delay(0);
-
-		errorImage = new SpriteAnimado(&errorEntity);
-		//this->setStatus(STATUS_CONNECTING_TO_SIMULATION);
+		this->errorImage = new SpriteAnimado(&errorEntity);
 	}
 
 	return running;

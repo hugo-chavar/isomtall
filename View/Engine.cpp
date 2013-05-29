@@ -30,7 +30,7 @@ int Engine::execute() {
 
 	this->initialize();
 
-	if ((GameView::instance().getStatus() != STATUS_LOGIN_FAILED) && (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)) {
+	if ((GameView::instance().getStatus() != STATUS_LOGIN_FAILED)&&(GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE)) {
 		Instruction instruction;
 		instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
 		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
@@ -182,7 +182,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						}
 						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr.c_str());
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr);
 						this->getModelUpdater()->addInstruction(instruction);
 					}
 					break;
