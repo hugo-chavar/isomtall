@@ -31,6 +31,9 @@ namespace stringUtilities {
 	//Metodo para convertir un unsigned a string.
 	std::string unsignedToString(unsigned i);
 
+	//Metodo para convertir un long a string.
+	std::string longToString(long int l);
+
 	//Metodo para convertir un float a string.
 	std::string floatToString(float f);
 

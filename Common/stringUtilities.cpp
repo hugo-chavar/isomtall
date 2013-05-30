@@ -76,6 +76,12 @@ namespace stringUtilities {
 		return intToString(aux);
 	}
 
+	std::string longToString(long int l) {
+		std::stringstream stringstream;
+		stringstream << l;
+		return stringstream.str();
+	}
+
 	std::string floatToString(float f) {
 		std::stringstream stringstream;
 		stringstream << f;

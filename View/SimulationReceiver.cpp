@@ -1,5 +1,9 @@
 #include "SimulationReceiver.h"
 
+#include "Logger.h"
+#include "stringUtilities.h"
+#include "SDL.h"
+
 SimulationReceiver::SimulationReceiver(Socket* socket, InstructionQueue* instructionQueue, std::string userID, bool inyectUserIDonReceive) : Receiver(socket,instructionQueue,userID,inyectUserIDonReceive) {
 //No hago nada. Creo esta clase unicamente para redefinir el receiveFromSocket
 }
@@ -23,7 +27,7 @@ std::string SimulationReceiver::receiveMessageFromSocket()
 		messageEndPosition += messageEndTag.length();
 		message = this->getReminder().substr(0,messageEndPosition);
 		this->setReminder(this->getReminder().substr(messageEndPosition));
-		Sleep(20);//Parche
+		//Sleep(20);//Parche
 		return message;
 	}
 
@@ -44,5 +48,6 @@ std::string SimulationReceiver::receiveMessageFromSocket()
 		this->setReminder(aux.substr(messageEndPosition));
 	}
 
+	common::Logger::instance().log("---------- RECEIVED MESSAGE : " + message + " - AT: " + stringUtilities::longToString(SDL_GetTicks()));
 	return message;
 }
