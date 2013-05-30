@@ -12,7 +12,8 @@
 Engine::Engine() {
 	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
-	this->desiredFPS = 20;
+	//this->desiredFPS = 20;
+	this->desiredFPS = 60;
 
 }
 
