@@ -68,6 +68,8 @@ private:
 
 	void synchronizeClock(Instruction& instructionIn);
 
+	void requestSynchronize();
+
 public:
 	ModelUpdater();
 

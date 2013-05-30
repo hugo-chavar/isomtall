@@ -70,7 +70,6 @@ void ModelUpdater::updateModel() {
 
 	if (newSocket->connectTo() != -1) {
 		this->setServerReached(true);
-		//GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 		this->getConnector().setSocket(newSocket);
 		this->getConnector().startConnector();
 
@@ -133,13 +132,13 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_SIMULATION_SYNCHRONIZE:
 			{
-				//TODO: ESTO SE CAMBIA POR SINCRONIZAR EL CLOCK
-				//std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
-				//this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
-				//common::Logger::instance().log("Server start: "+ serverStart);
-				//unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
-				//this->setStartedAt(clientStart);
-				//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
+				//TODO: ESTO SE CAMBIARA POR SINCRONIZAR EL CLOCK, (CUANDO NO HAYA DELAYS)
+				std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
+				this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
+				common::Logger::instance().log("Server start: "+ serverStart);
+				unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
+				this->setStartedAt(clientStart);
+				common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 			}
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
@@ -147,7 +146,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
 				GameView::instance().getMyPersonaje()->initFromString(syncData);
 				GameView::instance().getMyPersonaje()->setActive(true);
-				this->requestSynchronizeClock();
+				//this->requestSynchronizeClock();
+				this->requestSynchronize();
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
@@ -160,7 +160,6 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_CONNECTION_ERROR:
 			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
-			//this->setError(true);
 			this->setConnected(false);
 			this->setStopping(true);
 			break;
@@ -218,15 +217,7 @@ void ModelUpdater::simulationUpdate(Instruction& instructionIn) {
 	for(unsigned i = 0; i < player_simulations.size(); i++) {
 		this->simulate(player_simulations[i]);
 	}
-	/*unsigned startTime = static_cast<unsigned>(SDL_GetTicks());
-	GameView::instance().update();
-	unsigned updateTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
-	startTime = static_cast<unsigned>(SDL_GetTicks());
-	GameView::instance().render();
-	unsigned renderTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
-	std::string upt = " Update: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(updateTime),' ',10);
-	std::string ren = " Render: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(renderTime),' ',10);
-	common::Logger::instance().log(upt + ren);*/
+
 }
 
 void ModelUpdater::simulate(std::string simulation_package)
@@ -277,6 +268,13 @@ unsigned ModelUpdater::calculateRTT(unsigned lastRTT) {
 	return result;
 }
 
+void ModelUpdater::requestSynchronize() {	
+		Instruction instructionOut;	
+		instructionOut.clear();	
+		instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
+		this->getConnector().addInstruction(instructionOut);	
+}
+
 void ModelUpdater::requestSynchronizeClock() {
 	Instruction instructionOut;
 	instructionOut.clear();
@@ -305,8 +303,9 @@ void ModelUpdater::synchronizeClock(Instruction& instructionIn) {
 		this->requestSynchronizeClock();
 	} else {
 		std::sort (transmissionTimes.begin(), transmissionTimes.end(), comparator);
-		this->latency = transmissionTimes[3].first;
-		this->clientServerDeltaTime = transmissionTimes[3].second;
+		unsigned median = static_cast<unsigned>(std::floor(static_cast<float>(transmissionTimes.size())/2));
+		this->latency = transmissionTimes[median].first;
+		this->clientServerDeltaTime = transmissionTimes[median].second;
 	}
 
 }
