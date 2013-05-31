@@ -1,6 +1,13 @@
 #include "Surface.h"
 #include <SDL_image.h>
 
+
+const Uint32 view::Surface::HEXA_WHITE_COLOR = 0xFFFFFF;
+const Uint32 view::Surface::HEXA_BLUE_COLOR = 0x0000FF;
+const Uint32 view::Surface::HEXA_BLACK_COLOR = 0x000000;
+const Uint32 view::Surface::HEXA_RED_COLOR = 0xFF0000;
+const Uint32 view::Surface::HEXA_GREEN_COLOR = 0x22B14C;
+
 view::Surface::Surface() {
 	this->surface = NULL;
 	this->shadow = NULL;
@@ -84,11 +91,11 @@ void view::Surface::createShadow() {
 	shadowSurface = SDL_CreateRGBSurface(SDL_HWSURFACE | SDL_SRCALPHA, this->surface->w, this->surface->h,32,0,0,0,0);
 	shadowPixels = (Uint32*)shadowSurface->pixels;
 	//la pinto de negro
-	SDL_FillRect(shadowSurface, NULL, 0x00000000);
+	SDL_FillRect(shadowSurface, NULL, HEXA_BLACK_COLOR);
 
 	for (int i = 0; i < this->surface->w; i++) {
 		for (int j = 0; j < this->surface->h; j++) {
-			sourceSinglePixel = sourcePixels + j*this->surface->pitch/4 + i; // Nota que trabajar con pixeles es un viaje de ida
+			sourceSinglePixel = sourcePixels + j*this->surface->pitch/4 + i; 
 			SDL_GetRGBA(*sourceSinglePixel, this->surface->format, &r, &g, &b, &a);
 
 			//donde la imagen de origen era transparente pongo transparente la sombra

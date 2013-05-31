@@ -16,6 +16,11 @@ namespace view{
 			void setShadowSurface(SDL_Surface* surface);
 
 		public:
+			static const Uint32 HEXA_WHITE_COLOR;
+			static const Uint32 HEXA_RED_COLOR;
+			static const Uint32 HEXA_BLUE_COLOR;
+			static const Uint32 HEXA_BLACK_COLOR;
+			static const Uint32 HEXA_GREEN_COLOR;
 			Surface();
 
 			SDL_Surface* getSurface();
