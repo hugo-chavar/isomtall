@@ -45,8 +45,9 @@ int Engine::execute() {
 		instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
 		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
 		this->getModelUpdater()->addInstruction(instruction);
-		
+		GameView::instance().startBackgroundMusic();
 	}
+
 	while(this->isRunning()) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
@@ -155,6 +156,14 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						opcion_caracter.push_back(OPCION_DEFENDER);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
 						this->getModelUpdater()->addInstruction(instruction);
+					}
+					break;
+				}
+			case SDLK_m:
+				{
+					if (!GameView::instance().getChat()->isTyping())
+					{
+						GameView::instance().toggleBackgroundMusic();
 					}
 					break;
 				}

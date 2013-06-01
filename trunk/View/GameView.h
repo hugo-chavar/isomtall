@@ -6,6 +6,7 @@
 #include "ClientUpdater.h"
 #include "CharacterFactory.h"
 #include "Notification.h"
+#include "SDL_mixer.h"
 
 enum gameStatus_t {
 	STATUS_UPDATING_FILES,
@@ -50,6 +51,8 @@ public:
 	SpriteAnimado* getErrorImage();
 	void setActivatedAt(int activeAt);
 	int getActivatedAt();
+	void startBackgroundMusic();
+	void toggleBackgroundMusic();
 
 private:
 	view::Camera camera;
@@ -68,5 +71,9 @@ private:
 	SpriteAnimado* errorImage;
 	int activatedAt;
 	gameStatus_t gameStatus;
+
+	Mix_Music* _music;
+	Mix_Music* getMusic();
+	void setMusic(Mix_Music* music);
 };
 
