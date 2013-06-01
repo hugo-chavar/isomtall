@@ -64,7 +64,7 @@ bool GameView::initialize() {
 	//Initialize SDL_Mixer
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,4096);
 	//Load background music
-	this->setMusic(Mix_LoadMUS("../Music/music.wav"));
+	this->setMusic(Mix_LoadMUS("../Music/music.ogg"));
 
 	return running;
 }
