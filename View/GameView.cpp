@@ -4,6 +4,7 @@
 
 GameView::GameView(void) {
 	this->errorImage = NULL;
+	this->_music = NULL;
 }
 
 GameView::~GameView(void) {
@@ -59,6 +60,11 @@ bool GameView::initialize() {
 		errorEntity.delay(0);
 		this->errorImage = new SpriteAnimado(&errorEntity);
 	}
+
+	//Initialize SDL_Mixer
+	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,4096);
+	//Load background music
+	this->setMusic(Mix_LoadMUS("../Music/music.wav"));
 
 	return running;
 }
@@ -129,6 +135,11 @@ void GameView::cleanUp() {
 	if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
 		this->chat.modelChat->cleanUp();
 	}
+
+	//Free background music.
+	Mix_FreeMusic(this->getMusic());
+	//Free SDL_mixer.
+	Mix_CloseAudio();
 }
 
 void GameView::render() {
@@ -192,6 +203,7 @@ void GameView::update() {
 			this->notification.update(camera);
 			this->notification.setColor(Camera::RED_COLOR);
 			this->notification.setFontSize(24);
+			Mix_HaltMusic();
 		break;
 		case STATUS_LOGIN_USER_FAILED:
 			this->notification.addNotification(" LOGIN FAILED USER NAME UNAVAILABLE");
@@ -264,6 +276,25 @@ bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float camera
 
 void GameView::setStatus(gameStatus_t status) {
 	this->gameStatus = status;
+}
+
+Mix_Music* GameView::getMusic() {
+	return this->_music;
+}
+
+void GameView::setMusic(Mix_Music* music) {
+	this->_music = music;
+}
+
+void GameView::startBackgroundMusic() {
+	Mix_PlayMusic(this->getMusic(),-1);
+}
+
+void GameView::toggleBackgroundMusic() {
+	if(Mix_PausedMusic() == 1)
+		Mix_ResumeMusic();
+	else
+		Mix_PauseMusic();
 }
 
 gameStatus_t GameView::getStatus() {
