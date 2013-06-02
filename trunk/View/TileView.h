@@ -36,8 +36,7 @@ public:
 	void createOtherEntity(Sprite*);
 	void renderEntity(Camera& camera);
 	void renderGround(Camera& camera);
-	//void renderFog(Camera& camera);
-	void setFreezed(bool value);
+	void setFogged(bool value);
 	void update();
 	void initialize();
 private:
@@ -47,8 +46,7 @@ private:
 	TileView* nextTile;
 	TileView* relatedTile;
 	bool isDrawable;
-	bool isFreezed;
-	//Surface* fog;
+	bool isFogged;
 };
 
 

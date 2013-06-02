@@ -23,7 +23,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	}
 	//this->modelo->getAnimation()->fps(static_cast<int>(this->modelo->getAnimation()->fps() * (this->modelo->getVelocidad()/2)));
 
-	this->setFreezed(false);
+	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
@@ -87,14 +87,14 @@ void Personaje::setCenteredInTile(bool centroTile) {
 	centeredInTile = centroTile;
 }
 
-void Personaje::setFreezed(bool value) {
-	Entity::setFreezed(value);
-	//if (this->freezed == value)
-	//	return;
-	//this->freezed = value;
-	//if (!this->isFreezed())
-	//	this->freezedSpriteState = -1;
-}
+//void Personaje::setFreezed(bool value) {
+//	Entity::setFreezed(value);
+//	//if (this->freezed == value)
+//	//	return;
+//	//this->freezed = value;
+//	//if (!this->isFreezed())
+//	//	this->freezedSpriteState = -1;
+//}
 //
 //void Personaje::resetSpriteState() {
 //	this->freezedSpriteState = -1;
@@ -245,7 +245,7 @@ void Personaje::render(Camera& camera) {
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
 	//TODO: mejorar siguientes 3 lineas..
-	if (this->freezed) {
+	if (this->isFogged()) {
 		if (this->getCurrentSpritePosition() > (signed)(sprites.size()-1)) {
 			camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getShadow());
 		} else {
@@ -254,9 +254,9 @@ void Personaje::render(Camera& camera) {
 		}
 	}
 	if (this->getCurrentSpritePosition() > (signed)(sprites.size()-1)) {
-		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
 	} else {
-		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
 		//common::Logger::instance().log("Personaje posicion:"+stringUtilities::pairIntToString(this->getPixelPosition())+" posicionTile:"+stringUtilities::pairIntToString(this->getPosicionEnTiles())+" SpritePosition:"+stringUtilities::intToString(this->getCurrentSpritePosition()));
 	}
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
@@ -371,7 +371,7 @@ std::string Personaje::updateToString() {
 	out.append(";");
 	out.append(stringUtilities::pairIntToString(this->getPixelPosition()));
 	out.append(";");
-	if (this->isFreezed()) {
+	if (this->isFogged()) {
 		out.append("F");
 	} else {
 		out.append("N");
@@ -403,7 +403,7 @@ void Personaje::updateFromString(std::string data) {
 	this->modelo->getVision()->updatePosition(modelo->getPosition());
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
 	this->setPixelPosition(pixels);
-	this->setFreezed(splittedData[2] == "F");
+	this->setFogged(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	if (this->getCurrentSpritePosition() > (signed)(sprites.size()-1)) {
 		GameView::instance().getErrorImage()->setCurrentState(stringUtilities::stringToInt(splittedData[4]));

@@ -108,11 +108,11 @@ void RenderHelper::renderGround(Camera& camera) {
 		tile = (*levelIterator).first;
 		while (tile != (*levelIterator).second ){
 			if (GameView::instance().insidePlayerVision(tile->getPosition())){
-				tile->setFreezed(false);
+				tile->setFogged(false);
 				tile->renderGround(camera);
 			} else if (GameView::instance().isKnownByPlayer(tile->getPosition())){
 				//aplico niebla
-				tile->setFreezed(true);
+				tile->setFogged(true);
 				tile->renderGround(camera);
 			}
 			tile = tile->getNextTile();

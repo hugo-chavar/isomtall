@@ -5,21 +5,18 @@ Entity::Entity() {
 }
 
 Entity::Entity(int tileX,int tileY,Sprite* spriteCargado) {
-	this->setFreezed(true);
+	this->setFogged(true);
+	this->setStatus(ENTITY_NORMAL);
 	this->resetSpriteState();
 	sprite = spriteCargado;
 	this->setRectangle(std::make_pair(tileX, tileY), spriteCargado);
 }
 
 Entity::~Entity() {
-	//this->shadow.free();
-	//delete this->shadow;
 }
 
 void Entity::setRectangle(std::pair<int, int> pos, Sprite* sprite ) {
 	spriteRect = posicionIsometricaPorTiles(pos.first, pos.second, sprite);
-	/*spriteRect.w = (Uint16)(sprite->getFrameActual()->getSuperficie()->w);
-	spriteRect.h = (Uint16)(sprite->getFrameActual()->getSuperficie()->h);*/
 	spriteRect.w = (Uint16)(sprite->getCurrentSurface()->getSurface()->w);
 	spriteRect.h = (Uint16)(sprite->getCurrentSurface()->getSurface()->h);
 }
@@ -34,44 +31,45 @@ SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) 
 }
 
 void Entity::update() {
-	if (this->isFreezed() && (this->freezedSpriteState < 0)) {
+	if (this->isImmobilized() && (this->freezedSpriteState < 0)) {
 		freezedSpriteState = sprite->getCurrentState();
+		return;
 	}
-	//sprite->actualizarFrame();
-	//Aca deberia actualizarse tambien la entidad del modelo
+	if (!this->isImmobilized() /* && (this->freezedSpriteState > 0)*/) {
+		this->resetSpriteState();
+		return;
+	}
 }
 
 void Entity::render(Camera& camera) {
-
-	//if (this->freezed)
-	//	camera.render(spriteRect,this->shadow.getSdlSurface());
-	//camera.render(spriteRect,sprite->getFrameAt(freezedSpriteState)->getSuperficie(this->freezed));
-
-	//camera.render(spriteRect,sprite->getFrameActual()->getSuperficie(false));
-
-	if (this->freezed)
+	if (this->isImmobilized()) {
 		camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getShadow());
-	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->freezed));
+	}
+	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 }
 
-void Entity::setFreezed(bool value) {
-	if (this->freezed == value)
-		return;
-	this->freezed = value;
-	if (!this->isFreezed())
-		this->resetSpriteState();
+void Entity::setFogged(bool value) {
+	this->fogged = value;
 }
 
 void Entity::resetSpriteState() {
 	this->freezedSpriteState = -1;
 }
 
-bool Entity::isFreezed() {
-	return this->freezed;
+bool Entity::isFogged() {
+	return this->fogged;
 }
-//
-//SDL_Rect Entity::getSdlRect() {
-//	return this->spriteRect;
-//}
+
+void Entity::setStatus(entityStatus_t status) {
+	this->status = status;
+}
+
+entityStatus_t Entity::getStatus() {
+	return this->status;
+}
+
+bool Entity::isImmobilized() {
+	return ((this->isFogged() )||(this->getStatus() == ENTITY_FROZEN));
+}
 
 

@@ -2,13 +2,11 @@
 #include "GameView.h"
 
 SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
-	//this->inicializar(entity->pixelRefX(),entity->pixelRefY(),entity->baseWidth(),entity->baseHeight());
 	spriteEntity = entity;
 	comienzo_frame = SDL_GetTicks();
 	delay = static_cast<float>(entity->delay()); 
 	fps = static_cast<float>(entity->fps());
 	this->initialize();
-	//cargarFrames(entity);
 }
 
 SpriteAnimado::~SpriteAnimado() {
@@ -34,16 +32,6 @@ void SpriteAnimado::actualizarFrame() {
 void SpriteAnimado::getNextFrame() {
 	this->avanzarFrames();
 }
-
-//void SpriteAnimado::cargarFrames(AnimatedEntity * entity) {
-//	unsigned i = 0;
-//	entity->imagesPaths()->restartCurrentPosition();
-//	while (entity->imagesPaths()->hasNext()) {
-//		frames.push_back(new Frame());	
-//		frames[i]->cargar(entity->imagesPaths()->nextFullPath());
-//		i++;
-//	}
-//}
 
 bool SpriteAnimado::ultimoFrame() {
 	if (estado >= surfaces.size()-1) {

@@ -30,7 +30,7 @@ void TileView::initialize(){
 	this->nextTile = NULL;
 	this->relatedTile = NULL;
 	this->isDrawable = true; //TODO: PASAR A FALSE
-	this->isFreezed = false;
+	this->isFogged = false;
 	this->tileModel = NULL;
 	//this->fog = NULL;
 }
@@ -110,23 +110,23 @@ void TileView::renderGround(Camera& camera) {
 	this->getGroundEntity()->render(camera);
 }
 
-void TileView::setFreezed(bool value) {
-	this->isFreezed = value;
-	this->getGroundEntity()->setFreezed(value);
+void TileView::setFogged(bool value) {
+	this->isFogged = value;
+	this->getGroundEntity()->setFogged(value);
 
 	TileView* tileaux = this->getRelatedTile();
 	if (tileaux) {
 		while (tileaux != this){
-			tileaux->getGroundEntity()->setFreezed(value);
+			tileaux->getGroundEntity()->setFogged(value);
 			if (tileaux->hasOtherEntity()) {
-				tileaux->getOtherEntity()->setFreezed(value);
+				tileaux->getOtherEntity()->setFogged(value);
 			}
 			tileaux = tileaux->getRelatedTile();
 		}
 	}
 	else 
 		if (this->hasOtherEntity()) {
-			this->getOtherEntity()->setFreezed(value);
+			this->getOtherEntity()->setFogged(value);
 		}
 }
 
@@ -157,7 +157,3 @@ void TileView::update(){
 		this->getOtherEntity()->update();
 	}
 }
-
-//void TileView::renderFog(Camera& camera) {
-//	camera.render(this->getGroundEntity()->getSdlRect(),this->fog->getSdlSurface());
-//}

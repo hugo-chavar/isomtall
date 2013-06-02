@@ -5,6 +5,13 @@
 #include "Camera.h"
 #include "Surface.h"
 
+enum entityStatus_t {
+	//ENTITY_FOGGED,
+	ENTITY_FROZEN,
+	ENTITY_BLINKING,
+	ENTITY_NORMAL
+};
+
 using namespace view;
 
 class Entity
@@ -12,10 +19,11 @@ class Entity
 protected:
 	SDL_Rect spriteRect;
 	Sprite * sprite;
-	Surface shadow;
+	//Surface shadow;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
-	bool freezed;
+	bool fogged;
 	int freezedSpriteState;
+	entityStatus_t status;
 
 public:
 	Entity();
@@ -23,10 +31,12 @@ public:
 	virtual void update();
 	virtual void render(Camera& camera);
 	~Entity(void);
-	virtual void setFreezed(bool);
-	bool isFreezed();
+	void setFogged(bool);
+	bool isFogged();
 	void setRectangle(std::pair<int, int> pos, Sprite* sprite );
-	void resetSpriteState(); //virtual?
-	//SDL_Rect getSdlRect();
+	void resetSpriteState();
+	void setStatus(entityStatus_t status);
+	entityStatus_t getStatus();
+	bool isImmobilized();
 };
 
