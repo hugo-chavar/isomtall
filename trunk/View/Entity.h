@@ -6,7 +6,6 @@
 #include "Surface.h"
 
 enum entityStatus_t {
-	//ENTITY_FOGGED,
 	ENTITY_FROZEN,
 	ENTITY_BLINKING,
 	ENTITY_NORMAL
@@ -19,7 +18,6 @@ class Entity
 protected:
 	SDL_Rect spriteRect;
 	Sprite * sprite;
-	//Surface shadow;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
 	bool fogged;
 	int freezedSpriteState;

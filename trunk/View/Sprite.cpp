@@ -4,16 +4,16 @@
 #include "DirList.h"
 
 Sprite::Sprite(EntityObject *entity) {
-	spriteEntity = entity;
+	this->spriteEntity = entity;
 	this->initialize();
 }
 
 void Sprite::initialize() {
-	estado = 0;
-	relx = spriteEntity->pixelRefX();
-	rely = spriteEntity->pixelRefY();
-	_baseWidth = spriteEntity->baseWidth();
-	_baseHeight = spriteEntity->baseHeight();
+	this->restart();
+	this->relx = this->spriteEntity->pixelRefX();
+	this->rely = this->spriteEntity->pixelRefY();
+	this->_baseWidth = this->spriteEntity->baseWidth();
+	this->_baseHeight = this->spriteEntity->baseHeight();
 	this->loadSurfaces();
 }
 
@@ -21,9 +21,9 @@ Sprite::Sprite() {
 }
 
 Sprite::~Sprite() {
-	for( unsigned i=0; i < surfaces.size(); i++) {
-		surfaces[i]->free();
-		delete surfaces[i];
+	for ( unsigned i = 0; i < this->surfaces.size(); i++) {
+		this->surfaces[i]->free();
+		delete this->surfaces[i];
 	}
 }
 
@@ -31,34 +31,34 @@ void Sprite::actualizarFrame() {
 }
 
 int Sprite::relatx() {
-	return relx;
+	return this->relx;
 }
 
 int Sprite::relaty() {
-	return rely;
+	return this->rely;
 }
 
 int Sprite::baseWidth() {
-	return _baseWidth;
+	return this->_baseWidth;
 }
 
 int Sprite::baseHeight() {
-	return _baseHeight;
+	return this->_baseHeight;
 }
 
-unsigned Sprite::getCurrentState() {
-	return estado;
+unsigned Sprite::getCurrentSurfaceNumber() {
+	return this->currentSurfaceNumber;
 }
 
 void Sprite::loadSurfaces() {
-	this->addSurface(spriteEntity->imagePath());
+	this->addSurface(this->spriteEntity->imagePath());
 }
 
 void Sprite::addSurface(std::string path) {
 	view::Surface* auxSurface = new view::Surface();
 	auxSurface->load(path);
 	auxSurface->createShadow();
-	surfaces.push_back(auxSurface);
+	this->surfaces.push_back(auxSurface);
 }
 
 view::Surface* Sprite::getSurfaceAt(int state) {
@@ -68,7 +68,14 @@ view::Surface* Sprite::getSurfaceAt(int state) {
 	return surfaces[static_cast<int>(state)];
 }
 
-
 view::Surface* Sprite::getCurrentSurface() {
-	return surfaces[estado];
+	return surfaces[this->getCurrentSurfaceNumber()];
+}
+
+void Sprite::restart() {
+	this->setCurrentSurfaceNumber(0);
+}
+
+void Sprite::setCurrentSurfaceNumber(unsigned surfaceNumber) {
+	this->currentSurfaceNumber = surfaceNumber;
 }

@@ -13,7 +13,7 @@ SpriteAnimado::~SpriteAnimado() {
 }
 
 void SpriteAnimado::initialize() {
-	estado = 0;
+	this->restart();
 	relx = spriteEntity->pixelRefX();
 	rely = spriteEntity->pixelRefY();
 	_baseWidth = spriteEntity->baseWidth();
@@ -23,7 +23,7 @@ void SpriteAnimado::initialize() {
 
 void SpriteAnimado::actualizarFrame() {
 	float deltaTime = 0.0;
-	if (estado == 0)
+	if (this->getCurrentSurfaceNumber() == 0)
 		deltaTime = delay;
 	if ( tiempoFrameCumplido(deltaTime))
 		this->avanzarFrames();
@@ -34,23 +34,19 @@ void SpriteAnimado::getNextFrame() {
 }
 
 bool SpriteAnimado::ultimoFrame() {
-	if (estado >= surfaces.size()-1) {
+	if (this->getCurrentSurfaceNumber() >= (this->surfaces.size() - 1)) {
 		return true;
 	} else {
 		return false;
 	}
 }
 
-void SpriteAnimado::reiniciar() {
-	estado = 0;
-}
-
 void SpriteAnimado::avanzarFrames() {
 	comienzo_frame = SDL_GetTicks();
 	if ( this->ultimoFrame() )
-		estado = 0;
+		this->restart();
 	else
-		estado = estado++;
+		this->currentSurfaceNumber++;
 }
 
 bool SpriteAnimado::tiempoFrameCumplido(float delta) {
@@ -63,8 +59,4 @@ void SpriteAnimado::loadSurfaces() {
 	while (auxEntity->imagesPaths()->hasNext()) {
 		this->addSurface(auxEntity->imagesPaths()->nextFullPath());
 	}
-}
-
-void SpriteAnimado::setCurrentState(unsigned state) {
-	estado = state;
 }
