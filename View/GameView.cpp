@@ -185,8 +185,11 @@ void GameView::update() {
 			this->notification.setColor(Camera::BLACK_COLOR);
 			this->notification.setFontSize(24);
 		break;
-		case STATUS_FILES_UPDATED_OK:
-			
+		case STATUS_SIMULATION_SINGLE_PLAYER:
+			this->notification.addNotification("  SINGLE PLAYER NOT IMPLEMENTED");
+			this->notification.update(camera);
+			this->notification.setColor(Camera::BLUE_COLOR);
+			this->notification.setFontSize(20);
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
 			this->notification.addNotification("UPDATED FAILED CONNECTION LOST");

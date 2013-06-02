@@ -57,7 +57,7 @@ void Sprite::loadSurfaces() {
 void Sprite::addSurface(std::string path) {
 	view::Surface* auxSurface = new view::Surface();
 	auxSurface->load(path);
-	auxSurface->createShadow();
+	auxSurface->createShadows();
 	this->surfaces.push_back(auxSurface);
 }
 
@@ -65,7 +65,7 @@ view::Surface* Sprite::getSurfaceAt(int state) {
 	if (state < 0) {
 		return this->getCurrentSurface();
 	}
-	return surfaces[static_cast<int>(state)];
+	return surfaces[static_cast<unsigned>(state)];
 }
 
 view::Surface* Sprite::getCurrentSurface() {

@@ -228,19 +228,25 @@ void Personaje::render(Camera& camera) {
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
 	//TODO: mejorar siguientes 3 lineas..
-	if (this->isFogged()) {
-		if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
-			camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getShadow());
+	if (this->isImmobilized()) {
+		if (this->isFogged()) {
+			if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+				camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getBlackShadow());
+			} else {
+				camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getBlackShadow());
+			}
 		} else {
-			camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getShadow());
-			//common::Logger::instance().log("Personaje posicion:"+stringUtilities::pairIntToString(this->getPixelPosition())+" posicionTile:"+stringUtilities::pairIntToString(this->getPosicionEnTiles())+" SpritePosition:"+stringUtilities::intToString(this->getCurrentSpritePosition()));
+			if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+				camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
+			} else {
+				camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
+			}
 		}
 	}
 	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
 		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
 	} else {
 		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
-		//common::Logger::instance().log("Personaje posicion:"+stringUtilities::pairIntToString(this->getPixelPosition())+" posicionTile:"+stringUtilities::pairIntToString(this->getPosicionEnTiles())+" SpritePosition:"+stringUtilities::intToString(this->getCurrentSpritePosition()));
 	}
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->nombre);
@@ -399,6 +405,7 @@ void Personaje::updateFromString(std::string data) {
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
+	GameView::instance().getWorldView()->getTileAt(std::make_pair<unsigned,unsigned>(2,2))->getOtherEntity()->iceUp(20);
 }
 
 int Personaje::getCurrentSpritePosition() {

@@ -30,6 +30,7 @@ namespace view {
 		bool initialize();
 		void setTilesInCamera(int h, int v);
 		StageModel* getWorldModel();
+		TileView* getTileAt(KeyPair k);
 		//Personaje* personaje(); //ojo con repetir esto por todos lados solo para llenar espacios.. debe estar solo en gameView
 		//map <string,Personaje*> personajes;//agrego diccionario de personajes
 	private:
@@ -47,7 +48,7 @@ namespace view {
 		void generateStage();
 		void deleteStage();
 		TileView* createTile(TileModel* tile);
-		TileView* getTileAt(KeyPair k);
+		
 		TileView* getFirstMatch(std::pair<int,int> k);
 		TileView* getLastMatch(TileView* firstMatch, std::pair<int,int> k);
 		void fixKeyLeftBottom(int level, std::pair<int,int> &k);
