@@ -32,10 +32,10 @@ SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) 
 
 void Entity::update() {
 	if (this->isImmobilized() && (this->freezedSpriteState < 0)) {
-		freezedSpriteState = sprite->getCurrentState();
+		freezedSpriteState = sprite->getCurrentSurfaceNumber();
 		return;
 	}
-	if (!this->isImmobilized() /* && (this->freezedSpriteState > 0)*/) {
+	if (!this->isImmobilized()) {
 		this->resetSpriteState();
 		return;
 	}
