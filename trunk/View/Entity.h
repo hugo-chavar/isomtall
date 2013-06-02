@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "Surface.h"
 
+
 enum entityStatus_t {
 	ENTITY_FROZEN,
 	ENTITY_BLINKING,
@@ -20,6 +21,7 @@ protected:
 	Sprite * sprite;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
 	bool fogged;
+	Uint32 endStatusTime;
 	int freezedSpriteState;
 	entityStatus_t status;
 
@@ -36,5 +38,8 @@ public:
 	void setStatus(entityStatus_t status);
 	entityStatus_t getStatus();
 	bool isImmobilized();
+	void setEndStatusTime(Uint32 endTime);
+	void decreaseEndStatusTime(float timeToDecrease);
+	void iceUp(unsigned seconds);
 };
 

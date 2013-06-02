@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Game.h"
+#include "TimeManager.h"
 
 Entity::Entity() {
 }
@@ -39,11 +40,19 @@ void Entity::update() {
 		this->resetSpriteState();
 		return;
 	}
+	if (this->getStatus() == ENTITY_FROZEN) {
+		this->decreaseEndStatusTime(Game::instance().time()->getDeltaTime());
+		if (this->endStatusTime == 0)
+			this->setStatus(ENTITY_NORMAL);
+	}
 }
 
 void Entity::render(Camera& camera) {
 	if (this->isImmobilized()) {
-		camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getShadow());
+		if (this->isFogged())
+			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
+		else
+			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
 	}
 	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 }
@@ -72,4 +81,20 @@ bool Entity::isImmobilized() {
 	return ((this->isFogged() )||(this->getStatus() == ENTITY_FROZEN));
 }
 
+void Entity::iceUp(unsigned seconds) {
+	this->setStatus(ENTITY_FROZEN);
+	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
+}
+
+void Entity::decreaseEndStatusTime(float timeToDecrease) {
+	Uint32 aux = static_cast<Uint32>(timeToDecrease);
+	if (aux < this->endStatusTime)
+		this->endStatusTime -= aux;
+	else
+		this->setEndStatusTime(0);
+}
+
+void Entity::setEndStatusTime(Uint32 endTime) {
+	this->endStatusTime = endTime;
+}
 
