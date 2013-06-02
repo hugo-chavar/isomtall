@@ -22,7 +22,7 @@ public:
 	void addFirstSprite(AnimatedEntity*);
 	std::pair<int,int> getPosicionEnTiles();
 	std::pair<int,int> getPosicionAnteriorEnTiles();
-	void setFreezed(bool value);
+	//void setFreezed(bool value);
 	void setAnimating(bool value);
 	std::string updateToString();
 	void updateFromString(std::string data);
