@@ -1,6 +1,9 @@
 #include "Sender.h"
 
 #include <iostream>
+#include "Logger.h"
+#include "stringUtilities.h"
+#include "SDL.h"
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
 Sender::Sender(Socket* socket) {
@@ -80,6 +83,8 @@ void Sender::sendMessage(std::string message){
 			aux = message.substr(bytesSent - 1);
 		}
 	} while (bytesSent < messageSize);
+
+	common::Logger::instance().log("Instruction sent at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 }
 
 void* Sender::run(){

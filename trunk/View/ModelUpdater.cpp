@@ -74,11 +74,13 @@ void ModelUpdater::updateModel() {
 		this->getConnector().startConnector();
 
 		do {
-			unsigned startTime = static_cast<unsigned>(SDL_GetTicks());
+			//unsigned startTime = static_cast<unsigned>(SDL_GetTicks());
+			common::Logger::instance().log("WAIT FOR INSTRUCTION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
-			unsigned updateTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
-			std::string upt = " Instruction wait time: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(updateTime),' ',10);
-			common::Logger::instance().log(upt);
+			//unsigned updateTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
+			common::Logger::instance().log("FINISHED WAITING FOR INSTRUCTION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			//std::string upt = " Instruction wait time: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(updateTime),' ',10);
+			//common::Logger::instance().log(upt);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
 				this->processInstruction(instructionIn);
 			}
@@ -122,7 +124,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->setConnected(true);
 			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 			//std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
+			
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
+			common::Logger::instance().log("SENT SYNCHRONIZE INSTRUCTION TO SIMULATION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+
 			this->getConnector().addInstruction(instructionOut);
 			instructionOut.clear();
 			instructionOut.setOpCode(OPCODE_INIT_SYNCHRONIZE);
