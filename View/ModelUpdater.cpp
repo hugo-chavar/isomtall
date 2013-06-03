@@ -75,13 +75,14 @@ void ModelUpdater::updateModel() {
 
 		do {
 			//unsigned startTime = static_cast<unsigned>(SDL_GetTicks());
-			common::Logger::instance().log("WAIT FOR INSTRUCTION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			common::Logger::instance().log("Waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
 			//unsigned updateTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
-			common::Logger::instance().log("FINISHED WAITING FOR INSTRUCTION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			common::Logger::instance().log("Finished waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			//std::string upt = " Instruction wait time: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(updateTime),' ',10);
 			//common::Logger::instance().log(upt);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
+				common::Logger::instance().log("Processing instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 				this->processInstruction(instructionIn);
 			}
 
