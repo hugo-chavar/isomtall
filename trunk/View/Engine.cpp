@@ -49,29 +49,19 @@ int Engine::execute() {
 	}
 
 	while(this->isRunning()) {
-		common::Logger::instance().log("execute - 1 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 		frameStartedAt = SDL_GetTicks();
-		common::Logger::instance().log("execute - 2 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 		(Game::instance().time())->updateTime();
-		common::Logger::instance().log("execute - 3 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 		while(SDL_PollEvent(&sdlEvent)) {
-			common::Logger::instance().log("execute - 4 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			this->onEvent(&sdlEvent);
-			common::Logger::instance().log("execute - 5 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 		}
 		this->update();
-		common::Logger::instance().log("execute - 6 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 		this->render();
-		common::Logger::instance().log("execute - 7 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 
-		common::Logger::instance().log("DIFF DELAY: " + stringUtilities::unsignedToString(_modelUpdater.getDiffDelay()));
 		if (milisecondsTonextFrame >= SDL_GetTicks() - (frameStartedAt - _modelUpdater.getDiffDelay())) {
-			common::Logger::instance().log("WAITING FOR: " + stringUtilities::unsignedToString(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)));
-			common::Logger::instance().log("execute - 8 - WAITING AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			common::Logger::instance().log("---- WAITING FOR " + stringUtilities::unsignedToString(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)) + "MILISECONDS AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
-			common::Logger::instance().log("execute - 9 - WAITING AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			common::Logger::instance().log("---- FINISHED WAITING AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 		}
-		common::Logger::instance().log("execute - 10 AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 	}
 
 	this->cleanUp();

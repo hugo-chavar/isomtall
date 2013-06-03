@@ -27,7 +27,7 @@ std::string SimulationReceiver::receiveMessageFromSocket()
 		messageEndPosition += messageEndTag.length();
 		message = this->getReminder().substr(0,messageEndPosition);
 		this->setReminder(this->getReminder().substr(messageEndPosition));
-		common::Logger::instance().log("---------- EXTRACTED MESSAGE : " + message + " - AT: " + stringUtilities::longToString(SDL_GetTicks()));
+		common::Logger::instance().log("			Returning message: " + message +  " from remainder - at: " + stringUtilities::longToString(SDL_GetTicks()));
 		//Sleep(20);//Parche
 		return message;
 	}
@@ -49,6 +49,6 @@ std::string SimulationReceiver::receiveMessageFromSocket()
 		this->setReminder(aux.substr(messageEndPosition));
 	}
 
-	common::Logger::instance().log("---------- RECEIVED MESSAGE : " + message + " - AT: " + stringUtilities::longToString(SDL_GetTicks()));
+	common::Logger::instance().log("			Returning message: " + message +  " from socket - at: " + stringUtilities::longToString(SDL_GetTicks()));
 	return message;
 }

@@ -50,7 +50,6 @@ void Receiver::receive() {
 		instruction.clear();
 
 		if (request != "") {
-			common::Logger::instance().log("---------- RECEIVED FROM SOCKET: " + request + " - AT: " + stringUtilities::longToString(SDL_GetTicks()));
 			request = request.substr(messageBeginTag.length(),(request.find(MESSAGE_ENVELOPE_END_TAG) - messageBeginTag.length()));
 			instruction.deserialize(request);
 		} else {
@@ -61,7 +60,7 @@ void Receiver::receive() {
 		if (this->isInyectUserIDonReceive())
 			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,this->getUserID());
 
-		common::Logger::instance().log("---------- ADDED TO INSTRUCTION QUEUE AT: " + stringUtilities::longToString(SDL_GetTicks()));
+		common::Logger::instance().log("		Added instruction " + instruction.serialize() + " to queue at: " + stringUtilities::longToString(SDL_GetTicks()));
 		this->getInstructionQueue()->addInstruction(instruction);
 
 		request = this->receiveMessageFromSocket();
