@@ -18,9 +18,11 @@ namespace view {
 		void addNotification(string message);
 		void setColor(SDL_Color color);
 		void setFontSize(int size);
+		void setImagePath(string path);
+		string getImagePath();
 	private:
 		StaticTextBox box;
-
+		string imagePath;
 	};
 
 }

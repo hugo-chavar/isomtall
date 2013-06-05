@@ -55,5 +55,7 @@
 #define DEFAULT_FONT_PATH "../Fonts/Arial.ttf"
 
 #define DEFAULT_NOTIFICATIONBOX_PATH "../Connection/notificationBox.png"
+#define DEFAULT_BUTTON_PATH "../Connection/button.png"
+#define DEFAULT_MENU_PATH "../Connection/startScreen.png"
 
 #endif

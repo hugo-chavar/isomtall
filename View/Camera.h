@@ -34,7 +34,9 @@ namespace view {
 		unsigned int getScrollBoxSize();
 		int getWidth();
 		int getHeight();
-		bool initialize();
+		void initialize();
+		void configure();
+		void unconfigure();
 		void update();
 		void cleanUp();
 		void render(SDL_Rect spriteRec,SDL_Surface* surface);
