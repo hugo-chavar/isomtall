@@ -71,6 +71,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterFactory.cpp" />
     <ClCompile Include="Chat.cpp" />
@@ -79,6 +80,7 @@
     <ClCompile Include="ClientUpdater.cpp" />
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameView.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Login.cpp" />
@@ -104,6 +106,7 @@
     <ClCompile Include="tp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterFactory.h" />
     <ClInclude Include="Chat.h" />
@@ -112,6 +115,7 @@
     <ClInclude Include="ClientUpdater.h" />
     <ClInclude Include="Connector.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Login.h" />

@@ -1,15 +1,12 @@
-#pragma once
+#ifndef _GAMEVIEW_H_
+#define _GAMEVIEW_H_
 
-#include "Personaje.h"
-#include "Stage.h"
-#include "ChatView.h"
-#include "ClientUpdater.h"
-#include "CharacterFactory.h"
-#include "Notification.h"
-#include "SDL_mixer.h"
-
+#ifndef gameStatus_t
+#define gameStatus_t
 enum gameStatus_t {
-	STATUS_UPDATING_FILES,
+	STATUS_BAD_CLICK,
+	STATUS_READY_TO_UPDATE,
+	STATUS_UPDATING_FILES ,
 	STATUS_SERVER_UNREACHEABLE,
 	STATUS_UPDATING_CONNECTION_LOST,
 	STATUS_FILES_UPDATED_OK,
@@ -19,15 +16,31 @@ enum gameStatus_t {
 	STATUS_SIMULATION_CONNECTED,
 	STATUS_SIMULATION_CONNECTION_LOST,
 	STATUS_SIMULATION_SINGLE_PLAYER,
-	STATUS_START_SCREEN
+	STATUS_START_SCREEN,
+	STATUS_EXIT
+	
 };
+#endif
+
+#include "GameMenu.h"
+#include "Personaje.h"
+#include "Stage.h"
+#include "ChatView.h"
+#include "ClientUpdater.h"
+#include "CharacterFactory.h"
+#include "Notification.h"
+#include "SDL_mixer.h"
+#include "ModelUpdater.h"
+#include "Login.h"
+
 
 
 class GameView {
 public:
+
 	GameView(void);
 	~GameView(void);
-	bool initialize();
+	void initialize();
 	view::Stage* getWorldView();
 	Personaje* getMyPersonaje();
 	Personaje* getPersonaje(string name);
@@ -47,23 +60,29 @@ public:
 	bool isKnownByPlayer(std::pair<int,int> pos);
 	void startRenderingCharacters();
 	Personaje* nextCharacter();
-	void setStatus(gameStatus_t status);
-	gameStatus_t getStatus();
+	void setStatus(unsigned status);
+	unsigned getStatus();
 	bool isThereAChar(string & name,int x,int y,float cameraX,float cameraY);
 	SpriteAnimado* getErrorImage();
 	void setActivatedAt(int activeAt);
 	int getActivatedAt();
 	void startBackgroundMusic();
 	void toggleBackgroundMusic();
+	GameMenu* getGameMenu();
+	bool showingMenu();
+
+	ModelUpdater* getModelUpdater();
+
+	model::Login* getLogin();
 
 private:
 	view::Camera camera;
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
-	view::Notification notification;
+	//view::Notification notification;
+	GameMenu* menu; 
 	bool connected;
-	//bool firstConnection;
 	bool serverReached;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;
@@ -72,10 +91,16 @@ private:
 	CharacterFactory characterFactory;
 	SpriteAnimado* errorImage;
 	int activatedAt;
-	gameStatus_t gameStatus;
+	unsigned gameStatus;
 
 	Mix_Music* _music;
 	Mix_Music* getMusic();
 	void setMusic(Mix_Music* music);
+
+	ModelUpdater _modelUpdater;
+
+	model::Login _login;
 };
+
+#endif //_GAMEVIEW_H_
 

@@ -1,13 +1,19 @@
 #include "GameView.h"
 #include "TileModel.h"
+#include "Constants.h"
 
 
-GameView::GameView(void) {
+
+GameView::GameView() {
 	this->errorImage = NULL;
 	this->_music = NULL;
+	this->setStatus(STATUS_START_SCREEN);
+	this->camera.initialize();
+	this->menu = new GameMenu();
+	this->menu->initialize(this->camera);
 }
 
-GameView::~GameView(void) {
+GameView::~GameView() {
 	map<string, Personaje*>::iterator it;
 	it = personajes.begin();
 	for( ;it != personajes.end(); it++) {
@@ -17,38 +23,37 @@ GameView::~GameView(void) {
 	if (errorImage != NULL) {
 		delete errorImage;
 	}
+
+	if (this->menu)
+		delete this->menu;
 }
 
-bool GameView::initialize() {
-	bool cameraInitialized = this->camera.initialize();
+void GameView::initialize() {
+	this->camera.configure();
 	bool mapInitialized = false;
-	bool textInitialized = true;
+	//bool textInitialized = true;
 	bool chatInitialized = false;
-	bool notificationInitialized = false;
+	//bool notificationInitialized = false;
 	this->serverReached = true;
 
 	this->chat.setIsTyping(false);
 
-	//Initialize SDL_ttf
-	if (TTF_Init() == -1)
-		textInitialized = false;
+	////Initialize SDL_ttf
+	//if (TTF_Init() == -1)
+	//	textInitialized = false;
 
-	if (cameraInitialized) {
-		notificationInitialized = notification.initialize(camera);
-		if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
-			mapInitialized = worldView.initialize();
-			chatInitialized = chat.initialize(camera);
-			worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
-			this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
-			this->addPersonaje(this->getPlayerName(), this->personaje);
-			if (!mapInitialized)
-				this->setStatus(STATUS_INIT_ERROR);
-		}
-	}
-	
+	//this->notification.setImagePath(DEFAULT_NOTIFICATIONBOX_PATH);
+	//notificationInitialized = this->notification.initialize(camera);
+	//if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
+		mapInitialized = worldView.initialize();
+		chatInitialized = chat.initialize(camera);
+		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+		this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
+		this->addPersonaje(this->getPlayerName(), this->personaje);
+		if (!mapInitialized)
+			this->setStatus(STATUS_INIT_ERROR);
+	//}
 
-	//si hubo errores de inicializacion salgo
-	bool running = mapInitialized & cameraInitialized & textInitialized; 
 
 	if (mapInitialized) {
 		//TODO: cambiar por this->camera.setCenterPixel(worldView.personaje()->getPixelPosition());
@@ -66,7 +71,8 @@ bool GameView::initialize() {
 	//Load background music
 	this->setMusic(Mix_LoadMUS("../Music/music.ogg"));
 
-	return running;
+	this->startBackgroundMusic();
+
 }
 
 GameView& GameView::instance() {
@@ -131,6 +137,16 @@ string GameView::getPlayerCharacterId() {
 }
 
 void GameView::cleanUp() {
+
+	this->_login.cleanUp();
+
+
+	if (this->getModelUpdater()->isConnected()) {
+		Instruction instructionOut;
+		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
+		this->getModelUpdater()->addInstruction(instructionOut);
+		this->getModelUpdater()->stopUpdating(false);
+	}
 	this->camera.cleanUp();
 	if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
 		this->chat.modelChat->cleanUp();
@@ -140,6 +156,8 @@ void GameView::cleanUp() {
 	Mix_FreeMusic(this->getMusic());
 	//Free SDL_mixer.
 	Mix_CloseAudio();
+
+
 }
 
 void GameView::render() {
@@ -147,7 +165,8 @@ void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface, NULL, 0);
 
 	if (this->getStatus() != STATUS_SIMULATION_CONNECTED) {
-		this->notification.render(this->camera);
+		//this->notification.render(this->camera);
+		this->menu->render(this->camera);
 	} else {
 		this->worldView.render(this->camera);
 		if (chat.isTyping())
@@ -168,61 +187,117 @@ void GameView::update() {
 	this->camera.update();
 
 	switch (this->getStatus()) {
+		case STATUS_START_SCREEN: {
+			//this->startBackgroundMusic();
+		}
+		break;
+		case STATUS_UPDATING_FILES: {
+			//descarga de archivos
+			YAMLParser connectionParser;
+			ClientUpdater clientUpdater;
+			int serverPortNumber;
+			std::string serverIpAddress;
+			connectionParser.parse(CONNECTION_DIRECTORY, true);
+			serverPortNumber = connectionParser.getConfigPort();
+			serverIpAddress = connectionParser.getConfigIp();
+			
+			clientUpdater.setServerIp(serverIpAddress);
+			clientUpdater.setServerPort(serverPortNumber);
+			clientUpdater.updateClient();
+			Game::instance().configuration()->serverPort(serverPortNumber);
+			Game::instance().configuration()->serverIp(serverIpAddress);
+		}
+		break;
+		case STATUS_FILES_UPDATED_OK: {
+			//loggeo al server
+			Instruction instruction;
+			instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,this->getPlayerName());
+			instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, this->getPlayerCharacterId());
+			this->getLogin()->getLoginUpdater().addInstruction(instruction);
+			this->_login.initialize();
+			this->getModelUpdater()->startUpdating();
+			Game::instance().initialize();
+			this->initialize();
+
+			//check where this should be
+			//bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
+			bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
+			bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
+			if ( loginOK && simulationOK /*&& filesOK*/) {
+				//Instruction instruction;
+				instruction.clear();
+				instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
+				instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+				GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
+				GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
+
+				instruction.clear();
+				instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
+				instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+				this->getModelUpdater()->addInstruction(instruction);
+
+			}
+		}
+		break;
 		case STATUS_INIT_ERROR:
-			this->notification.addNotification("      ERROR LOADING CLIENT");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
-			this->notification.setFontSize(24);
+			this->menu->setNotificationMessage("      ERROR LOADING CLIENT");
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
+			
 		break;
 		case STATUS_SERVER_UNREACHEABLE:
-			this->notification.addNotification("        SERVER UNREACHABLE");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
+			this->menu->setNotificationMessage("        SERVER UNREACHABLE");
+			//this->notification.update(camera);
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
 		break;
-		case STATUS_UPDATING_FILES:
-			this->notification.addNotification("        UPDATING FILES");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::BLACK_COLOR);
-			this->notification.setFontSize(24);
+		case STATUS_READY_TO_UPDATE:
+			this->menu->setNotificationMessage("         UPDATING FILES..");
+			this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
+			this->setStatus(STATUS_UPDATING_FILES);
 		break;
 		case STATUS_SIMULATION_SINGLE_PLAYER:
-			this->notification.addNotification("  SINGLE PLAYER NOT IMPLEMENTED");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::BLUE_COLOR);
-			this->notification.setFontSize(20);
+			this->menu->setNotificationMessage("  SINGLE PLAYER NOT IMPLEMENTED");
+			this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
-			this->notification.addNotification("UPDATED FAILED CONNECTION LOST");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
-			this->notification.setFontSize(20);
+			this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			this->worldView.update();
 			this->chat.update(camera);
 		break;
 		case STATUS_SIMULATION_CONNECTION_LOST:
-			this->notification.addNotification("   SERVER CONNECTION LOST");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
-			this->notification.setFontSize(24);
+			this->camera.unconfigure();
+			this->menu->setNotificationMessage("   SERVER CONNECTION LOST");
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(20);
+			this->menu->setDisplayNotification(true);
 			Mix_HaltMusic();
 		break;
 		case STATUS_LOGIN_USER_FAILED:
-			this->notification.addNotification(" LOGIN FAILED USER NAME UNAVAILABLE");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
-			this->notification.setFontSize(15);
+			this->menu->setNotificationMessage(" LOGIN FAILED USER NAME UNAVAILABLE");
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(16);
+			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_LOGIN_CONNECTION_LOST:
-			this->notification.addNotification(" LOGIN FAILED CONNECTION LOST");
-			this->notification.update(camera);
-			this->notification.setColor(Camera::RED_COLOR);
-			this->notification.setFontSize(15);
+			this->menu->setNotificationMessage(" LOGIN FAILED CONNECTION LOST");
+			this->menu->setNotificationFontColor(Camera::RED_COLOR);
+			this->menu->setNotificationFontSize(16);
+			this->menu->setDisplayNotification(true);
 		break;
 	}
-
-	//agregar update personajes
 }
 
 bool GameView::insidePlayerVision(std::pair<int,int> pos) {
@@ -277,7 +352,7 @@ bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float camera
 	return false;
 }
 
-void GameView::setStatus(gameStatus_t status) {
+void GameView::setStatus(unsigned status) {
 	this->gameStatus = status;
 }
 
@@ -300,6 +375,27 @@ void GameView::toggleBackgroundMusic() {
 		Mix_PauseMusic();
 }
 
-gameStatus_t GameView::getStatus() {
+unsigned GameView::getStatus() {
 	return this->gameStatus;
+}
+
+GameMenu* GameView::getGameMenu() {
+	return this->menu;
+}
+
+ModelUpdater* GameView::getModelUpdater() {
+	return &this->_modelUpdater;
+}
+
+model::Login* GameView::getLogin() {
+	return &_login;
+}
+
+bool GameView::showingMenu() {
+	//TODO: adaptar segun se vaya avanzando.. esto esta para modificarse!
+	bool start = (GameView::instance().getStatus() == STATUS_START_SCREEN);
+	bool unreachable = (GameView::instance().getStatus() == STATUS_SERVER_UNREACHEABLE);
+	bool connectionLost = (GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTION_LOST);
+	bool singlePlayer = (GameView::instance().getStatus() == STATUS_SIMULATION_SINGLE_PLAYER);
+	return (start || unreachable || connectionLost || singlePlayer) ;
 }

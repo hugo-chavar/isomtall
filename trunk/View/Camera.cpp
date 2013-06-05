@@ -62,31 +62,31 @@ void Camera::setScrollBoxSize(unsigned int scrollBoxSize) {
 }
 
 
- bool Camera::initialize() {  
-	 unsigned speed,scrollm,width,height;
-	 if (!Game::instance().configuration()){
-		 return false;
-	 }
-	 scrollm = Game::instance().configuration()->cameraMarginScroll();
-	 speed = Game::instance().configuration()->cameraSpeed();
+ void Camera::initialize() {  
+	 unsigned width,height;
 	 width = Game::instance().configuration()->cameraWidth();
 	 height = Game::instance().configuration()->cameraHeight();
+
+	 this->startScreen(width,height);
+
+	 SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
+ }
+
+ void Camera::configure() {
+	 unsigned speed,scrollm;
+	 scrollm = Game::instance().configuration()->cameraMarginScroll();
+	 speed = Game::instance().configuration()->cameraSpeed();
 	 this->setScrollSpeed(speed);
 	 this->setScrollBoxSize(scrollm);
-	 //traer la posicion relativa del personaje
-	 //asi se centra la camara al principio
 	 this->setOffsetX(0);
 	 this->setOffsetY(0);
-	 this->startScreen(width,height);
-	 //this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	 //if(this->cameraSurface == NULL)
-	 //{
-		// width = DEFAULT_SCREEN_WIDTH;
-		// height = DEFAULT_SCREEN_HEIGHT;
-		// this->cameraSurface = SDL_SetVideoMode(width,height,DEFAULT_VIDEO_BPP,SDL_HWSURFACE | SDL_DOUBLEBUF);
-	 //}
-	 SDL_WarpMouse(static_cast<Uint16>(width/2),static_cast<Uint16>(height/2));
-	 return true;
+ }
+ 
+ void Camera::unconfigure() {
+	 this->setScrollSpeed(0);
+	 this->setScrollBoxSize(0);
+	 this->setOffsetX(0);
+	 this->setOffsetY(0);
  }
 
 void Camera::update() {

@@ -58,24 +58,24 @@ bool view::ChatView::initialize(Camera &camera) {
 	//Ver si es el lugar adecuado para hacerlo
 	modelChat = new model::Chat();
 	modelChat->initialize();
-	SDL_Color textboxColor;
-	textboxColor.r = 0;
-	textboxColor.g = 0;
-	textboxColor.b = 0;
-	if (!textbox.initialize("../Images/textbox.png", textboxColor, "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5,16))
+	//SDL_Color textboxColor;
+	//textboxColor.r = 0;
+	//textboxColor.g = 0;
+	//textboxColor.b = 0;
+	if (!textbox.initialize("../Images/textbox.png", Camera::BLACK_COLOR , "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5,16))
 		return false;
 	textbox.setOffsetX(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5);
-	SDL_Color nameColor;
-	nameColor.r = 0;
-	nameColor.g = 0;
-	nameColor.b = 0;
-	if (!nameBox.initialize("../Images/nameBox.png", nameColor, "../Fonts/arial.ttf", camera.getOffsetX()+5, camera.getOffsetY()+5,16,1))
+	//SDL_Color nameColor;
+	//nameColor.r = 0;
+	//nameColor.g = 0;
+	//nameColor.b = 0;
+	if (!nameBox.initialize("../Images/nameBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, camera.getOffsetX()+5, camera.getOffsetY()+5,16,1))
 		return false;
-	SDL_Color messagesColor;
-	messagesColor.r = 0;
-	messagesColor.g = 0;
-	messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", messagesColor, "../Fonts/arial.ttf", textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5,10,5))
+	//SDL_Color messagesColor;
+	//messagesColor.r = 0;
+	//messagesColor.g = 0;
+	//messagesColor.b = 0;
+	if (!messagesBox.initialize("../Images/messagesBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5,10,5))
 		return false;
 	if (!initializeCloseButton())
 		return false;

@@ -9,17 +9,20 @@
 #include "../Model/OpcionesJuego.h"
 #include "Logger.h"
 
+
 Engine::Engine() {
-	this->running = true;
+	//this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	//this->desiredFPS = 20;
 	this->desiredFPS = 60;
+	SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();
 
 }
 
-bool Engine::isRunning() {
-	return this->running;
-}
+//bool Engine::isRunning() {
+//	return this->running;
+//}
 
 Uint32 Engine::getDesiredFPS() {
 	return this->desiredFPS;
@@ -31,24 +34,24 @@ int Engine::execute() {
 	SDL_Event sdlEvent;
 
 	this->initialize();
-	bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
-	bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
-	bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
-	if ( loginOK && simulationOK && filesOK) {
-		Instruction instruction;
-		instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
-		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-		GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
-		GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
+	//bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
+	//bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
+	//bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
+	//if ( loginOK && simulationOK && filesOK) {
+	//	Instruction instruction;
+	//	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
+	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+	//	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
+	//	GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
 
-		instruction.clear();
-		instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
-		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-		this->getModelUpdater()->addInstruction(instruction);
-		GameView::instance().startBackgroundMusic();
-	}
+	//	instruction.clear();
+	//	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
+	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
+	//	this->getModelUpdater()->addInstruction(instruction);
+	//	//GameView::instance().startBackgroundMusic();
+	//}
 
-	while(this->isRunning()) {
+	while(GameView::instance().getStatus() != STATUS_EXIT) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
@@ -57,7 +60,7 @@ int Engine::execute() {
 		this->update();
 		this->render();
 
-		if (milisecondsTonextFrame >= SDL_GetTicks() - (frameStartedAt - _modelUpdater.getDiffDelay())) {
+		if (milisecondsTonextFrame >= SDL_GetTicks() - (frameStartedAt /* - _modelUpdater.getDiffDelay()*/)) {
 			common::Logger::instance().log("---- WAITING FOR " + stringUtilities::unsignedToString(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)) + "MILISECONDS AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
 			common::Logger::instance().log("---- FINISHED WAITING AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
@@ -70,60 +73,78 @@ int Engine::execute() {
 }
 
 void Engine::initialize() {
-	SDL_Init(SDL_INIT_EVERYTHING);
+
+	GameView::instance().setStatus(STATUS_START_SCREEN);
+	/*SDL_Init(SDL_INIT_EVERYTHING);
+	TTF_Init();*/
 	//SDL_WM_GrabInput(SDL_GRAB_ON);
-	GameView::instance().setStatus(STATUS_UPDATING_FILES);
-	//descarga de archivos
-	YAMLParser connectionParser;
-	connectionParser.parse(CONNECTION_DIRECTORY, true);
-	int serverPortNumber = connectionParser.getConfigPort();
-	std::string serverIpAddress = connectionParser.getConfigIp();
-	ClientUpdater clientUpdater;
-	clientUpdater.setServerIp(serverIpAddress);
-	clientUpdater.setServerPort(serverPortNumber);
-	clientUpdater.updateClient();
 
-	if (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK) {
+	//while (GameView::instance().getStatus() == STATUS_START_SCREEN) {
 
-		Game::instance().configuration()->serverPort(serverPortNumber);
-		Game::instance().configuration()->serverIp(serverIpAddress);
+	//}
+	//GameView::instance().setStatus(STATUS_UPDATING_FILES);
+	////descarga de archivos
+	//YAMLParser connectionParser;
+	//connectionParser.parse(CONNECTION_DIRECTORY, true);
+	//int serverPortNumber = connectionParser.getConfigPort();
+	//std::string serverIpAddress = connectionParser.getConfigIp();
+	//ClientUpdater clientUpdater;
+	//clientUpdater.setServerIp(serverIpAddress);
+	//clientUpdater.setServerPort(serverPortNumber);
+	//clientUpdater.updateClient();
 
-		Instruction instruction;
-		instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-		instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
-		instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
-		this->getLogin()->getLoginUpdater().addInstruction(instruction);
-		this->_login.initialize();
-		this->getModelUpdater()->startUpdating();
-		Game::instance().initialize();
-	}
+	//if (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK) {
 
-	GameView::instance().initialize();
+	//	Game::instance().configuration()->serverPort(serverPortNumber);
+	//	Game::instance().configuration()->serverIp(serverIpAddress);
+
+	//	Instruction instruction;
+	//	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
+	//	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
+	//	this->getLogin()->getLoginUpdater().addInstruction(instruction);
+	//	this->_login.initialize();
+	//	this->getModelUpdater()->startUpdating();
+	//	Game::instance().initialize();
+	//}
+
+	//GameView::instance().initialize();
 
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
+
+	if (GameView::instance().showingMenu()) {
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		GameView::instance().getGameMenu()->updateMouse(x, y);
+	}
+		
+
 	Instruction instruction;
 	
 	if (GameView::instance().getChat()->isTyping()) {
 		GameView::instance().getChat()->type(sdlEvent);
-		if ((sdlEvent->type==SDL_KEYDOWN) && (sdlEvent->key.keysym.sym==SDLK_RETURN)) {
+		if ((sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_RETURN)) {
 			// ENVIAR MENSAJE...
 			GameView::instance().getChat()->sendMessage();
 		}
 	}
 
-	if(sdlEvent->type == SDL_QUIT) {
-		running = false;
-	}
+	//if(sdlEvent->type == SDL_QUIT) {
+	//	//running = false;
+	//	GameView::instance().setStatus(STATUS_EXIT);
+	//}
 
-	if ( (sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_ESCAPE) ) {
-		running = false;
-	}
+	//if ( (sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_ESCAPE) ) {
+	//	//running = false;
+	//	GameView::instance().setStatus(STATUS_EXIT);
+	//}
 
 	switch(sdlEvent->type) {
 		case SDL_QUIT: {
-			running = false;
+			//running = false;
+			GameView::instance().setStatus(STATUS_EXIT);
 			break;
 		}
 		case SDL_KEYDOWN: {
@@ -131,7 +152,14 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			{
 			case SDLK_ESCAPE: 
 				{
-					running = false;
+					//running = false;
+					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
+
+						GameView::instance().setStatus(STATUS_START_SCREEN);
+						GameView::instance().getGameMenu()->setDisplayNotification(false);
+					} else {
+						GameView::instance().setStatus(STATUS_EXIT);
+					}
 					break;
 				}
 			case SDLK_a:
@@ -144,7 +172,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						string opcion_caracter;
 						opcion_caracter.push_back(OPCION_ATACAR);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-						this->getModelUpdater()->addInstruction(instruction);
+						GameView::instance().getModelUpdater()->addInstruction(instruction);
 					}
 					break;
 				}
@@ -158,7 +186,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						string opcion_caracter;
 						opcion_caracter.push_back(OPCION_DEFENDER);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-						this->getModelUpdater()->addInstruction(instruction);
+						GameView::instance().getModelUpdater()->addInstruction(instruction);
 					}
 					break;
 				}
@@ -178,6 +206,12 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		case SDL_MOUSEBUTTONDOWN: {
 			switch(sdlEvent->button.button) {
 				case SDL_BUTTON_LEFT: {
+					if (GameView::instance().getStatus() == STATUS_START_SCREEN) {
+						unsigned value = GameView::instance().getGameMenu()->select(sdlEvent->button.x, sdlEvent->button.y);
+						if (value != STATUS_BAD_CLICK)
+							GameView::instance().setStatus(value);
+						break;
+					}
 					if (GameView::instance().getChat()->isClosing(sdlEvent->button.x+GameView::instance().getCamera()->getOffsetX(), sdlEvent->button.y+GameView::instance().getCamera()->getOffsetY()))
 						GameView::instance().getChat()->setIsTyping(false);
 					else {
@@ -189,7 +223,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						std::string tileDestinoStr = stringUtilities::pairIntToString(tileDestino);
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_DESTINATION,tileDestinoStr);
-						this->getModelUpdater()->addInstruction(instruction);
+						GameView::instance().getModelUpdater()->addInstruction(instruction);
 					}
 					break;
 				}
@@ -219,18 +253,18 @@ void Engine::render() {
 }
 
 void Engine::cleanUp() {
-	Instruction instructionOut;
+	//Instruction instructionOut;
 
 	GameView::instance().cleanUp();
 
-	this->_login.cleanUp();
+	//this->_login.cleanUp();
 
 
-	if (this->getModelUpdater()->isConnected()) {
-		instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
-		this->getModelUpdater()->addInstruction(instructionOut);
-		this->getModelUpdater()->stopUpdating(false);
-	}
+	//if (this->getModelUpdater()->isConnected()) {
+	//	instructionOut.setOpCode(OPCODE_DISCONNECT_FROM_SIMULATION);
+	//	this->getModelUpdater()->addInstruction(instructionOut);
+	//	this->getModelUpdater()->stopUpdating(false);
+	//}
 
 	SDL_Quit();
 }
@@ -238,11 +272,11 @@ void Engine::cleanUp() {
 Engine::~Engine() {
 	WSACleanup();
 }
-
-ModelUpdater* Engine::getModelUpdater() {
-	return &this->_modelUpdater;
-}
-
-model::Login* Engine::getLogin() {
-	return &_login;
-}
+//
+//ModelUpdater* Engine::getModelUpdater() {
+//	return &this->_modelUpdater;
+//}
+//
+//model::Login* Engine::getLogin() {
+//	return &_login;
+//}

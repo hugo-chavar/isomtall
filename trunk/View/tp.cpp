@@ -7,6 +7,7 @@
 using namespace common;
 
 int main(int argc, char *argv[]) {
+	Engine engine;
 	std::string playerName;
 	std::string playerCharacterId;
 	if (argc < 2){
@@ -30,7 +31,7 @@ int main(int argc, char *argv[]) {
 	Logger::instance().log("Iniciando el juego..");
 	GameView::instance().setPlayerName(playerName);
 	GameView::instance().setPlayerCharacterId(playerCharacterId);
-    Engine engine;
+    
 //	if (!Game::instance().initialize(nombreJugador))
 //		return 1;
  

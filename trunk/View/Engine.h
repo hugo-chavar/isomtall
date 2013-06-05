@@ -5,23 +5,23 @@
 #include "Camera.h"
 #include "Stage.h"
 #include "Chat.h"
-#include "ModelUpdater.h"
-#include "Login.h"
+//#include "ModelUpdater.h"
+//#include "Login.h"
 
 class Engine {
 	private:
-		bool running;
+		//bool running;
 
 		Uint32 desiredFPS;
 
-		ModelUpdater _modelUpdater;
+		//ModelUpdater _modelUpdater;
 
-		model::Login _login;
+		//model::Login _login;
 
 	public:
 		Engine();
 	
-		bool isRunning();
+		//bool isRunning();
 
 		Uint32 getDesiredFPS();
 
@@ -39,9 +39,9 @@ class Engine {
 
 		~Engine();
 
-		ModelUpdater* getModelUpdater();
+		//ModelUpdater* getModelUpdater();
 
-		model::Login* getLogin();
+		//model::Login* getLogin();
 };
 
 #endif //_ENGINE_H_
