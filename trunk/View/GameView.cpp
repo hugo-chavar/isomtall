@@ -9,8 +9,16 @@ GameView::GameView() {
 	this->_music = NULL;
 	this->setStatus(STATUS_START_SCREEN);
 	this->camera.initialize();
+	this->menu = NULL;
 	this->menu = new GameMenu();
-	this->menu->initialize(this->camera);
+	this->addFontSize(20);
+	this->addFontSize(23);
+	this->addFontSize(10);
+	this->addFontSize(16);
+	
+	this->menu->initialize(/*this->camera*/);
+	this->menu->setNotificationMessage("   SERVER CONNECTION LOST");
+	
 }
 
 GameView::~GameView() {
@@ -37,6 +45,9 @@ void GameView::initialize() {
 	this->serverReached = true;
 
 	this->chat.setIsTyping(false);
+	
+	this->chat.setBigFont(this->getFontSize(16));
+	this->chat.setSmallFont(this->getFontSize(10));
 
 	////Initialize SDL_ttf
 	//if (TTF_Init() == -1)
@@ -66,6 +77,8 @@ void GameView::initialize() {
 		this->errorImage = new SpriteAnimado(&errorEntity);
 	}
 
+
+	this->menu->setNotificationFont(this->getFontSize(20));
 	//Initialize SDL_Mixer
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,4096);
 	//Load background music
@@ -157,6 +170,12 @@ void GameView::cleanUp() {
 	//Free SDL_mixer.
 	Mix_CloseAudio();
 
+	while (!this->fonts.empty())
+	{
+		TTF_CloseFont(this->fonts.begin()->second);
+		this->fonts.erase(this->fonts.begin());
+	}
+
 
 }
 
@@ -165,7 +184,6 @@ void GameView::render() {
 	SDL_FillRect(this->camera.cameraSurface, NULL, 0);
 
 	if (this->getStatus() != STATUS_SIMULATION_CONNECTED) {
-		//this->notification.render(this->camera);
 		this->menu->render(this->camera);
 	} else {
 		this->worldView.render(this->camera);
@@ -241,36 +259,35 @@ void GameView::update() {
 		}
 		break;
 		case STATUS_INIT_ERROR:
-			this->menu->setNotificationMessage("      ERROR LOADING CLIENT");
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(20);
+			this->menu->setNotificationMessage("      ERROR LOADING CLIENT");
 			this->menu->setDisplayNotification(true);
 			
 		break;
 		case STATUS_SERVER_UNREACHEABLE:
-			this->menu->setNotificationMessage("        SERVER UNREACHABLE");
-			//this->notification.update(camera);
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(20);
+			this->menu->setNotificationMessage("        SERVER UNREACHABLE");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_READY_TO_UPDATE:
-			this->menu->setNotificationMessage("         UPDATING FILES..");
 			this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
+			this->menu->setNotificationMessage("         UPDATING FILES..");
 			this->setStatus(STATUS_UPDATING_FILES);
 		break;
 		case STATUS_SIMULATION_SINGLE_PLAYER:
-			this->menu->setNotificationMessage("  SINGLE PLAYER NOT IMPLEMENTED");
 			this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(this->getFontSize(20));
+			this->menu->setNotificationMessage("  SINGLE PLAYER NOT IMPLEMENTED");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
-			this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(this->getFontSize(20));
+			this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_SIMULATION_CONNECTED:
@@ -281,20 +298,20 @@ void GameView::update() {
 			this->camera.unconfigure();
 			this->menu->setNotificationMessage("   SERVER CONNECTION LOST");
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(20);
+			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
 			Mix_HaltMusic();
 		break;
 		case STATUS_LOGIN_USER_FAILED:
-			this->menu->setNotificationMessage(" LOGIN FAILED USER NAME UNAVAILABLE");
+			this->menu->setNotificationMessage(" USER NAME UNAVAILABLE");
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(16);
+			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_LOGIN_CONNECTION_LOST:
-			this->menu->setNotificationMessage(" LOGIN FAILED CONNECTION LOST");
+			this->menu->setNotificationMessage(" CONNECTION LOGIN FAILED");
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			this->menu->setNotificationFontSize(16);
+			//this->menu->setNotificationFontSize(16);
 			this->menu->setDisplayNotification(true);
 		break;
 	}
@@ -398,4 +415,13 @@ bool GameView::showingMenu() {
 	bool connectionLost = (GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTION_LOST);
 	bool singlePlayer = (GameView::instance().getStatus() == STATUS_SIMULATION_SINGLE_PLAYER);
 	return (start || unreachable || connectionLost || singlePlayer) ;
+}
+
+void GameView::addFontSize(int size) {
+	TTF_Font* font = TTF_OpenFont(DEFAULT_FONT_PATH, size);
+	this->fonts[size] = font;
+}
+
+TTF_Font* GameView::getFontSize(int size) {
+	return this->fonts.at(size);
 }

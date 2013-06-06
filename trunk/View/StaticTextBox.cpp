@@ -16,8 +16,8 @@ StaticTextBox::~StaticTextBox() {
 		lines[i]->liberar();
 		delete lines[i];
 	}
-	if (_font)
-		TTF_CloseFont(_font);
+	//if (_font)
+	//	TTF_CloseFont(_font);
 }
 
 //SDL_Surface *load_SDLimage(string filename)
@@ -72,12 +72,13 @@ StaticTextBox::~StaticTextBox() {
 //	return true; 
 //}
 
-bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color/*, char *fontPath*/, float offsetX, float offsetY,int textSize,int max_lines) {
+bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color/*, char *fontPath*/, float offsetX, float offsetY,TTF_Font* textSize,int max_lines) {
 	this->_box.load(backgroundImagePath);
 	//if (!load(backgroundImagePath/*, fontPath,textSize*/))
 	//	return false;
 	this->setTextColor(color);
-	this->setTextSize(textSize);
+	//this->setTextSize(textSize);
+	this->setFont(textSize);
 	this->maxLines = max_lines;
 	//_strTexts.push_back("");
 	//_texts.push_back(NULL);
@@ -160,13 +161,17 @@ void StaticTextBox::setTextColor(SDL_Color color) {
 	this->_textColor = color;
 }
 
-void StaticTextBox::setTextSize(int size) {
-	this->_textSize = size;
-	if (this->_font)
-		TTF_CloseFont(this->_font);
-	this->_font = TTF_OpenFont(DEFAULT_FONT_PATH, this->_textSize);
-}
+//void StaticTextBox::setTextSize(int size) {
+//	this->_textSize = size;
+//	if (this->_font)
+//		TTF_CloseFont(this->_font);
+//	this->_font = TTF_OpenFont(DEFAULT_FONT_PATH, this->_textSize);
+//}
 
 void StaticTextBox::setTransparent(bool transparent) {
 	this->transparent = transparent;
+}
+
+void StaticTextBox::setFont(TTF_Font* font) {
+	this->_font = font;
 }

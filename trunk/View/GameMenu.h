@@ -7,6 +7,7 @@
 #include "Notification.h"
 #include "Surface.h"
 #include "Button.h"
+#include "SDL_ttf.h"
 //#include "GameView.h"
 
 
@@ -15,15 +16,14 @@ class GameMenu {
 public:
 	GameMenu();
 	~GameMenu();
-	void initialize(Camera &camera);
+	void initialize(/*Camera &camera*/);
 	void render(Camera &camera);
 	//void update(Camera &camera);
 	void setNotificationFontColor(SDL_Color color);
-	void setNotificationFontSize(int size);
-	int getButtonFontSize();
+	void setNotificationFont(TTF_Font* size);
 	void setButtonFontColor(SDL_Color color);
 	SDL_Color getButtonFontColor();
-	void setButtonFontSize(int size);
+	void setButtonFont(TTF_Font* font);
 	void setImagePath(std::string path);
 	void setButtonImagePath(std::string path);
 	std::string getButtonImagePath();
@@ -43,7 +43,7 @@ private:
 	std::string imagePath;
 	std::string buttonImagePath;
 	bool displayNotification;
-	int buttonFontSize;
+	TTF_Font* buttonFont;
 };
 
 

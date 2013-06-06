@@ -20,7 +20,7 @@ public:
 
 	StaticTextBox();
 	~StaticTextBox();
-	bool initialize(string backgroundImagePath, SDL_Color color/*, char *fontPath*/, float offsetX, float offsetY,int textSize,int maxLines);
+	bool initialize(string backgroundImagePath, SDL_Color color/*, char *fontPath*/, float offsetX, float offsetY,TTF_Font* textSize,int maxLines);
 	void initialize(string backgroundImagePath, int maxLines);
 	virtual void render(Camera &camera);
 	virtual void update(float offsetX, float offsetY);
@@ -33,8 +33,9 @@ public:
 	vector<Line *> getLines();
 	void addLine(string newMsg);
 	void setTextColor(SDL_Color color);
-	void setTextSize(int size);
+	//void setTextSize(int size);
 	void setTransparent(bool transparent);
+	void setFont(TTF_Font* font);
 
 private:
 	//SDL_Surface *_box;

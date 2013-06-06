@@ -1,7 +1,11 @@
 #include "Textbox.h"
 
 
-Textbox::Textbox() { }
+Textbox::Textbox() { 
+	this->box = NULL;
+	this->message = NULL;
+	this->font = NULL;
+}
 
 Textbox::~Textbox() {
 	//Free surfaces
@@ -11,8 +15,8 @@ Textbox::~Textbox() {
 	SDL_EnableUNICODE(SDL_DISABLE);
 }
 
-bool Textbox::initialize(string backgroundImagePath, SDL_Color color, char *fontPath, float offsetX, float offsetY, int textSize) {
-	if (!load(backgroundImagePath, fontPath,textSize))
+bool Textbox::initialize(string backgroundImagePath, SDL_Color color/*, char *fontPath*/, float offsetX, float offsetY/*, int textSize*/) {
+	if (!load(backgroundImagePath/*, fontPath,textSize*/))
 		return false;
 	str = "";
 	message = NULL;
@@ -64,19 +68,19 @@ SDL_Surface *load_image(string filename)
     return optimizedImage;
 }
 
-bool Textbox::load(string backgroundImagePath, char *fontPath, int textSize) {
+bool Textbox::load(string backgroundImagePath/*, char *fontPath, int textSize*/) {
 	//Load images
 	box = load_image(backgroundImagePath);
 	//Open the font
-	font = TTF_OpenFont(fontPath, textSize);
+	//font = TTF_OpenFont(fontPath, textSize);
 	//If there was a problem in loading the background
 	if (box==NULL) {
 		return false;
 	}
 	//If there was an error in loading the font
-	if (font==NULL) {
-		return false;
-	}
+	//if (font==NULL) {
+	//	return false;
+	//}
 	//If everything loaded fine
 	return true; 
 }
@@ -151,7 +155,11 @@ int Textbox::getWidth() {
 	return boxRect.w;
 }
 
-string Textbox::getText()
-{
+string Textbox::getText() {
 	return this->str;
+}
+
+
+void Textbox::setFont(TTF_Font* font) {
+	this->font = font;
 }

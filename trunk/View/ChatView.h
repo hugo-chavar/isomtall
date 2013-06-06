@@ -23,8 +23,10 @@ namespace view {
 		bool isClosing(float x, float y);
 		void sendMessage();
 		void setTo(string To);
-
-
+		void setBigFont(TTF_Font* font);
+		void setSmallFont(TTF_Font* font);
+		TTF_Font* getBigFont();
+		TTF_Font* getSmallFont();
 		model::Chat * modelChat;
 	private:
 		Textbox textbox;
@@ -36,6 +38,8 @@ namespace view {
 		bool initializeCloseButton();
 //		model::Chat * modelChat;
 		void receiveMsgs();
+		TTF_Font * bigFont;
+		TTF_Font * smallFont;
 
 	};
 

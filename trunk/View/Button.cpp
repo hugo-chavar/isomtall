@@ -7,7 +7,7 @@ Button::~Button() { }
 
 void Button::initialize() {
 	
-	this->box.initialize(this->getButtonImagePath(), 2);
+	this->box.initialize(this->getButtonImagePath(), 1);
 	//TODO: this->box.
 }
 
@@ -20,8 +20,8 @@ void Button::setFontColor(SDL_Color color) {
 	this->box.setTextColor(color);
 }
 
-void Button::setFontSize(int size) {
-	this->box.setTextSize(size);
+void Button::setFont(TTF_Font* font) {
+	this->box.setFont(font);
 }
 
 void Button::setLabel(std::string label) {

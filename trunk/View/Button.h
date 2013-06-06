@@ -3,6 +3,7 @@
 
 #include "Camera.h"
 #include "StaticTextBox.h"
+#include "SDL_ttf.h"
 
 class Button {
 
@@ -14,7 +15,7 @@ public:
 	unsigned getReturnValue();
 	void setFontColor(SDL_Color color);
 	void setReturnValue(unsigned size);
-	void setFontSize(int size);
+	void setFont(TTF_Font* font);
 	void setLabel(std::string path);
 	void setButtonImagePath(std::string path);
 	std::string getButtonImagePath();

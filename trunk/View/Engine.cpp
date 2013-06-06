@@ -265,7 +265,7 @@ void Engine::cleanUp() {
 	//	this->getModelUpdater()->addInstruction(instructionOut);
 	//	this->getModelUpdater()->stopUpdating(false);
 	//}
-
+	TTF_Quit();
 	SDL_Quit();
 }
 
