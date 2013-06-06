@@ -62,20 +62,22 @@ bool view::ChatView::initialize(Camera &camera) {
 	//textboxColor.r = 0;
 	//textboxColor.g = 0;
 	//textboxColor.b = 0;
-	if (!textbox.initialize("../Images/textbox.png", Camera::BLACK_COLOR , "../Fonts/arial.ttf", camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5,16))
+	textbox.setFont(this->getBigFont());
+	if (!textbox.initialize("../Images/textbox.png", Camera::BLACK_COLOR /*, "../Fonts/arial.ttf"*/, camera.getOffsetX()+camera.getWidth()-35, camera.getOffsetY()+5/*,16*/))
 		return false;
 	textbox.setOffsetX(camera.getOffsetX()+camera.getWidth()-textbox.getWidth()-5);
 	//SDL_Color nameColor;
 	//nameColor.r = 0;
 	//nameColor.g = 0;
 	//nameColor.b = 0;
-	if (!nameBox.initialize("../Images/nameBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, camera.getOffsetX()+5, camera.getOffsetY()+5,16,1))
+	if (!nameBox.initialize("../Images/nameBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, camera.getOffsetX()+5, camera.getOffsetY()+5,this->getBigFont(),1))
 		return false;
 	//SDL_Color messagesColor;
 	//messagesColor.r = 0;
 	//messagesColor.g = 0;
 	//messagesColor.b = 0;
-	if (!messagesBox.initialize("../Images/messagesBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5,10,5))
+	//messagesBox.setFont(this->getSmallFont());
+	if (!messagesBox.initialize("../Images/messagesBox.png", Camera::BLACK_COLOR/*, "../Fonts/arial.ttf"*/, textbox.getOffsetX(), textbox.getOffsetY()+nameBox.getHeight()+5, this->getSmallFont(),5))
 		return false;
 	if (!initializeCloseButton())
 		return false;
@@ -149,4 +151,20 @@ void view::ChatView::receiveMsgs()
 void view::ChatView::setTo(string To)
 {
 	this->nameBox.addLine(To);
+}
+
+void view::ChatView::setBigFont(TTF_Font* font) {
+	this->bigFont = font;
+}
+
+void view::ChatView::setSmallFont(TTF_Font* font) {
+	this->smallFont = font;
+}
+
+TTF_Font* view::ChatView::getBigFont() {
+	return this->bigFont;
+}
+
+TTF_Font* view::ChatView::getSmallFont() {
+	return this->smallFont;
 }

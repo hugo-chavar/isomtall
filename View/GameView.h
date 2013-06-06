@@ -30,6 +30,7 @@ enum gameStatus_t {
 #include "CharacterFactory.h"
 #include "Notification.h"
 #include "SDL_mixer.h"
+#include "SDL_ttf.h"
 #include "ModelUpdater.h"
 #include "Login.h"
 
@@ -75,6 +76,8 @@ public:
 
 	model::Login* getLogin();
 
+	void addFontSize(int size);
+	TTF_Font* getFontSize(int size);
 private:
 	view::Camera camera;
 	view::Stage worldView;
@@ -100,6 +103,8 @@ private:
 	ModelUpdater _modelUpdater;
 
 	model::Login _login;
+	map <int, TTF_Font*> fonts;
+	map <int, TTF_Font*>::iterator fontsIt;
 };
 
 #endif //_GAMEVIEW_H_

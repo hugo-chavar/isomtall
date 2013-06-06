@@ -2,7 +2,9 @@
 #include "GameView.h"
 
 
-GameMenu::GameMenu() { }
+GameMenu::GameMenu() { 
+	this->buttonFont = NULL;
+}
 
 GameMenu::~GameMenu() { 
 	for (unsigned i = 0; i < buttons.size(); i++){
@@ -10,15 +12,15 @@ GameMenu::~GameMenu() {
 	}
 }
 
-void GameMenu::initialize(Camera &camera) {
+void GameMenu::initialize(/*Camera &camera*/) {
 	this->setImagePath(DEFAULT_MENU_PATH);
 	this->notification.setImagePath(DEFAULT_NOTIFICATIONBOX_PATH);
-	this->notification.setFontSize(20);
-	this->setButtonFontSize(23);
+	this->notification.setFont(GameView::instance().getFontSize(20));
+	this->setButtonFont(GameView::instance().getFontSize(23));
 	this->setButtonFontColor(Camera::BLACK_COLOR);
 	this->setDisplayNotification(false);
-	this->notification.setColor(Camera::RED_COLOR);
-	this->notification.initialize(camera);
+	//this->notification.setColor(Camera::RED_COLOR);
+	//this->notification.initialize(camera);
 	this->setButtonImagePath(DEFAULT_BUTTON_PATH);
 	this->addButton("                 Multiplayer", STATUS_READY_TO_UPDATE, std::make_pair<float, float>(10.0, 100.0));
 	this->addButton("                 Singleplayer", STATUS_SIMULATION_SINGLE_PLAYER, std::make_pair<float, float>(10.0, 200.0));
@@ -41,7 +43,7 @@ void GameMenu::render(Camera &camera) {
 		if (buttons[i]->isDisplaying())
 			buttons[i]->render(camera);
 	}
-	if (displayNotification)
+	if (this->displayNotification)
 		this->notification.render(camera);
 }
 //
@@ -52,8 +54,8 @@ void GameMenu::setNotificationFontColor(SDL_Color color) {
 	this->notification.setColor(color);
 }
 
-void GameMenu::setNotificationFontSize(int size) {
-	this->notification.setFontSize(size);
+void GameMenu::setNotificationFont(TTF_Font* font) {
+	this->notification.setFont(font);
 }
 
 void GameMenu::setImagePath(std::string path) {
@@ -73,24 +75,25 @@ void GameMenu::setButtonImagePath(std::string path) {
 }
 
 void GameMenu::addButton(std::string label, unsigned returnValue, std::pair<float,float> pos ) {
-	Button* aux = new Button();
-	aux->setDisplay(true);
-	aux->setPosition(pos);
-	aux->setButtonImagePath(this->getButtonImagePath());
-	aux->setFontColor(this->getButtonFontColor());
-	aux->setFontSize(this->getButtonFontSize());
-	aux->setLabel(label);
-	aux->setReturnValue(returnValue);
-	aux->initialize();
-	buttons.push_back(aux);
+	Button* auxButton = new Button();
+	auxButton->setDisplay(true);
+	auxButton->setPosition(pos);
+	auxButton->setButtonImagePath(this->getButtonImagePath());
+	auxButton->setFontColor(this->getButtonFontColor());
+	auxButton->setFont(this->buttonFont);
+	
+	auxButton->setReturnValue(returnValue);
+	auxButton->initialize();
+	auxButton->setLabel(label);
+	buttons.push_back(auxButton);
 }
+//
+//int GameMenu::getButtonFontSize() {
+//	return this->buttonFontSize;
+//}
 
-int GameMenu::getButtonFontSize() {
-	return this->buttonFontSize;
-}
-
-void GameMenu::setButtonFontSize(int size) {
-	this->buttonFontSize = size;
+void GameMenu::setButtonFont(TTF_Font* font) {
+	this->buttonFont = font;
 }
 
 void GameMenu::setDisplayNotification(bool display) {
