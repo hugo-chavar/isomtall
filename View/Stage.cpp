@@ -4,6 +4,7 @@
 #include "DataTypes.h"
 #include "TileModel.h"
 #include "GameView.h"
+#include "ItemFactoryView.h"
 
 #define START_LEVEL 0
 #define EXTRA_TILES_TO_RENDER 9
@@ -116,6 +117,7 @@ bool view::Stage::initialize() {
 void view::Stage::update() {
 	this->updateSprites();
 	this->updateTiles();
+	//this->regenerateItem();
 	//_personaje->update(); //llamar en algun lado.. despues
 }
 //
@@ -277,4 +279,28 @@ void Stage::updateSprites() {
 
 StageModel* Stage::getWorldModel() {
 	return this->worldModel;
+}
+
+void Stage::initItemsFromString(std::string ItemsData)
+{
+	std::vector <std::string> v_items;
+	stringUtilities::splitString(ItemsData,v_items,';');
+	int i=0;
+	itemArray.clear();
+	ItemFactoryView factory;
+	while(i<v_items.size())
+	{
+		string itemName=v_items[i];
+		i++;
+		string isHidden=v_items[i];
+		i++;
+		string tile=v_items[i];
+		i++;
+		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
+		Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
+		Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
+		ItemView* item=factory.createItem(itemSprite,chestSprite,isHidden,pos);
+		this->getTileAt(pos)->setOtherEntity(item);
+		itemArray.push_back(item);
+	}
 }

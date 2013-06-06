@@ -82,6 +82,8 @@
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameView.cpp" />
+    <ClCompile Include="ItemView.cpp" />
+    <ClCompile Include="ItemFactoryView.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="LoginUpdater.cpp" />
@@ -117,6 +119,8 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />
+    <ClInclude Include="ItemView.h" />
+    <ClInclude Include="ItemFactoryView.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Login.h" />
     <ClInclude Include="LoginUpdater.h" />
