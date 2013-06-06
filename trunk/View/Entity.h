@@ -24,6 +24,7 @@ protected:
 	Uint32 endStatusTime;
 	int freezedSpriteState;
 	entityStatus_t status;
+	void renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera);
 
 public:
 	Entity();

@@ -131,6 +131,34 @@ entidades:
 
     - nombre: piso5050 
       imagen: ../Images/piso050.png
+
+    - nombre: Chest
+      imagen: ../Images/cofre.png
+      ancho_base: 1		
+      alto_base: 1		
+      pixel_ref_x: 34	
+      pixel_ref_y: 20
+
+    - nombre: RunningBoots
+      imagen: ../Images/botas.png
+      ancho_base: 1		
+      alto_base: 1		
+      pixel_ref_x: 21	
+      pixel_ref_y: 6
+
+    - nombre: Lamp
+      imagen: ../Images/lampara.png
+      ancho_base: 1		
+      alto_base: 1		
+      pixel_ref_x: 24	
+      pixel_ref_y: 22
+
+    - nombre: MapItem
+      imagen: ../Images/mapa.png
+      ancho_base: 1		
+      alto_base: 1		
+      pixel_ref_x: 30	
+      pixel_ref_y: 6
        
 escenarios: 
     - nombre: bosque_encantado 
@@ -345,7 +373,6 @@ escenarios:
          - {x: 99, y: 99, entidad: bandera}
          - {x: 9, y: 9, entidad: bandera}
          - {x: 15, y: 15, entidad: fuente} 
-         - {x: 20, y: 20, entidad: caballo}
          - {x: 0, y: 50, entidad: piso5050}
          - {x: 10, y: 15, entidad: tierra} 
          - {x: 50, y: 50, entidad: agua}

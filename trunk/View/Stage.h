@@ -15,6 +15,7 @@
 #include "Personaje.h"
 #include "SpriteAnimado.h"
 #include "RenderHelper.h"
+#include "ItemView.h"
 
 
 using namespace std;
@@ -31,10 +32,12 @@ namespace view {
 		void setTilesInCamera(int h, int v);
 		StageModel* getWorldModel();
 		TileView* getTileAt(KeyPair k);
+		void initItemsFromString(std::string ItemsData);
 		//Personaje* personaje(); //ojo con repetir esto por todos lados solo para llenar espacios.. debe estar solo en gameView
 		//map <string,Personaje*> personajes;//agrego diccionario de personajes
 	private:
 		vector<Sprite*> spriteArray;
+		vector<ItemView*> itemArray;
 		//Personaje* _personaje;
 		StageModel* worldModel;
 		map<string, int> mapEntityToSprite;

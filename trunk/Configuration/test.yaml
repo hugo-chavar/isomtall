@@ -5,7 +5,7 @@ pantalla:
 configuracion: 
     - vel_personaje: 100
     - margen_scroll: 50
-    - vision_personaje: 5
+    - vision_personaje: 6
      
 entidades:
     - nombre: arbol 
@@ -205,6 +205,3 @@ escenarios:
          - tipoEntidad: frodo
            x: 5 
            y: 3 
-         - tipoEntidad: personajedefault
-           x: 8 
-           y: 8 

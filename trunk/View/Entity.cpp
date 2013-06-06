@@ -48,13 +48,26 @@ void Entity::update() {
 }
 
 void Entity::render(Camera& camera) {
-	if (this->isImmobilized()) {
+	
+	this->renderEntitySprite(this->spriteRect,this->sprite,camera);
+	/*if (this->isImmobilized()) {
 		if (this->isFogged())
 			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
 		else
 			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
 	}
-	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
+	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));*/
+}
+
+void Entity::renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera)
+{
+	if (this->isImmobilized()) {
+		if (this->isFogged())
+			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
+		else
+			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
+	}
+	camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 }
 
 void Entity::setFogged(bool value) {

@@ -108,6 +108,12 @@
     <ClCompile Include="SimulationReceiver.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="ItemFactoryView.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemView.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
@@ -204,6 +210,12 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="SimulationReceiver.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemFactoryView.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemView.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Button.h">

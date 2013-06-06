@@ -89,6 +89,7 @@ string TileView::getGroundEntityName() {
 
 bool TileView::hasOtherEntity() {
 	if (this->tileModel->getOtherEntity())
+	//if (this->getOtherEntity())
 		return true;
 	return false;
 }
@@ -141,7 +142,7 @@ void TileView::renderEntity(Camera& camera){
 			tileaux->getOtherEntity()->render(camera);
 		}
 		else 
-			if (this->hasOtherEntity()) {
+			if (this->getOtherEntity()) { //this->hasOtherEntity()
 				this->getOtherEntity()->render(camera);
 			}
 	}

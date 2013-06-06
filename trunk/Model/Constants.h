@@ -8,6 +8,7 @@
 #define DEFAULT_SERVER_PORT 9443
 #define DEFAULT_SERVER_IP "127.0.0.1"
 #define DEFAULT_VISION_RANGE 5
+#define MAX_VISION_RANGE 50
 
 #define IMAGES_EXTENSION ".png"
 #define IMAGES_DIR "../Images/"
