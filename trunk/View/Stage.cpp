@@ -262,6 +262,19 @@ void Stage::deleteStage() {
 	tilesMap.clear();
 }
 
+bool Stage::addOtherEntity(pair <int,int> position, string entityName) {
+	if (mapEntityToSprite.find(entityName) == mapEntityToSprite.end())
+		return false;
+	Sprite* entitySprite = spriteArray[mapEntityToSprite.at(entityName)];
+	Entity* entity = new Entity(position.first, position.second, entitySprite);
+	this->getTileAt(position)->setOtherEntity(entity);
+	return true;
+}
+
+void Stage::removeOtherEntity(pair <int,int> position) {
+
+}
+
 
 void Stage::updateTiles() {
 	TileView* aux = this->firstTile;

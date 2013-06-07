@@ -71,7 +71,7 @@ public:
 	void toggleBackgroundMusic();
 	GameMenu* getGameMenu();
 	bool showingMenu();
-
+	void manageMissionInit(string argument);
 	ModelUpdater* getModelUpdater();
 
 	model::Login* getLogin();

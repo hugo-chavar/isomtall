@@ -154,6 +154,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				GameView::instance().getMyPersonaje()->setActive(true);
 				std::string ItemsData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ITEMS_INIT);
 				GameView::instance().getWorldView()->initItemsFromString(ItemsData);
+				std::string missionData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_MISSION_INIT);
+				GameView::instance().manageMissionInit(missionData);
 				//GameView---- getWorldVie->loadItems(stringjj);
 				//GameView---- getWorldVie->updateItems(stringjj); //en otro lado
 				//this->requestSynchronizeClock();
