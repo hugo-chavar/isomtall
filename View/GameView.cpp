@@ -400,6 +400,19 @@ GameMenu* GameView::getGameMenu() {
 	return this->menu;
 }
 
+void GameView::manageMissionInit(string argument) {
+	std::vector <std::string> data;
+	stringUtilities::splitString(argument, data, ';');
+	if (data[0].compare("flagMission") == 0) {
+		std::string name = data[1];
+		pair <int,int> position;
+		for (unsigned int i=2; i<data.size(); i++) {
+			position = stringUtilities::stringToPairInt(data[i]);
+			this->worldView.addOtherEntity(position, name);
+		}
+	}
+}
+
 ModelUpdater* GameView::getModelUpdater() {
 	return &this->_modelUpdater;
 }
