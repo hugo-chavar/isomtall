@@ -1,13 +1,20 @@
 #include "ItemView.h"
 
 
-ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string _hidden):Entity(tileX,tileY,spriteCargado)
+ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string state):Entity(tileX,tileY,spriteCargado)
 {
-	this->alive=true;
-	if(_hidden=="H")
-		this->hidden=true;
-	else
-		this->hidden=false;
+	if(state=="D")
+	{
+	this->alive=false;
+	this->hidden=false;
+	}
+	else {
+		this->alive=true;	
+		if(state=="H")
+			this->hidden=true;
+		else
+			this->hidden=false;
+	}
 	this->hiddenSprite = _hiddenSprite;
 	this->setHiddenRectangle(std::make_pair(tileX, tileY),this->hiddenSprite);
 }
