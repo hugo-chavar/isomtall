@@ -292,14 +292,14 @@ void Stage::initItemsFromString(std::string ItemsData)
 	{
 		string itemName=v_items[i];
 		i++;
-		string isHidden=v_items[i];
+		string state=v_items[i];
 		i++;
 		string tile=v_items[i];
 		i++;
 		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
 		Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
 		Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
-		ItemView* item=factory.createItem(itemSprite,chestSprite,isHidden,pos);
+		ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos);
 		this->getTileAt(pos)->setOtherEntity(item);
 		itemArray.push_back(item);
 	}

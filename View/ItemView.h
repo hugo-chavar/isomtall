@@ -14,7 +14,7 @@ private:
 
 public:
 
-	ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string _hidden);
+	ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string state);
 	~ItemView();
 	void update();
 	void render(Camera& camera);
