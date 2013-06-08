@@ -97,7 +97,7 @@ string CharacterVision::initToString() {
 		for (pos.first = 0; pos.first < this->mapHeight; pos.first++) {
 			for (pos.second = 0; pos.second < this->mapWidth; pos.second++) {
 				if ((this->testPosition(pos)) && (!vision.inside(pos)) ) {
-					out.append(":");
+					out.append("?");
 					out.append(stringUtilities::pairIntToString(pos));
 				}
 			}
@@ -116,7 +116,7 @@ void CharacterVision::initFromString(string data) {
 		vector <string> auxVector;
 		//string auxString = auxVector[1];
 		auxVector.clear();
-		stringUtilities::splitString(data, auxVector, ':');
+		stringUtilities::splitString(data, auxVector, '?');
 		vector <string>::iterator it;
 		it = auxVector.begin();
 		for (; it != auxVector.end(); it++) {
@@ -128,7 +128,7 @@ void CharacterVision::initFromString(string data) {
 
 string CharacterVision::updateToString() {
 	string out = stringUtilities::intToString(this->rangeVision);
-	out.append(":");
+	out.append("z");
 	if (this->isAllKnown()) {
 		out.append("A");
 	} 
@@ -139,7 +139,7 @@ void CharacterVision::updateFromString(string data) {
 	//common::Logger::instance().log(data);
 	vector <string> auxVector;
 	auxVector.clear();
-	stringUtilities::splitString(data, auxVector, ':');
+	stringUtilities::splitString(data, auxVector, 'z');
 	this->setRangeVision(stringUtilities::stringToInt(auxVector[0]));
 	if (auxVector[1] == "A") {
 		this->setAllKnown(true);
