@@ -200,6 +200,7 @@ void* ModelUpdater::run() {
 
 void ModelUpdater::simulationUpdate(Instruction& instructionIn) {
 	Instruction instructionOut;
+	GameView::instance().getWorldView()->updateItems(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ITEM_UPDATE));
 	std::string serializedSimulation = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_SIMULATION_UPDATE);
 	std::vector<std::string> player_simulations;
 

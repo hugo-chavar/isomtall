@@ -296,14 +296,16 @@ StageModel* Stage::getWorldModel() {
 
 void Stage::initItemsFromString(std::string ItemsData)
 {
+	if(ItemsData.size()==0)
+		return;
 	std::vector <std::string> v_items;
 	stringUtilities::splitString(ItemsData,v_items,';');
 	int i=0;
 	itemArray.clear();
 	ItemFactoryView factory;
 	//TODO: andy: puse este if porque pinchaba acá..
-	if (v_items.size() < 3)
-		return;
+	//if (v_items.size() < 3)
+	//	return;
 	while(i<v_items.size())
 	{
 		string itemName=v_items[i];
@@ -315,8 +317,61 @@ void Stage::initItemsFromString(std::string ItemsData)
 		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
 		Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
 		Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
-		ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos);
+		ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
 		this->getTileAt(pos)->setOtherEntity(item);
 		itemArray.push_back(item);
 	}
+}
+
+void Stage::updateItems(string serializedItemUpdates)
+{
+	if(serializedItemUpdates.size()<1)
+		return;
+	std::vector <string> updateVector;
+	stringUtilities::splitString(serializedItemUpdates,updateVector,':');
+	for(int i=0;i<updateVector.size();i++)
+	{
+		this->updateItem(updateVector[i]);
+	}
+}
+
+void Stage::updateItem(string serializedItemUpdate)
+{
+	std::vector <string> updateVector;
+	stringUtilities::splitString(serializedItemUpdate,updateVector,';');
+	pair<int,int> pos=stringUtilities::stringToPairInt(updateVector[2]);
+	if(updateVector[0]=="AU" || updateVector[0]=="AH"){
+		ItemView* item=this->findDeathItem(updateVector[1]);//paso nombre
+		if(item)
+		{
+		item->revive(updateVector[0].at(1));
+		this->getTileAt(pos)->setOtherEntity(item);
+		}
+	}
+	else{
+		ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
+		if(updateVector[0]=="U")
+		{
+			item->uncover();
+		}
+		else if(updateVector[0]=="D")
+		{
+			item->kill();
+			this->getTileAt(pos)->setOtherEntity(NULL);
+		}
+	}
+
+}
+
+ItemView* Stage::findDeathItem(string name)
+{
+	for(int i=0;i<this->itemArray.size();i++)
+	{
+		if(itemArray[i]->getName()==name)
+		{	
+			if(!itemArray[i]->isAlive())
+				return itemArray[i];
+		}
+	}
+	return NULL;
 }
