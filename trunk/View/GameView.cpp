@@ -15,7 +15,7 @@ GameView::GameView() {
 	this->addFontSize(23);
 	this->addFontSize(10);
 	this->addFontSize(16);
-	
+	this->addFontSize(12);
 	this->menu->initialize(/*this->camera*/);
 	
 	

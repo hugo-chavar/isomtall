@@ -8,6 +8,7 @@
 #include "Entity.h"
 #include "Mutex.h"
 #include "Constants.h"
+#include "SDL_ttf.h"
 
 class Personaje : public Entity {
 public:
@@ -39,6 +40,7 @@ public:
 	void setActive(bool value);
 	bool isActive();
 	//void setDestino(int xTile, int yTile);
+	void setFont(TTF_Font* font);
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
@@ -65,5 +67,6 @@ private:
 	bool centeredInTile;
 	std::string playerName;
 	bool active;
+	TTF_Font* font;
 };
 #endif

@@ -160,7 +160,6 @@ string Textbox::getText() {
 	return this->str;
 }
 
-
 void Textbox::setFont(TTF_Font* font) {
 	this->font = font;
 }

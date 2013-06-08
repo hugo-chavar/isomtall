@@ -1,5 +1,6 @@
 #include "CharacterFactory.h"
 #include "Game.h"
+#include "GameView.h"
 
 
 CharacterFactory::CharacterFactory() {
@@ -21,6 +22,7 @@ PersonajeModelo* CharacterFactory::createModelCharacter(std::string entityName) 
 
 Personaje* CharacterFactory::createViewCharacter(std::string entityName, std::string playerName) {
 	Personaje* newViewCharacter = new Personaje(this->createModelCharacter(entityName));
+	newViewCharacter->setFont(GameView::instance().getFontSize(12));
 	newViewCharacter->setPlayerName(playerName);
 	newViewCharacter->loadSprites();
 	return newViewCharacter;
