@@ -5,6 +5,7 @@ Textbox::Textbox() {
 	this->box = NULL;
 	this->message = NULL;
 	this->font = NULL;
+	this->str = "";
 }
 
 Textbox::~Textbox() {
@@ -99,7 +100,7 @@ void Textbox::update(float offsetX, float offsetY) {
 
 void Textbox::handleInput(SDL_Event *sdlEvent) {
 	//If a key was pressed
-	if (sdlEvent->type==SDL_KEYDOWN) {
+	if ((sdlEvent->type==SDL_KEYDOWN)&&(sdlEvent->key.keysym.sym != SDLK_ESCAPE) ){
 		//Keep a copy of the current version of the string
 		string temp = str;
 		//If the key is a symbol or character

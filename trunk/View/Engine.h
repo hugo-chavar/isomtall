@@ -10,7 +10,7 @@
 
 class Engine {
 	private:
-		//bool running;
+		bool running;
 
 		Uint32 desiredFPS;
 
@@ -21,7 +21,7 @@ class Engine {
 	public:
 		Engine();
 	
-		//bool isRunning();
+		bool isRunning();
 
 		Uint32 getDesiredFPS();
 

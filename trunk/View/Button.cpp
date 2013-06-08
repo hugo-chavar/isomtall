@@ -1,7 +1,9 @@
 #include "Button.h"
 
 
-Button::Button() { }
+Button::Button() {
+	this->buttonImagePath = "";
+}
 
 Button::~Button() { }
 
@@ -24,7 +26,7 @@ void Button::setFont(TTF_Font* font) {
 	this->box.setFont(font);
 }
 
-void Button::setLabel(std::string label) {
+void Button::setLabel(std::string &label) {
 	this->box.addLine(label);
 }
 

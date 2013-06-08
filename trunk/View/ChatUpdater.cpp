@@ -3,8 +3,6 @@
 #include "ChatUpdater.h"
 #include "Game.h"
 
-#include <iostream>
-
 // ----------------------------------- CONSTRUCTOR ---------------------------------------
 
 ChatUpdater::ChatUpdater(Mutex& messagesListMutex, std::list<std::string>& messagesList) : connector(NULL,&(this->getInstructionQueue())), messagesListMutex(messagesListMutex), messagesList(messagesList) {
@@ -105,7 +103,7 @@ void ChatUpdater::processInstruction(Instruction& instructionIn) {
 			this->getMessagesListMutex().unlock();
 		break;
 		case OPCODE_CONNECTION_ERROR:
-			std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
+			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);
 			this->getMessagesListMutex().lock();

@@ -31,6 +31,7 @@ namespace view {
 		map<string,StaticTextBox*> boxMap;
         map<string,StaticTextBox*>::iterator boxIt;
 		TTF_Font* font;
+		SDL_Color currentColor;
 	};
 
 }

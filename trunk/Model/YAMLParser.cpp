@@ -210,6 +210,9 @@ bool validateImagePath(string imagePath) {
 
 void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NOMBRES IGUALES
 	string name, imagePath, field;
+	name = "";
+	imagePath = "";
+	field = "";
 	int baseWidth, baseHeight, pixelRefX, pixelRefY;
 	bool baseWidthFound = false, baseHeightFound = false, pixelRefXFound = false, pixelRefYFound = false, imagePathFound = false;
 
@@ -262,7 +265,7 @@ void operator >> (const Node& node, EntityObject* &entity) { // ENTIDADES CON NO
 
 void operator >> (const Node& node, AnimatedEntity* &animatedEntity) {
 	int baseWidth, baseHeight, pixelRefX, pixelRefY, fps, delay;
-	string imageDir, field;
+	string imageDir = "", field ="";
 	bool pixelRefXFound = false, pixelRefYFound = false, fpsFound = false, delayFound = false, imageDirFound = false;
 
 	EntityObject *entity_aux;
@@ -484,6 +487,7 @@ void operator >> (const Node& node, sStage& stage) {
 void operator >> (const Node& node, Stages& stages) {
 	for(unsigned int i=0; i < node.size(); i++) {
 		sStage stage;
+		stage.name = "";
 		node[i] >> stage;
 		if (stage.name.size() > 0) // Si tiene nombre se guarda.
 			stages.vStages_aux.push_back(stage);
