@@ -74,6 +74,7 @@ public:
 	GameMenu* getGameMenu();
 	bool showingMenu();
 	void manageMissionInit(string argument);
+	void manageMissionUpdate(string argument);
 	ModelUpdater* getModelUpdater();
 
 	model::Login* getLogin();

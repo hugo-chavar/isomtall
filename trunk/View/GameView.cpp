@@ -438,6 +438,25 @@ void GameView::manageMissionInit(string argument) {
 	}
 }
 
+void GameView::manageMissionUpdate(string argument) {
+	std::vector <std::string> data;
+	stringUtilities::splitString(argument, data,':');
+	for (unsigned int i=0; i<data.size(); i++) {
+		std::vector <std::string> change;
+		stringUtilities::splitString(data[i], change, ';');
+		if (change[0].compare("flagMission") == 0) {
+			if (change[1].compare("D") == 0) {
+				pair <int,int> position = stringUtilities::stringToPairInt(change[3]);
+				this->worldView.removeOtherEntity(position);
+			}
+			if (change[1].compare("A") == 0) {
+				pair <int,int> position = stringUtilities::stringToPairInt(change[3]);
+				this->worldView.addOtherEntity(position, change[2]);
+			}
+		}
+	}
+}
+
 ModelUpdater* GameView::getModelUpdater() {
 	return &this->_modelUpdater;
 }

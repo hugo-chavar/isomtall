@@ -271,8 +271,9 @@ bool Stage::addOtherEntity(pair <int,int> position, string entityName) {
 	return true;
 }
 
-void Stage::removeOtherEntity(pair <int,int> position) {
-
+void Stage::removeOtherEntity(pair <int,int> tile) {
+	delete(this->getTileAt(tile)->getOtherEntity());
+	this->getTileAt(tile)->setOtherEntity(NULL);
 }
 
 
