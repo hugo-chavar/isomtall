@@ -9,6 +9,7 @@
 
 
 Personaje::Personaje(PersonajeModelo* pj) {
+	this->font = NULL;
 	modelo = pj;
 	tileActual = pj->getPosition();
 	this->setCurrentSpritePosition(this->calculateSpritePosition(pj->getEstado()));
@@ -29,16 +30,16 @@ Personaje::Personaje(PersonajeModelo* pj) {
 }
 
 void Personaje::crearNombre(string textoNombre) {
-	TTF_Font *font = NULL;
+	//TTF_Font *font = NULL;
 	SDL_Rect cuadroMensaje;
 
 	cuadroMensaje.x = spriteRect.x + 25;
 	cuadroMensaje.y = spriteRect.y;
-	SDL_Color textColor = Camera::WHITE_COLOR;
-	font = TTF_OpenFont( DEFAULT_FONT_PATH, 12 );
-	nombre = TTF_RenderText_Blended( font, textoNombre.c_str(), textColor );
+	//SDL_Color textColor = Camera::WHITE_COLOR;
+	//font = TTF_OpenFont( DEFAULT_FONT_PATH, 12 );
+	nombre = TTF_RenderText_Blended( this->font, textoNombre.c_str(), Camera::WHITE_COLOR );
 	SDL_SetClipRect(nombre, (&cuadroMensaje));
-	TTF_CloseFont( font );
+	//TTF_CloseFont( font );
 }
 
 void Personaje::loadSprites() {
@@ -466,4 +467,8 @@ void Personaje::setActive(bool value) {
 
 bool Personaje::isActive() {
 	return this->active;
+}
+
+void Personaje::setFont(TTF_Font* font) {
+	this->font = font;
 }
