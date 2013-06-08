@@ -1,6 +1,6 @@
 #include "TileView.h"
 #include "Logger.h"
-#include "stringUtilities.h"
+#include "StringUtilities.h"
 
 using namespace common;
 
@@ -9,10 +9,9 @@ TileView::TileView(){
 	this->initialize();
 }
 
-TileView::TileView(TileModel* tModel){ //, Surface* fogSurface
+TileView::TileView(TileModel* tModel){
 	this->initialize();
 	this->tileModel = tModel;
-	//this->fog = fogSurface;
 }
 
 TileView::~TileView(){
@@ -21,7 +20,6 @@ TileView::~TileView(){
 	if (groundEntity)
 		delete groundEntity;
 	this->tileModel = NULL;
-	//this->fog = NULL;
 }
 
 void TileView::initialize(){
@@ -29,10 +27,9 @@ void TileView::initialize(){
 	this->otherEntity = NULL;
 	this->nextTile = NULL;
 	this->relatedTile = NULL;
-	this->isDrawable = true; //TODO: PASAR A FALSE
+	this->isDrawable = true;
 	this->isFogged = false;
 	this->tileModel = NULL;
-	//this->fog = NULL;
 }
 
 Entity * TileView::getGroundEntity(){
@@ -119,24 +116,21 @@ void TileView::setFogged(bool value) {
 	if (tileaux) {
 		while (tileaux != this){
 			tileaux->getGroundEntity()->setFogged(value);
-			if (tileaux->hasOtherEntity()) {
+			if (tileaux->getOtherEntity()) {
 				tileaux->getOtherEntity()->setFogged(value);
 			}
 			tileaux = tileaux->getRelatedTile();
 		}
 	}
 	else 
-		if (this->hasOtherEntity()) {
+		if (this->getOtherEntity()) {
 			this->getOtherEntity()->setFogged(value);
 		}
 }
 
 void TileView::renderEntity(Camera& camera){
 
-	if (this->drawable()) {//TODO: PONER EN FALSE POR DEFAULT
-		/*if (this->hasOtherEntity())
-				this->getOtherEntity()->render(camera);*/
-
+	if (this->drawable()) {
 		TileView* tileaux = this->getRelatedTile();
 		if (tileaux) {
 			tileaux->getOtherEntity()->render(camera);
@@ -146,15 +140,11 @@ void TileView::renderEntity(Camera& camera){
 				this->getOtherEntity()->render(camera);
 			}
 	}
-
-	//if (this->isFreezed){
-	//	camera.render(this->getGroundEntity()->getSdlRect(),this->fog->getSdlSurface());
-	//}
 }
 
 void TileView::update(){
 	//this->getGroundEntity()->update();
-	if (this->hasOtherEntity()){
+	if (this->getOtherEntity()){
 		this->getOtherEntity()->update();
 	}
 }

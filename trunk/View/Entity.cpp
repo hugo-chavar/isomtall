@@ -111,3 +111,6 @@ void Entity::setEndStatusTime(Uint32 endTime) {
 	this->endStatusTime = endTime;
 }
 
+bool Entity::isItem() {
+	return false;
+}

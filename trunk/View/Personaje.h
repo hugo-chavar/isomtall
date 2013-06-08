@@ -41,6 +41,7 @@ public:
 	bool isActive();
 	//void setDestino(int xTile, int yTile);
 	void setFont(TTF_Font* font);
+	bool hasValidSprite();
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
