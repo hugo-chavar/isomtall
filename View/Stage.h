@@ -34,7 +34,7 @@ namespace view {
 		TileView* getTileAt(KeyPair k);
 		void initItemsFromString(std::string ItemsData);
 		bool addOtherEntity(pair <int,int> position, string entityName);
-		void removeOtherEntity(pair <int,int> position);
+		void removeOtherEntity(pair <int,int> tile);
 		void updateItems(string serializedItemUpdates);
 		//Personaje* personaje(); //ojo con repetir esto por todos lados solo para llenar espacios.. debe estar solo en gameView
 		//map <string,Personaje*> personajes;//agrego diccionario de personajes
