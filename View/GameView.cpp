@@ -170,24 +170,20 @@ void GameView::cleanUp() {
 		this->getModelUpdater()->stopUpdating(false);
 	}
 	this->camera.cleanUp();
-	if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
+	//if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
 		this->chat.modelChat->cleanUp();
-	}
+	//}
 
 	//Free background music.
 	Mix_FreeMusic(this->getMusic());
 	//Free SDL_mixer.
 	Mix_CloseAudio();
 
-
 	while (!this->fonts.empty())
 	{
 		TTF_CloseFont(this->fonts.begin()->second);
 		this->fonts.erase(this->fonts.begin());
 	}
-
-
-
 }
 
 void GameView::render() {
@@ -219,6 +215,7 @@ void GameView::update() {
 		case STATUS_START_SCREEN: {
 			//
 		}
+		break;
 		case STATUS_EXIT: {
 			this->camera.unconfigure();
 			Mix_HaltMusic();
@@ -258,20 +255,17 @@ void GameView::update() {
 		break;
 		case STATUS_INIT_ERROR:
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			//this->menu->setNotificationFontSize(20);
 			this->menu->setNotificationMessage("ERROR LOADING CLIENT");
 			this->menu->setDisplayNotification(true);
 			
 		break;
 		case STATUS_SERVER_UNREACHEABLE:
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			//this->menu->setNotificationFontSize(20);
 			this->menu->setNotificationMessage("SERVER UNREACHABLE");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_READY_TO_UPDATE:
 			this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
-			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
 			this->menu->setNotificationMessage("UPDATING FILES..");
 			this->setStatus(STATUS_UPDATING_FILES);
@@ -279,19 +273,18 @@ void GameView::update() {
 		case STATUS_SIMULATION_SINGLE_PLAYER:
 			this->camera.unconfigure();
 			this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
-			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
 			this->camera.unconfigure();
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
-			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			this->menu->setDisplayNotification(false);
+			this->menu->hideButtons();
 			this->worldView.update();
 			this->chat.update(camera);
 		break;
@@ -306,8 +299,6 @@ void GameView::update() {
 			this->camera.unconfigure();
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
 			this->menu->setNotificationMessage("USER NAME UNAVAILABLE");
-			
-			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
 			Mix_HaltMusic();
 		break;

@@ -130,3 +130,9 @@ unsigned GameMenu::select(int x, int y) {
 bool GameMenu::displayingNotification() {
 	return this->displayNotification;
 }
+
+void GameMenu::hideButtons() {
+	for (unsigned i = 0; i < buttons.size(); i++){
+			buttons[i]->setDisplay(false);
+	}
+}

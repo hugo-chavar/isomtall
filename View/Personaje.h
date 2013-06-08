@@ -54,9 +54,9 @@ private:
 	void setCenteredInTile(bool centroTile);
 	void animar();
 	void detenerAnimacion();
-	void crearNombre(string textoNombre);
+	void createLabelName();
 	std::pair<int, int> tileActual;
-	SDL_Surface *nombre;
+	SDL_Surface* labelName;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual

@@ -19,26 +19,27 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
-	if (!(this->getPlayerName().empty())) {
-		crearNombre(this->getPlayerName());
-	}
-
+	//if (!(this->getPlayerName().empty())) {
+	//	crearNombre(this->getPlayerName());
+	//}
+	this->labelName = NULL;
+	this->playerName = "";
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
 }
 
-void Personaje::crearNombre(string textoNombre) {
+void Personaje::createLabelName() {
 	//TTF_Font *font = NULL;
-	SDL_Rect cuadroMensaje;
+	//SDL_Rect cuadroMensaje;
 
-	cuadroMensaje.x = spriteRect.x + 25;
-	cuadroMensaje.y = spriteRect.y;
+	//cuadroMensaje.x = spriteRect.x + 25;
+	//cuadroMensaje.y = spriteRect.y;
 	//SDL_Color textColor = Camera::WHITE_COLOR;
 	//font = TTF_OpenFont( DEFAULT_FONT_PATH, 12 );
-	nombre = TTF_RenderText_Blended( this->font, textoNombre.c_str(), Camera::WHITE_COLOR );
-	SDL_SetClipRect(nombre, (&cuadroMensaje));
+	this->labelName = TTF_RenderText_Blended(this->font, this->getPlayerName().c_str(), Camera::WHITE_COLOR );
+	//SDL_SetClipRect(nombre, (&cuadroMensaje));
 	//TTF_CloseFont( font );
 }
 
@@ -226,7 +227,7 @@ void Personaje::calcularSigTileAMover(){
 void Personaje::render(Camera& camera) {
 	SDL_Rect cuadroMensaje;
 
-	cuadroMensaje.x = spriteRect.x + 25;
+	cuadroMensaje.x = static_cast<Sint16>((2*spriteRect.x + spriteRect.w - this->labelName->w)/2);
 	cuadroMensaje.y = spriteRect.y;
 	//TODO: mejorar siguientes 3 lineas..
 	if (this->isImmobilized()) {
@@ -249,8 +250,8 @@ void Personaje::render(Camera& camera) {
 	} else {
 		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
 	}
-	SDL_SetClipRect(nombre, (&cuadroMensaje));
-	camera.render(cuadroMensaje, this->nombre);
+	SDL_SetClipRect(this->labelName, (&cuadroMensaje));
+	camera.render(cuadroMensaje, this->labelName);
 }
 
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
@@ -336,10 +337,10 @@ int Personaje::calculateSpritePosition(int currentAnimationNumber) {
 }
 
 Personaje::~Personaje(){
-	if (sprites.size() > 0) {
-		clearSprites();
+	if (this->sprites.size() > 0) {
+		this->clearSprites();
 	}
-	SDL_FreeSurface( nombre );
+	SDL_FreeSurface(this->labelName);
 }
 
 PersonajeModelo* Personaje::personajeModelo() {
@@ -446,7 +447,7 @@ void Personaje::initFromString(std::string data) {
 void Personaje::setPlayerName(std::string name) {
 	this->playerName = name;
 	if (!(this->getPlayerName().empty())) {
-		crearNombre(this->getPlayerName());
+		this->createLabelName();
 	}
 }
 

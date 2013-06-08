@@ -35,6 +35,7 @@ public:
 	void updateMouse(int x, int y);
 	unsigned select(int x, int y);
 	bool displayingNotification();
+	void hideButtons();
 private:
 	std::vector <Button* > buttons;
 	view::Surface background;
