@@ -175,9 +175,9 @@ void GameView::cleanUp() {
 	}
 
 	//Free background music.
-	//Mix_FreeMusic(this->getMusic());
+	Mix_FreeMusic(this->getMusic());
 	//Free SDL_mixer.
-	//Mix_CloseAudio();
+	Mix_CloseAudio();
 
 
 	while (!this->fonts.empty())
@@ -221,7 +221,7 @@ void GameView::update() {
 		}
 		case STATUS_EXIT: {
 			this->camera.unconfigure();
-			//Mix_HaltMusic();
+			Mix_HaltMusic();
 		}
 		break;
 		case STATUS_UPDATING_FILES: {
@@ -300,7 +300,7 @@ void GameView::update() {
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
 			this->menu->setNotificationMessage("SERVER CONNECTION LOST");
 			this->menu->setDisplayNotification(true);
-			//Mix_HaltMusic();
+			Mix_HaltMusic();
 		break;
 		case STATUS_LOGIN_USER_FAILED:
 			this->camera.unconfigure();
@@ -309,14 +309,14 @@ void GameView::update() {
 			
 			//this->menu->setNotificationFontSize(this->getFontSize(20));
 			this->menu->setDisplayNotification(true);
-			//Mix_HaltMusic();
+			Mix_HaltMusic();
 		break;
 		case STATUS_LOGIN_CONNECTION_LOST:
 			this->camera.unconfigure();
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
 			this->menu->setNotificationMessage("CONNECTION LOGIN FAILED");
 			this->menu->setDisplayNotification(true);
-			//Mix_HaltMusic();
+			Mix_HaltMusic();
 		break;
 		case STATUS_SIMULATION_TRY_CONNECT:
 			//this->camera.unconfigure();
