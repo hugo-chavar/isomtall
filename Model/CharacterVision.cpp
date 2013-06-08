@@ -111,7 +111,7 @@ void CharacterVision::initFromString(string data) {
 	//auxVector.clear();
 	//stringUtilities::splitString(data, auxVector, '?');
 	//this->updateFromString(auxVector[0]);
-	if (!this->isAllKnown()) {
+	if (!this->isAllKnown() && (data.size() > 2)) {
 		pair<int, int> pos;
 		vector <string> auxVector;
 		//string auxString = auxVector[1];
