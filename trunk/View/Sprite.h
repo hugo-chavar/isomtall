@@ -1,16 +1,11 @@
-#pragma once
-
 #ifndef _SPRITE_H_
 #define _SPRITE_H_
-
 
 #include <iostream>
 #include <vector>
 #include <list>
 #include "Surface.h"
 #include "AnimatedEntity.h"
-
-
 
 class Sprite {
 

@@ -358,6 +358,8 @@ bool GameView::insidePlayerVision(std::pair<int,int> pos) {
 }
 
 bool GameView::isKnownByPlayer(std::pair<int,int> pos) { 
+	if (this->getMyPersonaje()->personajeModelo()->getVision()->isAllKnown())
+		return true;
 	return  this->getMyPersonaje()->personajeModelo()->getVision()->testPosition(pos);
 }
 

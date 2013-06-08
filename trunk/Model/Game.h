@@ -21,7 +21,7 @@ public:
 
 	static Game& instance();
 	StageModel* world();
-	TimeManager* time();
+	TimeManager* getTimer();
 	bool initialize(); 
 	//bool insidePlayerVision(std::pair<int,int> );
 	//bool isKnownByPlayer(std::pair<int,int> );

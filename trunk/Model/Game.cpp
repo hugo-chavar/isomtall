@@ -18,7 +18,7 @@ StageModel* Game::world() {
 	return &_world;
 }
 
-TimeManager* Game::time() {
+TimeManager* Game::getTimer() {
 	return &_time;
 }
 

@@ -20,31 +20,34 @@ Circle::~Circle() {
 }
 
 bool Circle::inside(pair<int, int> pos) {
-	vector <pair<int, int> >::iterator it;
-	pair<int, int> aux;
-	it = orderedLimits.begin();
-	while ( (it != orderedLimits.end()) && ((*it).second > pos.second) ) {
-		it++;
-	}
-	if ( ((*it).second != pos.second) || ((*it).first > pos.first))
-		return false;
-	while ((it != orderedLimits.end()) && ((*it).second == pos.second) && ((*it).first < pos.first) ) {
-		it++;
-	}
-	if (it != orderedLimits.end())  {
-		if ((*it).first < pos.first)
-			return false;
-		return true;
-	} else {
-		return false;
-	}
+	return (this->distanceToCenter(pos) <= this->radius);
+	//vector <pair<int, int> >::iterator it;
+	//pair<int, int> aux;
+	//it = orderedLimits.begin();
+	//while ( (it != orderedLimits.end()) && ((*it).second > pos.second) ) {
+	//	it++;
+	//}
+	//if ( ((*it).second != pos.second) || ((*it).first > pos.first))
+	//	return false;
+	//while ((it != orderedLimits.end()) && ((*it).second == pos.second) && ((*it).first < pos.first) ) {
+	//	it++;
+	//}
+	//if (it != orderedLimits.end())  {
+	//	if ((*it).first < pos.first)
+	//		return false;
+	//	return true;
+	//} else {
+	//	return false;
+	//}
 }
 
 void Circle::clear() {
 	limits.clear();
 }
 
-void Circle::initialize(pair<int, int> center, int range) {
+void Circle::initialize(pair<int, int> centerPoint, int range) {
+	this->radius = range;
+	this->center = centerPoint;
 	this->clear();
 	int x = range, y = 0;
 	int xChange = 1 - range*2;
@@ -52,14 +55,14 @@ void Circle::initialize(pair<int, int> center, int range) {
 	int rangeError = 0;
 
 	while (x >= y) {
-		limits.insert(make_pair(x + center.first, y + center.second));
-		limits.insert(make_pair(y + center.first, x + center.second));
-		limits.insert(make_pair(-x + center.first, y + center.second));
-		limits.insert(make_pair(-y + center.first, x + center.second));
-		limits.insert(make_pair(-x + center.first, -y + center.second));
-		limits.insert(make_pair(-y + center.first, -x + center.second));
-		limits.insert(make_pair(x + center.first, -y + center.second));
-		limits.insert(make_pair(y + center.first, -x + center.second));
+		limits.insert(make_pair(x + this->center.first, y + this->center.second));
+		limits.insert(make_pair(y + this->center.first, x + this->center.second));
+		limits.insert(make_pair(-x + this->center.first, y + this->center.second));
+		limits.insert(make_pair(-y + this->center.first, x + this->center.second));
+		limits.insert(make_pair(-x + this->center.first, -y + this->center.second));
+		limits.insert(make_pair(-y + this->center.first, -x + this->center.second));
+		limits.insert(make_pair(x + this->center.first, -y + this->center.second));
+		limits.insert(make_pair(y + this->center.first, -x + this->center.second));
 
 		y++;
 		rangeError += yChange;
@@ -118,4 +121,13 @@ pair<int, int> Circle::next() {
 	pair<int, int> aux = (*itlim);
 	itlim++;
 	return aux;
+}
+
+int Circle::distanceToCenter(pair<int, int> point) {
+	int firstCoordinate = center.first - point.first;
+	int secondCoordinate = center.second - point.second;
+	firstCoordinate = firstCoordinate*firstCoordinate;
+	secondCoordinate = secondCoordinate*secondCoordinate;
+	double distance = sqrt(static_cast<double>(firstCoordinate + secondCoordinate));
+	return static_cast<int> (std::floor(distance + 0.5));
 }
