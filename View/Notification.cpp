@@ -5,6 +5,7 @@
 view::Notification::Notification() { 
 	this->currentBox = NULL;
 	this->font = NULL;
+	this->imagePath = "";
 }
 
 view::Notification::~Notification() {
@@ -24,7 +25,7 @@ view::Notification::~Notification() {
 
 StaticTextBox* view::Notification::newBox() {
 	StaticTextBox* aux = new StaticTextBox();
-	aux->initialize(this->getImagePath(), Camera::GREEN_COLOR, 400 /*camera.getOffsetX()+(camera.getWidth()/2)*/, 300 /*camera.getOffsetY()+(camera.getHeight()/2)*/, this->getFont(), 1);
+	aux->initialize(this->getImagePath(), this->currentColor, 400 /*camera.getOffsetX()+(camera.getWidth()/2)*/, 300 /*camera.getOffsetY()+(camera.getHeight()/2)*/, this->getFont(), 1);
 
 	aux->update(aux->getOffsetX()-(aux->getWidth()/2), aux->getOffsetY()-(aux->getHeight()/2));
 	return aux;
@@ -43,6 +44,7 @@ void view::Notification::addNotification(string message) {
 		boxMap[message] = aBox;
 		this->currentBox = aBox;
 	}
+	this->currentBox->setTextColor(this->currentColor);
 }
 
 void view::Notification::render(Camera &camera) {
@@ -54,7 +56,7 @@ void view::Notification::render(Camera &camera) {
 //}
 
 void view::Notification::setColor(SDL_Color color) {
-	this->currentBox->setTextColor(color);
+	this->currentColor = color;
 }
 
 //void view::Notification::setFont(TTF_Font* ttf) {

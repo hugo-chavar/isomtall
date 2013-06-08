@@ -35,9 +35,10 @@ SDL_Surface* view::Surface::getSurfaceToShow(bool transparent) {
 	return this->getSurface();
 }
 
-void view::Surface::setSurface(SDL_Surface* surface) {
-	this->surface = SDL_DisplayFormat(surface);
-	SDL_SetColorKey(this->surface,SDL_SRCCOLORKEY|SDL_RLEACCEL, SDL_MapRGB(this->surface->format,255,0,255));
+void view::Surface::setSurface(SDL_Surface* newSurface) {
+	SDL_Surface* aux  = SDL_DisplayFormat(newSurface);
+	SDL_SetColorKey(aux,SDL_SRCCOLORKEY|SDL_RLEACCEL, SDL_MapRGB(aux->format,255,0,255));
+	this->surface = aux;
 }
 
 void view::Surface::addShadowSurface(SDL_Surface* surface) {
@@ -135,5 +136,5 @@ void view::Surface::createShadow(Uint32 color) {
 void view::Surface::createShadows() {
 	this->createShadow(HEXA_BLACK_COLOR);
 	this->createShadow(HEXA_LIGHT_BLUE_COLOR);
-	this->createShadow(HEXA_BLUE_COLOR);
+	//this->createShadow(HEXA_BLUE_COLOR);
 }

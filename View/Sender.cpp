@@ -84,7 +84,7 @@ void Sender::sendMessage(std::string message){
 		}
 	} while (bytesSent < messageSize);
 
-	common::Logger::instance().log("Instruction sent at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+	//common::Logger::instance().log("Instruction sent at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 }
 
 void* Sender::run(){

@@ -6,6 +6,7 @@ StaticTextBox::StaticTextBox() {
 	//this->_box = NULL;
 	this->_font = NULL;
 	this->setTransparent(false);
+	this->_textSize = 0;
 }
 
 StaticTextBox::~StaticTextBox() {
@@ -91,14 +92,16 @@ bool StaticTextBox::initialize(string backgroundImagePath, SDL_Color color/*, ch
 	_textRects[0]->y = _boxRect.y+5;
 	_textRects[0]->w = _boxRect.w;
 	_textRects[0]->h = _boxRect.h;*/
-	this->addLine("");
+	//this->addLine("");
 	return true;
 }
 
 void StaticTextBox::initialize(string backgroundImagePath ,int max_lines) {
 	this->maxLines = max_lines;
 	this->_box.load(backgroundImagePath);
-	this->addLine("");
+	//_boxRect.w = static_cast<Uint16>(this->_box.getWidth());
+	//_boxRect.h = static_cast<Uint16>(this->_box.getHeight());
+	//this->addLine("");
 }
 
 void StaticTextBox::setOffsetX(float offsetX) {
@@ -111,12 +114,13 @@ void StaticTextBox::setOffsetY(float offsetY) {
 void StaticTextBox::render(Camera &camera) {
 
 	//Escribo en el fondo las lineas adecuadas
+
 	camera.render(_boxRect, this->_box.getSurfaceToShow(this->transparent));
 	int max = this->lines.size() - 1;
 	for(unsigned i = 0; i < this->lines.size(); i++) {
 		SDL_Rect rect;
 		rect.x = static_cast<Sint16>(_boxRect.x+10);
-		rect.y = static_cast<Sint16>(_boxRect.y+5+(max-i)*TTF_FontLineSkip(_font));
+		rect.y = static_cast<Sint16>(_boxRect.y+ (this->getHeight()/this->maxLines -TTF_FontLineSkip(_font))/2+(max-i)*TTF_FontLineSkip(_font));
 		camera.render(rect, lines[i]->getText());
 	}
 }

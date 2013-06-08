@@ -6,6 +6,7 @@
 using namespace std;
 
 StageModel::StageModel(){
+	this->_name = "";
 	this->_tilesMap = NULL;
 	this->firstTile = NULL;
 	_vMainCharacters.clear();

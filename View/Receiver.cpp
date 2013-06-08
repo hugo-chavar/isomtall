@@ -60,7 +60,7 @@ void Receiver::receive() {
 		if (this->isInyectUserIDonReceive())
 			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_USER_ID,this->getUserID());
 
-		common::Logger::instance().log("		Added instruction " + instruction.serialize() + " to queue at: " + stringUtilities::longToString(SDL_GetTicks()));
+		//common::Logger::instance().log("		Added instruction " + instruction.serialize() + " to queue at: " + stringUtilities::longToString(SDL_GetTicks()));
 		this->getInstructionQueue()->addInstruction(instruction);
 
 		request = this->receiveMessageFromSocket();

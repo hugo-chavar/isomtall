@@ -50,8 +50,6 @@ void CharacterVision::updatePosition(pair<int, int> pos) {
 }
 
 void CharacterVision::updateVision() {
-	//if ((GameView::instance().getMyPersonaje() != NULL)&&(!GameView::instance().getMyPersonaje()->isCenteredInTile()))
-	//	return;
 	vision.initialize(this->position, this->rangeVision);
 	vision.fill();
 	pair<int, int > aux;
@@ -100,7 +98,7 @@ string CharacterVision::toString() {
 }
 
 void CharacterVision::fromString(string data) {
-	common::Logger::instance().log(data);
+	//common::Logger::instance().log(data);
 	vector <string> auxVector;
 	pair<int, int> pos;
 	auxVector.clear();

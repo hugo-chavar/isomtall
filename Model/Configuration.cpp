@@ -10,6 +10,7 @@ Configuration::Configuration(){
 	//_serverPort = DEFAULT_SERVER_IP;
 	this->_visionRange = DEFAULT_VISION_RANGE;
 	this->_mainCharacterSpeed = DEFAULT_MAIN_CHARACTER_SPEED;
+	this->_serverIp = "";
 }
 
 Configuration::Configuration(const Configuration &source){

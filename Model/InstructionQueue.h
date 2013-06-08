@@ -28,6 +28,7 @@ public:
 
 	Instruction getNextInstruction(bool shouldWait);
 
+	std::queue<Instruction> InstructionQueue::getNextInstructions(bool shouldWait);
 
 	//TODO: FIND A BETTER WAY.
 	void lock();

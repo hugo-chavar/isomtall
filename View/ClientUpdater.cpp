@@ -122,7 +122,7 @@ void ClientUpdater::updateClient() {
 					this->getConnector().addInstruction(instructionOut);
 					this->getConnector().stopConnector(false);
 					GameView::instance().setStatus(STATUS_FILES_UPDATED_OK);
-					common::Logger::instance().log("Update Complete");
+					//common::Logger::instance().log("Update Complete");
 					break;
 				case OPCODE_CONNECTION_ERROR:
 					if(archivo.is_open()) {
@@ -130,7 +130,7 @@ void ClientUpdater::updateClient() {
 						}
 					GameView::instance().setStatus(STATUS_UPDATING_CONNECTION_LOST);
 					keepUpdating = false;
-					common::Logger::instance().log("Connection error");
+					//common::Logger::instance().log("Connection error");
 					break;
 			}
 		} while (instructionIn.getOpCode() != OPCODE_UPDATE_COMPLETE && keepUpdating);

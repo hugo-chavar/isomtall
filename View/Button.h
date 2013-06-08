@@ -16,7 +16,7 @@ public:
 	void setFontColor(SDL_Color color);
 	void setReturnValue(unsigned size);
 	void setFont(TTF_Font* font);
-	void setLabel(std::string path);
+	void setLabel(std::string &path);
 	void setButtonImagePath(std::string path);
 	std::string getButtonImagePath();
 	void setPosition(std::pair<float, float> pos);

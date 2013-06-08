@@ -11,7 +11,7 @@
 
 
 Engine::Engine() {
-	//this->running = true;
+	this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	//this->desiredFPS = 20;
 	this->desiredFPS = 60;
@@ -20,9 +20,9 @@ Engine::Engine() {
 
 }
 
-//bool Engine::isRunning() {
-//	return this->running;
-//}
+bool Engine::isRunning() {
+	return this->running;
+}
 
 Uint32 Engine::getDesiredFPS() {
 	return this->desiredFPS;
@@ -34,24 +34,8 @@ int Engine::execute() {
 	SDL_Event sdlEvent;
 
 	this->initialize();
-	//bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
-	//bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
-	//bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
-	//if ( loginOK && simulationOK && filesOK) {
-	//	Instruction instruction;
-	//	instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
-	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-	//	GameView::instance().getChat()->modelChat->getMessagesList().push_back("Connecting to chat");
-	//	GameView::instance().getChat()->modelChat->getChatUpdater().addInstruction(instruction);
 
-	//	instruction.clear();
-	//	instruction.setOpCode(OPCODE_CONNECT_TO_SIMULATION);
-	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID, GameView::instance().getPlayerName());
-	//	this->getModelUpdater()->addInstruction(instruction);
-	//	//GameView::instance().startBackgroundMusic();
-	//}
-
-	while(GameView::instance().getStatus() != STATUS_EXIT) {
+	while(GameView::instance().getStatus() != STATUS_EXIT) { //GameView::instance().getStatus() != STATUS_EXIT
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().time())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
@@ -61,9 +45,9 @@ int Engine::execute() {
 		this->render();
 
 		if (milisecondsTonextFrame >= SDL_GetTicks() - (frameStartedAt /* - _modelUpdater.getDiffDelay()*/)) {
-			common::Logger::instance().log("---- WAITING FOR " + stringUtilities::unsignedToString(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)) + "MILISECONDS AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
+			//common::Logger::instance().log("---- WAITING FOR " + stringUtilities::unsignedToString(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt)) + "MILISECONDS AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 			SDL_Delay(milisecondsTonextFrame - (SDL_GetTicks() - frameStartedAt));
-			common::Logger::instance().log("---- FINISHED WAITING AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
+			//common::Logger::instance().log("---- FINISHED WAITING AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 		}
 	}
 
@@ -73,43 +57,7 @@ int Engine::execute() {
 }
 
 void Engine::initialize() {
-
 	GameView::instance().setStatus(STATUS_START_SCREEN);
-	/*SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();*/
-	//SDL_WM_GrabInput(SDL_GRAB_ON);
-
-	//while (GameView::instance().getStatus() == STATUS_START_SCREEN) {
-
-	//}
-	//GameView::instance().setStatus(STATUS_UPDATING_FILES);
-	////descarga de archivos
-	//YAMLParser connectionParser;
-	//connectionParser.parse(CONNECTION_DIRECTORY, true);
-	//int serverPortNumber = connectionParser.getConfigPort();
-	//std::string serverIpAddress = connectionParser.getConfigIp();
-	//ClientUpdater clientUpdater;
-	//clientUpdater.setServerIp(serverIpAddress);
-	//clientUpdater.setServerPort(serverPortNumber);
-	//clientUpdater.updateClient();
-
-	//if (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK) {
-
-	//	Game::instance().configuration()->serverPort(serverPortNumber);
-	//	Game::instance().configuration()->serverIp(serverIpAddress);
-
-	//	Instruction instruction;
-	//	instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-	//	instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,GameView::instance().getPlayerName());
-	//	instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, GameView::instance().getPlayerCharacterId());
-	//	this->getLogin()->getLoginUpdater().addInstruction(instruction);
-	//	this->_login.initialize();
-	//	this->getModelUpdater()->startUpdating();
-	//	Game::instance().initialize();
-	//}
-
-	//GameView::instance().initialize();
-
 }
 
 void Engine::onEvent(SDL_Event* sdlEvent) {
@@ -131,19 +79,9 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 		}
 	}
 
-	//if(sdlEvent->type == SDL_QUIT) {
-	//	//running = false;
-	//	GameView::instance().setStatus(STATUS_EXIT);
-	//}
-
-	//if ( (sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_ESCAPE) ) {
-	//	//running = false;
-	//	GameView::instance().setStatus(STATUS_EXIT);
-	//}
-
 	switch(sdlEvent->type) {
 		case SDL_QUIT: {
-			//running = false;
+			running = false;
 			GameView::instance().setStatus(STATUS_EXIT);
 			break;
 		}
@@ -152,12 +90,13 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			{
 			case SDLK_ESCAPE: 
 				{
-					//running = false;
+					
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 
 						GameView::instance().setStatus(STATUS_START_SCREEN);
 						GameView::instance().getGameMenu()->setDisplayNotification(false);
 					} else {
+						running = false;
 						GameView::instance().setStatus(STATUS_EXIT);
 					}
 					break;

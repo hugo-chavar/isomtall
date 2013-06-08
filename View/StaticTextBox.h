@@ -33,12 +33,10 @@ public:
 	vector<Line *> getLines();
 	void addLine(string newMsg);
 	void setTextColor(SDL_Color color);
-	//void setTextSize(int size);
 	void setTransparent(bool transparent);
 	void setFont(TTF_Font* font);
 
 private:
-	//SDL_Surface *_box;
 	view::Surface _box;
 	SDL_Rect _boxRect;
 	SDL_Color _textColor;

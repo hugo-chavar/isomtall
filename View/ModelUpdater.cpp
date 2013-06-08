@@ -75,17 +75,29 @@ void ModelUpdater::updateModel() {
 
 		do {
 			//unsigned startTime = static_cast<unsigned>(SDL_GetTicks());
-			common::Logger::instance().log("Waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			//common::Logger::instance().log("Waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			instructionIn = this->getInstructionQueue().getNextInstruction(true);
+			//std::queue<Instruction> x = this->getInstructionQueue().getNextInstructions(true);
 			//unsigned updateTime = static_cast<unsigned>(SDL_GetTicks()) - startTime;
-			common::Logger::instance().log("Finished waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			//common::Logger::instance().log("Finished waiting for instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 			//std::string upt = " Instruction wait time: "+ stringUtilities::padLeft(stringUtilities::unsignedToString(updateTime),' ',10);
 			//common::Logger::instance().log(upt);
 			if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
-				common::Logger::instance().log("Processing instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+				//common::Logger::instance().log("Processing instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 				this->processInstruction(instructionIn);
 			}
-
+			//int i = 0;
+			//while (!x.empty()) {
+			//	instructionIn = x.front();
+			//	x.pop();
+			//	i++;
+			//	if (instructionIn.getOpCode() != OPCODE_NO_OPCODE) {
+			//		//common::Logger::instance().log("Processing instruction at: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			//		this->processInstruction(instructionIn);
+			//	}
+			//}
+			//common::Logger::instance().log("Instructions processed: " + stringUtilities::intToString(i));
+			
 		} while (!this->isStopping());
 
 		if (!this->isForceStop()) {
@@ -124,10 +136,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
 			this->setConnected(true);
 			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
-			//std::cout << "CONNECTION WITH SERVER SIMULATION ESTABLISHED" << std::endl;
-			
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
-			common::Logger::instance().log("SENT SYNCHRONIZE INSTRUCTION TO SIMULATION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
+			//common::Logger::instance().log("SENT SYNCHRONIZE INSTRUCTION TO SIMULATION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 
 			this->getConnector().addInstruction(instructionOut);
 			instructionOut.clear();
@@ -141,10 +151,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				//TODO: ESTO SE CAMBIARA POR SINCRONIZAR EL CLOCK, (CUANDO NO HAYA DELAYS)
 				std::string serverStart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CONNECTED_AT);
 				this->setActivatedAt(stringUtilities::stringToUnsigned(serverStart));
-				common::Logger::instance().log("Server start: "+ serverStart);
+				//common::Logger::instance().log("Server start: "+ serverStart);
 				unsigned clientStart = static_cast<unsigned>(SDL_GetTicks());
 				this->setStartedAt(clientStart);
-				common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
+				//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 			}
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:

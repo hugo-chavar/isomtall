@@ -301,6 +301,9 @@ void Stage::initItemsFromString(std::string ItemsData)
 	int i=0;
 	itemArray.clear();
 	ItemFactoryView factory;
+	//TODO: andy: puse este if porque pinchaba acá..
+	if (v_items.size() < 3)
+		return;
 	while(i<v_items.size())
 	{
 		string itemName=v_items[i];

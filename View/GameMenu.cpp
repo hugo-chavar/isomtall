@@ -21,8 +21,8 @@ void GameMenu::initialize(/*Camera &camera*/) {
 	this->setDisplayNotification(false);
 	//this->notification.setColor(Camera::RED_COLOR);
 	//this->notification.initialize(camera);
-	this->setButtonImagePath(DEFAULT_BUTTON_PATH);
-	this->addButton("                 Multiplayer", STATUS_READY_TO_UPDATE, std::make_pair<float, float>(10.0, 100.0));
+	this->setButtonImagePath("../Connection/button.png");
+	this->addButton("                 Multiplayer" , STATUS_READY_TO_UPDATE, std::make_pair<float, float>(10.0, 100.0));
 	this->addButton("                 Singleplayer", STATUS_SIMULATION_SINGLE_PLAYER, std::make_pair<float, float>(10.0, 200.0));
 	this->addButton("                      Exit", STATUS_EXIT, std::make_pair<float, float>(10.0, 300.0));
 	this->background.load(this->getImagePath());
