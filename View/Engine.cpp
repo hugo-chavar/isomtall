@@ -37,7 +37,7 @@ int Engine::execute() {
 
 	while(GameView::instance().getStatus() != STATUS_EXIT) { //GameView::instance().getStatus() != STATUS_EXIT
 		frameStartedAt = SDL_GetTicks();
-		(Game::instance().time())->updateTime();
+		(Game::instance().getTimer())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
 			this->onEvent(&sdlEvent);
 		}

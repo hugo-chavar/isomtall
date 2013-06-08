@@ -112,10 +112,10 @@ void Personaje::animar() {
 	}
 	this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
 	if (!this->hasValidSprite()) {
-		if (GameView::instance().getErrorImage()->ultimoFrame())
+		if (GameView::instance().getErrorImage()->lastFrame())
 			this->detenerAnimacion();
 	} else {
-		if (sprites[this->getCurrentSpritePosition()]->ultimoFrame())
+		if (sprites[this->getCurrentSpritePosition()]->lastFrame())
 			this->detenerAnimacion();
 	}
 }
@@ -372,8 +372,8 @@ std::string Personaje::updateToString() {
 	if (this->hasValidSprite()) {
 		out.append(stringUtilities::intToString(sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber()));
 	} else {
-		//TODO: corregir esto
-		out.append(stringUtilities::intToString(GameView::instance().getErrorImage()->getCurrentSurfaceNumber()));
+		// en caso de problemas con el sprite mando un 0
+		out.append(stringUtilities::intToString(0));
 	}
 	out.append(";");
 	if (this->isCenteredInTile()) {
@@ -381,6 +381,8 @@ std::string Personaje::updateToString() {
 	} else {
 		out.append("F");
 	}
+	out.append(";");
+	out.append(this->modelo->getVision()->updateToString());
 	return out;
 }
 
@@ -404,6 +406,7 @@ void Personaje::updateFromString(std::string data) {
 	//	GameView::instance().getErrorImage()->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
 	//}
 	this->setCenteredInTile(splittedData[5] == "T");
+	this->modelo->getVision()->updateFromString(splittedData[6]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
@@ -431,7 +434,7 @@ void Personaje::setPixelPosition(std::pair<int,int> pixel) {
 std::string Personaje::initToString() {
 	std::string out = this->updateToString();
 	out.append("~");
-	out.append(this->modelo->getVision()->toString());
+	out.append(this->modelo->getVision()->initToString());
 	return out;
 }
 
@@ -441,7 +444,7 @@ void Personaje::initFromString(std::string data) {
 	vector <std::string> splittedData;
 	stringUtilities::splitString(data, splittedData, '~');
 	this->updateFromString(splittedData[0]);
-	this->modelo->getVision()->fromString(splittedData[1]);
+	this->modelo->getVision()->initFromString(splittedData[1]);
 }
 
 void Personaje::setPlayerName(std::string name) {

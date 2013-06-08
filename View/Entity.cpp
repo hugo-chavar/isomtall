@@ -41,7 +41,7 @@ void Entity::update() {
 		return;
 	}
 	if (this->getStatus() == ENTITY_FROZEN) {
-		this->decreaseEndStatusTime(Game::instance().time()->getDeltaTime());
+		this->decreaseEndStatusTime(Game::instance().getTimer()->getDeltaTime());
 		if (this->endStatusTime == 0)
 			this->setStatus(ENTITY_NORMAL);
 	}

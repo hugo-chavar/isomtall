@@ -6,17 +6,18 @@ class SpriteAnimado: public Sprite {
 private:
 	float delay;
 	float fps;
-	int comienzo_frame;
-	void avanzarFrames();
-	bool tiempoFrameCumplido(float delta);
+	float accumulatedTime;
+	void advance();
+	bool timeIsOver();
 	
 	void loadSurfaces();
 public:
 	void initialize();
-	void actualizarFrame();
+	void updateFrame();
 	void getNextFrame();
 	SpriteAnimado(AnimatedEntity* entity);
-	bool ultimoFrame();
+	bool lastFrame();
 	~SpriteAnimado();
+	void addSticks(float ticks);
 };
 

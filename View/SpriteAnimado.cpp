@@ -1,11 +1,12 @@
 #include "SpriteAnimado.h"
-#include "GameView.h"
+#include "Game.h"
 
 SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
 	spriteEntity = entity;
-	comienzo_frame = SDL_GetTicks();
+	//comienzo_frame = SDL_GetTicks();
 	delay = static_cast<float>(entity->delay()); 
 	fps = static_cast<float>(entity->fps());
+	this->accumulatedTime = 0;
 	this->initialize();
 }
 
@@ -21,19 +22,21 @@ void SpriteAnimado::initialize() {
 	this->loadSurfaces();
 }
 
-void SpriteAnimado::actualizarFrame() {
-	float deltaTime = 0.0;
+void SpriteAnimado::updateFrame() {
+	float deltaTime = Game::instance().getTimer()->getDeltaTime();
 	if (this->getCurrentSurfaceNumber() == 0)
-		deltaTime = delay;
-	if ( tiempoFrameCumplido(deltaTime))
-		this->avanzarFrames();
+		deltaTime -= delay;
+	//comienzo_frame = SDL_GetTicks();
+	this->addSticks(deltaTime); //TODO: traer del timer
+	if ( this->timeIsOver())
+		this->advance();
 }
+//
+//void SpriteAnimado::getNextFrame() {
+//	this->avanzarFrames();
+//}
 
-void SpriteAnimado::getNextFrame() {
-	this->avanzarFrames();
-}
-
-bool SpriteAnimado::ultimoFrame() {
+bool SpriteAnimado::lastFrame() {
 	if (this->getCurrentSurfaceNumber() >= (this->surfaces.size() - 1)) {
 		return true;
 	} else {
@@ -41,16 +44,16 @@ bool SpriteAnimado::ultimoFrame() {
 	}
 }
 
-void SpriteAnimado::avanzarFrames() {
-	comienzo_frame = SDL_GetTicks();
-	if ( this->ultimoFrame() )
+void SpriteAnimado::advance() {
+	if ( this->lastFrame() )
 		this->restart();
 	else
 		this->currentSurfaceNumber++;
+	this->accumulatedTime -= (1000/fps);
 }
 
-bool SpriteAnimado::tiempoFrameCumplido(float delta) {
-	return ((SDL_GetTicks() - comienzo_frame) >= ((1000/fps) + delta));
+bool SpriteAnimado::timeIsOver() {
+	return (this->accumulatedTime >= (1000/fps));
 }
 
 void SpriteAnimado::loadSurfaces() {
@@ -59,4 +62,9 @@ void SpriteAnimado::loadSurfaces() {
 	while (auxEntity->imagesPaths()->hasNext()) {
 		this->addSurface(auxEntity->imagesPaths()->nextFullPath());
 	}
+}
+
+
+void SpriteAnimado::addSticks(float ticks) {
+	this->accumulatedTime += ticks;
 }

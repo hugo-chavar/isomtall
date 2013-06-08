@@ -7,6 +7,8 @@
 
 CharacterVision::CharacterVision() {
 	mapKnowledge.clear();
+	this->setAllKnown(false);
+	this->setRangeVision(0);
 }
 
 CharacterVision::~CharacterVision() {
@@ -50,12 +52,14 @@ void CharacterVision::updatePosition(pair<int, int> pos) {
 }
 
 void CharacterVision::updateVision() {
-	vision.initialize(this->position, this->rangeVision);
-	vision.fill();
-	pair<int, int > aux;
-	while (vision.hasNext()) {
-		aux = vision.next();
-		this->setKnown(aux);
+	if (!this->isAllKnown()) {
+		vision.initialize(this->position, this->rangeVision);
+		vision.fill();
+		pair<int, int > aux;
+		while (vision.hasNext()) {
+			aux = vision.next();
+			this->setKnown(aux);
+		}
 	}
 }
 
@@ -80,35 +84,80 @@ void CharacterVision::setKnown(pair<int, int> pos){
 }
 
 bool CharacterVision::isInsideVision(pair<int, int> pos) {
-	return vision.inside(pos);
+	return this->vision.inside(pos);
 }
 
-string CharacterVision::toString() {
-	pair<int, int> pos;
-	string out = stringUtilities::intToString(this->rangeVision);
-	for (pos.first = 0; pos.first < this->mapHeight; pos.first++) {
-		for (pos.second = 0; pos.second < this->mapWidth; pos.second++) {
-			if ((this->testPosition(pos)) && (!vision.inside(pos)) ) {
-				out.append(":");
-				out.append(stringUtilities::pairIntToString(pos));
+string CharacterVision::initToString() {
+	
+	//string out = this->updateToString();
+	//out.append("?");
+	string out = "";
+	if (!this->isAllKnown()) {
+		pair<int, int> pos;
+		for (pos.first = 0; pos.first < this->mapHeight; pos.first++) {
+			for (pos.second = 0; pos.second < this->mapWidth; pos.second++) {
+				if ((this->testPosition(pos)) && (!vision.inside(pos)) ) {
+					out.append(":");
+					out.append(stringUtilities::pairIntToString(pos));
+				}
 			}
 		}
 	}
 	return out;
 }
 
-void CharacterVision::fromString(string data) {
+void CharacterVision::initFromString(string data) {
+	
+	//auxVector.clear();
+	//stringUtilities::splitString(data, auxVector, '?');
+	//this->updateFromString(auxVector[0]);
+	if (!this->isAllKnown()) {
+		pair<int, int> pos;
+		vector <string> auxVector;
+		//string auxString = auxVector[1];
+		auxVector.clear();
+		stringUtilities::splitString(data, auxVector, ':');
+		vector <string>::iterator it;
+		it = auxVector.begin();
+		for (; it != auxVector.end(); it++) {
+			pos = stringUtilities::stringToPairInt(*it);
+			this->setKnown(pos);
+		}
+	}
+}
+
+string CharacterVision::updateToString() {
+	string out = stringUtilities::intToString(this->rangeVision);
+	out.append(":");
+	if (this->isAllKnown()) {
+		out.append("A");
+	} 
+	return out;
+}
+
+void CharacterVision::updateFromString(string data) {
 	//common::Logger::instance().log(data);
 	vector <string> auxVector;
-	pair<int, int> pos;
 	auxVector.clear();
 	stringUtilities::splitString(data, auxVector, ':');
-	vector <string>::iterator it;
-	it = auxVector.begin();
-	this->rangeVision = stringUtilities::stringToInt(*it);
-	it++;
-	for (; it != auxVector.end(); it++) {
-		pos = stringUtilities::stringToPairInt(*it);
-		this->setKnown(pos);
+	this->setRangeVision(stringUtilities::stringToInt(auxVector[0]));
+	if (auxVector[1] == "A") {
+		this->setAllKnown(true);
 	}
+}
+
+void CharacterVision::setAllKnown(bool value) {
+	this->allKnown = value;
+}
+
+bool CharacterVision::isAllKnown() {
+	return this->allKnown;
+}
+
+void CharacterVision::setMagicVision(bool value) {
+	this->magicVision = value;
+}
+
+bool CharacterVision::setMagicVision() {
+	return this->magicVision;
 }
