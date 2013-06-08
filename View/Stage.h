@@ -35,6 +35,7 @@ namespace view {
 		void initItemsFromString(std::string ItemsData);
 		bool addOtherEntity(pair <int,int> position, string entityName);
 		void removeOtherEntity(pair <int,int> position);
+		void updateItems(string serializedItemUpdates);
 		//Personaje* personaje(); //ojo con repetir esto por todos lados solo para llenar espacios.. debe estar solo en gameView
 		//map <string,Personaje*> personajes;//agrego diccionario de personajes
 	private:
@@ -63,6 +64,8 @@ namespace view {
 		void alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2);
 		void updateTiles();
 		void updateSprites();
+		ItemView* findDeathItem(string name);
+		void updateItem(string serializedItemUpdate);
 	};
 
 }
