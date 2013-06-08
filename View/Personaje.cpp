@@ -111,7 +111,7 @@ void Personaje::animar() {
 		}
 	}
 	this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
-	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+	if (!this->hasValidSprite()) {
 		if (GameView::instance().getErrorImage()->ultimoFrame())
 			this->detenerAnimacion();
 	} else {
@@ -229,23 +229,22 @@ void Personaje::render(Camera& camera) {
 
 	cuadroMensaje.x = static_cast<Sint16>((2*spriteRect.x + spriteRect.w - this->labelName->w)/2);
 	cuadroMensaje.y = spriteRect.y;
-	//TODO: mejorar siguientes 3 lineas..
 	if (this->isImmobilized()) {
 		if (this->isFogged()) {
-			if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+			if (!this->hasValidSprite()) {
 				camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getBlackShadow());
 			} else {
 				camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getBlackShadow());
 			}
 		} else {
-			if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+			if (!this->hasValidSprite()) {
 				camera.render(spriteRect,GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
 			} else {
 				camera.render(spriteRect,sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
 			}
 		}
 	}
-	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+	if (!this->hasValidSprite()) {
 		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
 	} else {
 		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
@@ -370,11 +369,11 @@ std::string Personaje::updateToString() {
 	out.append(";");
 	out.append(stringUtilities::intToString(this->getCurrentSpritePosition()));
 	out.append(";");
-	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+	if (this->hasValidSprite()) {
+		out.append(stringUtilities::intToString(sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber()));
+	} else {
 		//TODO: corregir esto
 		out.append(stringUtilities::intToString(GameView::instance().getErrorImage()->getCurrentSurfaceNumber()));
-	} else {
-		out.append(stringUtilities::intToString(sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber()));
 	}
 	out.append(";");
 	if (this->isCenteredInTile()) {
@@ -397,12 +396,13 @@ void Personaje::updateFromString(std::string data) {
 	this->setPixelPosition(pixels);
 	this->setFogged(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
-	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
-		//TODO: Fer: esta linea que sigue esta mal.. corregir urgente
-		GameView::instance().getErrorImage()->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
-	} else {
+	if (this->hasValidSprite()) {
 		this->sprites[this->getCurrentSpritePosition()]->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
 	}
+	//else {
+	//	//TODO: Fer: esta linea que sigue esta mal.. corregir urgente
+	//	GameView::instance().getErrorImage()->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
+	//}
 	this->setCenteredInTile(splittedData[5] == "T");
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
@@ -472,4 +472,8 @@ bool Personaje::isActive() {
 
 void Personaje::setFont(TTF_Font* font) {
 	this->font = font;
+}
+
+bool Personaje::hasValidSprite() {
+	return ((this->getCurrentSpritePosition() <= static_cast<int>(sprites.size()-1))&&(this->getCurrentSpritePosition() >= 0));
 }

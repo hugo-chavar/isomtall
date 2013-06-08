@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _ENTITY_H_
+#define _ENTITY_H_
 
 #include <string>
 #include "Sprite.h"
@@ -42,5 +43,7 @@ public:
 	void setEndStatusTime(Uint32 endTime);
 	void decreaseEndStatusTime(float timeToDecrease);
 	void iceUp(unsigned seconds);
+	virtual bool isItem();
 };
 
+#endif // _ENTITY_H_
