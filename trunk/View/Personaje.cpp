@@ -24,10 +24,39 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	//}
 	this->labelName = NULL;
 	this->playerName = "";
+	this->lifeBarG = NULL;
+	this->lifeBarR = NULL;	
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
+}
+
+void Personaje::createLifeBar() {
+	Uint32 rmask, gmask, bmask, amask;
+	int height, width;
+	
+	height = 6;
+	width = spriteRect.w * 0.75;
+	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
+		rmask = 0xff000000;
+		gmask = 0x00ff0000;
+		bmask = 0x0000ff00;
+		amask = 0x000000ff;
+	} else {
+		rmask = 0x000000ff;
+		gmask = 0x0000ff00;
+		bmask = 0x00ff0000;
+		amask = 0xff000000;
+	}
+    this->lifeBarG = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+	this->lifeBarR = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+}
+
+void Personaje::updateLifeBar() {
+	int porcActual = (int) (vidaActual*100/(modelo->getVidaMaxima()));
+	
+	lifeBarG->w = ((lifeBarG->w) * porcActual)/100;
 }
 
 void Personaje::createLabelName() {
@@ -59,6 +88,7 @@ void Personaje::loadSprites() {
 
 	delete animatedEntity;
 	animatedEntity = NULL;
+	this->createLifeBar();
 }
 
 void Personaje::clearSprites() {
@@ -126,6 +156,7 @@ void Personaje::update() {
 		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 	}
 	modelo->update();
+	this->updateLifeBar();
 	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
 }
 
@@ -224,6 +255,23 @@ void Personaje::calcularSigTileAMover(){
 //	}
 //}
 
+void Personaje::renderStatsBars(Camera& camera) {
+	SDL_Rect gLifeBarBox;
+	SDL_Rect rLifeBarBox;
+
+	gLifeBarBox.w = lifeBarG->w; gLifeBarBox.h = lifeBarG->h;
+	rLifeBarBox.w = lifeBarR->w; rLifeBarBox.h = lifeBarR->h;
+
+	gLifeBarBox.x = spriteRect.x; gLifeBarBox.y = spriteRect.y + spriteRect.h;
+	rLifeBarBox.x = gLifeBarBox.x; rLifeBarBox.y = gLifeBarBox.y;
+
+	/*SDL_FillRect(lifeBarR, &rLifeBarBox, SDL_MapRGB (lifeBarR->format, 255, 0, 0));
+	SDL_FillRect(lifeBarG, &gLifeBarBox, SDL_MapRGB (lifeBarG->format, 0, 128, 0));*/
+
+	camera.render(rLifeBarBox, lifeBarR);
+	camera.render(gLifeBarBox, lifeBarG);
+}
+
 void Personaje::render(Camera& camera) {
 	SDL_Rect cuadroMensaje;
 
@@ -251,6 +299,7 @@ void Personaje::render(Camera& camera) {
 	}
 	SDL_SetClipRect(this->labelName, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->labelName);
+	this->renderStatsBars(camera);
 }
 
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
@@ -340,6 +389,8 @@ Personaje::~Personaje(){
 		this->clearSprites();
 	}
 	SDL_FreeSurface(this->labelName);
+	SDL_FreeSurface(this->lifeBarG);
+	SDL_FreeSurface(this->lifeBarR);
 }
 
 PersonajeModelo* Personaje::personajeModelo() {

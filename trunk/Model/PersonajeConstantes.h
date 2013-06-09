@@ -128,4 +128,6 @@
 #define DEFENDER_E 56
 #define DEFENDER_O 57
 
+#define DEFAULT_CHARACTER_MAX_LIFE 200.0
+
 #endif
