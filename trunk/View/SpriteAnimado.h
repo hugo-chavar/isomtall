@@ -19,5 +19,6 @@ public:
 	bool lastFrame();
 	~SpriteAnimado();
 	void addSticks(float ticks);
+	float getDelay();
 };
 

@@ -1,5 +1,6 @@
 #include "SpriteAnimado.h"
 #include "Game.h"
+#include "StringUtilities.h"
 
 SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
 	spriteEntity = entity;
@@ -24,9 +25,8 @@ void SpriteAnimado::initialize() {
 
 void SpriteAnimado::updateFrame() {
 	float deltaTime = Game::instance().getTimer()->getDeltaTime();
-	if (this->getCurrentSurfaceNumber() == 0)
-		deltaTime -= delay;
-	//comienzo_frame = SDL_GetTicks();
+	
+
 	this->addSticks(deltaTime); //TODO: traer del timer
 	if ( this->timeIsOver())
 		this->advance();
@@ -45,15 +45,19 @@ bool SpriteAnimado::lastFrame() {
 }
 
 void SpriteAnimado::advance() {
+	this->accumulatedTime -= ((1000/fps) + this->getDelay());
 	if ( this->lastFrame() )
 		this->restart();
 	else
 		this->currentSurfaceNumber++;
-	this->accumulatedTime -= (1000/fps);
+	
 }
 
 bool SpriteAnimado::timeIsOver() {
-	return (this->accumulatedTime >= (1000/fps));
+	common::Logger::instance().log("Acumulated: " + stringUtilities::floatToString(this->accumulatedTime));
+	common::Logger::instance().log("100/fps: " + stringUtilities::floatToString((1000/fps)));
+	common::Logger::instance().log("Delay: " + stringUtilities::floatToString(this->getDelay()));
+	return (this->accumulatedTime >= (1000/fps) - this->getDelay());
 }
 
 void SpriteAnimado::loadSurfaces() {
@@ -66,5 +70,11 @@ void SpriteAnimado::loadSurfaces() {
 
 
 void SpriteAnimado::addSticks(float ticks) {
-	this->accumulatedTime += ticks;
+	this->accumulatedTime += ticks*1000;
+}
+
+float SpriteAnimado::getDelay() {
+	if (this->getCurrentSurfaceNumber() == 0)
+		return this->delay;
+	return 0;
 }
