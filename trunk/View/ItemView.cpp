@@ -1,20 +1,21 @@
 #include "ItemView.h"
 
 
-ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string state,string _name):Entity(tileX,tileY,spriteCargado)
+ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,unsigned _state,string _name):Entity(tileX,tileY,spriteCargado)
 {
-	if(state=="D")
-	{
-	this->alive=false;
-	this->hidden=false;
-	}
-	else {
-		this->alive=true;	
-		if(state=="H")
-			this->hidden=true;
-		else
-			this->hidden=false;
-	}
+	//if(state=="D")
+	//{
+	//this->alive=false;
+	//this->hidden=false;
+	//}
+	//else {
+	//	this->alive=true;	
+	//	if(state=="H")
+	//		this->hidden=true;
+	//	else
+	//		this->hidden=false;
+	//}
+	this->state=_state;
 	this->name=_name;
 	this->hiddenSprite = _hiddenSprite;
 	this->setHiddenRectangle(std::make_pair(tileX, tileY),this->hiddenSprite);
@@ -27,7 +28,7 @@ string ItemView::getName()
 
 bool ItemView::isAlive()
 {
-	return this->alive;
+	return (this->state==HIDDEN_ITEM || this->state==UNCOVER_ITEM);
 }
 
 ItemView::~ItemView(void)
@@ -42,16 +43,13 @@ void ItemView::update()
 
 void ItemView::render(Camera& camera)
 {
-	if(this->alive)
-	{
-		if(!this->hidden)
+		if(this->state==UNCOVER_ITEM)
 		{
 			this->renderEntitySprite(this->spriteRect,this->sprite,camera);
 		}
-		else{
+		else if(this->state==HIDDEN_ITEM){
 			this->renderEntitySprite(this->hiddenSpriteRect,this->hiddenSprite,camera);
 		}
-	}
 }
 
 void ItemView::setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite ) {
@@ -60,29 +58,28 @@ void ItemView::setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite ) {
 	hiddenSpriteRect.h = (Uint16)(sprite->getCurrentSurface()->getSurface()->h);
 }
 
-void ItemView::changeState()
-{
-	if(this->hidden)
-		this->hidden=false;
-	else if(this->alive)
-		this->alive=false;
-}
+//void ItemView::changeState()
+//{
+//	if(this->hidden)
+//		this->hidden=false;
+//	else if(this->alive)
+//		this->alive=false;
+//}
 
 void ItemView::uncover()
 {
-	this->hidden=false;
+	this->state=UNCOVER_ITEM;
 }
 
-void ItemView::revive(char _hidden)
+void ItemView::revive(unsigned _state)
 {
-	this->alive=true;
-	if(_hidden=='H')
-			this->hidden=true;
-		else
-			this->hidden=false;
+	if(_state==REVIVE_UNCOVER_ITEM)
+		this->state=UNCOVER_ITEM;
+	else
+		this->state=HIDDEN_ITEM;
 }
 
 void ItemView::kill()
 {
-	this->alive=false;
+	this->state=DEATH_ITEM;
 }
