@@ -301,7 +301,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 		return;
 	std::vector <std::string> v_items;
 	stringUtilities::splitString(ItemsData,v_items,';');
-	int i=0;
+	unsigned i=0;
 	itemArray.clear();
 	ItemFactoryView factory;
 	//TODO: andy: puse este if porque pinchaba acá..
@@ -330,7 +330,7 @@ void Stage::updateItems(string serializedItemUpdates)
 		return;
 	std::vector <string> updateVector;
 	stringUtilities::splitString(serializedItemUpdates,updateVector,':');
-	for(int i=0;i<updateVector.size();i++)
+	for(unsigned i=0;i<updateVector.size();i++)
 	{
 		this->updateItem(updateVector[i]);
 	}
@@ -366,7 +366,7 @@ void Stage::updateItem(string serializedItemUpdate)
 
 ItemView* Stage::findDeathItem(string name)
 {
-	for(int i=0;i<this->itemArray.size();i++)
+	for(unsigned i=0;i<this->itemArray.size();i++)
 	{
 		if(itemArray[i]->getName()==name)
 		{	
