@@ -6,11 +6,12 @@
 #include "SpriteAnimado.h"
 #include "PersonajeModelo.h"
 #include "Entity.h"
+#include "Daniable.h"
 #include "Mutex.h"
 #include "Constants.h"
 #include "SDL_ttf.h"
 
-class Personaje : public Entity {
+class Personaje : public Entity, public Daniable {
 public:
 	Personaje(PersonajeModelo* pj);
 	~Personaje();
@@ -56,8 +57,13 @@ private:
 	void animar();
 	void detenerAnimacion();
 	void createLabelName();
+	void createLifeBar();
+	void updateLifeBar();
+	void renderStatsBars(Camera& camera);
 	std::pair<int, int> tileActual;
 	SDL_Surface* labelName;
+	SDL_Surface* lifeBarG;
+	SDL_Surface* lifeBarR;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual

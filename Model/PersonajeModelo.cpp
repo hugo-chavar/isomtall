@@ -34,6 +34,7 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 	this->isAnimating = source.isAnimating;
 	this->vision = NULL;
 	return *this;
+	this->vidaMaxima = source.vidaMaxima;
 }
 
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
@@ -54,6 +55,7 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
 	this->vision = NULL;
+	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
 	/*mapKeyPressedToAnimation['a'] = ATACAR;
 	mapKeyPressedToAnimation['s'] = DEFENDER;*/
 }
@@ -118,6 +120,14 @@ bool PersonajeModelo::hasDirectoryRemaining(){
 
 AnimatedEntity* PersonajeModelo::getAnimation() {
 	return animation;
+}
+
+float PersonajeModelo::getVidaMaxima() {
+	return vidaMaxima;
+}
+
+void PersonajeModelo::setVidaMaxima(float vida) {
+	vidaMaxima = vida;
 }
 
 string PersonajeModelo::nextDirectory() {

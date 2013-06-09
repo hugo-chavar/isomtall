@@ -46,6 +46,8 @@ public:
 	int getRefPixelY();
 	void restartDirectories();
 	void setPosition(std::pair<int, int> pos);
+	float getVidaMaxima();
+	void setVidaMaxima(float vida);
 private:
 
 	int siCaminaDetenerse();
@@ -80,6 +82,7 @@ private:
 	AnimatedEntity * animation;
 	std::string name;
 	CharacterVision* vision;
+	float vidaMaxima;
 	//bool isInCenterTile;
 	//std::map< char, int > mapKeyPressedToAnimation;
 };
