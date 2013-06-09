@@ -22,7 +22,7 @@ public:
 	Sprite(EntityObject *entity);
 	Sprite();
 	~Sprite();
-	virtual void actualizarFrame();
+	virtual void updateFrame();
 	int relatx();
 	int relaty();
 	int baseWidth();

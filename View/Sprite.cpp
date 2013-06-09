@@ -27,7 +27,7 @@ Sprite::~Sprite() {
 	}
 }
 
-void Sprite::actualizarFrame() {
+void Sprite::updateFrame() {
 }
 
 int Sprite::relatx() {
