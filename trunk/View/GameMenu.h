@@ -31,11 +31,14 @@ public:
 	//void show();
 	void setNotificationMessage(std::string msg);
 	void setDisplayNotification(bool display);
+	void setDisplayBackground(bool display);
 	void addButton(std::string label, unsigned returnValue, std::pair<float,float> pos );
 	void updateMouse(int x, int y);
 	unsigned select(int x, int y);
 	bool displayingNotification();
 	void hideButtons();
+	void showButtons();
+	void hideBackground();
 private:
 	std::vector <Button* > buttons;
 	view::Surface background;
@@ -44,6 +47,7 @@ private:
 	std::string imagePath;
 	std::string buttonImagePath;
 	bool displayNotification;
+	bool displayBackground;
 	TTF_Font* buttonFont;
 };
 

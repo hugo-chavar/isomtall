@@ -19,6 +19,7 @@ enum gameStatus_t {
 	STATUS_SIMULATION_CONNECTION_LOST,
 	STATUS_SIMULATION_SINGLE_PLAYER,
 	STATUS_START_SCREEN,
+	STATUS_GAME_OVER,
 	STATUS_EXIT
 	
 };
@@ -75,8 +76,9 @@ public:
 	bool showingMenu();
 	void manageMissionInit(string argument);
 	void manageMissionUpdate(string argument);
+	void setWinner(string userID);
 	ModelUpdater* getModelUpdater();
-
+	bool isGameOver();
 	model::Login* getLogin();
 
 	void addFontSize(int size);
@@ -94,6 +96,7 @@ private:
 	map <string, Personaje*>::iterator itPersonajes;
 	string playerName; //este atributo se repite dentro del Personaje del cliente.
 	string playerCharacterId;
+	string winner;
 	CharacterFactory characterFactory;
 	SpriteAnimado* errorImage;
 	int activatedAt;
