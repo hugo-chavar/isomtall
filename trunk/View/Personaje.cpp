@@ -41,7 +41,7 @@ void Personaje::createStatsBar() {
 	int height, width;
 	
 	height = BAR_HEIGHT;
-	width = spriteRect.w * 0.75;
+	width = (int) (spriteRect.w * 0.75);
 
 	this->magicBarPos = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
 	this->magicBarNeg = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
@@ -51,8 +51,8 @@ void Personaje::createStatsBar() {
 }
 
 void Personaje::updateStatsBar() {
-	int porcActualVida = (int) (vidaActual*100/(modelo->getVidaMaxima()));
-	int porcActualMagia = (int) (magiaActual*100/(modelo->getMagiaMaxima()));
+	int porcActualVida = (int) ((vidaActual)*100/(modelo->getVidaMaxima()));
+	int porcActualMagia = (int) ((magiaActual)*100/(modelo->getMagiaMaxima()));
 
 	magicBarPos->w = ((magicBarPos->w) * porcActualMagia)/100;
 	lifeBarG->w = ((lifeBarG->w) * porcActualVida)/100;
@@ -261,11 +261,11 @@ void Personaje::renderStatsBars(Camera& camera) {
 	SDL_Rect pMagicBarBox;
 	SDL_Rect nMagicBarBox;
 
-	pMagicBarBox.w = magicBarPos->w; pMagicBarBox.h = magicBarPos->h;
-	nMagicBarBox.w = magicBarNeg->w; nMagicBarBox.h = magicBarNeg->h;
+	pMagicBarBox.w = static_cast<Sint16>(magicBarPos->w); pMagicBarBox.h = static_cast<Sint16>(magicBarPos->h);
+	nMagicBarBox.w = static_cast<Sint16>(magicBarNeg->w); nMagicBarBox.h = static_cast<Sint16>(magicBarNeg->h);
 
-	gLifeBarBox.w = lifeBarG->w; gLifeBarBox.h = lifeBarG->h;
-	rLifeBarBox.w = lifeBarR->w; rLifeBarBox.h = lifeBarR->h;
+	gLifeBarBox.w = static_cast<Sint16>(lifeBarG->w); gLifeBarBox.h = static_cast<Sint16>(lifeBarG->h);
+	rLifeBarBox.w = static_cast<Sint16>(lifeBarR->w); rLifeBarBox.h = static_cast<Sint16>(lifeBarR->h);
 
 	SDL_FillRect(lifeBarR, NULL, SDL_MapRGB (lifeBarR->format, 255, 0, 0));
 	SDL_FillRect(lifeBarG, NULL, SDL_MapRGB (lifeBarG->format, 0, 128, 0));
@@ -273,10 +273,10 @@ void Personaje::renderStatsBars(Camera& camera) {
 	SDL_FillRect(magicBarNeg, NULL, SDL_MapRGB (magicBarNeg->format, 149, 149, 255));
 	SDL_FillRect(magicBarPos, NULL, SDL_MapRGB (magicBarPos->format, 0, 0, 255));
 
-	gLifeBarBox.x = spriteRect.x + (0.125*spriteRect.w); gLifeBarBox.y = spriteRect.y + spriteRect.h - BAR_HEIGHT;
+	gLifeBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); gLifeBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - BAR_HEIGHT);
 	rLifeBarBox.x = gLifeBarBox.x; rLifeBarBox.y = gLifeBarBox.y;
 
-	pMagicBarBox.x = spriteRect.x + (0.125*spriteRect.w); pMagicBarBox.y = spriteRect.y + spriteRect.h - 2*BAR_HEIGHT;
+	pMagicBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); pMagicBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 2*BAR_HEIGHT);
 	nMagicBarBox.x = pMagicBarBox.x; nMagicBarBox.y = pMagicBarBox.y;
 
 	camera.render(rLifeBarBox, lifeBarR);
