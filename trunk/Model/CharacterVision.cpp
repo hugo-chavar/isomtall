@@ -52,8 +52,9 @@ void CharacterVision::updatePosition(pair<int, int> pos) {
 }
 
 void CharacterVision::updateVision() {
+	vision.initialize(this->position, this->rangeVision);
 	if (!this->isAllKnown()) {
-		vision.initialize(this->position, this->rangeVision);
+		
 		vision.fill();
 		pair<int, int > aux;
 		while (vision.hasNext()) {
