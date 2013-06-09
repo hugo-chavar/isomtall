@@ -319,7 +319,8 @@ void Stage::initItemsFromString(std::string ItemsData)
 		Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
 		Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
 		ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
-		this->getTileAt(pos)->setOtherEntity(item);
+		if(pos.first!=-1)
+			this->getTileAt(pos)->setOtherEntity(item);
 		itemArray.push_back(item);
 	}
 }
@@ -361,7 +362,7 @@ void Stage::updateItem(string serializedItemUpdate)
 		ItemView* item=this->findDeathItem(updateVector[1]);//paso nombre
 		if(item)
 		{
-			item->revive(state);
+			item->revive(state,pos);
 			this->getTileAt(pos)->setOtherEntity(item);
 		}
 	}
