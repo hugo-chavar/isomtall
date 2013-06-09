@@ -54,9 +54,6 @@ void SpriteAnimado::advance() {
 }
 
 bool SpriteAnimado::timeIsOver() {
-	common::Logger::instance().log("Acumulated: " + stringUtilities::floatToString(this->accumulatedTime));
-	common::Logger::instance().log("100/fps: " + stringUtilities::floatToString((1000/fps)));
-	common::Logger::instance().log("Delay: " + stringUtilities::floatToString(this->getDelay()));
 	return (this->accumulatedTime >= (1000/fps) - this->getDelay());
 }
 
