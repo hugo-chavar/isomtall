@@ -1,13 +1,27 @@
 #pragma once
 #include "Entity.h"
 
+#ifndef item_state_t
+#define item_state_t
+enum item_state_t {
+	HIDDEN_ITEM,
+	UNCOVER_ITEM,
+	DEATH_ITEM,
+	REVIVE_UNCOVER_ITEM,
+	REVIVE_HIDDEN_ITEM,
+	REGENERATING
+
+};
+#endif
+
 class ItemView: public Entity
 {
 
 private:
 
-	bool hidden;
-	bool alive;
+	unsigned state;
+	//bool hidden;
+	//bool alive;
 	SDL_Rect hiddenSpriteRect;
 	Sprite * hiddenSprite;
 	void setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite );
@@ -16,13 +30,13 @@ private:
 public:
 
 	string getName();
-	ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,std::string state,string _name);
+	ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,unsigned _state,string _name);
 	~ItemView();
 	void update();
 	void render(Camera& camera);
-	void changeState();
+	//void changeState();
 	void uncover();
-	void revive(char _hidden);
+	void revive(unsigned _state);
 	bool isAlive();
 	void kill();
 };

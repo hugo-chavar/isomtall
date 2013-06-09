@@ -311,7 +311,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 	{
 		string itemName=v_items[i];
 		i++;
-		string state=v_items[i];
+		unsigned state=stringUtilities::stringToUnsigned(v_items[i]);
 		i++;
 		string tile=v_items[i];
 		i++;
@@ -340,28 +340,33 @@ void Stage::updateItem(string serializedItemUpdate)
 {
 	std::vector <string> updateVector;
 	stringUtilities::splitString(serializedItemUpdate,updateVector,';');
+	unsigned state=stringUtilities::stringToUnsigned(updateVector[0]);
 	pair<int,int> pos=stringUtilities::stringToPairInt(updateVector[2]);
-	if(updateVector[0]=="AU" || updateVector[0]=="AH"){
-		ItemView* item=this->findDeathItem(updateVector[1]);//paso nombre
-		if(item)
+	switch (state){
+	case UNCOVER_ITEM:
 		{
-		item->revive(updateVector[0].at(1));
-		this->getTileAt(pos)->setOtherEntity(item);
-		}
-	}
-	else{
-		ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
-		if(updateVector[0]=="U")
-		{
+			ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
 			item->uncover();
 		}
-		else if(updateVector[0]=="D")
+	break;
+	case DEATH_ITEM:
 		{
+			ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
 			item->kill();
 			this->getTileAt(pos)->setOtherEntity(NULL);
 		}
+	break;
+	default://Si hay que revivir
+	{
+		ItemView* item=this->findDeathItem(updateVector[1]);//paso nombre
+		if(item)
+		{
+			item->revive(state);
+			this->getTileAt(pos)->setOtherEntity(item);
+		}
 	}
-
+	break;
+	};
 }
 
 ItemView* Stage::findDeathItem(string name)
