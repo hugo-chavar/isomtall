@@ -17,7 +17,7 @@ GameView::GameView() {
 	this->addFontSize(16);
 	this->addFontSize(12);
 	this->menu->initialize(/*this->camera*/);
-	
+	this->winner = "";
 	
 }
 
@@ -189,13 +189,24 @@ void GameView::cleanUp() {
 void GameView::render() {
 
 	SDL_FillRect(this->camera.cameraSurface, NULL, 0);
-
-	if (this->getStatus() != STATUS_SIMULATION_CONNECTED) {
-		this->menu->render(this->camera);
-	} else {
-		this->worldView.render(this->camera);
-		if (chat.isTyping())
-			this->chat.render(this->camera);
+	
+	switch (this->getStatus()) {
+		case STATUS_SIMULATION_CONNECTED: {
+			this->worldView.render(this->camera);
+			if (chat.isTyping())
+				this->chat.render(this->camera);
+			break;
+		}
+		case STATUS_GAME_OVER: {
+			this->worldView.render(this->camera);
+			if (chat.isTyping())
+				this->chat.render(this->camera);
+			this->menu->render(this->camera);
+			break;
+		}
+		default: {
+			this->menu->render(this->camera);
+		}
 	}
 
 	SDL_Flip(this->camera.cameraSurface);
@@ -213,6 +224,7 @@ void GameView::update() {
 
 	switch (this->getStatus()) {
 		case STATUS_START_SCREEN: {
+			this->camera.unconfigure();
 			//
 		}
 		break;
@@ -315,6 +327,19 @@ void GameView::update() {
 			this->menu->setNotificationMessage("IT SEEMS SERVER IS DOWN");
 			this->menu->setDisplayNotification(true);
 
+		break;
+		case STATUS_GAME_OVER:
+			this->camera.unconfigure();
+			if (this->winner.compare(this->playerName) == 0) {
+				this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
+				this->menu->setNotificationMessage("CONGRATULATIONS YOU WON");
+			}
+			else {
+				this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
+				this->menu->setNotificationMessage("PLAYER "+this->winner+" WON");
+			}
+			this->menu->hideBackground();
+			this->menu->setDisplayNotification(true);
 		break;
 		default: {
 			this->menu->setDisplayNotification(false);
@@ -453,8 +478,17 @@ void GameView::manageMissionUpdate(string argument) {
 				pair <int,int> position = stringUtilities::stringToPairInt(change[3]);
 				this->worldView.addOtherEntity(position, change[2]);
 			}
+		} else {
+			if (change[0].compare("GameOver") == 0) {
+				this->setWinner(change[1]);
+				this->setStatus(STATUS_GAME_OVER);
+			}
 		}
 	}
+}
+
+void GameView::setWinner(string userID) {
+	this->winner = userID;
 }
 
 ModelUpdater* GameView::getModelUpdater() {
@@ -465,13 +499,20 @@ model::Login* GameView::getLogin() {
 	return &_login;
 }
 
+bool GameView::isGameOver() {
+	if (this->getStatus() == STATUS_GAME_OVER)
+		return true;
+	return false;
+}
+
 bool GameView::showingMenu() {
 	//TODO: adaptar segun se vaya avanzando.. esto esta para modificarse!
 	bool start = (GameView::instance().getStatus() == STATUS_START_SCREEN);
 	bool unreachable = (GameView::instance().getStatus() == STATUS_SERVER_UNREACHEABLE);
 	bool connectionLost = (GameView::instance().getStatus() == STATUS_SIMULATION_CONNECTION_LOST);
 	bool singlePlayer = (GameView::instance().getStatus() == STATUS_SIMULATION_SINGLE_PLAYER);
-	return (start || unreachable || connectionLost || singlePlayer) ;
+	bool gameOver = (GameView::instance().getStatus() == STATUS_GAME_OVER);
+	return (start || unreachable || connectionLost || singlePlayer || gameOver) ;
 }
 
 void GameView::addFontSize(int size) {

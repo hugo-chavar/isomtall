@@ -74,7 +74,6 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 	if (GameView::instance().getChat()->isTyping()) {
 		GameView::instance().getChat()->type(sdlEvent);
 		if ((sdlEvent->type == SDL_KEYDOWN) && (sdlEvent->key.keysym.sym == SDLK_RETURN)) {
-			// ENVIAR MENSAJE...
 			GameView::instance().getChat()->sendMessage();
 		}
 	}
@@ -90,11 +89,18 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 			{
 			case SDLK_ESCAPE: 
 				{
-					
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
-
-						GameView::instance().setStatus(STATUS_START_SCREEN);
-						GameView::instance().getGameMenu()->setDisplayNotification(false);
+						if (GameView::instance().isGameOver()) {
+							// TODO: Reiniciar correctamente el juego
+							GameView::instance().initialize();
+							GameView::instance().setStatus(STATUS_START_SCREEN);
+							GameView::instance().getGameMenu()->setDisplayNotification(false);
+							GameView::instance().getGameMenu()->setDisplayBackground(true);
+							GameView::instance().getGameMenu()->showButtons();
+						} else {
+							GameView::instance().setStatus(STATUS_START_SCREEN);
+							GameView::instance().getGameMenu()->setDisplayNotification(false);
+						}
 					} else {
 						running = false;
 						GameView::instance().setStatus(STATUS_EXIT);

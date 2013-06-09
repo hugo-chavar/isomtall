@@ -19,6 +19,7 @@ void GameMenu::initialize(/*Camera &camera*/) {
 	this->setButtonFont(GameView::instance().getFontSize(23));
 	this->setButtonFontColor(Camera::BLACK_COLOR);
 	this->setDisplayNotification(false);
+	this->setDisplayBackground(true);
 	//this->notification.setColor(Camera::RED_COLOR);
 	//this->notification.initialize(camera);
 	this->setButtonImagePath("../Connection/button.png");
@@ -37,7 +38,8 @@ void GameMenu::render(Camera &camera) {
 	SDL_Rect rectangle;
 	rectangle.x = 0;
 	rectangle.y = 0;
-	camera.render(rectangle, this->background.getSurface());
+	if (this->displayBackground)
+		camera.render(rectangle, this->background.getSurface());
 
 	for (unsigned i = 0; i < buttons.size(); i++){
 		if (buttons[i]->isDisplaying())
@@ -100,6 +102,10 @@ void GameMenu::setDisplayNotification(bool display) {
 	this->displayNotification = display;
 }
 
+void GameMenu::setDisplayBackground(bool display) {
+	this->displayBackground = display;
+}
+
 SDL_Color GameMenu::getButtonFontColor() {
 	return this->buttonFontColor;
 }
@@ -135,4 +141,14 @@ void GameMenu::hideButtons() {
 	for (unsigned i = 0; i < buttons.size(); i++){
 			buttons[i]->setDisplay(false);
 	}
+}
+
+void GameMenu::showButtons() {
+	for (unsigned i = 0; i < buttons.size(); i++){
+			buttons[i]->setDisplay(true);
+	}
+}
+
+void GameMenu::hideBackground() {
+	this->setDisplayBackground(false);
 }
