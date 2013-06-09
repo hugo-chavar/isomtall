@@ -36,7 +36,7 @@ public:
 	void render(Camera& camera);
 	//void changeState();
 	void uncover();
-	void revive(unsigned _state);
+	void revive(unsigned _state,pair <int,int> pos);
 	bool isAlive();
 	void kill();
 };

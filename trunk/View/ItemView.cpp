@@ -71,8 +71,10 @@ void ItemView::uncover()
 	this->state=UNCOVER_ITEM;
 }
 
-void ItemView::revive(unsigned _state)
+void ItemView::revive(unsigned _state,pair <int,int> pos)
 {
+	this->setRectangle(pos,this->sprite);
+	this->setHiddenRectangle(pos,this->hiddenSprite);
 	if(_state==REVIVE_UNCOVER_ITEM)
 		this->state=UNCOVER_ITEM;
 	else
