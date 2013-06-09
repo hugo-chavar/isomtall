@@ -4,7 +4,6 @@
 
 SpriteAnimado::SpriteAnimado(AnimatedEntity* entity) {
 	spriteEntity = entity;
-	//comienzo_frame = SDL_GetTicks();
 	delay = static_cast<float>(entity->delay()); 
 	fps = static_cast<float>(entity->fps());
 	this->accumulatedTime = 0;
@@ -25,23 +24,13 @@ void SpriteAnimado::initialize() {
 
 void SpriteAnimado::updateFrame() {
 	float deltaTime = Game::instance().getTimer()->getDeltaTime();
-	
-
-	this->addSticks(deltaTime); //TODO: traer del timer
+	this->addSticks(deltaTime);
 	if ( this->timeIsOver())
 		this->advance();
 }
-//
-//void SpriteAnimado::getNextFrame() {
-//	this->avanzarFrames();
-//}
 
 bool SpriteAnimado::lastFrame() {
-	if (this->getCurrentSurfaceNumber() >= (this->surfaces.size() - 1)) {
-		return true;
-	} else {
-		return false;
-	}
+	return (this->getCurrentSurfaceNumber() >= (this->surfaces.size() - 1));
 }
 
 void SpriteAnimado::advance() {
@@ -50,7 +39,6 @@ void SpriteAnimado::advance() {
 		this->restart();
 	else
 		this->currentSurfaceNumber++;
-	
 }
 
 bool SpriteAnimado::timeIsOver() {
@@ -64,7 +52,6 @@ void SpriteAnimado::loadSurfaces() {
 		this->addSurface(auxEntity->imagesPaths()->nextFullPath());
 	}
 }
-
 
 void SpriteAnimado::addSticks(float ticks) {
 	this->accumulatedTime += ticks*1000;
