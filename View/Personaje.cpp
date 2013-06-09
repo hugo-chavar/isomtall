@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "GameView.h"
 
+#define BAR_HEIGHT 4
 
 Personaje::Personaje(PersonajeModelo* pj) {
 	this->font = NULL;
@@ -25,38 +26,36 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	this->labelName = NULL;
 	this->playerName = "";
 	this->lifeBarG = NULL;
-	this->lifeBarR = NULL;	
+	this->lifeBarR = NULL;
+	this->magicBarNeg = NULL;
+	this->magicBarPos = NULL;
+	this->vidaActual = modelo->getVidaMaxima();
+	this->magiaActual = modelo->getMagiaMaxima();
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
 }
 
-void Personaje::createLifeBar() {
-	Uint32 rmask, gmask, bmask, amask;
+void Personaje::createStatsBar() {
 	int height, width;
 	
-	height = 6;
+	height = BAR_HEIGHT;
 	width = spriteRect.w * 0.75;
-	if (SDL_BYTEORDER == SDL_BIG_ENDIAN) {
-		rmask = 0xff000000;
-		gmask = 0x00ff0000;
-		bmask = 0x0000ff00;
-		amask = 0x000000ff;
-	} else {
-		rmask = 0x000000ff;
-		gmask = 0x0000ff00;
-		bmask = 0x00ff0000;
-		amask = 0xff000000;
-	}
+
+	this->magicBarPos = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+	this->magicBarNeg = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+
     this->lifeBarG = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
 	this->lifeBarR = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
 }
 
-void Personaje::updateLifeBar() {
-	int porcActual = (int) (vidaActual*100/(modelo->getVidaMaxima()));
-	
-	lifeBarG->w = ((lifeBarG->w) * porcActual)/100;
+void Personaje::updateStatsBar() {
+	int porcActualVida = (int) (vidaActual*100/(modelo->getVidaMaxima()));
+	int porcActualMagia = (int) (magiaActual*100/(modelo->getMagiaMaxima()));
+
+	magicBarPos->w = ((magicBarPos->w) * porcActualMagia)/100;
+	lifeBarG->w = ((lifeBarG->w) * porcActualVida)/100;
 }
 
 void Personaje::createLabelName() {
@@ -88,7 +87,7 @@ void Personaje::loadSprites() {
 
 	delete animatedEntity;
 	animatedEntity = NULL;
-	this->createLifeBar();
+	this->createStatsBar();
 }
 
 void Personaje::clearSprites() {
@@ -156,7 +155,7 @@ void Personaje::update() {
 		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 	}
 	modelo->update();
-	this->updateLifeBar();
+	this->updateStatsBar();
 	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
 }
 
@@ -259,17 +258,32 @@ void Personaje::renderStatsBars(Camera& camera) {
 	SDL_Rect gLifeBarBox;
 	SDL_Rect rLifeBarBox;
 
+	SDL_Rect pMagicBarBox;
+	SDL_Rect nMagicBarBox;
+
+	pMagicBarBox.w = magicBarPos->w; pMagicBarBox.h = magicBarPos->h;
+	nMagicBarBox.w = magicBarNeg->w; nMagicBarBox.h = magicBarNeg->h;
+
 	gLifeBarBox.w = lifeBarG->w; gLifeBarBox.h = lifeBarG->h;
 	rLifeBarBox.w = lifeBarR->w; rLifeBarBox.h = lifeBarR->h;
 
-	gLifeBarBox.x = spriteRect.x; gLifeBarBox.y = spriteRect.y + spriteRect.h;
+	SDL_FillRect(lifeBarR, NULL, SDL_MapRGB (lifeBarR->format, 255, 0, 0));
+	SDL_FillRect(lifeBarG, NULL, SDL_MapRGB (lifeBarG->format, 0, 128, 0));
+
+	SDL_FillRect(magicBarNeg, NULL, SDL_MapRGB (magicBarNeg->format, 149, 149, 255));
+	SDL_FillRect(magicBarPos, NULL, SDL_MapRGB (magicBarPos->format, 0, 0, 255));
+
+	gLifeBarBox.x = spriteRect.x + (0.125*spriteRect.w); gLifeBarBox.y = spriteRect.y + spriteRect.h - BAR_HEIGHT;
 	rLifeBarBox.x = gLifeBarBox.x; rLifeBarBox.y = gLifeBarBox.y;
 
-	/*SDL_FillRect(lifeBarR, &rLifeBarBox, SDL_MapRGB (lifeBarR->format, 255, 0, 0));
-	SDL_FillRect(lifeBarG, &gLifeBarBox, SDL_MapRGB (lifeBarG->format, 0, 128, 0));*/
+	pMagicBarBox.x = spriteRect.x + (0.125*spriteRect.w); pMagicBarBox.y = spriteRect.y + spriteRect.h - 2*BAR_HEIGHT;
+	nMagicBarBox.x = pMagicBarBox.x; nMagicBarBox.y = pMagicBarBox.y;
 
 	camera.render(rLifeBarBox, lifeBarR);
 	camera.render(gLifeBarBox, lifeBarG);
+
+	camera.render(nMagicBarBox, magicBarNeg);
+	camera.render(pMagicBarBox, magicBarPos);
 }
 
 void Personaje::render(Camera& camera) {
@@ -391,6 +405,8 @@ Personaje::~Personaje(){
 	SDL_FreeSurface(this->labelName);
 	SDL_FreeSurface(this->lifeBarG);
 	SDL_FreeSurface(this->lifeBarR);
+	SDL_FreeSurface(this->magicBarNeg);
+	SDL_FreeSurface(this->magicBarPos);
 }
 
 PersonajeModelo* Personaje::personajeModelo() {

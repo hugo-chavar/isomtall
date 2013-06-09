@@ -48,6 +48,8 @@ public:
 	void setPosition(std::pair<int, int> pos);
 	float getVidaMaxima();
 	void setVidaMaxima(float vida);
+	float getMagiaMaxima();
+	void setMagiaMaxima(float magia);
 private:
 
 	int siCaminaDetenerse();
@@ -83,6 +85,7 @@ private:
 	std::string name;
 	CharacterVision* vision;
 	float vidaMaxima;
+	float magiaMaxima;
 	//bool isInCenterTile;
 	//std::map< char, int > mapKeyPressedToAnimation;
 };
