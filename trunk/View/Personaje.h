@@ -57,16 +57,19 @@ private:
 	void animar();
 	void detenerAnimacion();
 	void createLabelName();
-	void createLifeBar();
-	void updateLifeBar();
+	void createStatsBar();
+	void updateStatsBar();
 	void renderStatsBars(Camera& camera);
 	std::pair<int, int> tileActual;
 	SDL_Surface* labelName;
+	SDL_Surface* magicBarPos;
+	SDL_Surface* magicBarNeg;
 	SDL_Surface* lifeBarG;
 	SDL_Surface* lifeBarR;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual
+	float magiaActual;
 	int currentSpritePosition;
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y

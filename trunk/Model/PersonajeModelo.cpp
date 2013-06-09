@@ -56,6 +56,7 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	animacionActual = SIN_CAMBIO;
 	this->vision = NULL;
 	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
+	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	/*mapKeyPressedToAnimation['a'] = ATACAR;
 	mapKeyPressedToAnimation['s'] = DEFENDER;*/
 }
@@ -128,6 +129,14 @@ float PersonajeModelo::getVidaMaxima() {
 
 void PersonajeModelo::setVidaMaxima(float vida) {
 	vidaMaxima = vida;
+}
+
+float PersonajeModelo::getMagiaMaxima() {
+	return magiaMaxima;
+}
+
+void PersonajeModelo::setMagiaMaxima(float magia) {
+	magiaMaxima = magia;
 }
 
 string PersonajeModelo::nextDirectory() {
