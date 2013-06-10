@@ -99,7 +99,7 @@ void Camera::update() {
 
 	SDL_GetMouseState(&x,&y);
 
-	if (x > static_cast<int>(this->getWidth() - this->getScrollBoxSize())) {
+	if ((x > static_cast<int>(this->getWidth() - this->getScrollBoxSize()))&&(x < static_cast<int>(this->getWidth()) - 5)) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getWidth() - x)) / this->getScrollBoxSize();
 		newOffset = this->getOffsetX() + this->getScrollSpeed() * (Game::instance().getTimer())->getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
@@ -109,7 +109,7 @@ void Camera::update() {
 		this->setOffsetX(newOffset);
 	}
 
-	if (x < static_cast<int>(this->getScrollBoxSize())) {
+	if ((x < static_cast<int>(this->getScrollBoxSize()))&&(x > 5)) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - x) / this->getScrollBoxSize();
 		newOffset = this->getOffsetX() - this->getScrollSpeed() * (Game::instance().getTimer())->getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(newOffset + (this->getWidth() / 2)),static_cast<int>(this->getOffsetY() + (this->getHeight() / 2))));
@@ -119,7 +119,7 @@ void Camera::update() {
 		this->setOffsetX(newOffset);
 	}
 
-	if (y > static_cast<int>(this->getHeight() - this->getScrollBoxSize())) {
+	if ((y > static_cast<int>(this->getHeight() - this->getScrollBoxSize()))&&(y < static_cast<int>(this->getHeight()) - 5)) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - (this->getHeight() - y)) / this->getScrollBoxSize();
 		newOffset = this->getOffsetY() + this->getScrollSpeed() * (Game::instance().getTimer())->getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
@@ -129,7 +129,7 @@ void Camera::update() {
 		this->setOffsetY(newOffset);
 	}
 
-	if (y < static_cast<int>(this->getScrollBoxSize())) {
+	if ((y < static_cast<int>(this->getScrollBoxSize())) && (y > 5)) {
 		scrollFactor = static_cast<float>(this->getScrollBoxSize() - y) / this->getScrollBoxSize();
 		newOffset = this->getOffsetY() - this->getScrollSpeed() * (Game::instance().getTimer())->getDeltaTime() * scrollFactor;
 		cameraCenterInTiles = (Game::instance().world())->pixelToTileCoordinates(std::make_pair<int,int>(static_cast<int>(this->getOffsetX() + (this->getWidth() / 2)),static_cast<int>(newOffset + (this->getHeight() / 2))));
