@@ -66,6 +66,7 @@ private:
 	SDL_Surface* magicBarNeg;
 	SDL_Surface* lifeBarG;
 	SDL_Surface* lifeBarR;
+	int barWidth;
 	PersonajeModelo* modelo;
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual

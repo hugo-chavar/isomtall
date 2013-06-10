@@ -55,6 +55,12 @@ namespace stringUtilities {
 		return paddedString;
 	}
 
+	float stringToFloat(const std::string Text) {
+		float result;
+		std::stringstream stringstream(Text);
+		return stringstream >> result ? result : 0;
+	}
+
 	int stringToInt(const std::string Text) {
 		int result;
 		std::stringstream stringstream(Text);

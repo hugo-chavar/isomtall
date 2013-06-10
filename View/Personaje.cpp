@@ -29,6 +29,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	this->lifeBarR = NULL;
 	this->magicBarNeg = NULL;
 	this->magicBarPos = NULL;
+	this->barWidth = 0;
 	this->vidaActual = modelo->getVidaMaxima();
 	this->magiaActual = modelo->getMagiaMaxima();
 	this->setFogged(false);
@@ -38,24 +39,24 @@ Personaje::Personaje(PersonajeModelo* pj) {
 }
 
 void Personaje::createStatsBar() {
-	int height, width;
+	int height;
 	
 	height = BAR_HEIGHT;
-	width = (int) (spriteRect.w * 0.75);
+	barWidth = (int) (spriteRect.w * 0.75);
 
-	this->magicBarPos = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
-	this->magicBarNeg = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+	this->magicBarPos = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
+	this->magicBarNeg = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
 
-    this->lifeBarG = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
-	this->lifeBarR = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, width, height, 32, 0, 0, 0, 0));
+    this->lifeBarG = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
+	this->lifeBarR = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
 }
 
 void Personaje::updateStatsBar() {
 	int porcActualVida = (int) ((vidaActual)*100/(modelo->getVidaMaxima()));
 	int porcActualMagia = (int) ((magiaActual)*100/(modelo->getMagiaMaxima()));
 
-	magicBarPos->w = ((magicBarPos->w) * porcActualMagia)/100;
-	lifeBarG->w = ((lifeBarG->w) * porcActualVida)/100;
+	magicBarPos->w = ((barWidth) * porcActualMagia)/100;
+	lifeBarG->w = ((barWidth) * porcActualVida)/100;
 }
 
 void Personaje::createLabelName() {
@@ -473,7 +474,9 @@ void Personaje::updateFromString(std::string data) {
 	//	GameView::instance().getErrorImage()->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
 	//}
 	this->setCenteredInTile(splittedData[5] == "T");
-	this->modelo->getVision()->updateFromString(splittedData[6]);
+	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
+	this->magiaActual = stringUtilities::stringToFloat(splittedData[7]);
+	this->modelo->getVision()->updateFromString(splittedData[8]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
