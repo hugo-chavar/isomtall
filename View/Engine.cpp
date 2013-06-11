@@ -92,7 +92,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 						if (GameView::instance().isGameOver()) {
 							// TODO: Reiniciar correctamente el juego
-							GameView::instance().initialize();
+							//GameView::instance().initialize();
 							GameView::instance().setStatus(STATUS_START_SCREEN);
 							GameView::instance().getGameMenu()->setDisplayNotification(false);
 							GameView::instance().getGameMenu()->setDisplayBackground(true);
