@@ -21,24 +21,6 @@ Circle::~Circle() {
 
 bool Circle::inside(pair<int, int> pos) {
 	return (this->distanceToCenter(pos) <= this->radius);
-	//vector <pair<int, int> >::iterator it;
-	//pair<int, int> aux;
-	//it = orderedLimits.begin();
-	//while ( (it != orderedLimits.end()) && ((*it).second > pos.second) ) {
-	//	it++;
-	//}
-	//if ( ((*it).second != pos.second) || ((*it).first > pos.first))
-	//	return false;
-	//while ((it != orderedLimits.end()) && ((*it).second == pos.second) && ((*it).first < pos.first) ) {
-	//	it++;
-	//}
-	//if (it != orderedLimits.end())  {
-	//	if ((*it).first < pos.first)
-	//		return false;
-	//	return true;
-	//} else {
-	//	return false;
-	//}
 }
 
 void Circle::clear() {
