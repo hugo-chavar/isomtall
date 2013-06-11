@@ -48,6 +48,8 @@ void view::Notification::addNotification(string message) {
 }
 
 void view::Notification::render(Camera &camera) {
+	this->currentBox->setOffsetX(static_cast<Sint16>((2*camera.getOffsetX() + camera.getWidth() - this->currentBox->getWidth())/2));
+	this->currentBox->setOffsetY(static_cast<Sint16>((2*camera.getOffsetY() + camera.getHeight() - this->currentBox->getHeight())/2));
 	this->currentBox->render(camera);
 }
 //
