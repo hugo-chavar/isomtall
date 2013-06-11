@@ -6,15 +6,21 @@
 #include "Camera.h"
 #include "Surface.h"
 
-
 enum entityStatus_t {
+	HIDDEN_ITEM,
+	UNCOVER_ITEM,
+	DEATH_ITEM,
+	REVIVE_UNCOVER_ITEM,
+	REVIVE_HIDDEN_ITEM,
 	ENTITY_FROZEN,
 	ENTITY_BLINKING,
 	ENTITY_NORMAL,
+	EXPLOSIVE_AVAILABLE,
 	EXPLOSIVE_EXPLOSION_COUNTDOWN,
 	EXPLOSIVE_EXPLOSION,
 	EXPLOSIVE_DUST_IN_THE_WIND,
 	ITEM_WAITING_REGENERATION
+
 };
 
 using namespace view;
@@ -28,7 +34,7 @@ protected:
 	bool fogged;
 	Uint32 endStatusTime;
 	int freezedSpriteState;
-	entityStatus_t status;
+	unsigned status;
 	void renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera);
 
 public:
@@ -41,8 +47,8 @@ public:
 	bool isFogged();
 	void setRectangle(std::pair<int, int> pos, Sprite* sprite );
 	void resetSpriteState();
-	void setStatus(entityStatus_t status);
-	entityStatus_t getStatus();
+	void setStatus(unsigned status);
+	unsigned getStatus();
 	bool isImmobilized();
 	void setEndStatusTime(Uint32 endTime);
 	void decreaseEndStatusTime(float timeToDecrease);

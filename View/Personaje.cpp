@@ -60,16 +60,7 @@ void Personaje::updateStatsBar() {
 }
 
 void Personaje::createLabelName() {
-	//TTF_Font *font = NULL;
-	//SDL_Rect cuadroMensaje;
-
-	//cuadroMensaje.x = spriteRect.x + 25;
-	//cuadroMensaje.y = spriteRect.y;
-	//SDL_Color textColor = Camera::WHITE_COLOR;
-	//font = TTF_OpenFont( DEFAULT_FONT_PATH, 12 );
 	this->labelName = TTF_RenderText_Blended(this->font, this->getPlayerName().c_str(), Camera::WHITE_COLOR );
-	//SDL_SetClipRect(nombre, (&cuadroMensaje));
-	//TTF_CloseFont( font );
 }
 
 void Personaje::loadSprites() {

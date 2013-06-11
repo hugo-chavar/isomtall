@@ -15,7 +15,8 @@ ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSpr
 	//	else
 	//		this->hidden=false;
 	//}
-	this->state=_state;
+	//this->state=_state;
+	this->setStatus(_state);
 	this->name=_name;
 	this->hiddenSprite = _hiddenSprite;
 	this->setHiddenRectangle(std::make_pair(tileX, tileY),this->hiddenSprite);
@@ -28,7 +29,12 @@ string ItemView::getName()
 
 bool ItemView::isAlive()
 {
-	return (this->state==HIDDEN_ITEM || this->state==UNCOVER_ITEM);
+	return (this->isHidden() || this->getStatus()==UNCOVER_ITEM);
+}
+
+bool ItemView::isHidden()
+{
+	return (this->getStatus()==HIDDEN_ITEM);
 }
 
 ItemView::~ItemView(void)
@@ -43,11 +49,11 @@ void ItemView::update()
 
 void ItemView::render(Camera& camera)
 {
-		if(this->state==UNCOVER_ITEM)
+		if(this->getStatus()==UNCOVER_ITEM)
 		{
 			this->renderEntitySprite(this->spriteRect,this->sprite,camera);
 		}
-		else if(this->state==HIDDEN_ITEM){
+		else if(this->isHidden()){
 			this->renderEntitySprite(this->hiddenSpriteRect,this->hiddenSprite,camera);
 		}
 }
@@ -68,7 +74,7 @@ void ItemView::setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite ) {
 
 void ItemView::uncover()
 {
-	this->state=UNCOVER_ITEM;
+	this->setStatus(UNCOVER_ITEM);
 }
 
 void ItemView::revive(unsigned _state,pair <int,int> pos)
@@ -76,12 +82,12 @@ void ItemView::revive(unsigned _state,pair <int,int> pos)
 	this->setRectangle(pos,this->sprite);
 	this->setHiddenRectangle(pos,this->hiddenSprite);
 	if(_state==REVIVE_UNCOVER_ITEM)
-		this->state=UNCOVER_ITEM;
+		this->uncover();
 	else
-		this->state=HIDDEN_ITEM;
+		this->setStatus(HIDDEN_ITEM);
 }
 
 void ItemView::kill()
 {
-	this->state=DEATH_ITEM;
+	this->setStatus(DEATH_ITEM);
 }
