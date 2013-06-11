@@ -39,20 +39,20 @@ void CharacterVision::initialize() {
 	}
 	this->updateVision();
 }
-
-void CharacterVision::setPosition(pair<int, int> pos) {
-	this->position = pos;
-}
+//
+//void CharacterVision::setPosition(pair<int, int> pos) {
+//	this->position = pos;
+//}
 
 void CharacterVision::updatePosition(pair<int, int> pos) {
-	if (pos == this->position)
+	if (pos == this->getPosition())
 		return;
 	this->setPosition(pos);
 	this->updateVision();
 }
 
 void CharacterVision::updateVision() {
-	vision.initialize(this->position, this->rangeVision);
+	vision.initialize(this->getPosition(), this->rangeVision);
 	if (!this->isAllKnown()) {
 		
 		vision.fill();

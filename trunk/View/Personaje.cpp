@@ -12,7 +12,7 @@
 Personaje::Personaje(PersonajeModelo* pj) {
 	this->font = NULL;
 	modelo = pj;
-	tileActual = pj->getPosition();
+	this->setPosition(pj->getPosition());
 	this->setCurrentSpritePosition(this->calculateSpritePosition(pj->getEstado()));
 	velocidad = pj->getVelocidad();
 	delta.first = 0;
@@ -158,7 +158,7 @@ void Personaje::calcularSigTileAMover(){
 
 	if (this->isCenteredInTile()) {
 		serr = 0;
-		tileActual = modelo->getPosition();
+		this->setPosition(this->personajeModelo()->getPosition());
 		currentAnimationNumber = modelo->mover(tile, velocidad);
 		this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
 		if (previousSpritePosition != this->getCurrentSpritePosition()) {
@@ -169,7 +169,7 @@ void Personaje::calcularSigTileAMover(){
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			//modelo->setIsInCenterTile(false);
-			modelo->setCurrent(tile.first, tile.second);
+			modelo->setPosition(tile);
 		}
 	}
 }
@@ -405,18 +405,18 @@ PersonajeModelo* Personaje::personajeModelo() {
 	return modelo;
 }
 
-std::pair<int,int> Personaje::getPosicionEnTiles() {
-	return modelo->getPosition();
-}
-
-std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
-	return tileActual;
-}
+//std::pair<int,int> Personaje::getPosicionEnTiles() {
+//	return modelo->getPosition();
+//}
+//
+//std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
+//	return tileActual;
+//}
 
 //tilex, tiley; pixelx, pixely; isFreezed; nro_status; nro_surface
 std::string Personaje::updateToString() {
 
-	std::string out = stringUtilities::pairIntToString(modelo->getPosition());
+	std::string out = modelo->positionToString();
 	out.append(";");
 	out.append(stringUtilities::pairIntToString(this->getPixelPosition()));
 	out.append(";");
@@ -449,9 +449,10 @@ std::string Personaje::updateToString() {
 void Personaje::updateFromString(std::string data) {
 	vector <std::string> splittedData;
 	stringUtilities::splitString(data, splittedData, ';');
-	std::pair<int,int> tilePosition = stringUtilities::stringToPairInt(splittedData[0]);
-	this->tileActual = tilePosition;
-	this->modelo->setPosition(tilePosition);
+	//std::pair<int,int> tilePosition = stringUtilities::stringToPairInt(splittedData[0]);
+	//this->tileActual = tilePosition;
+	this->setPosition(this->modelo->getPosition());
+	this->modelo->positionFromString(splittedData[0]);
 	this->modelo->getVision()->updatePosition(modelo->getPosition());
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
 	this->setPixelPosition(pixels);
@@ -460,10 +461,6 @@ void Personaje::updateFromString(std::string data) {
 	if (this->hasValidSprite()) {
 		this->sprites[this->getCurrentSpritePosition()]->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
 	}
-	//else {
-	//	//TODO: Fer: esta linea que sigue esta mal.. corregir urgente
-	//	GameView::instance().getErrorImage()->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
-	//}
 	this->setCenteredInTile(splittedData[5] == "T");
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
 	this->magiaActual = stringUtilities::stringToFloat(splittedData[7]);
