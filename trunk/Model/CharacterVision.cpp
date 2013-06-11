@@ -39,10 +39,6 @@ void CharacterVision::initialize() {
 	}
 	this->updateVision();
 }
-//
-//void CharacterVision::setPosition(pair<int, int> pos) {
-//	this->position = pos;
-//}
 
 void CharacterVision::updatePosition(pair<int, int> pos) {
 	if (pos == this->getPosition())
@@ -89,9 +85,6 @@ bool CharacterVision::isInsideVision(pair<int, int> pos) {
 }
 
 string CharacterVision::initToString() {
-	
-	//string out = this->updateToString();
-	//out.append("?");
 	string out = "";
 	if (!this->isAllKnown()) {
 		pair<int, int> pos;
@@ -108,14 +101,9 @@ string CharacterVision::initToString() {
 }
 
 void CharacterVision::initFromString(string data) {
-	
-	//auxVector.clear();
-	//stringUtilities::splitString(data, auxVector, '?');
-	//this->updateFromString(auxVector[0]);
 	if (!this->isAllKnown() && (data.size() > 2)) {
 		pair<int, int> pos;
 		vector <string> auxVector;
-		//string auxString = auxVector[1];
 		auxVector.clear();
 		stringUtilities::splitString(data, auxVector, '?');
 		vector <string>::iterator it;
@@ -137,7 +125,6 @@ string CharacterVision::updateToString() {
 }
 
 void CharacterVision::updateFromString(string data) {
-	//common::Logger::instance().log(data);
 	vector <string> auxVector;
 	auxVector.clear();
 	stringUtilities::splitString(data, auxVector, 'z');

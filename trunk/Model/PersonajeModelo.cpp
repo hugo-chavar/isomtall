@@ -39,14 +39,8 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 }
 
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
-	//current.first = pos_x;
-	//current.second = pos_y;
 	this->setPosition(std::make_pair(pos_x, pos_y));
-	/*target.first = current.first;
-	target.second = current.second;*/
 	this->target = this->getPosition();
-	//targetParcial.first = current.first;
-	//targetParcial.second = current.second;
 	this->targetParcial = this->target;
 	xPath = NULL;
 	yPath = NULL;
