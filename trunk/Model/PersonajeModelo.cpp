@@ -278,7 +278,7 @@ bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	if ((xPath[caminoSize-1]!=targetParcial.first)||(yPath[caminoSize-1]!=targetParcial.second)) { //Si cambio de destino durante el movimiento
 		return true;
 	}
-	if ((posMov==caminoSize)&&((target.first!=targetParcial.first)||(target.second!=targetParcial.second))) { //Si completo el primer pedazo del camino
+	if ((posMov == caminoSize)&&( this->target != this->targetParcial)) { //Si completo el primer pedazo del camino
 		return true;
 	}
 	return false;

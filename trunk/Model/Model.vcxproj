@@ -74,6 +74,7 @@
     <ClCompile Include="Circle.cpp" />
     <ClCompile Include="ConditionVariable.cpp" />
     <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Directionable.cpp" />
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Instruction.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="DataTypes.h" />
+    <ClInclude Include="Directionable.h" />
     <ClInclude Include="EntityObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Instruction.h" />

@@ -27,6 +27,7 @@ namespace view {
 		void setSmallFont(TTF_Font* font);
 		TTF_Font* getBigFont();
 		TTF_Font* getSmallFont();
+		bool isInitialized();
 		model::Chat * modelChat;
 	private:
 		Textbox textbox;
@@ -40,7 +41,7 @@ namespace view {
 		void receiveMsgs();
 		TTF_Font * bigFont;
 		TTF_Font * smallFont;
-
+		bool initialized;
 	};
 
 }
