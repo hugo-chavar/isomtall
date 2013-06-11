@@ -517,7 +517,7 @@ Screen YAMLParser::generateDefaultScreen() {
 
 PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 	PersonajeModelo *mainCharacter = new PersonajeModelo();
-	mainCharacter->setCurrent(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
+	mainCharacter->setPosition(std::make_pair<int,int>(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y));
 	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setAnimation(entities.vAnimatedEntities[0]); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
 	mainCharacter->setName("DEFAULT");
@@ -627,7 +627,7 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 		else {
 			if (animatedEntityType->imagesPaths()->countDir() >= NUMBER_OF_IMAGE_DIRECTORIES_MAIN_CHARACTER) {
 				PersonajeModelo* mainCharacter = new PersonajeModelo();
-				mainCharacter->setCurrent(mainCharacter_aux.x, mainCharacter_aux.y);
+				mainCharacter->setPosition(std::make_pair<int,int>(mainCharacter_aux.x, mainCharacter_aux.y));
 				mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
 				mainCharacter->setAnimation(animatedEntityType);
 				mainCharacter->setName(mainCharacter_aux.entityType);

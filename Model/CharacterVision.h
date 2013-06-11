@@ -6,11 +6,12 @@
 #include <bitset>
 #include "Constants.h"
 #include "Circle.h"
+#include "Positionable.h"
 
 using namespace std;
 
 
-class CharacterVision {
+class CharacterVision: public Positionable {
 
 public:
 	CharacterVision();
@@ -19,7 +20,6 @@ public:
 	int getRangeVision();
 	void increaseRangeVision(int value);
 	void initialize();
-	void setPosition(pair<int, int> pos);
 	void updatePosition(pair<int, int> pos);
 	bool testPosition(pair<int, int> pos);
 	void setKnown(pair<int, int> pos);
@@ -38,11 +38,9 @@ private:
 	int rangeVision;
 	int mapHeight;
 	int mapWidth;
-	pair <int, int > position;
 	Circle vision;
 	bool allKnown;
 	bool magicVision;
 };
-
 
 #endif //_CHARACTERVISION_H_

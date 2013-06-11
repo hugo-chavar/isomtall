@@ -404,7 +404,7 @@ bool GameView::isThereAChar(string & name,int x,int y,float cameraX,float camera
 		map <string, Personaje*>::iterator it;
 		for(it=this->personajes.begin(); it!=this->personajes.end(); it++)
 		{
-			pair<int,int> posChar = (*it).second->getPosicionEnTiles();
+			pair<int,int> posChar = (*it).second->getPosition();
 			if(posChar == tilePos)
 			{
 				name = (*it).first;

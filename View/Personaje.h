@@ -22,8 +22,8 @@ public:
 	void clearSprites() ;
 	void addNextSprite(AnimatedEntity*);
 	void addFirstSprite(AnimatedEntity*);
-	std::pair<int,int> getPosicionEnTiles();
-	std::pair<int,int> getPosicionAnteriorEnTiles();
+	//std::pair<int,int> getPosicionEnTiles();
+	//std::pair<int,int> getPosicionAnteriorEnTiles();
 	//void setFreezed(bool value);
 	void setAnimating(bool value);
 	std::string updateToString();
@@ -60,7 +60,7 @@ private:
 	void createStatsBar();
 	void updateStatsBar();
 	void renderStatsBars(Camera& camera);
-	std::pair<int, int> tileActual;
+	//std::pair<int, int> tileActual;
 	SDL_Surface* labelName;
 	SDL_Surface* magicBarPos;
 	SDL_Surface* magicBarNeg;

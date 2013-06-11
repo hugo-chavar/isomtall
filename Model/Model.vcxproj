@@ -84,6 +84,7 @@
     <ClCompile Include="Par.cpp" />
     <ClCompile Include="Pathfinder.cpp" />
     <ClCompile Include="PersonajeModelo.cpp" />
+    <ClCompile Include="Positionable.cpp" />
     <ClCompile Include="Serializable.cpp" />
     <ClCompile Include="Socket.cpp" />
     <ClCompile Include="StageModel.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PersonajeConstantes.h" />
     <ClInclude Include="PersonajeModelo.h" />
+    <ClInclude Include="Positionable.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Socket.h" />
     <ClInclude Include="StageModel.h" />

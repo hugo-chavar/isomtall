@@ -18,7 +18,8 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 }
 
 PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
-	this->current = source.current;
+	//this->current = source.current;
+	this->setPosition(source.position);
 	this->target = source.target;
 	this->targetParcial = source.targetParcial;
 	this->xPath = source.xPath;
@@ -38,12 +39,15 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 }
 
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
-	current.first = pos_x;
-	current.second = pos_y;
-	target.first = current.first;
-	target.second = current.second;
-	targetParcial.first = current.first;
-	targetParcial.second = current.second;
+	//current.first = pos_x;
+	//current.second = pos_y;
+	this->setPosition(std::make_pair(pos_x, pos_y));
+	/*target.first = current.first;
+	target.second = current.second;*/
+	this->target = this->getPosition();
+	//targetParcial.first = current.first;
+	//targetParcial.second = current.second;
+	this->targetParcial = this->target;
 	xPath = NULL;
 	yPath = NULL;
 	posMov = 0;
@@ -61,18 +65,19 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	mapKeyPressedToAnimation['s'] = DEFENDER;*/
 }
 
-
-void PersonajeModelo::setCurrent(int x, int y) {
-	current.first = x;
-	current.second = y;
-}
+//
+//void PersonajeModelo::setCurrent(int x, int y) {
+//	current.first = x;
+//	current.second = y;
+//}
 
 void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
 	animation = ae;
 }
 
 void PersonajeModelo::changeToAnimation(int animationNumber) {
-	targetParcial = target = current;
+	this->targetParcial = this->getPosition();
+	this->target = this->targetParcial;
 	if (estado >= MOVIMIENTO) {
 		this->changeToState(animationNumber - MOVIMIENTO);
 	} else {
@@ -258,7 +263,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	double coste = 0;
 	float costeF = 0;
 
-	if (target == current) {
+	if (this->target == this->getPosition()) {
 		return (this->quedarseQuieto(velocidadAni));
 	}
 	if (posMov < caminoSize) {
@@ -320,7 +325,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	if (cambio == SIN_CAMBIO) {
 		return estado;
 	}
-	if((x==current.first)&&(y==current.second)&&(cambio==ESTADO_MOVIMIENTO)){
+	if((this->getPosition() == std::make_pair(x,y))&&(cambio==ESTADO_MOVIMIENTO)){
 		return (estado-FACTOR_ORIENTACION);
 	}
 	orientacion = obtenerOrientacion(x, y);
@@ -338,8 +343,8 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 }
 
 int PersonajeModelo::obtenerOrientacion(int x, int y) {
-	int xCurr = current.first;
-	int yCurr = current.second;
+	int xCurr = this->getPosition().first;
+	int yCurr = this->getPosition().second;
 	
 	if ((x < xCurr)&&(y < yCurr)) {
 		return NORTE;
@@ -382,10 +387,10 @@ void PersonajeModelo::setName(string nombreJugador) {
 string PersonajeModelo::getName() {
 	return this->name;
 }
-
-std::pair<int, int> PersonajeModelo::getPosition() {
-	return this->current;
-}
+//
+//std::pair<int, int> PersonajeModelo::getPosition() {
+//	return this->current;
+//}
 
 void PersonajeModelo::createVision(int range) {
 	this->vision = new CharacterVision();
@@ -403,7 +408,7 @@ void PersonajeModelo::update() {
 }
 
 std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
-	std::pair <int, int> posicionSig = current;
+	std::pair <int, int> posicionSig = this->getPosition();
 
 	if ((orientacion == NORTE) || (orientacion == NORESTE) || (orientacion == ESTE))
 		posicionSig.second--;
@@ -433,7 +438,7 @@ int PersonajeModelo::getRefPixelY() {
 void PersonajeModelo::restartDirectories() {
 	this->animation->imagesPaths()->restartCurrentPosition();
 }
-
-void PersonajeModelo::setPosition(std::pair<int, int> pos) {
-	this->current = pos;
-}
+//
+//void PersonajeModelo::setPosition(std::pair<int, int> pos) {
+//	this->current = pos;
+//}

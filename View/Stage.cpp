@@ -245,7 +245,7 @@ void view::Stage::render(Camera& camera) {
 		GameView::instance().startRenderingCharacters();
 		Personaje* p = GameView::instance().nextCharacter();
 		while (p) {
-			if (p->isActive() && renderHelper.shouldRenderThis(p->getPosicionEnTiles(),p->getPosicionAnteriorEnTiles()))
+			if (p->isActive() && renderHelper.shouldRenderThis(p->personajeModelo()->getPosition(),p->getPosition()))
 				p->render(camera);
 			p = GameView::instance().nextCharacter();
 		}

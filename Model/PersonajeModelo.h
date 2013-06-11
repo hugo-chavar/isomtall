@@ -2,13 +2,14 @@
 #define PERSONAJEMODELO_H
 
 #include <utility>
+#include "Positionable.h"
 #include "Constants.h"
 #include "DirList.h"
 #include "AnimatedEntity.h"
 #include "CharacterVision.h"
 
 
-class PersonajeModelo {
+class PersonajeModelo: public Positionable {
 
 public:
 	PersonajeModelo();
@@ -16,7 +17,7 @@ public:
 	~PersonajeModelo();
 	PersonajeModelo& operator=(const PersonajeModelo&);
 	void setEstado(int state);
-	void setCurrent(int x, int y);
+	//void setCurrent(int x, int y);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
 	void setIsActivo(bool active);
@@ -37,7 +38,7 @@ public:
 	int delay();
 	std::string getName();
 	void setName(string nombreJugador);
-	std::pair<int, int> getPosition();
+	//std::pair<int, int> getPosition();
 	void createVision(int range);
 	CharacterVision* getVision();
 	void update();
@@ -45,7 +46,7 @@ public:
 	int getRefPixelX();
 	int getRefPixelY();
 	void restartDirectories();
-	void setPosition(std::pair<int, int> pos);
+	//void setPosition(std::pair<int, int> pos);
 	float getVidaMaxima();
 	void setVidaMaxima(float vida);
 	float getMagiaMaxima();
@@ -68,7 +69,7 @@ private:
 	void changeToState(int addedState);
 	void changeToAnimation(int animationNumber);
 	
-	std::pair<int, int> current;
+	//std::pair<int, int> current;
 	std::pair<int, int> target;
 	std::pair<int, int> targetParcial;
 	int* xPath;
