@@ -5,6 +5,7 @@
 
 
 GameView::GameView() {
+	this->personajes.clear();
 	this->errorImage = NULL;
 	this->_music = NULL;
 	this->setStatus(STATUS_START_SCREEN);
@@ -43,23 +44,12 @@ GameView::~GameView() {
 void GameView::initialize() {
 	this->camera.configure();
 	bool mapInitialized = false;
-	//bool textInitialized = true;
 	bool chatInitialized = false;
-	//bool notificationInitialized = false;
-	this->serverReached = true;
 
 	this->chat.setIsTyping(false);
 	
 	this->chat.setBigFont(this->getFontSize(16));
 	this->chat.setSmallFont(this->getFontSize(10));
-
-	////Initialize SDL_ttf
-	//if (TTF_Init() == -1)
-	//	textInitialized = false;
-
-	//this->notification.setImagePath(DEFAULT_NOTIFICATIONBOX_PATH);
-	//notificationInitialized = this->notification.initialize(camera);
-	//if ( (this->getStatus() == STATUS_FILES_UPDATED_OK) ||(this->getStatus() == STATUS_SIMULATION_CONNECTED)) {
 		mapInitialized = worldView.initialize();
 		chatInitialized = chat.initialize(camera);
 		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
@@ -67,7 +57,6 @@ void GameView::initialize() {
 		this->addPersonaje(this->getPlayerName(), this->personaje);
 		if (!mapInitialized)
 			this->setStatus(STATUS_INIT_ERROR);
-	//}
 
 
 	if (mapInitialized) {

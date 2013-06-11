@@ -24,8 +24,9 @@ TimeManager* Game::getTimer() {
 
 bool Game::initialize() {
 	yParser.parse(CONFIGFILE_DIRECTORY, false);
-	_world = yParser.vStages()[this->getStageNumber()];
-	_world.loadNamedChars();
+	//_world = yParser.vStages()[this->getStageNumber()];
+	//_world.loadNamedChars();
+	this->startWorld();
 	allEntities = yParser.allLists();
 	_configuration = yParser.getConfig();
 	this->_time.initializeTime();
@@ -57,4 +58,9 @@ int Game::getStageNumber() {
 
 void Game::setStageNumber(int stageNo) {
 	this->stageNumber = stageNo;
+}
+
+void Game::startWorld() {
+	this->_world = yParser.vStages()[this->getStageNumber()];
+	this->_world.loadNamedChars();
 }

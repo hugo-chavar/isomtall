@@ -10,20 +10,21 @@
 #define EXTRA_TILES_TO_RENDER 9
 
 view::Stage::Stage() {
-//	_personaje = NULL;
+	spriteArray.clear();
+	this->worldModel = NULL;
+	this->firstTile = NULL;
 }
 
 view::Stage::~Stage() {
-	for (unsigned int i = 0; i < spriteArray.size(); i++) {
-		delete spriteArray[i];
-	}
+	this->cleanUp();
+}
 
-	spriteArray.clear();
-	//if (_personaje){
-	//	delete _personaje;
-	//	_personaje = NULL;
-	//}
-	deleteStage();
+void view::Stage::cleanUp() {
+	for (unsigned int i = 0; i < this->spriteArray.size(); i++) {
+		delete this->spriteArray[i];
+	}
+	this->spriteArray.clear();
+	this->deleteStage();
 }
 
 void view::Stage::loadSprites() {
@@ -99,6 +100,7 @@ void view::Stage::setTilesInCamera(int w, int h) {
 }
 
 bool view::Stage::initialize() {
+	this->cleanUp();
 	worldModel = Game::instance().world();
 	
 	this->loadSprites();
