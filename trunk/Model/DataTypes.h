@@ -40,6 +40,25 @@ std::pair<T1,T2> operator*(const std::pair<T1,T2> &p1, const T2 &escalar) {
 
 /* Example: How to use this 2 last methods*/
 
+/*
+int main(){
+	std::pair<int, int> x(7,5);
+	std::pair<int, int> y(2,9);
+	int z = -2;
+	std::pair<int, int> m = x + y;
+	std::pair<int, int> n = x*z;
+	std::cout<<"X"<<std::endl;
+	std::cout<<"first: "<< x.first<<"second: "<< x.second  <<std::endl;
+	std::cout<<"Y"<<std::endl;
+	std::cout<<"first: "<< y.first<<"second: "<< y.second  <<std::endl;
+	std::cout<<"M"<<std::endl;
+	std::cout<<"first: "<< m.first<<"second: "<< m.second  <<std::endl;
+	std::cout<<"N"<<std::endl;
+	std::cout<<"first: "<< n.first<<"second: "<< n.second  <<std::endl;
+	std::cin>>z;
+	return 0;
+}
+*/
 
 
 #endif
