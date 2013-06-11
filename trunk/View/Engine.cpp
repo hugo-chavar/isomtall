@@ -11,7 +11,7 @@
 
 
 Engine::Engine() {
-	this->running = true;
+	//this->running = true;
 	//TODO: must be either in the config file or an in-game parameter.
 	//this->desiredFPS = 20;
 	this->desiredFPS = 60;
@@ -19,10 +19,10 @@ Engine::Engine() {
 	TTF_Init();
 
 }
-
-bool Engine::isRunning() {
-	return this->running;
-}
+//
+//bool Engine::isRunning() {
+//	return this->running;
+//}
 
 Uint32 Engine::getDesiredFPS() {
 	return this->desiredFPS;
@@ -35,7 +35,7 @@ int Engine::execute() {
 
 	this->initialize();
 
-	while(GameView::instance().getStatus() != STATUS_EXIT) { //GameView::instance().getStatus() != STATUS_EXIT
+	while(GameView::instance().getStatus() != STATUS_EXIT) {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().getTimer())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
@@ -80,7 +80,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 
 	switch(sdlEvent->type) {
 		case SDL_QUIT: {
-			running = false;
+			//running = false;
 			GameView::instance().setStatus(STATUS_EXIT);
 			break;
 		}

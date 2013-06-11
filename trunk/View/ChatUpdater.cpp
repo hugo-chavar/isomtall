@@ -106,9 +106,9 @@ void ChatUpdater::processInstruction(Instruction& instructionIn) {
 			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			this->setConnected(false);
 			this->setStopping(true);
-			this->getMessagesListMutex().lock();
-			this->getMessagesList().push_back("CONNECTION WITH SERVER LOST");
-			this->getMessagesListMutex().unlock();
+			//this->getMessagesListMutex().lock();
+			//this->getMessagesList().push_back("CONNECTION WITH SERVER LOST");
+			//this->getMessagesListMutex().unlock();
 		break;
 	}
 }

@@ -17,7 +17,7 @@ GameView::GameView() {
 	this->addFontSize(10);
 	this->addFontSize(16);
 	this->addFontSize(12);
-	this->menu->initialize(/*this->camera*/);
+	this->menu->initialize();
 	this->winner = "";
 	this->needsUpdateFiles = true;
 	this->needsConnectToServer = true;
