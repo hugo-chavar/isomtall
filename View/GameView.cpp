@@ -161,7 +161,8 @@ void GameView::cleanUp() {
 		this->getModelUpdater()->stopUpdating(false);
 	}
 	this->camera.cleanUp();
-	this->chat.modelChat->cleanUp();
+	if (this->chat.isInitialized())
+		this->chat.modelChat->cleanUp();
 
 	//Free background music.
 	Mix_FreeMusic(this->getMusic());

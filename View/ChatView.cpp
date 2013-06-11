@@ -1,6 +1,8 @@
 #include "ChatView.h"
 
-view::ChatView::ChatView() { }
+view::ChatView::ChatView() {
+	this->initialized = false;
+}
 
 view::ChatView::~ChatView() {
 	SDL_FreeSurface(closeButton);
@@ -68,6 +70,7 @@ bool view::ChatView::initialize(Camera &camera) {
 		return false;
 	if (!initializeCloseButton())
 		return false;
+	this->initialized = true;
 	return true;
 }
 
@@ -154,4 +157,8 @@ TTF_Font* view::ChatView::getBigFont() {
 
 TTF_Font* view::ChatView::getSmallFont() {
 	return this->smallFont;
+}
+
+bool view::ChatView::isInitialized() {
+	return this->initialized;
 }

@@ -102,7 +102,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 							GameView::instance().getGameMenu()->setDisplayNotification(false);
 						}
 					} else {
-						running = false;
+						//running = false;
 						GameView::instance().setStatus(STATUS_EXIT);
 					}
 					break;
