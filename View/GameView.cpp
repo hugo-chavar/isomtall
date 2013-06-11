@@ -329,7 +329,8 @@ void GameView::update() {
 
 		break;
 		case STATUS_GAME_OVER:
-			this->camera.unconfigure();
+			//this->camera.unconfigure();
+			this->getChat()->setIsTyping(false);
 			if (this->winner.compare(this->playerName) == 0) {
 				this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
 				this->menu->setNotificationMessage("CONGRATULATIONS YOU WON");
