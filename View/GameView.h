@@ -88,7 +88,6 @@ private:
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
-	//view::Notification notification;
 	GameMenu* menu; 
 	bool connected;
 	bool serverReached;
@@ -111,6 +110,8 @@ private:
 	model::Login _login;
 	map <int, TTF_Font*> fonts;
 	map <int, TTF_Font*>::iterator fontsIt;
+	bool needsConnectToServer;
+	bool needsUpdateFiles;
 };
 
 #endif //_GAMEVIEW_H_

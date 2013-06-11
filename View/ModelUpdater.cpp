@@ -110,8 +110,6 @@ void ModelUpdater::updateModel() {
 		}
 	} else {
 		this->setServerReached(false);
-
-		//std::cout << "SERVER UNREACHABLE" << std::endl;
 	}
 }
 
@@ -180,7 +178,6 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			this->simulationUpdate(instructionIn);
 		break;
 		case OPCODE_CONNECTION_ERROR:
-			//std::cout << "CONNECTION WITH SERVER LOST" << std::endl;
 			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTION_LOST);
 			this->setConnected(false);
 			this->setStopping(true);

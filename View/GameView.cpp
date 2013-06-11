@@ -18,6 +18,8 @@ GameView::GameView() {
 	this->addFontSize(12);
 	this->menu->initialize(/*this->camera*/);
 	this->winner = "";
+	this->needsUpdateFiles = true;
+	this->needsConnectToServer = true;
 	
 }
 
@@ -170,9 +172,7 @@ void GameView::cleanUp() {
 		this->getModelUpdater()->stopUpdating(false);
 	}
 	this->camera.cleanUp();
-	//if ((this->getStatus() == STATUS_SIMULATION_CONNECTED)||(this->getStatus() == STATUS_SIMULATION_CONNECTION_LOST)) {
-		this->chat.modelChat->cleanUp();
-	//}
+	this->chat.modelChat->cleanUp();
 
 	//Free background music.
 	Mix_FreeMusic(this->getMusic());
@@ -217,7 +217,6 @@ SpriteAnimado* GameView::getErrorImage() {
 	return errorImage;
 }
 
-
 void GameView::update() {
 
 	this->camera.update();
@@ -234,35 +233,44 @@ void GameView::update() {
 		}
 		break;
 		case STATUS_UPDATING_FILES: {
-			//descarga de archivos
-			YAMLParser connectionParser;
-			ClientUpdater clientUpdater;
-			int serverPortNumber;
-			std::string serverIpAddress;
-			connectionParser.parse(CONNECTION_DIRECTORY, true);
-			serverPortNumber = connectionParser.getConfigPort();
-			serverIpAddress = connectionParser.getConfigIp();
-			
-			clientUpdater.setServerIp(serverIpAddress);
-			clientUpdater.setServerPort(serverPortNumber);
-			clientUpdater.updateClient();
-			Game::instance().configuration()->serverPort(serverPortNumber);
-			Game::instance().configuration()->serverIp(serverIpAddress);
+			if (this->needsUpdateFiles) {
+				YAMLParser connectionParser;
+				ClientUpdater clientUpdater;
+				int serverPortNumber;
+				std::string serverIpAddress;
+				connectionParser.parse(CONNECTION_DIRECTORY, true);
+				serverPortNumber = connectionParser.getConfigPort();
+				serverIpAddress = connectionParser.getConfigIp();
+				clientUpdater.setServerIp(serverIpAddress);
+				clientUpdater.setServerPort(serverPortNumber);
+				clientUpdater.updateClient();
+				Game::instance().configuration()->serverPort(serverPortNumber);
+				Game::instance().configuration()->serverIp(serverIpAddress);
+				this->needsUpdateFiles = false;
+			} else {
+				this->setStatus(STATUS_FILES_UPDATED_OK);
+			}
 		}
 		break;
 		case STATUS_FILES_UPDATED_OK: {
-			//loggeo al server
-			Instruction instruction;
-			instruction.clear();
-			instruction.setOpCode(OPCODE_LOGIN_REQUEST);
-			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,this->getPlayerName());
-			instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, this->getPlayerCharacterId());
-			this->getLogin()->getLoginUpdater().addInstruction(instruction);
-			this->_login.initialize();
-			this->getModelUpdater()->startUpdating();
-			Game::instance().initialize();
-			this->initialize();
-			this->setStatus(STATUS_LOGIN_REQUESTED);
+			if (this->needsConnectToServer) {
+				Instruction instruction;
+				instruction.clear();
+				instruction.setOpCode(OPCODE_LOGIN_REQUEST);
+				instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_REQUESTED_USER_ID,this->getPlayerName());
+				instruction.insertArgument( INSTRUCTION_ARGUMENT_KEY_CHARACTER, this->getPlayerCharacterId());
+				this->getLogin()->getLoginUpdater().addInstruction(instruction);
+				this->_login.initialize();
+				this->getModelUpdater()->startUpdating();
+				Game::instance().initialize();
+				this->initialize();
+				this->setStatus(STATUS_LOGIN_REQUESTED);
+				this->needsConnectToServer = false;
+			} else {
+				this->setStatus(STATUS_SIMULATION_CONNECTED);
+				this->camera.configure();
+				this->getChat()->setIsTyping(true);
+			}
 		}
 		break;
 		case STATUS_INIT_ERROR:
@@ -344,10 +352,8 @@ void GameView::update() {
 		break;
 		default: {
 			this->menu->setDisplayNotification(false);
-			//bool filesOK = (GameView::instance().getStatus() == STATUS_FILES_UPDATED_OK);
 			bool loginOK = (GameView::instance().getStatus() != STATUS_LOGIN_USER_FAILED)&&(GameView::instance().getStatus() != STATUS_LOGIN_CONNECTION_LOST);
-			//bool simulationOK = (GameView::instance().getStatus() != STATUS_SIMULATION_CONNECTION_LOST)&&(GameView::instance().getStatus() != STATUS_SERVER_UNREACHEABLE);
-			if ( loginOK || (GameView::instance().getStatus() == STATUS_LOGIN_REQUESTED) /*&& simulationOK && filesOK*/) {
+			if ( loginOK || (GameView::instance().getStatus() == STATUS_LOGIN_REQUESTED)) {
 				Instruction instruction;
 				instruction.clear();
 				instruction.setOpCode(OPCODE_CONNECT_TO_CHAT);
