@@ -38,6 +38,7 @@ public:
 	//string getPlayerCharacterId();
 	int getStageNumber();
 	void setStageNumber(int stageNo);
+	void startWorld();
 
 private:
 	Game();

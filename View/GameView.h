@@ -90,7 +90,7 @@ private:
 	view::ChatView chat;
 	GameMenu* menu; 
 	bool connected;
-	bool serverReached;
+	//bool serverReached;
 	map <string, Personaje*> personajes;
 	map <string, Personaje*>::iterator itPersonajes;
 	string playerName; //este atributo se repite dentro del Personaje del cliente.
