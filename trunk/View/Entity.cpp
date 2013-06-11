@@ -82,11 +82,11 @@ bool Entity::isFogged() {
 	return this->fogged;
 }
 
-void Entity::setStatus(entityStatus_t status) {
+void Entity::setStatus(unsigned status) {
 	this->status = status;
 }
 
-entityStatus_t Entity::getStatus() {
+unsigned Entity::getStatus() {
 	return this->status;
 }
 

@@ -1,25 +1,25 @@
 #pragma once
 #include "Entity.h"
 
-#ifndef item_state_t
-#define item_state_t
-enum item_state_t {
-	HIDDEN_ITEM,
-	UNCOVER_ITEM,
-	DEATH_ITEM,
-	REVIVE_UNCOVER_ITEM,
-	REVIVE_HIDDEN_ITEM,
-	REGENERATING
-
-};
-#endif
+//#ifndef item_state_t
+//#define item_state_t
+//enum item_state_t {
+//	HIDDEN_ITEM,
+//	UNCOVER_ITEM,
+//	DEATH_ITEM,
+//	REVIVE_UNCOVER_ITEM,
+//	REVIVE_HIDDEN_ITEM,
+//	REGENERATING
+//
+//};
+//#endif
 
 class ItemView: public Entity
 {
 
 private:
 
-	unsigned state;
+	//unsigned state;
 	//bool hidden;
 	//bool alive;
 	SDL_Rect hiddenSpriteRect;
@@ -34,7 +34,7 @@ public:
 	~ItemView();
 	void update();
 	void render(Camera& camera);
-	//void changeState();
+	bool isHidden();
 	void uncover();
 	void revive(unsigned _state,pair <int,int> pos);
 	bool isAlive();
