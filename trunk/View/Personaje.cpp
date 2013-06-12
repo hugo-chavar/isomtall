@@ -268,7 +268,7 @@ void Personaje::renderStatsBars(Camera& camera) {
 	gLifeBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); gLifeBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - BAR_HEIGHT);
 	rLifeBarBox.x = gLifeBarBox.x; rLifeBarBox.y = gLifeBarBox.y;
 
-	pMagicBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); pMagicBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 2*BAR_HEIGHT);
+	pMagicBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); pMagicBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 2*BAR_HEIGHT - 1);
 	nMagicBarBox.x = pMagicBarBox.x; nMagicBarBox.y = pMagicBarBox.y;
 
 	camera.render(rLifeBarBox, lifeBarR);
