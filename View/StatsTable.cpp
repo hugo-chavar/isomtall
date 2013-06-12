@@ -2,6 +2,7 @@
 #include "../Libraries/SDL-1.2.15/include/SDL_image.h"
 #include <string.h>
 #include <string>
+#include "../Common/stringUtilities.h"
 
 using namespace view;
 
@@ -16,6 +17,8 @@ StatsTable::StatsTable() {
 	this->arrows = 0;
 	this->grenade = 0;
 	this->shieldEndurance = 0;
+	this->ammo = NULL;
+	this->shieldDur = NULL;
 }
 
 //TODO: Mover esto a un lugar general, ver ChatView.h
@@ -71,11 +74,34 @@ bool StatsTable::initialize() {
 	return true;
 }
 
+void StatsTable::update(Personaje* personaje) {
+	
+}
+
+SDL_Rect StatsTable::generateInfo(int info, SDL_Surface* &surface) {
+	SDL_Rect retValue;
+	
+	if (surface != NULL) {
+		SDL_FreeSurface(surface);
+		surface = NULL;
+	}
+	surface = TTF_RenderText_Blended(this->font, (stringUtilities::intToString(info)).c_str(), Camera::WHITE_COLOR);
+	retValue.h = surface->h;
+	retValue.w = surface->w;
+	return retValue;
+}
+
+void StatsTable::setFont(TTF_Font* font) {
+	this->font = font;
+}
+
 SDL_Surface* StatsTable::getWeapon() {
 	return sword;
 }
 
 void StatsTable::render(Camera &camera) {
+	SDL_Rect shieldInfoBox;
+	SDL_Rect weaponInfoBox;
 
 	//TODO: ver de optimizar esto
 	weaponBox.x = static_cast<Uint16>(camera.getOffsetX() + 10);
@@ -83,8 +109,12 @@ void StatsTable::render(Camera &camera) {
 	shieldBox.x = weaponBox.x;
 	shieldBox.y = weaponBox.y + weaponBox.h;
 	camera.render (weaponBox, getWeapon());
-	if (shieldEndurance > 0) {
+	if (shieldEndurance == 0) {
 		camera.render (shieldBox, shield);
+		shieldInfoBox = this->generateInfo(shieldEndurance, shieldDur);
+		shieldInfoBox.y = shieldBox.y;
+		shieldInfoBox.x = shieldBox.x + shieldBox.w;
+		camera.render(shieldInfoBox, shieldDur);
 	}
 }
 
@@ -112,5 +142,13 @@ StatsTable::~StatsTable() {
 	if (wand != NULL) {
 		SDL_FreeSurface(wand);
 		wand = NULL;
+	}
+	if (shieldDur != NULL) {
+		SDL_FreeSurface(shieldDur);
+		shieldDur = NULL;
+	}
+	if (ammo != NULL) {
+		SDL_FreeSurface(ammo);
+		ammo = NULL;
 	}
 }
