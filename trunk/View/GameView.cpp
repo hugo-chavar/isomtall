@@ -60,10 +60,7 @@ void GameView::initialize() {
 
 
 	if (mapInitialized) {
-		//TODO: cambiar por this->camera.setCenterPixel(worldView.personaje()->getPixelPosition());
-		std::pair<int,int> posPersonaje = this->personaje->getPixelPosition();
-		this->camera.setOffsetX(static_cast<float>(posPersonaje.first-332));
-		this->camera.setOffsetY(static_cast<float>(posPersonaje.second-204));
+		this->camera.setCenterPixel(this->personaje->getPixelPosition());
 		AnimatedEntity errorEntity;
 		errorEntity.loadImages(ERROR_ANIMATED_DIR);
 		errorEntity.delay(0);
@@ -259,6 +256,7 @@ void GameView::update() {
 			} else {
 				this->setStatus(STATUS_SIMULATION_CONNECTED);
 				this->camera.configure();
+				this->camera.setCenterPixel(this->personaje->getPixelPosition());
 				this->getChat()->setIsTyping(true);
 			}
 		}
@@ -293,6 +291,7 @@ void GameView::update() {
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_SIMULATION_CONNECTED:
+			
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
 			this->worldView.update();
