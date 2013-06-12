@@ -21,10 +21,20 @@ enum gameStatus_t {
 	STATUS_START_SCREEN,
 	STATUS_GAME_OVER,
 	STATUS_EXIT
-	
 };
 #endif
 
+#ifndef soundIndex
+#define soundIndex
+enum soundIndex {
+	SOUND_INDEX_ARROW,
+	SOUND_INDEX_ATTACK_ON_SHIELD,
+	SOUND_INDEX_ATTACK_ON_WOOD,
+	SOUND_INDEX_OPEN_BOTTLE
+};
+#endif
+
+#include <vector>
 #include "GameMenu.h"
 #include "Personaje.h"
 #include "Stage.h"
@@ -104,6 +114,9 @@ private:
 	Mix_Music* _music;
 	Mix_Music* getMusic();
 	void setMusic(Mix_Music* music);
+
+	std::vector<Mix_Chunk*> _sounds;
+	std::vector<Mix_Chunk*>& getSounds();
 
 	ModelUpdater _modelUpdater;
 
