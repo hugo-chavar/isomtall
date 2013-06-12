@@ -18,6 +18,8 @@ Camera::Camera() {
 	this->scrollSpeed = 0;
 	this->scrollBoxSize = 0;
 	this->cameraSurface = NULL;
+	vibrationTime=0;
+	lastMovement=VIBRATION_PIXELS;
 }
 
 float Camera::getOffsetX() {
@@ -96,7 +98,10 @@ void Camera::update() {
 	float scrollFactor = 0;
 	std::pair<int,int> cameraCenterInTiles;
 	//std::pair<int,int> cameraCenterInTiles = std::make_pair<int,int>(0,0);
-
+	if(this->isVibrating())
+	{
+		vibrate();
+	}
 	SDL_GetMouseState(&x,&y);
 
 	if ((x > static_cast<int>(this->getWidth() - this->getScrollBoxSize()))&&(x < static_cast<int>(this->getWidth()) - 5)) {
@@ -169,4 +174,21 @@ Camera::~Camera() {
 void Camera::setCenterPixel(std::pair<int,int> center) {
 	this->setOffsetX(static_cast<float>(2*center.first-this->getWidth())/2);
 	this->setOffsetY(static_cast<float>(2*center.second-this->getHeight())/2);
+}
+
+void Camera::vibrate()
+{
+	this->lastMovement=lastMovement*(-1);
+	this->setOffsetX(this->offsetX+this->lastMovement);
+	this->vibrationTime-=Game::instance().getTimer()->getDeltaTime();
+}
+
+bool Camera::isVibrating()
+{
+	return (this->vibrationTime>0);
+}
+
+void Camera::setVibrating()
+{
+	this->vibrationTime=VIBRATION_TIME;
 }

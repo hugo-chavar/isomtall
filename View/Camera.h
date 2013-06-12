@@ -4,10 +4,16 @@
 #include "SDL.h"
 #include <utility>
 
+#define VIBRATION_TIME 2
+#define VIBRATION_PIXELS 3
+
 namespace view {
 
 	class Camera {
 	private:
+		float vibrationTime;
+		float lastMovement;
+		void vibrate();
 		//X axis camera offset in pixels.
 		float offsetX;
 		//Y axis camera offset in pixels.
@@ -44,6 +50,8 @@ namespace view {
 		void startScreen(unsigned width, unsigned height);
 		void setCenterPixel(std::pair<int,int>);
 		~Camera();
+		void setVibrating();
+		bool isVibrating();
 	};
 
 } // namespace model
