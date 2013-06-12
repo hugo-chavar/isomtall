@@ -66,6 +66,7 @@ void GameView::initialize() {
 		errorEntity.delay(0);
 		this->errorImage = new SpriteAnimado(&errorEntity);
 		statTable.initialize();
+		statTable.setFont(this->getFontSize(12));
 	}
 	this->menu->setNotificationFont(this->getFontSize(20));
 	
@@ -194,6 +195,7 @@ void GameView::render() {
 	switch (this->getStatus()) {
 		case STATUS_SIMULATION_CONNECTED: {
 			this->worldView.render(this->camera);
+			this->statTable.update(this->getMyPersonaje());
 			this->statTable.render(this->camera);
 			if (chat.isTyping())
 				this->chat.render(this->camera);
@@ -201,6 +203,7 @@ void GameView::render() {
 		}
 		case STATUS_GAME_OVER: {
 			this->worldView.render(this->camera);
+			this->statTable.update(this->getMyPersonaje());
 			this->statTable.render(this->camera);
 			if (chat.isTyping())
 				this->chat.render(this->camera);

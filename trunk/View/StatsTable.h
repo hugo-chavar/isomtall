@@ -2,6 +2,7 @@
 #define STATSTABLE_H
 
 #include "Camera.h"
+#include "Personaje.h"
 
 namespace view {
 
@@ -10,10 +11,13 @@ namespace view {
 	public:
 		StatsTable();
 		~StatsTable();
+		void update(Personaje* personaje);
 		bool initialize();
 		void render(Camera& camera);
+		void setFont(TTF_Font* font);
 	private:
 		SDL_Surface* getWeapon();
+		SDL_Rect generateInfo(int info, SDL_Surface* &surface);
 
 		SDL_Surface* sword;
 		SDL_Surface* bow;
@@ -25,8 +29,11 @@ namespace view {
 		SDL_Surface* wand;
 		SDL_Surface* shield;
 		int shieldEndurance;
+		SDL_Surface* ammo;
+		SDL_Surface* shieldDur;
 		SDL_Rect weaponBox;
 		SDL_Rect shieldBox;
+		TTF_Font* font;
 	};
 
 }
