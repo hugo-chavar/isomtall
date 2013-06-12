@@ -46,6 +46,7 @@ enum soundIndex {
 #include "SDL_ttf.h"
 #include "ModelUpdater.h"
 #include "Login.h"
+#include "StatsTable.h"
 
 
 
@@ -98,6 +99,7 @@ private:
 	view::Stage worldView;
 	Personaje* personaje;
 	view::ChatView chat;
+	StatsTable statTable;
 	GameMenu* menu; 
 	bool connected;
 	//bool serverReached;

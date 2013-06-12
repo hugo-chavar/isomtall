@@ -97,6 +97,7 @@
     <ClCompile Include="SimulationReceiver.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StaticTextBox.cpp" />
+    <ClCompile Include="StatsTable.cpp" />
     <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Personaje.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="SimulationConnector.h" />
     <ClInclude Include="SimulationReceiver.h" />
     <ClInclude Include="StaticTextBox.h" />
+    <ClInclude Include="StatsTable.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Personaje.h" />
