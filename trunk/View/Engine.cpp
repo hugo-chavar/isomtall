@@ -111,13 +111,14 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				{
 					if (!GameView::instance().getChat()->isTyping())
 					{
-						instruction.clear();
-						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						//TODO: Create an option header
-						string opcion_caracter;
-						opcion_caracter.push_back(OPCION_ATACAR);
-						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-						GameView::instance().getModelUpdater()->addInstruction(instruction);
+						GameView::instance().getCamera()->setVibrating();
+						//instruction.clear();
+						//instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						////TODO: Create an option header
+						//string opcion_caracter;
+						//opcion_caracter.push_back(OPCION_ATACAR);
+						//instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
+						//GameView::instance().getModelUpdater()->addInstruction(instruction);
 					}
 					break;
 				}
