@@ -76,13 +76,20 @@ void GameView::initialize() {
 	this->menu->setNotificationMessage("CONNECTION LOGIN FAILED");
 	this->menu->setNotificationMessage("UPDATING FILES..");
 	this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
+
 	//Initialize SDL_Mixer
 	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,4096);
+
 	//Load background music
 	this->setMusic(Mix_LoadMUS("../Music/music.ogg"));
 
 	this->startBackgroundMusic();
 
+	//load sounds
+	this->getSounds().push_back(Mix_LoadWAV("../Sounds/arrow.wav"));
+	this->getSounds().push_back(Mix_LoadWAV("../Sounds/attackOnshield.wav"));
+	this->getSounds().push_back(Mix_LoadWAV("../Sounds/attackOnWood.wav"));
+	this->getSounds().push_back(Mix_LoadWAV("../Sounds/openBottle.wav"));
 }
 
 GameView& GameView::instance() {
@@ -163,6 +170,12 @@ void GameView::cleanUp() {
 
 	//Free background music.
 	Mix_FreeMusic(this->getMusic());
+
+	//Free sounds.
+	for (unsigned int i = 0; i < this->getSounds().size(); i++) {
+		Mix_FreeChunk(this->getSounds()[i]);
+	}
+
 	//Free SDL_mixer.
 	Mix_CloseAudio();
 
@@ -419,6 +432,8 @@ void GameView::setStatus(unsigned status) {
 	this->gameStatus = status;
 }
 
+//Background music
+
 Mix_Music* GameView::getMusic() {
 	return this->_music;
 }
@@ -437,6 +452,12 @@ void GameView::toggleBackgroundMusic() {
 	else
 		Mix_PauseMusic();
 }
+
+//Sounds
+std::vector<Mix_Chunk*>& GameView::getSounds() {
+	return this->_sounds;
+}
+
 
 unsigned GameView::getStatus() {
 	return this->gameStatus;
