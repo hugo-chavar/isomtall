@@ -2,6 +2,7 @@
 #define _CAMERA_H_
 
 #include "SDL.h"
+#include <utility>
 
 namespace view {
 
@@ -41,6 +42,7 @@ namespace view {
 		void cleanUp();
 		void render(SDL_Rect spriteRec,SDL_Surface* surface);
 		void startScreen(unsigned width, unsigned height);
+		void setCenterPixel(std::pair<int,int>);
 		~Camera();
 	};
 

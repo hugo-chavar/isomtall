@@ -165,3 +165,8 @@ void Camera::startScreen(unsigned width, unsigned height) {
 
 Camera::~Camera() {
 }
+
+void Camera::setCenterPixel(std::pair<int,int> center) {
+	this->setOffsetX(static_cast<float>(2*center.first-this->getWidth())/2);
+	this->setOffsetY(static_cast<float>(2*center.second-this->getHeight())/2);
+}
