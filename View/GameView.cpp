@@ -546,3 +546,7 @@ void GameView::addFontSize(int size) {
 TTF_Font* GameView::getFontSize(int size) {
 	return this->fonts.at(size);
 }
+
+StatsTable* GameView::getStatsTable() {
+	return &(this->statTable);
+}

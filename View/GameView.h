@@ -92,6 +92,7 @@ public:
 	bool isGameOver();
 	model::Login* getLogin();
 
+	StatsTable* getStatsTable();
 	void addFontSize(int size);
 	TTF_Font* getFontSize(int size);
 private:

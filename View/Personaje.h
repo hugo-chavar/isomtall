@@ -43,6 +43,7 @@ public:
 	//void setDestino(int xTile, int yTile);
 	void setFont(TTF_Font* font);
 	bool hasValidSprite();
+	float getShieldResistance();
 
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
@@ -71,6 +72,7 @@ private:
 	std::vector<SpriteAnimado*> sprites;
 	float velocidad; //velocidad actual
 	float magiaActual;
+	float shieldResistance;
 	int currentSpritePosition;
 	std::pair<float, float> delta; //Cuanto recorrio en x y en y del movimiento
 	std::pair<float, float> ePot; //Cuanto se mueve por ciclo en x y en y
