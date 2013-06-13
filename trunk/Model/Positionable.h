@@ -4,8 +4,7 @@
 #include <utility>
 #include <string>
 
-class Positionable
-{
+class Positionable {
 public:
 	Positionable();
 	~Positionable();

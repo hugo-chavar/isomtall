@@ -59,12 +59,6 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	mapKeyPressedToAnimation['s'] = DEFENDER;*/
 }
 
-//
-//void PersonajeModelo::setCurrent(int x, int y) {
-//	current.first = x;
-//	current.second = y;
-//}
-
 void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
 	animation = ae;
 }
@@ -160,53 +154,26 @@ void PersonajeModelo::setDestino(int x, int y) {
 }
 
 void PersonajeModelo::setEstado(int state) {
-	estado = state;
+	this->estado = state;
 }
 
 int PersonajeModelo::getEstado() {
-	return estado;
+	return this->estado;
 }
 
 void PersonajeModelo::setIsActivo(bool active) {
-		isActivo = active;
+		this->isActivo = active;
 }
-
-//void PersonajeModelo::setIsActivo() {
-//	activarDesactivar();
-//	if (isActivo) {
-//		isActivo = false;
-//	} else {
-//		isActivo = true;
-//	}
-//}
-//
-//void PersonajeModelo::activarDesactivar() {
-//	if ((this->estaAnimando())) {
-//		this->terminarAnimacion();
-//	}
-//	if (isActivo) {
-//		if (estado >= MOVIMIENTO) {
-//			estado = estado + FREEZAR - MOVIMIENTO;
-//		} else {
-//			estado = estado + FREEZAR - PARADO;
-//		}
-//		targetParcial = target = current;
-//	} else {
-//		estado = estado - FREEZAR + PARADO;
-//	}
-//}
-
-
 bool PersonajeModelo::getIsActivo() {
 	return isActivo;
 }
 
 void PersonajeModelo::setVelocidad(float vel) {
-	velocidad = vel;
+	this->velocidad = vel;
 }
 
 float PersonajeModelo::getVelocidad() {
-	return velocidad;
+	return this->velocidad;
 }
 
 int PersonajeModelo::siCaminaDetenerse() {

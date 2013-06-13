@@ -3,13 +3,14 @@
 
 #include <utility>
 #include "Positionable.h"
+#include "Directionable.h"
 #include "Constants.h"
 #include "DirList.h"
 #include "AnimatedEntity.h"
 #include "CharacterVision.h"
 
 
-class PersonajeModelo: public Positionable {
+class PersonajeModelo: public Positionable, Directionable {
 
 public:
 	PersonajeModelo();
@@ -38,7 +39,6 @@ public:
 	int delay();
 	std::string getName();
 	void setName(string nombreJugador);
-	//std::pair<int, int> getPosition();
 	void createVision(int range);
 	CharacterVision* getVision();
 	void update();
@@ -46,7 +46,6 @@ public:
 	int getRefPixelX();
 	int getRefPixelY();
 	void restartDirectories();
-	//void setPosition(std::pair<int, int> pos);
 	float getVidaMaxima();
 	void setVidaMaxima(float vida);
 	float getMagiaMaxima();

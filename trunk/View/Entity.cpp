@@ -24,10 +24,10 @@ void Entity::setRectangle(std::pair<int, int> pos, Sprite* sprite ) {
 
 SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) {
 	SDL_Rect rectangulo;
-	unsigned pptx = Game::instance().world()->tileWidth();
-	unsigned ppty = Game::instance().world()->tileHeight();
-	rectangulo.x = (Sint16)(pptx*tileX/2-pptx*tileY/2-sprite->relatx());
-	rectangulo.y = (Sint16)(ppty*tileX/2+ppty*tileY/2-sprite->relaty());
+	//unsigned pptx = Game::instance().world()->tileWidth();
+	//unsigned ppty = Game::instance().world()->tileHeight();
+	rectangulo.x = (Sint16)(this->getTileWidth()*tileX/2-this->getTileWidth()*tileY/2-sprite->relatx());
+	rectangulo.y = (Sint16)(this->getTileHeight()*tileX/2+this->getTileHeight()*tileY/2-sprite->relaty());
 	return rectangulo;
 }
 
@@ -41,7 +41,7 @@ void Entity::update() {
 		return;
 	}
 	if (this->needsCountDown()) {
-		this->decreaseEndStatusTime(Game::instance().getTimer()->getDeltaTime());
+		this->decreaseEndStatusTime();
 		if (this->endStatusTime == 0)
 			this->setStatus(ENTITY_NORMAL);
 	}
@@ -99,8 +99,8 @@ void Entity::iceUp(unsigned seconds) {
 	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
 }
 
-void Entity::decreaseEndStatusTime(float timeToDecrease) {
-	Uint32 aux = static_cast<Uint32>(timeToDecrease);
+void Entity::decreaseEndStatusTime(/*float timeToDecrease*/) {
+	Uint32 aux = static_cast<Uint32>(this->getDeltaTime());
 	if (aux < this->endStatusTime)
 		this->endStatusTime -= aux;
 	else
@@ -136,4 +136,25 @@ bool Entity::needsToBeCleaned() {
 		break;
 	}
 	return false;
+}
+
+void Entity::setSprite(Sprite* sprite) {
+	this->sprite = sprite;
+}
+
+Sprite* Entity::getSprite() {
+	return this->sprite;
+}
+
+float Entity::getDeltaTime() {
+	return Game::instance().getTimer()->getDeltaTime();
+}
+
+unsigned Entity::getTileWidth() {
+	return Game::instance().world()->tileWidth();
+
+}
+
+unsigned Entity::getTileHeight() {
+	return Game::instance().world()->tileHeight();
 }
