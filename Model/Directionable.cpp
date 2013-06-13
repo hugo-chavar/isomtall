@@ -14,7 +14,6 @@ const std::pair<int, int> Directionable::DIRECTION_Q = std::make_pair<int, int>(
 
 Directionable::Directionable() {
 	this->direction = Directionable::DIRECTION_Q;
-	//this->remaining = std::make_pair<float, float>(0,0);
 }
 
 Directionable::~Directionable() {

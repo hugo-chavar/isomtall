@@ -1,6 +1,5 @@
 #include "Entity.h"
 #include "Game.h"
-#include "TimeManager.h"
 
 Entity::Entity() {
 }
@@ -17,9 +16,9 @@ Entity::~Entity() {
 }
 
 void Entity::setRectangle(std::pair<int, int> pos, Sprite* sprite ) {
-	spriteRect = posicionIsometricaPorTiles(pos.first, pos.second, sprite);
-	spriteRect.w = (Uint16)(sprite->getCurrentSurface()->getSurface()->w);
-	spriteRect.h = (Uint16)(sprite->getCurrentSurface()->getSurface()->h);
+	this->spriteRect = posicionIsometricaPorTiles(pos.first, pos.second, sprite);
+	this->spriteRect.w = (Uint16)(sprite->getCurrentSurface()->getSurface()->w);
+	this->spriteRect.h = (Uint16)(sprite->getCurrentSurface()->getSurface()->h);
 }
 
 SDL_Rect Entity::posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite) {
@@ -146,10 +145,6 @@ Sprite* Entity::getSprite() {
 	return this->sprite;
 }
 
-float Entity::getDeltaTime() {
-	return Game::instance().getTimer()->getDeltaTime();
-}
-
 unsigned Entity::getTileWidth() {
 	return Game::instance().world()->tileWidth();
 
@@ -157,4 +152,13 @@ unsigned Entity::getTileWidth() {
 
 unsigned Entity::getTileHeight() {
 	return Game::instance().world()->tileHeight();
+}
+
+void Entity::updateRectanglePosition(int x, int y) {
+	this->spriteRect.x = static_cast<Uint16>(x);
+	this->spriteRect.y = static_cast<Uint16>(y);
+}
+
+bool Entity::isAlive() {
+	return true;
 }

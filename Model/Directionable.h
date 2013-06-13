@@ -39,10 +39,9 @@ public:
 	std::string directionToString();
 	void directionFromString(std::string);
 	int getOrientation();
-	//std::pair<int, int> getTraslation();
+	
 private:
 	std::pair<int, int> direction;
-	//std::pair<float, float> remaining;
 
 };
 

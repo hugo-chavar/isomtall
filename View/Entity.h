@@ -2,6 +2,7 @@
 #define _ENTITY_H_
 
 #include <string>
+#include "GameDependent.h"
 #include "Sprite.h"
 #include "Camera.h"
 #include "Surface.h"
@@ -25,8 +26,7 @@ enum entityStatus_t {
 
 using namespace view;
 
-class Entity
-{
+class Entity: public GameDependent {
 protected:
 	SDL_Rect spriteRect;
 	Sprite * sprite;
@@ -58,9 +58,10 @@ public:
 	bool needsToBeCleaned();
 	void setSprite(Sprite* sprite);
 	Sprite* getSprite();
-	float getDeltaTime();
 	unsigned getTileWidth();
 	unsigned getTileHeight();
+	void updateRectanglePosition(int x, int y);
+	virtual bool isAlive();
 };
 
 #endif // _ENTITY_H_
