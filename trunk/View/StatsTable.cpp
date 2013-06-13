@@ -75,7 +75,7 @@ bool StatsTable::initialize() {
 }
 
 void StatsTable::update(Personaje* personaje) {
-	
+	shieldEndurance = (int) (personaje->getShieldResistance());
 }
 
 SDL_Rect StatsTable::generateInfo(int info, SDL_Surface* &surface) {
@@ -109,7 +109,7 @@ void StatsTable::render(Camera &camera) {
 	shieldBox.x = weaponBox.x;
 	shieldBox.y = weaponBox.y + weaponBox.h;
 	camera.render (weaponBox, getWeapon());
-	if (shieldEndurance == 0) {
+	if (shieldEndurance > 0) {
 		camera.render (shieldBox, shield);
 		shieldInfoBox = this->generateInfo(shieldEndurance, shieldDur);
 		shieldInfoBox.y = shieldBox.y;

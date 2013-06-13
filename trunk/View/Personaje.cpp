@@ -32,6 +32,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	this->barWidth = 0;
 	this->vidaActual = modelo->getVidaMaxima();
 	this->magiaActual = modelo->getMagiaMaxima();
+	this->shieldResistance = 0;
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
@@ -464,7 +465,8 @@ void Personaje::updateFromString(std::string data) {
 	this->setCenteredInTile(splittedData[5] == "T");
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
 	this->magiaActual = stringUtilities::stringToFloat(splittedData[7]);
-	this->modelo->getVision()->updateFromString(splittedData[8]);
+	this->shieldResistance = stringUtilities::stringToFloat(splittedData[8]);
+	this->modelo->getVision()->updateFromString(splittedData[9]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
@@ -537,4 +539,8 @@ void Personaje::setFont(TTF_Font* font) {
 
 bool Personaje::hasValidSprite() {
 	return ((this->getCurrentSpritePosition() <= static_cast<int>(sprites.size()-1))&&(this->getCurrentSpritePosition() >= 0));
+}
+
+float Personaje::getShieldResistance(){
+	return shieldResistance;
 }
