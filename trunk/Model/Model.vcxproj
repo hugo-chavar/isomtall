@@ -77,6 +77,7 @@
     <ClCompile Include="Directionable.cpp" />
     <ClCompile Include="EntityObject.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameDependent.cpp" />
     <ClCompile Include="Instruction.cpp" />
     <ClCompile Include="InstructionQueue.cpp" />
     <ClCompile Include="ListaPath.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Directionable.h" />
     <ClInclude Include="EntityObject.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameDependent.h" />
     <ClInclude Include="Instruction.h" />
     <ClInclude Include="InstructionQueue.h" />
     <ClInclude Include="ListaPath.h" />
