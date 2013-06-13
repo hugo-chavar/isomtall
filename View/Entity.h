@@ -51,11 +51,16 @@ public:
 	unsigned getStatus();
 	bool isImmobilized();
 	void setEndStatusTime(Uint32 endTime);
-	void decreaseEndStatusTime(float timeToDecrease);
+	void decreaseEndStatusTime();
 	void iceUp(unsigned seconds);
 	virtual bool isItem();
 	bool needsCountDown();
 	bool needsToBeCleaned();
+	void setSprite(Sprite* sprite);
+	Sprite* getSprite();
+	float getDeltaTime();
+	unsigned getTileWidth();
+	unsigned getTileHeight();
 };
 
 #endif // _ENTITY_H_
