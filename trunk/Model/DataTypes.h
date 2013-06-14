@@ -27,6 +27,12 @@ struct EntLists {
 };
 
 
+struct sItem {
+		string type;
+		string characteristics;
+};
+
+
 template <typename T1, typename T2> 
 std::pair<T1,T2> operator+(const std::pair<T1,T2> &p1, const std::pair<T1,T2> &p2) { 
 	return std::pair<T1,T2>(p1.first + p2.first, p1.second + p2.second); 

@@ -59,11 +59,17 @@ struct sMainCharacter {
 	int y;
 };
 
+struct sItemsDef {
+	float percentage;
+	vector <sItem> vItems;
+};
+
 struct sStage {
 	string name;
 	int size_x;
 	int size_y;
 	vector <EntityDef> vEntitiesDef;
+	sItemsDef itemsDef;
 	vector <sMainCharacter> vMainCharacters_aux;
 	vector <PersonajeModelo*> vMainCharacters;
 	map <string,PersonajeModelo*> mapMainCharacters;
@@ -94,6 +100,7 @@ private:
 	void loadEverythingByDefault();
 	void loadEntitiesToMap(int stage_index);
 	void loadMainCharacters(int stage_index);
+	void loadItemsToMap(int stage_index);
 	void manageEntityCase();
 	void manageStageCase();
 	bool entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, EntityObject* entityObjectType, AnimatedEntity* animatedEntityType);
