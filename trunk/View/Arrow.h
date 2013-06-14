@@ -2,6 +2,7 @@
 #define _ARROW_H_
 
 #include "ImpactAmmo.h"
+#include "Daniable.h"
 
 class Arrow: public ImpactAmmo {
 

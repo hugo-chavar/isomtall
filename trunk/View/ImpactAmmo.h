@@ -4,7 +4,7 @@
 #include "Movable.h"
 #include "Ammunition.h"
 
-class ImpactAmmo: public Ammunition, Movable {
+class ImpactAmmo: public Ammunition, public Movable {
 
 protected:
 	//std::string owner;
