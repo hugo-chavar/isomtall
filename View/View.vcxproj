@@ -82,6 +82,7 @@
     <ClCompile Include="Daniable.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="GameMenu.cpp" />
+    <ClCompile Include="GameSounds.cpp" />
     <ClCompile Include="GameView.cpp" />
     <ClCompile Include="ItemView.cpp" />
     <ClCompile Include="ItemFactoryView.cpp" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Sender.h" />
     <ClInclude Include="SimulationConnector.h" />
     <ClInclude Include="SimulationReceiver.h" />
+    <ClInclude Include="GameSounds.h" />
     <ClInclude Include="StaticTextBox.h" />
     <ClInclude Include="StatsTable.h" />
     <ClInclude Include="Textbox.h" />

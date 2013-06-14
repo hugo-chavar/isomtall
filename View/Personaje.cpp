@@ -37,6 +37,24 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
+
+	//Loading relationship between animations and sounds.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking north
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking north-east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking north-west.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking south.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking south-east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking south-west.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking west.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking north
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking north-east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking north-west.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking south.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking south-east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking south-west.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking east.
+	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Walking west.
 }
 
 void Personaje::createStatsBar() {
@@ -307,6 +325,7 @@ void Personaje::render(Camera& camera) {
 	SDL_SetClipRect(this->labelName, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->labelName);
 	this->renderStatsBars(camera);
+	
 }
 
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
@@ -461,6 +480,9 @@ void Personaje::updateFromString(std::string data) {
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	if (this->hasValidSprite()) {
 		this->sprites[this->getCurrentSpritePosition()]->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
+		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
+			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+		}
 	}
 	this->setCenteredInTile(splittedData[5] == "T");
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
@@ -543,4 +565,8 @@ bool Personaje::hasValidSprite() {
 
 float Personaje::getShieldResistance(){
 	return shieldResistance;
+}
+
+std::vector<unsigned int>& Personaje::getAnimationFxRelation() {
+	return this->animationFxRelation;
 }

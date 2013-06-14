@@ -7,7 +7,6 @@
 GameView::GameView() {
 	this->personajes.clear();
 	this->errorImage = NULL;
-	this->_music = NULL;
 	this->setStatus(STATUS_START_SCREEN);
 	this->camera.initialize();
 	this->menu = NULL;
@@ -79,19 +78,8 @@ void GameView::initialize() {
 	this->menu->setNotificationMessage("UPDATING FILES..");
 	this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
 
-	//Initialize SDL_Mixer
-	Mix_OpenAudio(MIX_DEFAULT_FREQUENCY,MIX_DEFAULT_FORMAT,MIX_DEFAULT_CHANNELS,4096);
-
-	//Load background music
-	this->setMusic(Mix_LoadMUS("../Music/music.ogg"));
-
-	this->startBackgroundMusic();
-
-	//load sounds
-	this->getSounds().push_back(Mix_LoadWAV("../Sounds/arrow.wav"));
-	this->getSounds().push_back(Mix_LoadWAV("../Sounds/attackOnshield.wav"));
-	this->getSounds().push_back(Mix_LoadWAV("../Sounds/attackOnWood.wav"));
-	this->getSounds().push_back(Mix_LoadWAV("../Sounds/openBottle.wav"));
+	this->getGameSounds().initialize();
+	this->getGameSounds().startBackgroundMusic();
 }
 
 GameView& GameView::instance() {
@@ -170,22 +158,13 @@ void GameView::cleanUp() {
 	if (this->chat.isInitialized())
 		this->chat.modelChat->cleanUp();
 
-	//Free background music.
-	Mix_FreeMusic(this->getMusic());
-
-	//Free sounds.
-	for (unsigned int i = 0; i < this->getSounds().size(); i++) {
-		Mix_FreeChunk(this->getSounds()[i]);
-	}
-
-	//Free SDL_mixer.
-	Mix_CloseAudio();
-
 	while (!this->fonts.empty())
 	{
 		TTF_CloseFont(this->fonts.begin()->second);
 		this->fonts.erase(this->fonts.begin());
 	}
+
+	this->getGameSounds().cleanUp();
 }
 
 void GameView::render() {
@@ -328,7 +307,7 @@ void GameView::update() {
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
 			this->menu->setNotificationMessage("USER NAME UNAVAILABLE");
 			this->menu->setDisplayNotification(true);
-			Mix_HaltMusic();
+			this->getGameSounds().stopBackgroundMusic();
 		break;
 		case STATUS_LOGIN_CONNECTION_LOST:
 			this->camera.unconfigure();
@@ -438,33 +417,6 @@ void GameView::setStatus(unsigned status) {
 	this->gameStatus = status;
 }
 
-//Background music
-
-Mix_Music* GameView::getMusic() {
-	return this->_music;
-}
-
-void GameView::setMusic(Mix_Music* music) {
-	this->_music = music;
-}
-
-void GameView::startBackgroundMusic() {
-	Mix_PlayMusic(this->getMusic(),-1);
-}
-
-void GameView::toggleBackgroundMusic() {
-	if(Mix_PausedMusic() == 1)
-		Mix_ResumeMusic();
-	else
-		Mix_PauseMusic();
-}
-
-//Sounds
-std::vector<Mix_Chunk*>& GameView::getSounds() {
-	return this->_sounds;
-}
-
-
 unsigned GameView::getStatus() {
 	return this->gameStatus;
 }
@@ -549,4 +501,8 @@ TTF_Font* GameView::getFontSize(int size) {
 
 StatsTable* GameView::getStatsTable() {
 	return &(this->statTable);
+}
+
+GameSounds& GameView::getGameSounds() {
+	return this->gameSounds;
 }
