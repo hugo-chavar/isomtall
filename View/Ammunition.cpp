@@ -1,6 +1,6 @@
 #include "Ammunition.h"
 
-Ammunition::Ammunition( ) {
+Ammunition::Ammunition() {
 	this->owner = "";
 }
 

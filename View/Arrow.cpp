@@ -1,10 +1,10 @@
 #include "Arrow.h"
 
-Arrow::Arrow( ) {
-	//this->owner="";
+Arrow::Arrow() {
+	this->setName("Arrow");
 }
 
-Arrow::~Arrow(){
+Arrow::~Arrow() {
 }
 
 //

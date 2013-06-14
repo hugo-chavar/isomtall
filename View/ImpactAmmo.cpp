@@ -1,7 +1,6 @@
 #include "ImpactAmmo.h"
 
-ImpactAmmo::ImpactAmmo( ) {
-	//this->owner="";
+ImpactAmmo::ImpactAmmo():Ammunition() {
 }
 
 ImpactAmmo::~ImpactAmmo(){
