@@ -431,6 +431,51 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 
 }
 
+void operator >> (const Node& node, sItem& item) {
+	string field;
+	field = "tipo";
+	try {
+		node[field] >> item.type;
+		if (item.type=="~")
+			item.type = "";
+	} catch (KeyNotFound) {
+		item.type = "";
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
+	field = "caracteristicas";
+	try {
+		node[field] >> item.characteristics;
+		if (item.characteristics=="~")
+			item.characteristics = "";
+	} catch (KeyNotFound) {
+		item.characteristics = "";
+	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
+}
+
+void operator >> (const Node& node, sItemsDef& itemsDef) {
+	string field;
+	managePositiveFloatCase(node,itemsDef.percentage,"items","","porcentaje",DEFAULT_ITEMS_PERCENTAGE, ONLY_INVALID);
+	
+	try {
+		const Node& node_aux = node["def"];
+		for(unsigned int i=0; i<node_aux.size(); i++) {
+			sItem item;
+			//node_aux[i] >> item;
+			if ( item.type.size() > 0 )
+				itemsDef.vItems.push_back(item);
+		}
+	} catch (KeyNotFound) { }
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
+}
+
+
 void operator >> (const Node& node, sStage& stage) {
 	string field;
 
@@ -482,6 +527,13 @@ void operator >> (const Node& node, sStage& stage) {
 	catch (Exception& parserException ) {
 		Logger::instance().logUnexpected(parserException.what());
 	};
+	try {
+		const Node& node_aux = node["items"];
+		node_aux >> stage.itemsDef;
+	} catch (KeyNotFound) {	}
+	catch (Exception& parserException ) {
+		Logger::instance().logUnexpected(parserException.what());
+	};
 }
 
 void operator >> (const Node& node, Stages& stages) {
@@ -529,7 +581,7 @@ StageModel YAMLParser::generateDefaultStage() {
 	vector <PersonajeModelo*> vMainCharacters;
 	vMainCharacters.push_back(generateDefaultMainCharacter()); // Cargo el personaje default.
 
-	StageModel stage("DEFAULT", vEntitiesDef, vMainCharacters);
+	StageModel stage("DEFAULT", vEntitiesDef, vMainCharacters, DEFAULT_ITEMS_PERCENTAGE);
 	stage.setSize(DEFAULT_STAGE_SIZE_X, DEFAULT_STAGE_SIZE_Y);
 	stage.generateMap();
 	stage.loadByDefault(entities.vEntitiesObject[0]);
@@ -580,8 +632,11 @@ bool YAMLParser::entityBaseIsInMapRange(int entityDef_index, sStage stage_aux, E
 }
 
 void YAMLParser::loadEntitiesToMap(int stage_index) {
+	loadItemsToMap(stage_index);
 	sStage stage_aux = stages.vStages_aux[stage_index];
-	StageModel stage(stage_aux.name, stage_aux.vEntitiesDef, stage_aux.vMainCharacters);
+	StageModel stage(stage_aux.name, stage_aux.vEntitiesDef, stage_aux.vMainCharacters, stage_aux.itemsDef.percentage);
+	if (stage_aux.itemsDef.vItems.size() > 0)
+		stage.loadMapItems(stage_aux.itemsDef.vItems);
 	stage.setSize( stage_aux.size_x, stage_aux.size_y);
 	stage.generateMap();
 
@@ -645,6 +700,19 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 	}
 	stage_aux.vMainCharacters.push_back(generateDefaultMainCharacter());
 	stages.vStages_aux[stage_index] = stage_aux;
+}
+
+void YAMLParser::loadItemsToMap(int stage_index) {
+	for(unsigned int i = 0; i < stages.vStages_aux[stage_index].itemsDef.vItems.size(); i++) {
+		sItem item_aux = stages.vStages_aux[stage_index].itemsDef.vItems[i];
+		EntityObject *entityObjectType = findEntityObjectType(item_aux.type);
+		AnimatedEntity *animatedEntityType = findAnimatedEntityType(item_aux.type);
+		if ((!entityObjectType) && (!animatedEntityType)){
+			Logger::instance().log("Parser Error: Item's entity type '"+item_aux.type+"' defined in stage '"+stages.vStages_aux[stage_index].name+"' not found.");
+			stages.vStages_aux[stage_index].itemsDef.vItems.erase(stages.vStages_aux[stage_index].itemsDef.vItems.begin()+i);
+			i--;
+		}
+	}
 }
 
 void YAMLParser::manageEntityCase() {
