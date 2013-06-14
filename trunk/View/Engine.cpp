@@ -140,7 +140,7 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 				{
 					if (!GameView::instance().getChat()->isTyping())
 					{
-						GameView::instance().toggleBackgroundMusic();
+						GameView::instance().getGameSounds().toggleBackgroundMusic();
 					}
 					break;
 				}

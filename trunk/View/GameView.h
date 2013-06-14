@@ -24,16 +24,6 @@ enum gameStatus_t {
 };
 #endif
 
-#ifndef soundIndex
-#define soundIndex
-enum soundIndex {
-	SOUND_INDEX_ARROW,
-	SOUND_INDEX_ATTACK_ON_SHIELD,
-	SOUND_INDEX_ATTACK_ON_WOOD,
-	SOUND_INDEX_OPEN_BOTTLE
-};
-#endif
-
 #include <vector>
 #include "GameMenu.h"
 #include "Personaje.h"
@@ -42,12 +32,11 @@ enum soundIndex {
 #include "ClientUpdater.h"
 #include "CharacterFactory.h"
 #include "Notification.h"
-#include "SDL_mixer.h"
 #include "SDL_ttf.h"
 #include "ModelUpdater.h"
 #include "Login.h"
 #include "StatsTable.h"
-
+#include "GameSounds.h"
 
 
 class GameView {
@@ -81,8 +70,6 @@ public:
 	SpriteAnimado* getErrorImage();
 	void setActivatedAt(int activeAt);
 	int getActivatedAt();
-	void startBackgroundMusic();
-	void toggleBackgroundMusic();
 	GameMenu* getGameMenu();
 	bool showingMenu();
 	void manageMissionInit(string argument);
@@ -95,6 +82,8 @@ public:
 	StatsTable* getStatsTable();
 	void addFontSize(int size);
 	TTF_Font* getFontSize(int size);
+
+	GameSounds& getGameSounds();
 private:
 	view::Camera camera;
 	view::Stage worldView;
@@ -113,21 +102,15 @@ private:
 	SpriteAnimado* errorImage;
 	int activatedAt;
 	unsigned gameStatus;
-
-	Mix_Music* _music;
-	Mix_Music* getMusic();
-	void setMusic(Mix_Music* music);
-
-	std::vector<Mix_Chunk*> _sounds;
-	std::vector<Mix_Chunk*>& getSounds();
-
 	ModelUpdater _modelUpdater;
-
 	model::Login _login;
 	map <int, TTF_Font*> fonts;
 	map <int, TTF_Font*>::iterator fontsIt;
 	bool needsConnectToServer;
 	bool needsUpdateFiles;
+
+	//Sounds
+	GameSounds gameSounds;
 };
 
 #endif //_GAMEVIEW_H_

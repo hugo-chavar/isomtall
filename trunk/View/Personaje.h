@@ -45,6 +45,7 @@ public:
 	bool hasValidSprite();
 	float getShieldResistance();
 
+	std::vector<unsigned int>& getAnimationFxRelation();
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -81,5 +82,7 @@ private:
 	std::string playerName;
 	bool active;
 	TTF_Font* font;
+
+	std::vector<unsigned int> animationFxRelation;
 };
 #endif
