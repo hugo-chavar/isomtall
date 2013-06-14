@@ -106,7 +106,6 @@ void LoginUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_LOGIN_OK:
 			this->setLoggedIn(true);
-			Game::instance().setStageNumber(stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER)));
 			this->getMessagesListMutex().lock();
 			this->getMessagesList().push_back(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_GREETING));
 			this->getMessagesListMutex().unlock();

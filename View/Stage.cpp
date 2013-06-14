@@ -262,6 +262,7 @@ void Stage::deleteStage() {
 		delete nextAux;
 	}
 	tilesMap.clear();
+	tileLevels.clear();
 }
 
 bool Stage::addOtherEntity(pair <int,int> position, string entityName) {

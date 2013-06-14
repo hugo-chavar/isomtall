@@ -4,6 +4,7 @@
 
 
 Game::Game() {
+	this->stageNumberSet = false;
 }
 
 Game::~Game() {
@@ -33,6 +34,10 @@ bool Game::initialize() {
 	return true;
 }
 
+void Game::restart() {
+	this->_world = yParser.vStages()[this->getStageNumber()];
+}
+
 EntityObject* Game::entityObjectAt(unsigned pos) {
 	if (allEntities.vEntitiesObject.size() > pos)
 		return allEntities.vEntitiesObject.at(pos);
@@ -58,6 +63,14 @@ int Game::getStageNumber() {
 
 void Game::setStageNumber(int stageNo) {
 	this->stageNumber = stageNo;
+}
+
+void Game::setStageNumberStatus(bool status) {
+	this->stageNumberSet = status;
+}
+
+bool Game::isStageNumberSet() {
+	return this->stageNumberSet;
 }
 
 void Game::startWorld() {

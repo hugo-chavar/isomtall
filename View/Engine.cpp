@@ -93,7 +93,10 @@ void Engine::onEvent(SDL_Event* sdlEvent) {
 						if (GameView::instance().isGameOver()) {
 							// TODO: Reiniciar correctamente el juego
 							//GameView::instance().initialize();
-							GameView::instance().setStatus(STATUS_START_SCREEN);
+							instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+							instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"1");
+							GameView::instance().getModelUpdater()->addInstruction(instruction);
+							GameView::instance().setStatus(STATUS_RESTART_GAME);
 							GameView::instance().getGameMenu()->setDisplayNotification(false);
 							GameView::instance().getGameMenu()->setDisplayBackground(true);
 							GameView::instance().getGameMenu()->showButtons();
@@ -194,8 +197,8 @@ void Engine::update() {
 }
 
 void Engine::render() {
-
-	GameView::instance().render();
+	if (GameView::instance().getStatus() !=STATUS_RESTART_GAME )
+		GameView::instance().render();
 }
 
 void Engine::cleanUp() {
