@@ -1,5 +1,6 @@
 #include "GameDependent.h"
 #include "Game.h"
+#include "../View/GameView.h"
 
 GameDependent::GameDependent() {
 }
@@ -21,4 +22,8 @@ bool GameDependent::isInsideWorld(std::pair<int, int> tilePosition) {
 
 bool GameDependent::canCross(std::pair<int, int> tilePosition) {
 	return (Game::instance().world()->cost(tilePosition.first, tilePosition.second) == 1);
+}
+
+Sprite* GameDependent::getSprite(std::string value) {
+	return GameView::instance().getWorldView()->getSpriteWithName(value);
 }

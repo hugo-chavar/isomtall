@@ -32,11 +32,12 @@ namespace view {
 		void setTilesInCamera(int h, int v);
 		StageModel* getWorldModel();
 		TileView* getTileAt(KeyPair k);
-		void initItemsFromString(std::string ItemsData);
+		void initItemsFromString(string ItemsData);
 		bool addOtherEntity(pair <int,int> position, string entityName);
 		void removeOtherEntity(pair <int,int> tile);
 		void updateItems(string serializedItemUpdates);
 		void cleanUp();
+		Sprite* getSpriteWithName(string value);
 	private:
 		vector<Sprite*> spriteArray;
 		vector<ItemView*> itemArray;
@@ -53,17 +54,18 @@ namespace view {
 		void deleteStage();
 		TileView* createTile(TileModel* tile);
 
-		TileView* getFirstMatch(std::pair<int,int> k);
-		TileView* getLastMatch(TileView* firstMatch, std::pair<int,int> k);
-		void fixKeyLeftBottom(int level, std::pair<int,int> &k);
-		void fixKeyRightBottom(int level, std::pair<int,int> &k);
-		int fixLevel(std::pair<int,int> k);
-		int fixStartLevel(int endLevel, std::pair<int,int> &ref);
-		void alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2);
+		TileView* getFirstMatch(pair<int,int> k);
+		TileView* getLastMatch(TileView* firstMatch, pair<int,int> k);
+		void fixKeyLeftBottom(int level, pair<int,int> &k);
+		void fixKeyRightBottom(int level, pair<int,int> &k);
+		int fixLevel(pair<int,int> k);
+		int fixStartLevel(int endLevel, pair<int,int> &ref);
+		void alignLevel(pair<int,int> &k1, pair<int,int> &k2);
 		void updateTiles();
 		void updateSprites();
 		ItemView* findDeathItem(string name);
 		void updateItem(string serializedItemUpdate);
+		
 	};
 
 }
