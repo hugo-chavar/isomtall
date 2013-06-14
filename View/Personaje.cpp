@@ -9,9 +9,10 @@
 
 #define BAR_HEIGHT 4
 
-Personaje::Personaje(PersonajeModelo* pj) {
+Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->font = NULL;
 	modelo = pj;
+	this->character_id=char_id;
 	this->setPosition(pj->getPosition());
 	this->setCurrentSpritePosition(this->calculateSpritePosition(pj->getEstado()));
 	velocidad = pj->getVelocidad();
@@ -20,6 +21,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	ePot.first = 0;
 	ePot.second = 0;
 	serr = 0;
+	currentEnemy = NULL;
 	//if (!(this->getPlayerName().empty())) {
 	//	crearNombre(this->getPlayerName());
 	//}
@@ -33,6 +35,7 @@ Personaje::Personaje(PersonajeModelo* pj) {
 	this->vidaActual = modelo->getVidaMaxima();
 	this->magiaActual = modelo->getMagiaMaxima();
 	this->shieldResistance = 0;
+	this->shieldAbsortion=0;
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
@@ -135,7 +138,7 @@ void Personaje::detenerAnimacion() {
 }
 
 void Personaje::animar() {
-	if (!this->modelo->estaAnimandose())
+	if (!this->modelo->estaAnimandose() || this->isImmobilized())
 		return;
 	int currentAnimationNumber = modelo->getEstado();
 	if (this->calculateSpritePosition(currentAnimationNumber) != this->getCurrentSpritePosition()) {
@@ -170,17 +173,59 @@ void Personaje::update() {
 	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
 }
 
+void Personaje::updateSinglePlayer() {
+	this->setFogged(!modelo->isActive());
+	this->mover();
+	if (this->isCenteredInTile()) {
+		this->animar();
+		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
+	}
+	modelo->update();
+	if (this->isImmobilized())
+		return;
+	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+		GameView::instance().getErrorImage()->updateFrame();
+	} else {
+		sprites[this->currentSpritePosition]->updateFrame();
+	}
+	this->updateStatsBar();
+}
+
+void Personaje::mover() {
+	if (this->isCenteredInTile() && (this->isImmobilized() || this->modelo->estaAnimandose()))
+		return;
+
+	std::pair<float, float> factor;	//Cuantos pixels se mueve por ciclo
+	factor.first = 0;
+	factor.second = 0;
+	
+	perseguirEnemigo();
+	calcularSigTileAMover();
+	calcularvelocidadRelativa(factor);
+	if (this->getCurrentSpritePosition() != ESTADO_ERROR) {
+		moverSprite(factor);
+	}
+}
+
 void Personaje::calcularSigTileAMover(){
-	int currentAnimationNumber = 0;
-	std::pair<int, int> tile;
+	int currentAnimationNumber = 0;	//animacion del personaje en el sistema de PersonajeModelo
+	std::pair<int, int> tile;	//Un tile
 	int previousSpritePosition = this->getCurrentSpritePosition();
 
 	if (this->isCenteredInTile()) {
 		serr = 0;
-		this->setPosition(this->personajeModelo()->getPosition());
-		currentAnimationNumber = modelo->mover(tile, velocidad);
+		this->setPosition(modelo->getPosition());
+		//tileActual = modelo->getPosition();
+		//modelo->setIsInCenterTile(true);
+		this->eatIfItem(this->getPosition());
+		//if Arma.meTengoQueDetener(posActual, posEnemigo)
+		  //detener
+		//else
+			currentAnimationNumber = modelo->mover(tile, velocidad);
+		if (this->modelo->estaAnimandose())
+			return;
 		this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
-		if (previousSpritePosition != this->getCurrentSpritePosition()) {
+		if (previousSpritePosition != this->currentSpritePosition) {
 			ePot.first = 0;
 			ePot.second = 0;
 		} 
@@ -189,81 +234,143 @@ void Personaje::calcularSigTileAMover(){
 		if (velocidad != 0) {
 			//modelo->setIsInCenterTile(false);
 			modelo->setPosition(tile);
+		} else {
+
+			this->atacar();
+		}
+		if (modelo->getIsReseting()) {
+			this->setRectangle(this->getPosition(), sprites[this->currentSpritePosition]);
+			currentEnemy = NULL;
+			this->heal();
+			this->rechargeMagic();
+			modelo->setIsReseting();
 		}
 	}
 }
 
-//void Personaje::moverSprite(std::pair<float, float>& factor){
-//	
-//	if (delta.first != 0) { //Hay movimieto en x
-//		ePot.first = ePot.first + factor.first;	//Aumento la cantidad de movimiento, cuantos pixels se va a mover
-//		moverSpriteEnX(); //Mueve en x
-//	}
-//	if (delta.second != 0) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
-//		ePot.second = ePot.second + factor.second;									//O si esta activada la corrección pero se completo el movimineto en x
-//		moverSpriteEnY();															//Caso en que la velocidad no es entera
-//	}
-//}
-//
-//void Personaje::moverSpriteEnX() {
-//	float factorT = 0;	//El truncamiento de la variable factor
-//	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
-//		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
-//			serr++;
-//		}
-//		//TODO: mejorar el codigo repetido:, notar que dice: if(negativo) sumar else restar..
-//		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera
-//		ePot.first -= factorT;	//Saco la cantidad entera de la cantidad de movimiento
-//		if (delta.first < 0) {	//Si me muevo hacia las x negativas
-//			delta.first += factorT;
-//			if (delta.first > 0) {	//Si me paso, por los decimales
-//				spriteRect.x -= (Sint16) (factorT - delta.first); //Muevo el sprite en x
-//				ePot.first += delta.first;
-//				delta.first = 0;	//Termino el movimietno en x
-//			} else {				//Mientras siga pudiendo moverse
-//				spriteRect.x -= (Sint16) factorT;
-//			}
-//		} else {
-//			delta.first -= factorT;
-//			if (delta.first < 0) {
-//				spriteRect.x += (Sint16)(factorT + delta.first);
-//				ePot.first -= delta.first;
-//				delta.first = 0;
-//			} else {
-//				spriteRect.x += (Sint16)factorT;
-//			}
-//		}
-//	}
-//}
+void Personaje::moverSprite(std::pair<float, float>& factor){
+	
+	if (delta.first != 0) { //Hay movimieto en x
+		ePot.first = ePot.first + factor.first;	//Aumento la cantidad de movimiento, cuantos pixels se va a mover
+		moverSpriteEnX(); //Mueve en x
+	}
+	if (delta.second != 0) { //Si hay movimiento en y, y no esta activada la corrección en diagonal
+		ePot.second = ePot.second + factor.second;									//O si esta activada la corrección pero se completo el movimineto en x
+		moverSpriteEnY();															//Caso en que la velocidad no es entera
+	}
+}
 
-//void Personaje::moverSpriteEnY() {
-//	float factorT = 0;	//El truncamiento de la variable factor
-//	//TODO: mejorar el codigo repetido:, notar que dice: if(negativo) sumar else restar..
-//	if (((ePot.second >= 1)/*&&(serr != 1))||((serr == 1)&&(delta.first == 0)&&(ePot.second >= 1)*/)) {
-//		serr = 0;
-//		factorT = std::floor(ePot.second);
-//		ePot.second -= factorT;
-//		if (delta.second < 0) {
-//			delta.second += factorT;
-//			if (delta.second > 0) {
-//				spriteRect.y -= (Sint16)(factorT - delta.second);
-//				ePot.second += delta.second;
-//				delta.second = 0;
-//			} else {
-//				spriteRect.y -= (Sint16)factorT;
-//			}
-//		} else {
-//			delta.second -= factorT;
-//			if (delta.second < 0) {
-//				spriteRect.y += (Sint16)(factorT + delta.second);
-//				ePot.second -= delta.second;
-//				delta.second = 0;
-//			} else {
-//				spriteRect.y += (Sint16)factorT;
-//			}
-//		}
-//	}
-//}
+void Personaje::moverSpriteEnX() {
+	float factorT = 0;	//El truncamiento de la variable factor
+	if (ePot.first >= 1) {	//Si la cantidad de movimiento es mayor a un pixel o mas
+		if (delta.second != 0) { //Si también hay movimiento en y seteo el control del movimiento diagonal
+			serr++;
+		}
+		factorT = std::floor(ePot.first);	//Trunco para obtener una cantidad entera
+		ePot.first -= factorT;	//Saco la cantidad entera de la cantidad de movimiento
+		if (delta.first < 0) {	//Si me muevo hacia las x negativas
+			delta.first += factorT;
+			if (delta.first > 0) {	//Si me paso, por los decimales
+				spriteRect.x -= (Sint16) (factorT - delta.first); //Muevo el sprite en x
+				ePot.first += delta.first;
+				delta.first = 0;	//Termino el movimietno en x
+			} else {				//Mientras siga pudiendo moverse
+				spriteRect.x -= (Sint16) factorT;
+			}
+		} else {
+			delta.first -= factorT;
+			if (delta.first < 0) {
+				spriteRect.x += (Sint16)(factorT + delta.first);
+				ePot.first -= delta.first;
+				delta.first = 0;
+			} else {
+				spriteRect.x += (Sint16)factorT;
+			}
+		}
+	}
+}
+
+void Personaje::moverSpriteEnY() {
+	float factorT = 0;	//El truncamiento de la variable factor
+	
+	if (((ePot.second >= 1)/*&&(serr != 1))||((serr == 1)&&(delta.first == 0)&&(ePot.second >= 1)*/)) {
+		serr = 0;
+		factorT = std::floor(ePot.second);
+		ePot.second -= factorT;
+		if (delta.second < 0) {
+			delta.second += factorT;
+			if (delta.second > 0) {
+				spriteRect.y -= (Sint16)(factorT - delta.second);
+				ePot.second += delta.second;
+				delta.second = 0;
+			} else {
+				spriteRect.y -= (Sint16)factorT;
+			}
+		} else {
+			delta.second -= factorT;
+			if (delta.second < 0) {
+				spriteRect.y += (Sint16)(factorT + delta.second);
+				ePot.second -= delta.second;
+				delta.second = 0;
+			} else {
+				spriteRect.y += (Sint16)factorT;
+			}
+		}
+	}
+}
+
+void Personaje::manejarDano(float danoRecibido)
+{
+	if(!this->hasShield())
+		vidaActual -= danoRecibido;
+	else
+	{
+		float diference=danoRecibido-this->shieldAbsortion;
+		if(diference>=0)
+		{
+			this->shieldResistance-=this->shieldAbsortion;
+			vidaActual -=diference;
+		}
+		else
+		{
+		this->shieldResistance-=this->shieldAbsortion-diference;
+		}
+	}
+}
+
+void Personaje::recibirDano(float dano) {
+	
+	if (this->isFogged()) {
+		return;
+	}
+	float danoRecibido = Game::instance().getRandom() * dano;
+	this->manejarDano(danoRecibido);
+	//vidaActual -= danoRecibido;
+	if (vidaActual > 0) {
+		this->modelo->herir();
+	} else {
+		this->modelo->morir();
+		GameView::instance().getWorldView()->relocateItem(this->getPosition());
+	}
+}
+
+void Personaje::resolverAtaque() {
+	float precision = Game::instance().getRandom();
+	if (precision >= this->modelo->getPrecisionMinima()) {
+		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
+		if (!(this->currentEnemy->isAlive())) {
+			GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+		}
+	}
+}
+
+void Personaje::atacar() {
+	if ((currentEnemy != NULL) && (currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
+		this->resolverAtaque();
+		this->modelo->atacar();
+		currentEnemy = NULL;
+	}
+}
 
 void Personaje::renderStatsBars(Camera& camera) {
 	SDL_Rect gLifeBarBox;
@@ -328,86 +435,118 @@ void Personaje::render(Camera& camera) {
 	
 }
 
+void Personaje::setDestino(int xTile, int yTile){
+	modelo->setDestino(xTile, yTile);
+	setCurrentEnemy(xTile, yTile);
+}
+
+void Personaje::setCurrentEnemy(int tileX, int tileY) {
+	std::pair<int, int> tileDestino(tileX, tileY);
+
+	if (modelo->isThereAnEnemy(tileX, tileY)) {
+		currentEnemy = GameView::instance().getDaniableInTile(tileDestino);
+		if (currentEnemy == this) {
+			currentEnemy = NULL;
+		}
+	}
+}
+
+void Personaje::perseguirEnemigo() {
+	
+	if (currentEnemy == NULL) {
+		this->modelo->setFollowingEnemy(false);
+		return;
+	}
+	if ((currentEnemy->getPosition() != modelo->getTarget()) && (modelo->canSee(currentEnemy->getPosition()))) {
+		setDestino(currentEnemy->getPosition().first, currentEnemy->getPosition().second);
+		this->modelo->setFollowingEnemy(true);
+		return;
+	}
+	if (!modelo->canSee(currentEnemy->getPosition())) {
+		currentEnemy = NULL;
+	}
+	this->modelo->setFollowingEnemy(false);
+}
+
+void Personaje::animateModel(char animacion) {
+	modelo->animar(animacion);
+}
+
+void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
+	float deltaTime = this->getDeltaTime()/10;
+	if (delta.first != 0) { //Hay movimiento en x
+		if (delta.second != 0) { //Diagonal
+			factor.first = static_cast<float>((velocidad*deltaTime) *0.707);
+			factor.second = static_cast<float>((velocidad*deltaTime) *0.707/2);
+		} else { //Horizontal
+			factor.first = (velocidad*deltaTime);
+		}
+	} else { //No hay movimiento en x
+		if (delta.second != 0){ //Vertical
+			factor.second = ((velocidad*deltaTime)/2);
+		} else {//Quieto
+			factor.first = 0;
+			factor.second = 0;
+		}
+
+	}
+}
+
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
-	if ((currentAnimationNumber < MOVIMIENTO)||(currentAnimationNumber >= (MOVIMIENTO + FACTOR_ORIENTACION))) {
+	int orientacion = modelo->getOrientacion();
+	
+	if ((currentAnimationNumber != MOVIMIENTO)) {
 		delta.first = 0;
 		delta.second = 0;
-	}
-	switch (currentAnimationNumber) {
-	case PARADO_N: return STOP_N;
-	case PARADO_NE: return STOP_NE;
-	case PARADO_NOE: return STOP_NOE;
-	case PARADO_S: return STOP_S;
-	case PARADO_SE: return STOP_SE;
-	case PARADO_SOE: return STOP_SOE;
-	case PARADO_E: return STOP_E;
-	case PARADO_O: return STOP_O;
-	case CAMINANDO_N: { 
-		delta.first = 0;
-		delta.second = -32;
-		return WALK_N;
+		if ((orientacion < 0)||(orientacion > 7)) {
+			return ESTADO_ERROR;
+		}
+	} else {
+		switch (orientacion) {
+		case NORTE: {
+			delta.first = 0;
+			delta.second = -32;
+			break;
+					}
+		case NORESTE: {
+			delta.first = 32;
+			delta.second = -16;
+			break;
 					  }
-	case CAMINANDO_NE: {
-		delta.first = 32;
-		delta.second = -16;
-		return WALK_NE;
-					   }
-	case CAMINANDO_NOE: {
-		delta.first = -32;
-		delta.second = -16;
-		return WALK_NOE;
+		case NOROESTE: {
+			delta.first = -32;
+			delta.second = -16;
+			break;
 						}
-	case CAMINANDO_S: {
-		delta.first = 0;
-		delta.second = 32;
-		return WALK_S;
-					  }
-	case CAMINANDO_SE: {
-		delta.first = 32;
-		delta.second = 16;
-		return WALK_SE;
-					   }
-	case CAMINANDO_SOE: {
-		delta.first = -32;
-		delta.second = 16;
-		return WALK_SOE;
+		case SUR: {
+			delta.first = 0;
+			delta.second = 32;
+			break;
+					}
+		case SUDESTE: {
+			delta.first = 32;
+			delta.second = 16;
+			break;
 						}
-	case CAMINANDO_O: {
-		delta.first = -64;
-		delta.second = 0;
-		return WALK_O;
-					  }
-	case CAMINANDO_E: {
-		delta.first = 64;
-		delta.second = 0;
-		return WALK_E;
-					  }
-	case FREEZAR_N: return FREEZE_N;
-	case FREEZAR_NE: return FREEZE_NE;
-	case FREEZAR_NOE: return FREEZE_NOE;
-	case FREEZAR_S: return FREEZE_S;
-	case FREEZAR_SE: return FREEZE_SE;
-	case FREEZAR_SOE: return FREEZE_SOE;
-	case FREEZAR_E: return FREEZE_E;
-	case FREEZAR_O: return FREEZE_O;
-	case ATACAR_N: return ATTACK_N;
-	case ATACAR_NE: return ATTACK_NE;
-	case ATACAR_NOE: return ATTACK_NOE;
-	case ATACAR_S: return ATTACK_S;
-	case ATACAR_SE: return ATTACK_SE;
-	case ATACAR_SOE: return ATTACK_SOE;
-	case ATACAR_E: return ATTACK_E;
-	case ATACAR_O: return ATTACK_O;
-	case DEFENDER_N: return DEFEND_N;
-	case DEFENDER_NE: return DEFEND_NE;
-	case DEFENDER_NOE: return DEFEND_NOE;
-	case DEFENDER_S: return DEFEND_S;
-	case DEFENDER_SE: return DEFEND_SE;
-	case DEFENDER_SOE: return DEFEND_SOE;
-	case DEFENDER_E: return DEFEND_E;
-	case DEFENDER_O: return DEFEND_O;
-	default: return ESTADO_ERROR;
+		case SUDOESTE: {
+			delta.first = -32;
+			delta.second = 16;
+			break;
+						}
+		case OESTE: {
+			delta.first = -64;
+			delta.second = 0;
+			break;
+					}
+		case ESTE: {
+			delta.first = 64;
+			delta.second = 0;
+			break;
+					}
+		default: return ESTADO_ERROR;
+		}
 	}
+	return ((currentAnimationNumber - 1)*8 + orientacion);
 }
 
 Personaje::~Personaje(){
@@ -425,13 +564,25 @@ PersonajeModelo* Personaje::personajeModelo() {
 	return modelo;
 }
 
-//std::pair<int,int> Personaje::getPosicionEnTiles() {
-//	return modelo->getPosition();
-//}
-//
-//std::pair<int,int> Personaje::getPosicionAnteriorEnTiles() {
-//	return tileActual;
-//}
+std::pair<int,int> Personaje::getPosicionEnTiles(){
+	return modelo->getPosition();
+}
+
+std::pair<int,int> Personaje::getPosicionActualEnTiles(){
+	float deltaAbsX = std::abs(delta.first);
+	float deltaAbsY = std::abs(delta.second);
+
+	if ((deltaAbsX <= 32) && (deltaAbsY == 0)) {
+		return modelo->getPosition();
+	}
+	if ((deltaAbsX == 0) && (deltaAbsY <= 16)) {
+		return modelo->getPosition();
+	}
+	if ((deltaAbsX <= 16) && (deltaAbsY <= 8)) {
+		return modelo->getPosition();
+	}
+	return this->getPosition();
+}
 
 //tilex, tiley; pixelx, pixely; isFreezed; nro_status; nro_surface
 std::string Personaje::updateToString() {
@@ -500,6 +651,9 @@ int Personaje::getCurrentSpritePosition() {
 }
 
 void Personaje::setCurrentSpritePosition(int pos) {
+	if (pos == ESTADO_ERROR) {
+		this->currentSpritePosition = 0;
+	}
 	this->currentSpritePosition = pos;
 }
 
@@ -569,4 +723,60 @@ float Personaje::getShieldResistance(){
 
 std::vector<unsigned int>& Personaje::getAnimationFxRelation() {
 	return this->animationFxRelation;
+}
+
+void Personaje::increaseSpeed(float factor)
+{
+	this->modelo->increaseSpeed(factor);
+}
+
+void Personaje::heal() {
+
+	vidaActual = modelo->getVidaMaxima();
+}
+
+void Personaje::rechargeMagic() {
+
+	magiaActual = modelo->getMagiaMaxima();
+}
+
+bool Personaje::isItem()
+{
+	return false;
+}
+
+void Personaje::eatIfItem(std::pair<int, int> destino)
+{
+	Entity * entity= GameView::instance().getWorldView()->getTileAt(destino)->getOtherEntity();
+	if(entity!=NULL)
+	{
+		if(entity->isItem())
+		{
+			ItemView* item=(ItemView*)entity;
+			if(item->isAlive())
+			{
+				item->modifyCharacter(this);
+				item->kill();
+			}
+		}
+	}
+}
+
+void Personaje::setShield(float resistance,float absortion)
+{
+	this->shieldResistance=resistance;
+	this->shieldAbsortion=absortion;
+}
+
+bool Personaje::useMagic(float usedMagic) {
+	if(magiaActual >= usedMagic) {
+		magiaActual -= usedMagic;
+		return true;
+	}
+	return false;
+}
+
+bool Personaje::hasShield()
+{
+	return (this->shieldResistance>0);
 }

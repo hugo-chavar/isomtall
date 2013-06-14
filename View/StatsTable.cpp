@@ -86,8 +86,8 @@ SDL_Rect StatsTable::generateInfo(int info, SDL_Surface* &surface) {
 		surface = NULL;
 	}
 	surface = TTF_RenderText_Blended(this->font, (stringUtilities::intToString(info)).c_str(), Camera::WHITE_COLOR);
-	retValue.h = surface->h;
-	retValue.w = surface->w;
+	retValue.h = (Uint16) surface->h;
+	retValue.w = (Uint16) surface->w;
 	return retValue;
 }
 

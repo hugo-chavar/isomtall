@@ -33,6 +33,7 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 	posActual = new Par(actualX, actualY);
 	openList.agregar(actual);
 	while (!(openList.empty())&&(controlTamano < tamanoMax)) {
+		openList.getNodo(*actual);
 		actual->getPos(actualX, actualY);
 		if ((actualX==DestinoX)&&(actualY==DestinoY)) {
 			found = true;
@@ -41,7 +42,6 @@ int Pathfinder::getPath (int OrigenX, int OrigenY, int& DestinoX, int& DestinoY,
 		agregarVecinos(*actual, DestinoX, DestinoY, closeList, openList); //, Tiles
 		posActual->setPos(actualX, actualY);
 		closeList.insert(std::pair<Par, Nodo>(*posActual, *actual));
-		openList.getNodo(*actual);
 		controlTamano++;
 	}
 	if (!(found)) {

@@ -29,7 +29,9 @@ class Engine {
 
 		void initialize();
 
-		void onEvent(SDL_Event* sdlEvent);
+		void onMultiplayerEvent(SDL_Event* sdlEvent);
+
+		void onSingleplayerEvent(SDL_Event* sdlEvent);
 
 		void update();
 

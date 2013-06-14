@@ -50,6 +50,29 @@ public:
 	void setVidaMaxima(float vida);
 	float getMagiaMaxima();
 	void setMagiaMaxima(float magia);
+
+	void setActive(bool active);
+	bool isActive();
+	int getOrientacion();
+	void increaseSpeed(float factor);
+	bool getIsReseting();
+	void setIsReseting();
+	bool isThereAnEnemy(int tileX, int tileY);
+	void atacar();
+	float getDanoMaximo();
+	float getPrecisionMinima();
+	void setDanoMaximo(float dano);
+	void setPrecisionMinima(float precision);
+
+	void setFollowingEnemy(bool enemy);
+	std::pair <int, int> getTarget();
+	bool canSee(std::pair<int, int> tile);
+
+	void herir();
+	void morir();
+	//void setPosition(std::pair<int, int> pos);
+
+	void setCurrentWeaponIndex(unsigned int currentWeaponIndex);
 private:
 
 	int siCaminaDetenerse();
@@ -60,8 +83,6 @@ private:
 	int quedarseQuieto(float &velocidadAni);
 	//Modifica las variables del modelo para representar el movimiento
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
-	//void activarDesactivar();
-	void atacar();
 	void defender();
 
 	void initialize(int pos_x, int pos_y);
@@ -86,8 +107,32 @@ private:
 	CharacterVision* vision;
 	float vidaMaxima;
 	float magiaMaxima;
+
+	int obtenerOrientacionRespectoAUnTile(int x, int y);	//Obtiene el sentido según el signo de x e y
+	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
+	bool followingEnemy();
+	
+
+	bool perseguirEnemigo();
+	void resolverAnimacion(int animacionNueva);
+	void resetChar();
+
+	std::pair<int, int> startPosition;
+	//std::pair<int, int> current;
+	bool isReseting;
+	bool active;
 	//bool isInCenterTile;
-	//std::map< char, int > mapKeyPressedToAnimation;
+	bool following;
+
+	//std::vector<model::Weapon*> weapons;
+
+	unsigned int currentWeaponIndex;
+
+	//std::vector<model::Weapon*>& getWeapons();
+
+	//------------------------ATRIBUTOS (PONGAN ACA LOS ATRIBUTOS DEL PJ: VIDA, MAGIA, DAÑO, ETC)------------------------
+	float precisionMinima;
+	float danoMaximo;
 };
 
 

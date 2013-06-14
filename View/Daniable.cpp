@@ -10,9 +10,11 @@ Daniable::~Daniable()
 
 }
 
-void Daniable::recibirDano(float)
-{
-	//Metodo Abstracto
+void Daniable::recibirDano(float dano) {
+	if (dano > this->vidaActual)
+		vidaActual = 0;
+	else
+		vidaActual -= dano;
 }
 //
 //std::pair<int, int> Daniable::getPosicionActualEnTiles() {
