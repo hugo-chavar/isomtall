@@ -1,18 +1,6 @@
 #pragma once
 #include "Entity.h"
 
-//#ifndef item_state_t
-//#define item_state_t
-//enum item_state_t {
-//	HIDDEN_ITEM,
-//	UNCOVER_ITEM,
-//	DEATH_ITEM,
-//	REVIVE_UNCOVER_ITEM,
-//	REVIVE_HIDDEN_ITEM,
-//	REGENERATING
-//
-//};
-//#endif
 
 class ItemView: public Entity
 {
@@ -25,11 +13,10 @@ private:
 	SDL_Rect hiddenSpriteRect;
 	Sprite * hiddenSprite;
 	void setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite );
-	string name;
+	//string name;
 
 public:
-
-	string getName();
+	//string getName();
 	ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,unsigned _state,string _name);
 	~ItemView();
 	void update();

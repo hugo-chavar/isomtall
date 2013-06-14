@@ -35,6 +35,7 @@ protected:
 	Uint32 endStatusTime;
 	int freezedSpriteState;
 	unsigned status;
+	std::string name;
 	void renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera);
 
 public:
@@ -62,6 +63,8 @@ public:
 	unsigned getTileHeight();
 	void updateRectanglePosition(int x, int y);
 	virtual bool isAlive();
+	std::string getName();
+	void setName(std::string value);
 };
 
 #endif // _ENTITY_H_
