@@ -10,7 +10,7 @@ Daniable::~Daniable()
 
 }
 
-void Daniable::recibirDano(float dano)
+void Daniable::recibirDano(float)
 {
 	//Metodo Abstracto
 }

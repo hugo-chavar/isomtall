@@ -114,7 +114,6 @@ bool Entity::isItem() {
 	return false;
 }
 
-
 bool Entity::needsCountDown() {
 	switch (this->getStatus()) {
 		case ITEM_WAITING_REGENERATION:
@@ -147,7 +146,6 @@ Sprite* Entity::getSprite() {
 
 unsigned Entity::getTileWidth() {
 	return Game::instance().world()->tileWidth();
-
 }
 
 unsigned Entity::getTileHeight() {
@@ -161,4 +159,12 @@ void Entity::updateRectanglePosition(int x, int y) {
 
 bool Entity::isAlive() {
 	return true;
+}
+
+std::string Entity::getName() {
+	return this->name;
+}
+
+void Entity::setName(std::string value) {
+	this->name = value;
 }

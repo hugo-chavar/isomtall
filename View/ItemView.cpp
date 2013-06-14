@@ -17,15 +17,15 @@ ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSpr
 	//}
 	//this->state=_state;
 	this->setStatus(_state);
-	this->name=_name;
+	this->setName(_name);
 	this->hiddenSprite = _hiddenSprite;
 	this->setHiddenRectangle(std::make_pair(tileX, tileY),this->hiddenSprite);
 }
 
-string ItemView::getName()
-{
-	return this->name;
-}
+//string ItemView::getName()
+//{
+//	return this->name;
+//}
 
 bool ItemView::isAlive()
 {
