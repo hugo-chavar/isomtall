@@ -180,6 +180,13 @@ void GameView::render() {
 				this->chat.render(this->camera);
 			break;
 		}
+		case STATUS_SIMULATION_PLAYING_SINGLEPLAYER:
+			{
+			this->worldView.render(this->camera);
+			this->statTable.update(this->getMyPersonaje());
+			this->statTable.render(this->camera);
+			}
+			break;
 		case STATUS_GAME_OVER: {
 			this->worldView.render(this->camera);
 			this->statTable.update(this->getMyPersonaje());
@@ -277,16 +284,30 @@ void GameView::update() {
 			this->setStatus(STATUS_UPDATING_FILES);
 		break;
 		case STATUS_SIMULATION_SINGLE_PLAYER:
-			this->camera.unconfigure();
-			this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
-			this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
-			this->menu->setDisplayNotification(true);
+			this->menu->setDisplayNotification(false);
+			this->menu->hideButtons();
+			Game::instance().initialize();
+			this->initialize();
+			this->camera.configure();
+			this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			this->setStatus(STATUS_SIMULATION_PLAYING_SINGLEPLAYER);
+
+			//this->camera.unconfigure();
+			//this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
+			//this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
+			//this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
 			this->camera.unconfigure();
 			this->menu->setNotificationFontColor(Camera::RED_COLOR);
 			this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
 			this->menu->setDisplayNotification(true);
+		break;
+		case STATUS_SIMULATION_PLAYING_SINGLEPLAYER:
+			this->menu->setDisplayNotification(false);
+			//GameView::instance().getGameMenu()->setDisplayBackground(false);
+			this->menu->hideButtons();
+			this->worldView.update();
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			
