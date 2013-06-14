@@ -82,6 +82,23 @@ void GameView::initialize() {
 	this->getGameSounds().startBackgroundMusic();
 }
 
+void GameView::restart() {
+	this->camera.configure();
+	bool mapInitialized = false;
+	bool chatInitialized = false;
+
+	this->chat.setIsTyping(false);
+	mapInitialized = worldView.initialize();
+
+	if (mapInitialized) {
+		this->camera.setCenterPixel(this->personaje->getPixelPosition());
+		//statTable.initialize();
+		//statTable.setFont(this->getFontSize(12));
+	}
+
+	//this->getGameSounds().startBackgroundMusic();
+}
+
 GameView& GameView::instance() {
 	static GameView singleton;
 	return singleton;
@@ -357,6 +374,15 @@ void GameView::update() {
 			}
 			this->menu->hideBackground();
 			this->menu->setDisplayNotification(true);
+		break;
+		case STATUS_RESTART_GAME:
+			if (Game::instance().isStageNumberSet()) {
+				//Game::instance().restart();
+				//GameView::instance().restart();
+				Game::instance().setStageNumberStatus(false);
+				//GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+
+			}
 		break;
 		default: {
 			this->menu->setDisplayNotification(false);

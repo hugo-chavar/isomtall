@@ -157,6 +157,14 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
+				Game::instance().setStageNumber(stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER)));
+				Game::instance().setStageNumberStatus(true);
+
+				if (GameView::instance().getStatus() == STATUS_RESTART_GAME) {
+					Game::instance().restart();
+					GameView::instance().restart();
+				}
+
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
 				GameView::instance().getMyPersonaje()->initFromString(syncData);
 				GameView::instance().getMyPersonaje()->setActive(true);
@@ -167,6 +175,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				GameView::instance().manageMissionInit(missionData);
 				//this->requestSynchronizeClock();
 				this->requestSynchronize();
+
+				GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:

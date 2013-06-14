@@ -21,6 +21,7 @@ enum gameStatus_t {
 	STATUS_SIMULATION_SINGLE_PLAYER,
 	STATUS_START_SCREEN,
 	STATUS_GAME_OVER,
+	STATUS_RESTART_GAME,
 	STATUS_EXIT
 };
 #endif
@@ -46,6 +47,7 @@ public:
 	GameView(void);
 	~GameView(void);
 	void initialize();
+	void restart();
 	view::Stage* getWorldView();
 	Personaje* getMyPersonaje();
 	Personaje* getPersonaje(string name);

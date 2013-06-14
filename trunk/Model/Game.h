@@ -23,6 +23,7 @@ public:
 	StageModel* world();
 	TimeManager* getTimer();
 	bool initialize(); 
+	void restart();
 	//bool insidePlayerVision(std::pair<int,int> );
 	//bool isKnownByPlayer(std::pair<int,int> );
 	EntLists allEntities;
@@ -38,6 +39,8 @@ public:
 	//string getPlayerCharacterId();
 	int getStageNumber();
 	void setStageNumber(int stageNo);
+	void setStageNumberStatus(bool status);
+	bool isStageNumberSet();
 	void startWorld();
 
 private:
@@ -49,7 +52,7 @@ private:
 	//map <string,PersonajeModelo*> personajesEnJuego;
 	//string playerName;
 	//string playerCharacterId;
-	
+	bool stageNumberSet;
 	int stageNumber;
 };
 

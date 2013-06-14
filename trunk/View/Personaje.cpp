@@ -492,7 +492,7 @@ void Personaje::updateFromString(std::string data) {
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
-	GameView::instance().getWorldView()->getTileAt(std::make_pair<unsigned,unsigned>(2,2))->getOtherEntity()->iceUp(20);
+	//GameView::instance().getWorldView()->getTileAt(std::make_pair<unsigned,unsigned>(2,2))->getOtherEntity()->iceUp(20);
 }
 
 int Personaje::getCurrentSpritePosition() {
