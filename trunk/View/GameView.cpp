@@ -553,3 +553,17 @@ StatsTable* GameView::getStatsTable() {
 GameSounds& GameView::getGameSounds() {
 	return this->gameSounds;
 }
+
+Daniable* GameView::getDaniableInTile(std::pair <int, int> tile) {
+	
+	if(Game::instance().world()->isInsideWorld(tile))
+	{
+		Daniable* item=GameView::instance().getWorldView()->getItemInTile(tile.first,tile.second);
+		if(item)
+		{
+			return item;
+		}
+		return mission.manageAttack(tile);
+	}
+	return NULL;
+}

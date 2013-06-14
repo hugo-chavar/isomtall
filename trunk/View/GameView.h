@@ -87,6 +87,7 @@ public:
 	TTF_Font* getFontSize(int size);
 
 	GameSounds& getGameSounds();
+	Daniable* getDaniableInTile(std::pair <int, int> tile);
 private:
 	view::Camera camera;
 	view::Stage worldView;

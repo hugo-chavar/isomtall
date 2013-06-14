@@ -13,7 +13,7 @@
 
 class Personaje : public Entity, public Daniable {
 public:
-	Personaje(PersonajeModelo* pj);
+	Personaje(PersonajeModelo*,std::string char_id);
 	~Personaje();
 	void update();
 	void render(Camera& camera);
@@ -28,6 +28,7 @@ public:
 	void setAnimating(bool value);
 	std::string updateToString();
 	void updateFromString(std::string data);
+	void updateSinglePlayer();
 	std::string initToString();
 	void initFromString(std::string data);
 	void setPixelPosition(std::pair<int, int> pixel);
@@ -45,7 +46,24 @@ public:
 	bool hasValidSprite();
 	float getShieldResistance();
 
+	void setCurrentEnemy(int tileX, int tileY);
+	void setDestino(int xTile, int yTile);
+
 	std::vector<unsigned int>& getAnimationFxRelation();
+
+	std::pair<int,int> getPosicionEnTiles();
+	std::pair<int,int> getPosicionActualEnTiles();
+	void animateModel(char animation);
+	std::string getCharacterId();
+	void increaseSpeed(float factor);
+	void heal();
+	void rechargeMagic();
+	void recibirDano(float dano);
+	bool isItem();
+	void eatIfItem(std::pair<int, int> destino);
+	void setShield(float resistance,float absortion);
+	bool hasShield();
+	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -84,5 +102,23 @@ private:
 	TTF_Font* font;
 
 	std::vector<unsigned int> animationFxRelation;
+
+	void calcularvelocidadRelativa(std::pair<float, float>& factor);
+	//realiza el desplazamiento en x y en y del sprite, de un tile a otro
+	void moverSprite(std::pair<float, float>& factor);
+	void moverSpriteEnX();
+	void moverSpriteEnY();
+	//void setCenteredInTile(bool centroTile);
+	void atacar();
+	void resolverAtaque();
+	void perseguirEnemigo();
+
+
+	Daniable* currentEnemy; //el destruible que esta atacando el pj
+
+	float shieldAbsortion;
+	void manejarDano(float dano);
+
+	std::string character_id;
 };
 #endif

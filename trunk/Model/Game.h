@@ -42,6 +42,7 @@ public:
 	void setStageNumberStatus(bool status);
 	bool isStageNumberSet();
 	void startWorld();
+	float getRandom();
 
 private:
 	Game();

@@ -6,6 +6,7 @@
 #include "../Common/stringUtilities.h"
 #include "OpcionesJuego.h"
 #include "Game.h"
+#include "../View/GameView.h"
 
 using namespace common;
 
@@ -42,13 +43,14 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setPosition(std::make_pair(pos_x, pos_y));
 	this->target = this->getPosition();
 	this->targetParcial = this->target;
+	this->startPosition = this->target;
 	xPath = NULL;
 	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
-	estado = PARADO_S;
+	estado = PARADO;
 	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
-	this->setIsActivo(true);
+	this->setActive(true);
 	orientacion = SUR;
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
@@ -57,10 +59,65 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	/*mapKeyPressedToAnimation['a'] = ATACAR;
 	mapKeyPressedToAnimation['s'] = DEFENDER;*/
+
+	following = false;
+	precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
+	danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
+	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
+	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
+	isReseting = false;
+
+	//Initializing weapons
+	//model::Sword* sword = new model::Sword();
+	//sword->initialize(true,1,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	//this->getWeapons().push_back(sword);
+
+	//model::Bow* bow = new model::Bow();
+	//bow->initialize(false,5,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	//this->getWeapons().push_back(bow);
 }
 
 void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
 	animation = ae;
+}
+
+void PersonajeModelo::herir() {
+	animacionActual = HERIR;
+	this->resolverAnimacion(animacionActual);
+}
+
+void PersonajeModelo::morir() {
+	animacionActual = MORIR;
+	this->resolverAnimacion(animacionActual);
+}
+
+
+void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
+	this->setAnimating(true);
+	this->target = this->getPosition();
+	this->targetParcial = this->target;
+	if (estado >= MOVIMIENTO) {
+		estado = estado + nuevaAnimacion - MOVIMIENTO;
+	} else {
+		estado = estado + nuevaAnimacion - PARADO;
+	}
+}
+
+float PersonajeModelo::getDanoMaximo() {
+	return this->danoMaximo;
+}
+
+float PersonajeModelo::getPrecisionMinima() {
+	return this->precisionMinima;
+}
+
+void PersonajeModelo::atacar() {
+		animacionActual = ATACAR;
+		this->resolverAnimacion(animacionActual);
+}
+
+bool PersonajeModelo::estaAnimandose() {
+	return this->isAnimating;
 }
 
 void PersonajeModelo::changeToAnimation(int animationNumber) {
@@ -97,14 +154,50 @@ void PersonajeModelo::animar(char opcion) {
 }
 
 
-bool PersonajeModelo::estaAnimandose() {
-	return this->isAnimating;
-}
 
 void PersonajeModelo::terminarAnimacion() {
 	this->setAnimating(false);
-	this->changeToState(PARADO - animacionActual);
+	if (animacionActual == MORIR) {
+		this->resetChar();
+	} else {
+		estado = estado - animacionActual + PARADO;
+		animacionActual = SIN_CAMBIO;
+	}
+}
+
+void PersonajeModelo::resetChar() {
+	this->setPosition(this->startPosition);
+	this->target = this->getPosition();
+	this->targetParcial = this->target;
+	if (xPath == NULL) {
+		delete [] xPath;
+		xPath = NULL;
+	}
+	if (yPath == NULL) {
+		delete [] yPath;
+		yPath = NULL;
+	}
+	posMov = 0;
+	caminoSize = 0;
+	estado = PARADO;
+	velocidad = Game::instance().configuration()->mainCharacterSpeed();
+	orientacion = SUR;
+	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
+	following = false;
+	precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
+	danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
+	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
+	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
+	isReseting = true;
+}
+
+bool PersonajeModelo::getIsReseting(){
+	return isReseting;
+}
+
+void PersonajeModelo::setIsReseting(){
+	isReseting = false;
 }
 
 
@@ -144,6 +237,18 @@ int PersonajeModelo::delay() {
 	return this->animation->delay();
 }
 
+bool PersonajeModelo::isThereAnEnemy(int tileX, int tileY) {
+	std::pair<int, int> tileDestino(tileX, tileY);
+
+	if ((!this->isActive())||(this->estaAnimandose())) {
+		return false;
+	}
+	if ((vision != NULL) && (vision->isInsideVision(tileDestino)) && (GameView::instance().getDaniableInTile(tileDestino) != NULL)) {
+		return true;
+	}
+	return false;
+}
+
 void PersonajeModelo::setDestino(int x, int y) {
 	if ((isActivo) && (!this->estaAnimandose())) {
 		target.first = x;
@@ -168,6 +273,14 @@ bool PersonajeModelo::getIsActivo() {
 	return isActivo;
 }
 
+void PersonajeModelo::setActive(bool value) {
+		this->active = value;
+}
+
+bool PersonajeModelo::isActive() {
+	return this->active;
+}
+
 void PersonajeModelo::setVelocidad(float vel) {
 	this->velocidad = vel;
 }
@@ -185,47 +298,30 @@ int PersonajeModelo::siCaminaDetenerse() {
 	return cambio;
 }
 
-//int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
-//	Pathfinder pathF;
-//	int cambio = SIN_CAMBIO;
-//	double coste = 0;
-//	float costeF = 0;
-//
-//	if (target == current) {
-//		return (this->quedarseQuieto(velocidadAni));
-//	}
-//	if (esNecesarioCalcularNuevoPath()) {
-//		posMov = 0;
-//		caminoSize = 0;
-//		limpiarPath();
-//		targetParcial.first = target.first;
-//		targetParcial.second = target.second;
-//		caminoSize = pathF.getPath(current.first, current.second, targetParcial.first, targetParcial.second, xPath, yPath);
-//		if (caminoSize == 0) { //Si no se tiene que mover, seteo el destino en los parciales
-//			target.first = targetParcial.first;
-//			target.second = targetParcial.second;
-//		}
-//		if (caminoSize <  0) {
-//			return (this->quedarseQuieto(velocidadAni));
-//		}
-//	}
-//	if (posMov < caminoSize) {
-//		this->moverse(destino, velocidadAni);
-//	} else {
-//		return (this->quedarseQuieto(velocidadAni));
-//	}
-//	cambio = ESTADO_MOVIMIENTO;
-//	estado = cambiarEstado(destino.first, destino.second, cambio);
-//	return estado;
-//}
-
 int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
+	Pathfinder pathF;
 	int cambio = SIN_CAMBIO;
 	double coste = 0;
 	float costeF = 0;
 
 	if (this->target == this->getPosition()) {
 		return (this->quedarseQuieto(velocidadAni));
+	}
+	if (esNecesarioCalcularNuevoPath()) {
+		posMov = 0;
+		caminoSize = 0;
+		limpiarPath();
+		targetParcial.first = target.first;
+		targetParcial.second = target.second;
+		caminoSize = pathF.getPath(this->getPosition().first, this->getPosition().second, targetParcial.first, targetParcial.second, xPath, yPath);
+		if (caminoSize == 0) { //Si no se tiene que mover, seteo el destino en los parciales
+			this->orientar(target);
+			target.first = targetParcial.first;
+			target.second = targetParcial.second;
+		}
+		if (caminoSize <  0) {
+			return (this->quedarseQuieto(velocidadAni));
+		}
 	}
 	if (posMov < caminoSize) {
 		this->moverse(destino, velocidadAni);
@@ -237,6 +333,33 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	return estado;
 }
 
+//int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
+//	int cambio = SIN_CAMBIO;
+//	double coste = 0;
+//	float costeF = 0;
+//
+//	if (this->target == this->getPosition()) {
+//		return (this->quedarseQuieto(velocidadAni));
+//	}
+//	if (posMov < caminoSize) {
+//		this->moverse(destino, velocidadAni);
+//	} else {
+//		return (this->quedarseQuieto(velocidadAni));
+//	}
+//	cambio = ESTADO_MOVIMIENTO;
+//	estado = cambiarEstado(destino.first, destino.second, cambio);
+//	return estado;
+//}
+
+
+void PersonajeModelo::orientar(std::pair<int, int> destino) {
+	int cambio = ESTADO_MOVIMIENTO;
+	estado = cambiarEstado(destino.first, destino.second, cambio);
+}
+
+int PersonajeModelo::getOrientacion() {
+	return this->orientacion;
+}
 
 bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	if ((xPath == NULL)&&(yPath == NULL)) { //Si no hay camino seteado
@@ -245,13 +368,38 @@ bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	if ((xPath[caminoSize-1]!=targetParcial.first)||(yPath[caminoSize-1]!=targetParcial.second)) { //Si cambio de destino durante el movimiento
 		return true;
 	}
-	if ((posMov == caminoSize)&&( this->target != this->targetParcial)) { //Si completo el primer pedazo del camino
+	if (posMov >= 5/*this->getVision()->getRangeVision()*/) { //Si se movio el maximo antes de recalcular
+		return true;
+	}
+	if ((posMov==caminoSize)&&((target.first!=targetParcial.first)||(target.second!=targetParcial.second))) { //Si completo el primer pedazo del camino
+		return true;
+	}
+	if (followingEnemy()) {
+		return true;
+	}
+	if ((Game::instance().world())->cost(xPath[posMov], yPath[posMov]) == 0) { //Hay un pj en el tile al que se va a mover
 		return true;
 	}
 	return false;
 }
 
-void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad) {
+bool PersonajeModelo::followingEnemy() {
+	return following;
+}
+
+void PersonajeModelo::setFollowingEnemy(bool enemy) {
+	following = enemy;
+}
+
+bool PersonajeModelo::canSee(std::pair<int, int> tile) {
+	return vision->isInsideVision(tile);
+}
+
+std::pair<int, int> PersonajeModelo::getTarget() {
+	return target;
+}
+
+void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad){
 	double coste = 0;
 	float costeF = 0;
 
@@ -261,6 +409,7 @@ void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad) {
 	costeF = (float) coste;
 	velocidad = ((this->velocidad)*costeF);
 	posMov++;
+	//this->eatIfItem(destino);
 }
 
 int PersonajeModelo::quedarseQuieto(float &velocidad){
@@ -287,19 +436,13 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 		return estado;
 	}
 	if((this->getPosition() == std::make_pair(x,y))&&(cambio==ESTADO_MOVIMIENTO)){
-		return (estado-FACTOR_ORIENTACION);
+		return (estado-PARADO);
 	}
-	orientacion = obtenerOrientacion(x, y);
-	switch (orientacion) {
-	case NORTE: return CAMINANDO_N;
-	case NORESTE: return CAMINANDO_NE;
-	case NOROESTE: return CAMINANDO_NOE;
-	case SUR: return CAMINANDO_S;
-	case SUDESTE: return CAMINANDO_SE;
-	case SUDOESTE: return CAMINANDO_SOE;
-	case ESTE: return CAMINANDO_E;
-	case OESTE: return CAMINANDO_O;
-	default: return ESTADO_ERROR;
+	orientacion = obtenerOrientacionRespectoAUnTile(x, y);
+	if ((orientacion >= 0)&&(orientacion <= 7)) {
+		return MOVIMIENTO;
+	} else {
+		return ESTADO_ERROR;
 	}
 }
 
@@ -365,7 +508,7 @@ CharacterVision* PersonajeModelo::getVision() {
 }
 
 void PersonajeModelo::update() {
-	/*this->vision->updatePosition(this->getPosition());*/
+	this->vision->updatePosition(this->getPosition());
 }
 
 std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
@@ -399,7 +542,20 @@ int PersonajeModelo::getRefPixelY() {
 void PersonajeModelo::restartDirectories() {
 	this->animation->imagesPaths()->restartCurrentPosition();
 }
+
+void PersonajeModelo::increaseSpeed(float factor)
+{
+	this->velocidad=this->velocidad*factor;
+	if(this->velocidad>MAX_MAIN_CHARACTER_SPEED)
+	{
+		this->velocidad=MAX_MAIN_CHARACTER_SPEED;
+	}
+}
+
+//std::vector<model::Weapon*>& PersonajeModelo::getWeapons() {
+//	return this->weapons;
+//}
 //
-//void PersonajeModelo::setPosition(std::pair<int, int> pos) {
-//	this->current = pos;
+//void PersonajeModelo::setCurrentWeaponIndex(unsigned int currentWeaponIndex) {
+//	this->currentWeaponIndex = currentWeaponIndex;
 //}
