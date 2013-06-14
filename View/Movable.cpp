@@ -1,6 +1,6 @@
 #include "Movable.h"
 
-Movable::Movable() {
+Movable::Movable()/*:Entity()*/ {
 	this->setVelocity(0);
 	this->remaining = std::make_pair<float, float>(0, 0);
 	this->setTargetReached(false);

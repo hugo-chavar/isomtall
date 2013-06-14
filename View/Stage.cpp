@@ -202,12 +202,12 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2) {
 
  void view::Stage::calculateTilesToRender(Camera& camera) { 
 	renderHelper.clear();
-	std::pair<int,int> position = std::make_pair(static_cast<int>(camera.getOffsetX()),static_cast<int>(camera.getOffsetY()));
-	std::pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(position);
+	pair<int,int> position = make_pair(static_cast<int>(camera.getOffsetX()),static_cast<int>(camera.getOffsetY()));
+	pair<int,int> cameraReferenceTile = this->worldModel->pixelToTileCoordinates(position);
 	cameraReferenceTile.second -= EXTRA_TILES_TO_RENDER;
 	cameraReferenceTile.first -= EXTRA_TILES_TO_RENDER;
-	std::pair<int,int> leftBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(0,camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
-	std::pair<int,int> rightBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(camera.getWidth(),camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
+	pair<int,int> leftBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(0,camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
+	pair<int,int> rightBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(camera.getWidth(),camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
 	leftBottom.second += EXTRA_TILES_TO_RENDER;
 	rightBottom.first += EXTRA_TILES_TO_RENDER;
 	int endLevel = this->fixLevel(leftBottom);
@@ -319,12 +319,17 @@ void Stage::initItemsFromString(std::string ItemsData)
 		string tile=v_items[i];
 		i++;
 		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
-		Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
-		Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
-		ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
-		if(pos.first!=-1)
-			this->getTileAt(pos)->setOtherEntity(item);
-		itemArray.push_back(item);
+		//Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
+		//Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
+		Sprite* itemSprite= this->getSpriteWithName(itemName);//Deberia chequear que exista el item
+		Sprite* chestSprite= this->getSpriteWithName("Chest");
+		if ((itemSprite != NULL) && (chestSprite != NULL) ) {
+
+			ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
+			if(pos.first!=-1)
+				this->getTileAt(pos)->setOtherEntity(item);
+			itemArray.push_back(item);
+		}
 	}
 }
 
@@ -383,5 +388,23 @@ ItemView* Stage::findDeathItem(string name)
 				return itemArray[i];
 		}
 	}
+	return NULL;
+}
+
+Sprite* Stage::getSpriteWithName(string value) {
+    bool found = false;
+    map<string, int>::iterator it = mapEntityToSprite.begin();
+    while(it != mapEntityToSprite.end())
+    {
+        found = (it->first == value);
+        if(found)
+            break;
+        ++it;
+    }
+	if (found) {
+		int posSprite = mapEntityToSprite.at(value);
+		Sprite* auxSprite = spriteArray[posSprite];
+		return auxSprite;
+	} 
 	return NULL;
 }
