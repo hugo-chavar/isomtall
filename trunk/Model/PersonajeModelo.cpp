@@ -431,6 +431,8 @@ void PersonajeModelo::limpiarPath() {
 	}
 }
 
+
+
 int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	if (cambio == SIN_CAMBIO) {
 		return estado;
@@ -446,7 +448,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	}
 }
 
-int PersonajeModelo::obtenerOrientacion(int x, int y) {
+int PersonajeModelo::obtenerOrientacionRespectoAUnTile(int x, int y) {
 	int xCurr = this->getPosition().first;
 	int yCurr = this->getPosition().second;
 	

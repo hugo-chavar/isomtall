@@ -77,7 +77,7 @@ private:
 
 	int siCaminaDetenerse();
 	int cambiarEstado(int x, int y, int cambio);
-	int obtenerOrientacion(int x, int y);	//Obtiene el sentido según el signo de x e y
+	//int obtenerOrientacion(int x, int y);	//Obtiene el sentido según el signo de x e y
 	bool esNecesarioCalcularNuevoPath();
 	void limpiarPath();
 	int quedarseQuieto(float &velocidadAni);
