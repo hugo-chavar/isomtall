@@ -305,7 +305,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 	std::vector <std::string> v_items;
 	stringUtilities::splitString(ItemsData,v_items,';');
 	unsigned i=0;
-	itemArray.clear();
+	itemsArray.clear();
 	ItemFactoryView factory;
 	//TODO: andy: puse este if porque pinchaba acá..
 	//if (v_items.size() < 3)
@@ -328,7 +328,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 			ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
 			if(pos.first!=-1)
 				this->getTileAt(pos)->setOtherEntity(item);
-			itemArray.push_back(item);
+			itemsArray.push_back(item);
 		}
 	}
 }
@@ -380,13 +380,27 @@ void Stage::updateItem(string serializedItemUpdate)
 
 ItemView* Stage::findDeathItem(string name)
 {
-	for(unsigned i=0;i<this->itemArray.size();i++)
+	for(unsigned i=0;i<this->itemsArray.size();i++)
 	{
-		if(itemArray[i]->getName()==name)
+		if(itemsArray[i]->getName()==name)
 		{	
-			if(!itemArray[i]->isAlive())
-				return itemArray[i];
+			if(!itemsArray[i]->isAlive())
+				return itemsArray[i];
 		}
+	}
+	return NULL;
+}
+
+ItemView* Stage::findDeathItemSinglePlayer()
+{
+	for(unsigned i=this->itemsArray.size();i>0;i--)
+	{
+		if(!itemsArray[i-1]->isAlive() && !(itemsArray[i-1]->getCanReviveForHimself()))
+			{
+				int random=rand()%itemsArray.size();
+				std::swap(itemsArray[i-1],itemsArray[random]);
+				return itemsArray[random];
+			}
 	}
 	return NULL;
 }
@@ -408,3 +422,48 @@ Sprite* Stage::getSpriteWithName(string value) {
 	} 
 	return NULL;
 }
+
+void Stage::updateSinglePlayer()
+{
+	this->updateItemsSinglePlayer();
+	this->updateSprites();
+	this->updateTiles();
+}
+
+void Stage::updateItemsSinglePlayer()
+{
+	for(unsigned i=0;i<this->itemsArray.size();i++)
+	{
+		itemsArray[i]->updateSinglePlayer();
+	}
+}
+
+void Stage::updateItems()
+{
+	for(unsigned i=0;i<this->itemsArray.size();i++)
+	{
+		itemsArray[i]->update();
+	}
+}
+
+ItemView* Stage::getItemInTile(int posX,int posY)
+{
+	for(unsigned i=0;i<this->itemsArray.size();i++)
+	{
+		if(itemsArray[i]->getPosition() == std::make_pair(posX, posY))
+			if(itemsArray[i]->isHidden()&&itemsArray[i]->isAlive())
+				return this->itemsArray[i];
+	}
+	return NULL;
+}
+
+void Stage::relocateItem(pair<int,int>pos)
+{
+	ItemView* item=this->findDeathItemSinglePlayer();
+	if(item)
+	{
+		item->revive(REVIVE_UNCOVER_ITEM,pos);
+		this->getTileAt(pos)->setOtherEntity(item);
+	}
+}
+

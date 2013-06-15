@@ -40,6 +40,8 @@ enum gameStatus_t {
 #include "StatsTable.h"
 #include "GameSounds.h"
 
+using namespace std;
+
 
 class GameView {
 public:
@@ -87,6 +89,8 @@ public:
 	TTF_Font* getFontSize(int size);
 
 	GameSounds& getGameSounds();
+	bool isSinglePlayerGame();
+
 	Daniable* getDaniableInTile(std::pair <int, int> tile);
 private:
 	view::Camera camera;
@@ -112,9 +116,10 @@ private:
 	map <int, TTF_Font*>::iterator fontsIt;
 	bool needsConnectToServer;
 	bool needsUpdateFiles;
-
+	bool isSinglePlayer;
 	//Sounds
 	GameSounds gameSounds;
+
 };
 
 #endif //_GAMEVIEW_H_

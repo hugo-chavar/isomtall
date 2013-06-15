@@ -27,6 +27,7 @@ namespace view {
 		Stage();
 		~Stage();
 		void update(); 
+		void updateItems();
 		void render(Camera& camera);
 		bool initialize();
 		void setTilesInCamera(int h, int v);
@@ -38,9 +39,15 @@ namespace view {
 		void updateItems(string serializedItemUpdates);
 		void cleanUp();
 		Sprite* getSpriteWithName(string value);
+		//Single Player
+		void updateSinglePlayer();
+		ItemView* findDeathItemSinglePlayer();
+		ItemView* getItemInTile(int posX,int posY);
+		void relocateItem(pair<int,int>pos);
+		//Single Player
 	private:
 		vector<Sprite*> spriteArray;
-		vector<ItemView*> itemArray;
+		vector<ItemView*> itemsArray;
 		StageModel* worldModel;
 		map<string, int> mapEntityToSprite;
 		map<KeyPair, TileView*> tilesMap;
@@ -65,6 +72,7 @@ namespace view {
 		void updateSprites();
 		ItemView* findDeathItem(string name);
 		void updateItem(string serializedItemUpdate);
+		void updateItemsSinglePlayer();
 		
 	};
 

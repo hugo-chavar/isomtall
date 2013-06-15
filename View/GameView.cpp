@@ -271,6 +271,7 @@ void GameView::update() {
 				this->getLogin()->getLoginUpdater().addInstruction(instruction);
 				this->_login.initialize();
 				this->getModelUpdater()->startUpdating();
+				this->isSinglePlayer=false;
 				Game::instance().initialize();
 				this->initialize();
 				this->setStatus(STATUS_LOGIN_REQUESTED);
@@ -303,6 +304,7 @@ void GameView::update() {
 		case STATUS_SIMULATION_SINGLE_PLAYER:
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
+			this->isSinglePlayer=true;
 			Game::instance().initialize();
 			this->initialize();
 			this->camera.configure();
@@ -324,7 +326,7 @@ void GameView::update() {
 			this->menu->setDisplayNotification(false);
 			//GameView::instance().getGameMenu()->setDisplayBackground(false);
 			this->menu->hideButtons();
-			this->worldView.update();
+			this->worldView.updateSinglePlayer();
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			
@@ -554,6 +556,11 @@ GameSounds& GameView::getGameSounds() {
 	return this->gameSounds;
 }
 
+bool GameView::isSinglePlayerGame()
+{
+	return this->isSinglePlayer;
+}
+
 Daniable* GameView::getDaniableInTile(std::pair <int, int> tile) {
 	
 	if(Game::instance().world()->isInsideWorld(tile))
@@ -563,7 +570,7 @@ Daniable* GameView::getDaniableInTile(std::pair <int, int> tile) {
 		{
 			return item;
 		}
-		return mission.manageAttack(tile);
+		// YAMI return mission.manageAttack(tile);
 	}
 	return NULL;
 }

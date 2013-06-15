@@ -61,6 +61,11 @@ namespace stringUtilities {
 		return stringstream >> result ? result : 0;
 	}
 
+std::string substrAfterFirst(std::string cadena,char car)
+	{
+		return cadena.substr(cadena.find_first_of(car)+1);
+	}
+
 	int stringToInt(const std::string Text) {
 		int result;
 		std::stringstream stringstream(Text);

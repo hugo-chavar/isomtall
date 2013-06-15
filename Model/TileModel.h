@@ -27,6 +27,9 @@ public:
 	bool overlapped();
 	void setEOL();
 	bool EOL();
+	void setHasHiddenItem(bool has);
+	bool getHasHiddenItem();
+
 private:
 	EntityObject* groundEntity;
 	EntityObject* otherEntity;
@@ -35,6 +38,7 @@ private:
 	KeyPair position;
 	bool isDrawable;
 	bool endOfLevel;
+	bool hasHiddenItem;
 };
 
 
