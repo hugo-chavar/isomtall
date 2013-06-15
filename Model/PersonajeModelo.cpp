@@ -292,7 +292,7 @@ float PersonajeModelo::getVelocidad() {
 int PersonajeModelo::siCaminaDetenerse() {
 	int cambio = SIN_CAMBIO;
 	
-	if ((estado<10) || (estado>19)) { //si esta caminando
+	if (estado == MOVIMIENTO) { //si esta caminando
 		cambio = ESTADO_MOVIMIENTO; //que se quede quieto
 	}
 	return cambio;
