@@ -109,8 +109,10 @@ void CharacterVision::initFromString(string data) {
 		vector <string>::iterator it;
 		it = auxVector.begin();
 		for (; it != auxVector.end(); it++) {
-			pos = stringUtilities::stringToPairInt(*it);
-			this->setKnown(pos);
+			if (((*it).size() > 1) && ((*it).find(",") != std::string::npos)) {
+				pos = stringUtilities::stringToPairInt(*it);
+				this->setKnown(pos);
+			}
 		}
 	}
 }
