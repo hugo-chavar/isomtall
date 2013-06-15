@@ -112,6 +112,7 @@ private:
 	void atacar();
 	void resolverAtaque();
 	void perseguirEnemigo();
+	bool isCenteredInTileInSinglePlayer();
 
 
 	Daniable* currentEnemy; //el destruible que esta atacando el pj

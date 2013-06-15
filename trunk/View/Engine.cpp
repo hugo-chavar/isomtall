@@ -39,8 +39,11 @@ int Engine::execute() {
 		frameStartedAt = SDL_GetTicks();
 		(Game::instance().getTimer())->updateTime();
 		while(SDL_PollEvent(&sdlEvent)) {
-			//if de singlePlayer y Multiplayer
-			this->onMultiplayerEvent(&sdlEvent);
+			if (GameView::instance().isSinglePlayerGame()) {
+				this->onSingleplayerEvent(&sdlEvent);
+			} else {
+				this->onMultiplayerEvent(&sdlEvent);
+			}
 		}
 		this->update();
 		this->render();
