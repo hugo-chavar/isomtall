@@ -44,6 +44,7 @@ namespace view {
 		ItemView* findDeathItemSinglePlayer();
 		ItemView* getItemInTile(int posX,int posY);
 		void relocateItem(pair<int,int>pos);
+		Sprite* getSprite(string name);
 		//Single Player
 	private:
 		vector<Sprite*> spriteArray;
