@@ -309,6 +309,7 @@ void GameView::update() {
 			this->initialize();
 			this->camera.configure();
 			this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			this->getMyPersonaje()->setActive(true);
 			this->setStatus(STATUS_SIMULATION_PLAYING_SINGLEPLAYER);
 
 			//this->camera.unconfigure();
@@ -327,6 +328,7 @@ void GameView::update() {
 			//GameView::instance().getGameMenu()->setDisplayBackground(false);
 			this->menu->hideButtons();
 			this->worldView.updateSinglePlayer();
+			this->getMyPersonaje()->updateSinglePlayer();
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			
