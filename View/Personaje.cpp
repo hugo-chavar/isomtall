@@ -170,7 +170,9 @@ void Personaje::update() {
 	}
 	modelo->update();
 	this->updateStatsBar();
-	//sprites[this->getCurrentSpritePosition()]->actualizarFrame();
+	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
+		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+	}
 }
 
 void Personaje::updateSinglePlayer() {
@@ -187,6 +189,9 @@ void Personaje::updateSinglePlayer() {
 		GameView::instance().getErrorImage()->updateFrame();
 	} else {
 		sprites[this->currentSpritePosition]->updateFrame();
+	}
+	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
+		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
 	}
 	this->updateStatsBar();
 }
@@ -631,9 +636,6 @@ void Personaje::updateFromString(std::string data) {
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	if (this->hasValidSprite()) {
 		this->sprites[this->getCurrentSpritePosition()]->setCurrentSurfaceNumber(stringUtilities::stringToInt(splittedData[4]));
-		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
-			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
-		}
 	}
 	this->setCenteredInTile(splittedData[5] == "T");
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
