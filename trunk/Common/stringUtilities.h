@@ -56,6 +56,8 @@ namespace stringUtilities {
 
 	std::pair<unsigned, unsigned> pairUnsignedToString(std::string source); 
 
+	std::string substrAfterFirst(std::string cadena,char car);
+
 }
 
 #endif // _STRINGUTILITIES_H_

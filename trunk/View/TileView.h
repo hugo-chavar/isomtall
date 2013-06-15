@@ -39,6 +39,7 @@ public:
 	void setFogged(bool value);
 	void update();
 	void initialize();
+	void setItemUncover();
 private:
 	TileModel* tileModel;
 	Entity* groundEntity;

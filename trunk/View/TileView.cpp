@@ -148,3 +148,7 @@ void TileView::update(){
 		this->getOtherEntity()->update();
 	}
 }
+
+void TileView::setItemUncover() {
+	this->getTileModel()->setHasHiddenItem(false);
+}

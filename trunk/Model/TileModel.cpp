@@ -17,6 +17,16 @@ TileModel::TileModel(){
 TileModel::~TileModel(){
 }
 
+void TileModel::setHasHiddenItem(bool has)
+{
+	this->hasHiddenItem=has;
+}
+
+bool TileModel::getHasHiddenItem()
+{
+	return this->hasHiddenItem;
+}
+
 EntityObject * TileModel::getGroundEntity(){
 	return this->groundEntity;
 }

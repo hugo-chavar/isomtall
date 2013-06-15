@@ -358,9 +358,9 @@ void Personaje::resolverAtaque() {
 	float precision = Game::instance().getRandom();
 	if (precision >= this->modelo->getPrecisionMinima()) {
 		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-		if (!(this->currentEnemy->isAlive())) {
-			GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-		}
+		//YAMI if (!(this->currentEnemy->isAlive())) {
+		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+		//}
 	}
 }
 

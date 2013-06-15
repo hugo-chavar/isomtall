@@ -368,3 +368,12 @@ PersonajeModelo* StageModel::getCharacter(string name) {
 	}
 	return character;
 }
+
+string StageModel::getItemInfo(string name)
+{
+	map<string,string>::iterator it=this->mapItems()->find(name);
+	if(it==this->mapItems()->end())
+		return "";
+	else
+		return it->second;
+}
