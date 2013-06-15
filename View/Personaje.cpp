@@ -127,6 +127,11 @@ bool Personaje::isCenteredInTile() {
 	return centeredInTile;
 }
 
+bool Personaje::isCenteredInTileInSinglePlayer() {
+	centeredInTile = ((delta.first == 0) && (delta.second == 0));
+	return centeredInTile;
+}
+
 void Personaje::setCenteredInTile(bool centroTile) {
 	centeredInTile = centroTile;
 }
@@ -176,6 +181,7 @@ void Personaje::update() {
 }
 
 void Personaje::updateSinglePlayer() {
+	this->isCenteredInTileInSinglePlayer();
 	this->setFogged(!modelo->isActive());
 	this->mover();
 	if (this->isCenteredInTile()) {
@@ -478,7 +484,7 @@ void Personaje::animateModel(char animacion) {
 }
 
 void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
-	float deltaTime = this->getDeltaTime()/10;
+	float deltaTime = this->getDeltaTime()*100;
 	if (delta.first != 0) { //Hay movimiento en x
 		if (delta.second != 0) { //Diagonal
 			factor.first = static_cast<float>((velocidad*deltaTime) *0.707);
