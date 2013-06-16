@@ -140,7 +140,7 @@ void ItemView::modifyCharacter(Personaje* )
 }
 
 //Single Player
-ItemView::ItemView(string _name,unsigned _state,std::pair <int,int> _pos,Sprite* _hiddenSprite, Sprite* sprite,bool _canReviveForHimself)
+ItemView::ItemView(string _name,unsigned _state,std::pair <int,int> _pos,Sprite* _hiddenSprite, Sprite* sprite,bool _canReviveForHimself):Entity(_pos.first,_pos.second,sprite)
 {
 	this->name=_name;
 	this->setPosition(_pos);

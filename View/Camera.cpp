@@ -179,14 +179,14 @@ void Camera::setCenterPixel(std::pair<int,int> center) {
 
 void Camera::vibrate()
 {
-	this->lastMovement=lastMovement*(-1);
 	this->setOffsetX(this->offsetX+this->lastMovement);
 	this->vibrationTime-=Game::instance().getTimer()->getDeltaTime();
+	this->lastMovement=lastMovement*(-1);
 }
 
 bool Camera::isVibrating()
 {
-	return (this->vibrationTime>0);
+	return (this->vibrationTime>0 || this->lastMovement<0);
 }
 
 void Camera::setVibrating()
