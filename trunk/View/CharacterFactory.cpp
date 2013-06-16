@@ -25,5 +25,6 @@ Personaje* CharacterFactory::createViewCharacter(std::string entityName, std::st
 	newViewCharacter->setFont(GameView::instance().getFontSize(12));
 	newViewCharacter->setPlayerName(playerName);
 	newViewCharacter->loadSprites();
+	newViewCharacter->loadWeapons();
 	return newViewCharacter;
 }

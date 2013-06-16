@@ -3,9 +3,6 @@
 #ifndef PERSONAJECONSTANTES_H
 #define PERSONAJECONSTANTES_H
 
-//Fuente de texto
-
-#define FUENTE "../Fonts/Arial.ttf"
 
 #define VIVO 1
 #define MUERTO 0
@@ -40,5 +37,12 @@
 #define DEFAULT_CHARACTER_MAX_DAMAGE 20.0
 #define DEFAULT_CHARACTER_MAX_LIFE 200.0
 #define DEFAULT_CHARACTER_MAX_MAGIC 100.0
+
+//Weapons
+#define WEAPON_SWORD 0
+#define WEAPON_BOW 1
+#define WEAPON_ICE_INCANTATOR 2
+#define WEAPON_HAND_GRENADE 3
+
 
 #endif

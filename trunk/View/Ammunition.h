@@ -5,8 +5,7 @@
 #define ammoType_t
 enum ammoType_t {
 	SWORD,
-	ARROW,
-	ICE_INCANTATION ,
+	IMPACT_AMMO,
 	HAND_GRENADE,
 	BOMB,
 	ICE_BOMB
@@ -23,7 +22,8 @@ protected:
 	std::string owner;
 	unsigned ammunitionType;
 	float damage;
-	std::string ammo_id;
+	std::string ammo_id; //creo q va a ser util para actualizar desde el server
+	bool available;
 public:
 	Ammunition();
 	~Ammunition();
@@ -35,7 +35,8 @@ public:
 	void setAmmunitionType(unsigned value);
 	float getDamage();
 	void setDamage(float value);
-
+	bool isAvailable();
+	void setAvailable(bool value);
 };
 
 #endif // _AMMUNITION_H_

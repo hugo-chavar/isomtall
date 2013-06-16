@@ -2,7 +2,7 @@
 
 Arrow::Arrow():ImpactAmmo() {
 	this->setName("Arrow");
-	this->setAmmunitionType(ARROW);
+	this->setAmmunitionType(IMPACT_AMMO);
 	this->setDamage(50.0);
 }
 

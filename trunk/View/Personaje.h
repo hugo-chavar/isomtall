@@ -10,6 +10,7 @@
 #include "Mutex.h"
 #include "Constants.h"
 #include "SDL_ttf.h"
+#include "Weapon.h"
 
 class Personaje : public Entity, public Daniable {
 public:
@@ -64,6 +65,7 @@ public:
 	void setShield(float resistance,float absortion);
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
+	void loadWeapons();
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -121,5 +123,11 @@ private:
 	void manejarDano(float dano);
 
 	std::string character_id;
+
+	//Weapons
+	unsigned selectedWeapon;
+	std::vector<Weapon*> weapons;
+	std::vector<Weapon*>& getWeapons();
+
 };
 #endif

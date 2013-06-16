@@ -10,7 +10,7 @@
 #include "CharacterVision.h"
 
 
-class PersonajeModelo: public Positionable, Directionable {
+class PersonajeModelo: public Positionable, public Directionable {
 
 public:
 	PersonajeModelo();
@@ -72,7 +72,7 @@ public:
 	void morir();
 	//void setPosition(std::pair<int, int> pos);
 
-	void setCurrentWeaponIndex(unsigned int currentWeaponIndex);
+	//void setCurrentWeaponIndex(unsigned int currentWeaponIndex);
 private:
 
 	int siCaminaDetenerse();
@@ -126,7 +126,7 @@ private:
 
 	//std::vector<model::Weapon*> weapons;
 
-	unsigned int currentWeaponIndex;
+	//unsigned int currentWeaponIndex;
 
 	//std::vector<model::Weapon*>& getWeapons();
 

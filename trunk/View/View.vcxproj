@@ -74,6 +74,7 @@
     <ClCompile Include="Ammunition.cpp" />
     <ClCompile Include="AmmunitionPool.cpp" />
     <ClCompile Include="Arrow.cpp" />
+    <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CharacterFactory.cpp" />
@@ -100,6 +101,7 @@
     <ClCompile Include="ModelUpdater.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Notification.cpp" />
+    <ClCompile Include="ProjectileWeapon.cpp" />
     <ClCompile Include="Receiver.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
     <ClCompile Include="RunningBoots.cpp" />
@@ -110,6 +112,7 @@
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="StaticTextBox.cpp" />
     <ClCompile Include="StatsTable.cpp" />
+    <ClCompile Include="Sword.cpp" />
     <ClCompile Include="Textbox.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Personaje.cpp" />
@@ -120,11 +123,13 @@
     <ClCompile Include="TileView.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="tp.cpp" />
+    <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammunition.h" />
     <ClInclude Include="AmmunitionPool.h" />
     <ClInclude Include="Arrow.h" />
+    <ClInclude Include="Bow.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CharacterFactory.h" />
@@ -150,6 +155,7 @@
     <ClInclude Include="ModelUpdater.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Notification.h" />
+    <ClInclude Include="ProjectileWeapon.h" />
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClInclude Include="RunningBoots.h" />
@@ -160,6 +166,7 @@
     <ClInclude Include="GameSounds.h" />
     <ClInclude Include="StaticTextBox.h" />
     <ClInclude Include="StatsTable.h" />
+    <ClInclude Include="Sword.h" />
     <ClInclude Include="Textbox.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Personaje.h" />
@@ -170,6 +177,7 @@
     <ClInclude Include="TileView.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="Weapon.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">

@@ -3,6 +3,8 @@
 #include "SDL_ttf.h"
 #include "Logger.h"
 #include "StringUtilities.h"
+#include "Sword.h"
+#include "Bow.h"
 
 #include "Game.h"
 #include "GameView.h"
@@ -173,9 +175,10 @@ void Personaje::update() {
 	if (this->isCenteredInTile()) {
 		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 	}
+	common::Logger::instance().log("Character pos: " + this->positionToString());
 	modelo->update();
 	this->updateStatsBar();
-	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
+	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
 		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
 	}
 }
@@ -196,7 +199,7 @@ void Personaje::updateSinglePlayer() {
 	} else {
 		sprites[this->currentSpritePosition]->updateFrame();
 	}
-	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0 && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition())) {
+	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0) /* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
 		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
 	}
 	this->updateStatsBar();
@@ -376,10 +379,23 @@ void Personaje::resolverAtaque() {
 }
 
 void Personaje::atacar() {
-	if ((currentEnemy != NULL) && (currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
-		this->resolverAtaque();
-		this->modelo->atacar();
-		currentEnemy = NULL;
+	if (currentEnemy != NULL) {
+		//&&(this->getSelectedWeapon()->isInsideRange(currentEnemy->getPosition())))
+		switch (this->selectedWeapon) {
+		case WEAPON_SWORD: {
+			//ataque con espada
+			if ((currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
+				this->resolverAtaque();
+				this->modelo->atacar();
+				currentEnemy = NULL;
+			}
+			break;
+						   }
+		case WEAPON_BOW:
+			//ataque con arco y flecha
+			break;
+
+		}
 	}
 }
 
@@ -569,6 +585,10 @@ Personaje::~Personaje(){
 	SDL_FreeSurface(this->lifeBarR);
 	SDL_FreeSurface(this->magicBarNeg);
 	SDL_FreeSurface(this->magicBarPos);
+	//Destroying weapons
+	for (unsigned int i = 0; i < this->getWeapons().size(); i++) {
+		delete this->getWeapons()[i];
+	}
 }
 
 PersonajeModelo* Personaje::personajeModelo() {
@@ -637,6 +657,7 @@ void Personaje::updateFromString(std::string data) {
 	this->modelo->positionFromString(splittedData[0]);
 	this->modelo->getVision()->updatePosition(modelo->getPosition());
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
+	//common::Logger::instance().log("Character pix: " + splittedData[1]);
 	this->setPixelPosition(pixels);
 	this->setFogged(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
@@ -787,4 +808,23 @@ bool Personaje::useMagic(float usedMagic) {
 bool Personaje::hasShield()
 {
 	return (this->shieldResistance>0);
+}
+
+std::vector<Weapon*>& Personaje::getWeapons() {
+	return this->weapons;
+}
+
+void Personaje::loadWeapons() {
+		
+	//Initializing weapons
+	Sword* sword = new Sword();
+	sword->setOwner(this->getPlayerName());
+	sword->initialize(true,1,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	this->getWeapons().push_back(sword);
+
+	Bow* bow = new Bow();
+	bow->setOwner(this->getPlayerName());
+	bow->initialize(false,5,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	this->getWeapons().push_back(bow);
+	this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 }
