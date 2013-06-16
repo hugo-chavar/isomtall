@@ -423,12 +423,16 @@ void Stage::updateItem(string serializedItemUpdate)
 	case UNCOVER_ITEM:
 		{
 			ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
+			if (item == NULL)
+				break;
 			item->uncover();
 		}
 	break;
 	case DEATH_ITEM:
 		{
 			ItemView* item=(ItemView*)this->getTileAt(pos)->getOtherEntity();
+			if (item == NULL)
+				break;
 			item->kill();
 			this->getTileAt(pos)->setOtherEntity(NULL);
 		}
