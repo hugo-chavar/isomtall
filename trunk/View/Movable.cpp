@@ -1,6 +1,8 @@
 #include "Movable.h"
+#include "Logger.h"
+#include "../Common/StringUtilities.h"
 
-Movable::Movable()/*:Entity()*/ {
+Movable::Movable() {
 	this->setVelocity(0);
 	this->remaining = std::make_pair<float, float>(0, 0);
 	this->setTargetReached(false);
@@ -98,19 +100,23 @@ void Movable::render(Camera& camera) {
 }
 
 void Movable::move() {
+	//common::Logger::instance().log("Ammo pos: " + stringUtilities::pairIntToString(this->getCurrentTile()));
 	std::pair<float, float> deltaMovement;
-	float deltaVelocity = this->getVelocity()*this->getDeltaTime();
+	float deltaVelocity = this->getVelocity()*this->getDeltaTime();//0.02;//
 	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
 	deltaMovement.second = deltaVelocity*this->getPixelDirection().second/2 + this->remaining.second;
-	if ( (std::floor(deltaMovement.first) > 0) && (std::floor(deltaMovement.second) == 0) && (deltaMovement.second > 0)) {
+	float deltaFirst = (deltaMovement.first < 0) ? std::ceil(deltaMovement.first) : std::floor(deltaMovement.first);
+	float deltaSecond = (deltaMovement.second < 0) ? std::ceil(deltaMovement.second):std::floor(deltaMovement.second);
+	if ( (std::abs(deltaFirst) > 0) && (std::abs(deltaSecond) == 0) && (std::abs(deltaMovement.second) > 0)) {
 		this->remaining.first = deltaMovement.first;
 		this->remaining.second = deltaMovement.second;
 	} else {
-		this->remaining.first = deltaMovement.first - std::floor(deltaMovement.first);
-		this->remaining.second = deltaMovement.second - std::floor(deltaMovement.second);
+		
+		this->remaining.first = deltaMovement.first - deltaFirst;
+		this->remaining.second = deltaMovement.second - deltaSecond;
 		std::pair<int, int> newPixelPosition;
-		newPixelPosition.first = this->getPosition().first + static_cast<int>(std::floor(deltaMovement.first));
-		newPixelPosition.second = this->getPosition().second + static_cast<int>(std::floor(deltaMovement.second));
+		newPixelPosition.first = this->getPosition().first + static_cast<int>(deltaFirst);
+		newPixelPosition.second = this->getPosition().second + static_cast<int>(deltaSecond);
 		this->setPosition(newPixelPosition);
 		std::pair<int, int> newTilePosition = this->whichTile(newPixelPosition);
 		if (this->getCurrentTile() != newTilePosition) {
