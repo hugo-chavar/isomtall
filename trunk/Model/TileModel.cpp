@@ -6,6 +6,7 @@ using namespace common;
 
 
 TileModel::TileModel(){
+	this->hasHiddenItem=false;
 	this->groundEntity = NULL;
 	this->otherEntity = NULL;
 	this->nextTile = NULL;

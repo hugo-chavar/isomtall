@@ -113,6 +113,8 @@ unsigned int StageModel::cost(unsigned int x, unsigned int y) {
 		if(tile->getHasHiddenItem())
 			return 0;
 	}
+	if(tile->getHasHiddenItem())
+			return 0;
 	return 1;
 }
 

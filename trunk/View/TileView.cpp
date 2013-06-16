@@ -1,6 +1,7 @@
 #include "TileView.h"
 #include "Logger.h"
 #include "StringUtilities.h"
+#include "ItemView.h"
 
 using namespace common;
 
@@ -46,6 +47,13 @@ void TileView::setGroundEntity(Entity * e){
 
 void TileView::setOtherEntity(Entity * e){
 	this->otherEntity = e;
+	if (e != NULL) {
+		if(e->isItem())
+		{
+			ItemView* item=(ItemView*)e;
+			this->getTileModel()->setHasHiddenItem(item->isHidden());
+		}
+	}
 }
 
 KeyPair TileView::getPosition(){
