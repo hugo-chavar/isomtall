@@ -331,7 +331,6 @@ void GameView::update() {
 			this->getMyPersonaje()->updateSinglePlayer();
 		break;
 		case STATUS_SIMULATION_CONNECTED:
-			
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
 			this->worldView.update();
@@ -365,12 +364,17 @@ void GameView::update() {
 			this->menu->setDisplayNotification(true);
 
 		break;
+		case STATUS_SIMULATION_READY_TO_RECONNECT:
+			this->camera.configure();
+			this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			this->setStatus(STATUS_SIMULATION_CONNECTED);
+		break;
 		case STATUS_GAME_OVER:
 			//this->camera.unconfigure();
 			this->getChat()->setIsTyping(false);
 			if (this->winner.compare(this->playerName) == 0) {
 				this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
-				this->menu->setNotificationMessage("CONGRATULATIONS YOU WON");
+				this->menu->setNotificationMessage("CONGRATULATIONS! YOU WON!");
 			}
 			else {
 				this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
@@ -380,13 +384,10 @@ void GameView::update() {
 			this->menu->setDisplayNotification(true);
 		break;
 		case STATUS_RESTART_GAME:
-			if (Game::instance().isStageNumberSet()) {
-				//Game::instance().restart();
-				//GameView::instance().restart();
-				Game::instance().setStageNumberStatus(false);
-				//GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
-
-			}
+			this->camera.unconfigure();
+			this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
+			this->menu->setNotificationMessage("WAITING FOR ALL PLAYERS TO CONNECT");
+			this->menu->setDisplayNotification(true);
 		break;
 		default: {
 			this->menu->setDisplayNotification(false);

@@ -3,9 +3,7 @@
 //#include "ClientUpdater.h"
 
 
-Game::Game() {
-	this->stageNumberSet = false;
-}
+Game::Game() { }
 
 Game::~Game() {
 }
@@ -70,14 +68,6 @@ int Game::getStageNumber() {
 
 void Game::setStageNumber(int stageNo) {
 	this->stageNumber = stageNo;
-}
-
-void Game::setStageNumberStatus(bool status) {
-	this->stageNumberSet = status;
-}
-
-bool Game::isStageNumberSet() {
-	return this->stageNumberSet;
 }
 
 void Game::startWorld() {
