@@ -7,7 +7,6 @@ Ammunition::Ammunition() {
 Ammunition::~Ammunition() {
 }
 
-
 std::string Ammunition::getOwner() {
 	return this->owner;
 }

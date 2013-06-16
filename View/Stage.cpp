@@ -5,6 +5,8 @@
 #include "TileModel.h"
 #include "GameView.h"
 #include "ItemFactoryView.h"
+#include "Arrow.h"
+#include "Logger.h"
 
 #define START_LEVEL 0
 #define EXTRA_TILES_TO_RENDER 9
@@ -16,6 +18,7 @@ view::Stage::Stage() {
 }
 
 view::Stage::~Stage() {
+	Logger::instance().log("view::Stage::~Stage()");
 	this->cleanUp();
 }
 
@@ -23,7 +26,11 @@ void view::Stage::cleanUp() {
 	for (unsigned int i = 0; i < this->spriteArray.size(); i++) {
 		delete this->spriteArray[i];
 	}
+	for (unsigned int i = 0; i < this->ammunitions.size(); i++) {
+		delete this->ammunitions[i];
+	}
 	this->spriteArray.clear();
+	this->ammunitions.clear();
 	this->deleteStage();
 }
 
@@ -100,6 +107,54 @@ void view::Stage::generateStage() {
 		currentTile = currentTile->getNextTile();
 		tileModel = tileModel->getNextTile();
 	}
+	Arrow* arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_S);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_N);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_NO);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_NE);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_E);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_O);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_SO);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
+	arrow = new Arrow();
+	arrow->setInitialTile(make_pair(15,6));
+	arrow->initialize();
+	arrow->setDirection(Directionable::DIRECTION_SE);
+	arrow->setVelocity(5);
+	this->ammunitions.push_back(arrow);
 }
 
 void view::Stage::setTilesInCamera(int w, int h) {
@@ -128,8 +183,8 @@ bool view::Stage::initialize() {
 void view::Stage::update() {
 	this->updateSprites();
 	this->updateTiles();
-	//this->regenerateItem();
-	//_personaje->update(); //llamar en algun lado.. despues
+	this->updateAmmunitions();
+
 }
 //
 //Personaje* view::Stage::personaje() {
@@ -259,6 +314,10 @@ void view::Stage::render(Camera& camera) {
 			p = GameView::instance().nextCharacter();
 		}
 
+		for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
+			if (renderHelper.shouldRenderThis(((Movable*)this->ammunitions[i])->getCurrentTile(),((Movable*)this->ammunitions[i])->getLastTile()))
+				this->ammunitions[i]->render(camera);
+		}
 	}
 }
 
@@ -475,8 +534,14 @@ void Stage::relocateItem(pair<int,int>pos)
 		this->getTileAt(pos)->setOtherEntity(item);
 	}
 }
+//Esto es codigo repetido ver metodo getSpriteWithName
+//Sprite* Stage::getSprite(string name)
+//{
+//	return spriteArray[mapEntityToSprite.at(name)];
+//}
 
-Sprite* Stage::getSprite(string name)
-{
-	return spriteArray[mapEntityToSprite.at(name)];
+void Stage::updateAmmunitions() {
+	for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
+		this->ammunitions[i]->update();
+	}
 }

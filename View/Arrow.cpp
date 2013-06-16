@@ -1,17 +1,9 @@
 #include "Arrow.h"
 
-Arrow::Arrow() {
+Arrow::Arrow():ImpactAmmo() {
 	this->setName("Arrow");
+	this->setAmmunitionType(ARROW);
 }
 
 Arrow::~Arrow() {
 }
-
-//
-//std::string Arrow::getOwner() {
-//	return this->owner;
-//}
-
-//void Arrow::setOwner(std::string value) {
-//	this->owner = value;
-//}

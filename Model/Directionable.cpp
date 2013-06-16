@@ -2,6 +2,7 @@
 #include "StringUtilities.h"
 #include "DataTypes.h"
 
+
 const std::pair<int, int> Directionable::DIRECTION_N = std::make_pair<int, int>(-1,-1);
 const std::pair<int, int> Directionable::DIRECTION_S = std::make_pair<int, int>(1,1);
 const std::pair<int, int> Directionable::DIRECTION_NE = std::make_pair<int, int>(0,-1);
@@ -11,6 +12,8 @@ const std::pair<int, int> Directionable::DIRECTION_O = std::make_pair<int, int>(
 const std::pair<int, int> Directionable::DIRECTION_NO = std::make_pair<int, int>(-1,0);
 const std::pair<int, int> Directionable::DIRECTION_SO = std::make_pair<int, int>(0,1);
 const std::pair<int, int> Directionable::DIRECTION_Q = std::make_pair<int, int>(0,0);
+
+const std::map<std::pair<int, int>, std::pair<int, int> > Directionable::TRANSFORM_TILE_TO_PIXEL_DIRECTION  =  Directionable::create_map();
 
 Directionable::Directionable() {
 	this->direction = Directionable::DIRECTION_Q;
@@ -62,4 +65,9 @@ int Directionable::getOrientation() {
 	else
 		return -1;
 	return static_cast<int>(result);
+}
+
+
+std::pair<int, int> Directionable::getPixelDirection() {
+	return TRANSFORM_TILE_TO_PIXEL_DIRECTION.at(this->direction);
 }

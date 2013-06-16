@@ -5,7 +5,7 @@
 #include "Directionable.h"
 #include "Positionable.h"
 
-class Movable: public Entity, Positionable, Directionable {
+class Movable: public Entity, public Positionable, public Directionable {
 
 private:
 	float velocity;
@@ -28,6 +28,10 @@ public:
 	std::pair<int, int> getTargetTile();
 	void setInitialTile(std::pair<int, int> value);
 	std::pair<int, int> getInitialTile();
+	void setCurrentTile(std::pair<int, int> value);
+	std::pair<int, int> getCurrentTile();
+	void setLastTile(std::pair<int, int> value);
+	std::pair<int, int> getLastTile();
 	void setTargetReached(bool value);
 	bool isTargetReached();
 	void setCouldContinue(bool value);
@@ -37,9 +41,11 @@ public:
 	void render(Camera& camera);
 	void move();
 	bool validTilePosition(std::pair<int, int> pixelPosition);
+	std::pair<int, int> whichTile(std::pair<int, int> pixel);
 	void calculateWayForward();
 	void verify();
 	bool isAlive();
+	void initialize();
 	//------ Maybe useful in the future ----
 	bool isItem();
 	//string getName();

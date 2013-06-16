@@ -169,6 +169,7 @@ void Camera::startScreen(unsigned width, unsigned height) {
 }
 
 Camera::~Camera() {
+	Logger::instance().log("Camera::~Camera()");
 }
 
 void Camera::setCenterPixel(std::pair<int,int> center) {
