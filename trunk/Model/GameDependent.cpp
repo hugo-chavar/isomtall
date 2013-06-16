@@ -24,6 +24,6 @@ bool GameDependent::canCross(std::pair<int, int> tilePosition) {
 	return (Game::instance().world()->cost(tilePosition.first, tilePosition.second) == 1);
 }
 
-Sprite* GameDependent::getSprite(std::string value) {
+Sprite* GameDependent::getSpriteWithName(std::string value) {
 	return GameView::instance().getWorldView()->getSpriteWithName(value);
 }

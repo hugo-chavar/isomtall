@@ -24,6 +24,7 @@ GameView::GameView() {
 }
 
 GameView::~GameView() {
+	Logger::instance().log("GameView::~GameView()");
 	map<string, Personaje*>::iterator it;
 	it = personajes.begin();
 	for( ;it != personajes.end(); it++) {
@@ -85,7 +86,6 @@ void GameView::initialize() {
 void GameView::restart() {
 	this->camera.configure();
 	bool mapInitialized = false;
-	bool chatInitialized = false;
 
 	this->chat.setIsTyping(false);
 	mapInitialized = worldView.initialize();
@@ -414,7 +414,9 @@ bool GameView::insidePlayerVision(std::pair<int,int> pos) {
 	bool inside = this->getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(pos);
 
 	if (!inside) {
-		TileModel* relatedTile = this->worldView.getWorldModel()->getTileAt(pos)->getRelatedTile();
+		TileModel* relatedTile = this->worldView.getWorldModel()->getTileAt(pos); //->getRelatedTile()
+		if (relatedTile)
+			relatedTile = relatedTile->getRelatedTile();
 		if (relatedTile) {//TODO: mejorar para optimizar codigo
 			// preguntar si es drawable() e ir salteando..
 			while ( (!inside) && (relatedTile != this->getWorldView()->getWorldModel()->getTileAt(pos)) ) {

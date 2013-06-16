@@ -12,6 +12,7 @@ TileModel::TileModel(){
 	this->relatedTile = NULL;
 	this->isDrawable = true;
 	this->endOfLevel = false;
+	this->hasHiddenItem = false;
 }
 
 TileModel::~TileModel(){

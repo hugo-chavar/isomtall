@@ -39,16 +39,18 @@ namespace view {
 		void updateItems(string serializedItemUpdates);
 		void cleanUp();
 		Sprite* getSpriteWithName(string value);
+		void updateAmmunitions();
 		//Single Player
 		void updateSinglePlayer();
 		ItemView* findDeathItemSinglePlayer();
 		ItemView* getItemInTile(int posX,int posY);
 		void relocateItem(pair<int,int>pos);
-		Sprite* getSprite(string name);
+		//Sprite* getSprite(string name);
 		//Single Player
 	private:
 		vector<Sprite*> spriteArray;
 		vector<ItemView*> itemsArray;
+		vector<Entity*> ammunitions;
 		StageModel* worldModel;
 		map<string, int> mapEntityToSprite;
 		map<KeyPair, TileView*> tilesMap;

@@ -38,26 +38,26 @@ ItemView* ItemFactoryView::generateRandomItem(float porcentajeAparicion,unsigned
 
 ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself)
 {
-	Sprite* hiddenSprite=GameView::instance().getWorldView()->getSprite("Chest");
+	Sprite* hiddenSprite=GameView::instance().getWorldView()->getSpriteWithName("Chest");
 	Sprite* sprite=NULL;
 	switch (itemPos){
 		case 0:
-			sprite=GameView::instance().getWorldView()->getSprite("Lamp");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("Lamp");
 			return new Lamp("Lamp",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 1:
-			sprite=GameView::instance().getWorldView()->getSprite("RunningBoots");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("RunningBoots");
 			return new RunningBoots("RunningBoots",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 2:
-			sprite=GameView::instance().getWorldView()->getSprite("MapItem");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("MapItem");
 			return new MapItem("MapItem",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 3:
-			sprite=GameView::instance().getWorldView()->getSprite("Heart");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("Heart");
 			return new Heart("Heart",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 4:
-			sprite=GameView::instance().getWorldView()->getSprite("MagicBottle");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("MagicBottle");
 			return new MagicBottle("MagicBottle",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 5:
-			sprite=GameView::instance().getWorldView()->getSprite("Shield");
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("Shield");
 			return new Shield("Shield",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		}
 	return NULL;

@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "stringUtilities.h"
 #include "Constants.h"
+#include "../View/GameView.h"
 
 using namespace std;
 
@@ -102,9 +103,16 @@ void StageModel::name(string value) {
 }
 
 unsigned int StageModel::cost(unsigned int x, unsigned int y) {
-	TileModel* tile = _tilesMap->at(make_pair(x,y));
-	if ( (tile->getOtherEntity()) || (tile->getRelatedTile()))
-		return 0;
+	if(_tilesMap->find(make_pair(x,y)) != _tilesMap->end()) {
+		TileModel* tile = _tilesMap->at(make_pair(x,y));
+		if ( (tile->getOtherEntity()) || (tile->getRelatedTile()))
+			return 0;
+		std::pair<unsigned,unsigned> a(x,y);
+		if (GameView::instance().getDaniableInTile(a) != NULL)
+			return 0;
+		if(tile->getHasHiddenItem())
+			return 0;
+	}
 	return 1;
 }
 
@@ -303,7 +311,9 @@ void StageModel::insertEntity(KeyPair k, EntityObject* e) {
 }
 
 TileModel* StageModel::getTileAt(KeyPair k) {
-	return _tilesMap->at(k);
+	if(_tilesMap->find(k) != _tilesMap->end())
+		return _tilesMap->at(k);
+	return NULL;
 }
 
 TileModel* StageModel::getFirstTile() {

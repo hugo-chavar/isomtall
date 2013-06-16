@@ -12,7 +12,7 @@ public:
 	std::pair<int, int> pixelToTileCoordinates(std::pair<int, int> pixelPosition);
 	bool isInsideWorld(std::pair<int, int> tilePosition);
 	bool canCross(std::pair<int, int> tilePosition);
-	Sprite* getSprite(std::string value);
+	Sprite* getSpriteWithName(std::string value);
 protected:
 
 };

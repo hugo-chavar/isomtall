@@ -37,6 +37,22 @@ std::pair<int, int> Movable::getInitialTile() {
 	return this->initialTile;
 }
 
+void Movable::setCurrentTile(std::pair<int, int> value) {
+	this->currentTile = value;
+}
+
+std::pair<int, int> Movable::getCurrentTile() {
+	return this->currentTile;
+}
+
+void Movable::setLastTile(std::pair<int, int> value) {
+	this->lastTile = value;
+}
+
+std::pair<int, int> Movable::getLastTile() {
+	return this->lastTile;
+}
+
 void Movable::setTargetReached(bool value) {
 	this->targetReached = value;
 }
@@ -76,28 +92,36 @@ void Movable::render(Camera& camera) {
 	//TODO: al metodo isAlive() llamar fuera de la clase y no entrar acá
 	if (!this->isAlive())
 		return;
+	//TODO: ver si necesito datos de la camara para calcular la posicion
 	this->updateRectanglePosition(this->getPosition().first, this->getPosition().second);
-	camera.render(this->spriteRect,this->sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(false));
+	camera.render(this->spriteRect,this->sprite->getSurfaceAt(this->getOrientation())->getSurfaceToShow(false));
 }
 
 void Movable::move() {
 	std::pair<float, float> deltaMovement;
 	float deltaVelocity = this->getVelocity()*this->getDeltaTime();
-	deltaMovement.first = deltaVelocity*this->getDirection().first + this->remaining.first;
-	deltaMovement.second = deltaVelocity*this->getDirection().second/2 + this->remaining.second;
+	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
+	deltaMovement.second = deltaVelocity*this->getPixelDirection().second/2 + this->remaining.second;
 	this->remaining.first = deltaMovement.first - std::floor(deltaMovement.first);
 	this->remaining.second = deltaMovement.second - std::floor(deltaMovement.second);
-	std::pair<int, int> newPosition;
-	newPosition.first = this->getPosition().first + static_cast<int>(std::floor(deltaMovement.first));
-	newPosition.second = this->getPosition().second + static_cast<int>(std::floor(deltaMovement.second));
-	if (this->validTilePosition(newPosition))
-		this->setPosition(newPosition);
-	else
-		this->setCouldContinue(false);
+	std::pair<int, int> newPixelPosition;
+	newPixelPosition.first = this->getPosition().first + static_cast<int>(std::floor(deltaMovement.first));
+	newPixelPosition.second = this->getPosition().second + static_cast<int>(std::floor(deltaMovement.second));
+	this->setPosition(newPixelPosition);
+	std::pair<int, int> newTilePosition = this->whichTile(newPixelPosition);
+	if (this->getCurrentTile() != newTilePosition) {
+		if (this->validTilePosition(newTilePosition)) {
+			this->setLastTile(this->getCurrentTile());
+			
+			this->setCurrentTile(newTilePosition);
+		} else {
+			this->setCouldContinue(false);
+		}
+	}
 }
 
-bool Movable::validTilePosition(std::pair<int, int> pixelPosition) {
-	return this->isInsideWorld(this->pixelToTileCoordinates(pixelPosition));
+bool Movable::validTilePosition(std::pair<int, int> tilePosition) {
+	return this->isInsideWorld(tilePosition);
 }
 
 void Movable::calculateWayForward() {
@@ -105,12 +129,29 @@ void Movable::calculateWayForward() {
 }
 
 void Movable::verify() {
-	if (this->pixelToTileCoordinates(this->getPosition()) == this->getTargetTile())
+	if (this->getCurrentTile() == this->getTargetTile())
 		this->setTargetReached(true);
-	if (!this->canCross(this->pixelToTileCoordinates(this->getPosition())))
+	if (!this->canCross(this->getCurrentTile()))
 		this->setCouldContinue(false);
 }
 
 bool Movable::isAlive() {
-	return (!this->isTargetReached() || this->couldContinue());
+	return (!this->isTargetReached() && this->couldContinue());
+}
+
+void Movable::initialize() {
+	this->setSprite(this->getSpriteWithName(this->getName()));
+	this->setCurrentTile(this->getInitialTile());
+	this->setLastTile(this->getInitialTile());
+	int x, y, aux1, aux2;
+	aux1 = (this->getInitialTile().first - this->getInitialTile().second)/2;
+	aux2 = (this->getInitialTile().first + this->getInitialTile().second)/2;
+	x = this->getTileWidth()*aux1 - this->getSprite()->relatx();
+	y = this->getTileHeight()*aux2 - this->getSprite()->relaty();
+	this->setPosition(std::make_pair(x, y));
+	this->setRectangle(this->getInitialTile(),this->getSprite());
+}
+
+std::pair<int, int> Movable::whichTile(std::pair<int, int> pix) {
+	return this->pixelToTileCoordinates(std::make_pair(pix.first + this->getSprite()->relatx(), pix.second + this->getSprite()->relaty()));
 }
