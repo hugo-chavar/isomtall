@@ -2,6 +2,7 @@
 
 Ammunition::Ammunition() {
 	this->owner = "";
+	this->ammo_id = "";
 }
 
 Ammunition::~Ammunition() {
@@ -23,11 +24,18 @@ void Ammunition::setAmmunitionType(unsigned value) {
 	this->ammunitionType = value;
 }
 
-
 float Ammunition::getDamage() {
 	return this->damage;
 }
 
 void Ammunition::setDamage(float value) {
 	this->damage = value;
+}
+
+std::string Ammunition::getAmmoId() {
+	return this->ammo_id;
+}
+
+void Ammunition::setAmmoID(std::string value) {
+	this->ammo_id = value;
 }
