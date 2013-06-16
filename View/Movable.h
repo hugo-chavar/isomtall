@@ -43,7 +43,7 @@ public:
 	bool validTilePosition(std::pair<int, int> pixelPosition);
 	std::pair<int, int> whichTile(std::pair<int, int> pixel);
 	void calculateWayForward();
-	void verify();
+	virtual void verify();
 	bool isAlive();
 	void initialize();
 	//------ Maybe useful in the future ----

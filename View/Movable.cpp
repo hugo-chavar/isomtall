@@ -102,20 +102,24 @@ void Movable::move() {
 	float deltaVelocity = this->getVelocity()*this->getDeltaTime();
 	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
 	deltaMovement.second = deltaVelocity*this->getPixelDirection().second/2 + this->remaining.second;
-	this->remaining.first = deltaMovement.first - std::floor(deltaMovement.first);
-	this->remaining.second = deltaMovement.second - std::floor(deltaMovement.second);
-	std::pair<int, int> newPixelPosition;
-	newPixelPosition.first = this->getPosition().first + static_cast<int>(std::floor(deltaMovement.first));
-	newPixelPosition.second = this->getPosition().second + static_cast<int>(std::floor(deltaMovement.second));
-	this->setPosition(newPixelPosition);
-	std::pair<int, int> newTilePosition = this->whichTile(newPixelPosition);
-	if (this->getCurrentTile() != newTilePosition) {
-		if (this->validTilePosition(newTilePosition)) {
-			this->setLastTile(this->getCurrentTile());
-			
-			this->setCurrentTile(newTilePosition);
-		} else {
-			this->setCouldContinue(false);
+	if ( (std::floor(deltaMovement.first) > 0) && (std::floor(deltaMovement.second) == 0) && (deltaMovement.second > 0)) {
+		this->remaining.first = deltaMovement.first;
+		this->remaining.second = deltaMovement.second;
+	} else {
+		this->remaining.first = deltaMovement.first - std::floor(deltaMovement.first);
+		this->remaining.second = deltaMovement.second - std::floor(deltaMovement.second);
+		std::pair<int, int> newPixelPosition;
+		newPixelPosition.first = this->getPosition().first + static_cast<int>(std::floor(deltaMovement.first));
+		newPixelPosition.second = this->getPosition().second + static_cast<int>(std::floor(deltaMovement.second));
+		this->setPosition(newPixelPosition);
+		std::pair<int, int> newTilePosition = this->whichTile(newPixelPosition);
+		if (this->getCurrentTile() != newTilePosition) {
+			if (this->validTilePosition(newTilePosition)) {
+				this->setLastTile(this->getCurrentTile());
+				this->setCurrentTile(newTilePosition);
+			} else {
+				this->setCouldContinue(false);
+			}
 		}
 	}
 }
@@ -129,10 +133,11 @@ void Movable::calculateWayForward() {
 }
 
 void Movable::verify() {
+	if (!this->canCross(this->getCurrentTile())) {
+		this->setCouldContinue(false);
+	}
 	if (this->getCurrentTile() == this->getTargetTile())
 		this->setTargetReached(true);
-	if (!this->canCross(this->getCurrentTile()))
-		this->setCouldContinue(false);
 }
 
 bool Movable::isAlive() {
@@ -143,11 +148,9 @@ void Movable::initialize() {
 	this->setSprite(this->getSpriteWithName(this->getName()));
 	this->setCurrentTile(this->getInitialTile());
 	this->setLastTile(this->getInitialTile());
-	int x, y, aux1, aux2;
-	aux1 = (this->getInitialTile().first - this->getInitialTile().second)/2;
-	aux2 = (this->getInitialTile().first + this->getInitialTile().second)/2;
-	x = this->getTileWidth()*aux1 - this->getSprite()->relatx();
-	y = this->getTileHeight()*aux2 - this->getSprite()->relaty();
+	int x, y;
+	x = this->getTileWidth()*(this->getInitialTile().first - this->getInitialTile().second)/2 - this->getSprite()->relatx();
+	y = this->getTileHeight()*(this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
 	this->setPosition(std::make_pair(x, y));
 	this->setRectangle(this->getInitialTile(),this->getSprite());
 }
