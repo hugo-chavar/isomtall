@@ -39,8 +39,6 @@ public:
 	//string getPlayerCharacterId();
 	int getStageNumber();
 	void setStageNumber(int stageNo);
-	void setStageNumberStatus(bool status);
-	bool isStageNumberSet();
 	void startWorld();
 	float getRandom();
 
@@ -53,7 +51,6 @@ private:
 	//map <string,PersonajeModelo*> personajesEnJuego;
 	//string playerName;
 	//string playerCharacterId;
-	bool stageNumberSet;
 	int stageNumber;
 };
 

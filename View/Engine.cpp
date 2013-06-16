@@ -331,8 +331,7 @@ void Engine::update() {
 }
 
 void Engine::render() {
-	if (GameView::instance().getStatus() !=STATUS_RESTART_GAME )
-		GameView::instance().render();
+	GameView::instance().render();
 }
 
 void Engine::cleanUp() {

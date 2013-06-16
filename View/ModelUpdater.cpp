@@ -157,26 +157,36 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 			break;
 		case OPCODE_INIT_SYNCHRONIZE:
 			{
-				Game::instance().setStageNumber(stringUtilities::stringToUnsigned(instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER)));
-				Game::instance().setStageNumberStatus(true);
-
-				if (GameView::instance().getStatus() == STATUS_RESTART_GAME) {
-					Game::instance().restart();
-					GameView::instance().restart();
+				std::string stageNumber = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER);
+				if (stageNumber != "") {
+					Game::instance().setStageNumber(stringUtilities::stringToUnsigned(stageNumber));
+					if (GameView::instance().getStatus() == STATUS_RESTART_GAME) {
+						Game::instance().restart();
+						GameView::instance().restart();
+					}
 				}
 
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
-				GameView::instance().getMyPersonaje()->initFromString(syncData);
-				GameView::instance().getMyPersonaje()->setActive(true);
-				GameView::instance().getCamera()->setCenterPixel(GameView::instance().getMyPersonaje()->getPixelPosition());
+				if (syncData != "") {
+					GameView::instance().getMyPersonaje()->initFromString(syncData);
+					GameView::instance().getMyPersonaje()->setActive(true);
+					GameView::instance().getCamera()->setCenterPixel(GameView::instance().getMyPersonaje()->getPixelPosition());
+				}
+
 				std::string ItemsData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ITEMS_INIT);
-				GameView::instance().getWorldView()->initItemsFromString(ItemsData);
+				if (ItemsData != "")
+					GameView::instance().getWorldView()->initItemsFromString(ItemsData);
+
 				std::string missionData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_MISSION_INIT);
-				GameView::instance().manageMissionInit(missionData);
+				if (missionData != "")
+					GameView::instance().manageMissionInit(missionData);
+
 				//this->requestSynchronizeClock();
 				this->requestSynchronize();
 
-				GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+				std::string restart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_RESTART);
+				if ((GameView::instance().getStatus() == STATUS_RESTART_GAME) && (restart == "1"))
+					GameView::instance().setStatus(STATUS_SIMULATION_READY_TO_RECONNECT);
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:
