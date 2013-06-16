@@ -16,7 +16,6 @@ private:
 	std::pair<int, int> lastTile;
 	bool targetReached;
 	bool _couldContinue;
-	//string name;
 
 public:
 	Movable();
@@ -46,10 +45,7 @@ public:
 	virtual void verify();
 	bool isAlive();
 	void initialize();
-	//------ Maybe useful in the future ----
 	bool isItem();
-	//string getName();
-	//std::pair<int, int> getTraslation();
 };
 
 #endif // _MOVABLE_H_

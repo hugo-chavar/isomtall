@@ -5,7 +5,7 @@
 #include "GameView.h"
 #include "SDL_ttf.h"
 #include "Instruction.h"
-#include "../Common/stringUtilities.h"
+#include "../Common/StringUtilities.h"
 #include "../Model/OpcionesJuego.h"
 #include "Logger.h"
 
@@ -339,6 +339,7 @@ void Engine::cleanUp() {
 	//Instruction instructionOut;
 
 	GameView::instance().cleanUp();
+	Logger::instance().log("GameView::instance().cleanUp();");
 
 	//this->_login.cleanUp();
 
@@ -348,13 +349,17 @@ void Engine::cleanUp() {
 	//	this->getModelUpdater()->addInstruction(instructionOut);
 	//	this->getModelUpdater()->stopUpdating(false);
 	//}
-	TTF_Quit();
-	SDL_Quit();
+
 }
 
 Engine::~Engine() {
 	Logger::instance().log("Engine::~Engine()");
 	WSACleanup();
+	Logger::instance().log("WSACleanup()");
+	TTF_Quit();
+	Logger::instance().log("TTF_Quit()");
+	SDL_Quit();
+	Logger::instance().log("SDL_Quit()");
 }
 //
 //ModelUpdater* Engine::getModelUpdater() {

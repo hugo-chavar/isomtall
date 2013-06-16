@@ -39,3 +39,11 @@ std::string Ammunition::getAmmoId() {
 void Ammunition::setAmmoID(std::string value) {
 	this->ammo_id = value;
 }
+
+bool Ammunition::isAvailable() {
+	return this->available;
+}
+
+void Ammunition::setAvailable(bool available) {
+	this->available = available;
+}
