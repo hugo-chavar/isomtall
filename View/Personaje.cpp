@@ -178,8 +178,10 @@ void Personaje::update() {
 	common::Logger::instance().log("Character pos: " + this->positionToString());
 	modelo->update();
 	this->updateStatsBar();
-	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+	if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
+		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
+			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+		}
 	}
 }
 
@@ -199,8 +201,10 @@ void Personaje::updateSinglePlayer() {
 	} else {
 		sprites[this->currentSpritePosition]->updateFrame();
 	}
-	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0) /* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+	if ((int)(this->sprites.size()-1) >= ((int)this->getCurrentSpritePosition())) {
+		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
+			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+		}
 	}
 	this->updateStatsBar();
 }
