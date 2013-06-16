@@ -10,7 +10,7 @@ protected:
 public:
 	Arrow();
 	~Arrow();
-
+	void impact(Daniable* daniable);
 };
 
 #endif // _ARROW_H_

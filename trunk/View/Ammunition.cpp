@@ -22,3 +22,12 @@ unsigned Ammunition::getAmmunitionType() {
 void Ammunition::setAmmunitionType(unsigned value) {
 	this->ammunitionType = value;
 }
+
+
+float Ammunition::getDamage() {
+	return this->damage;
+}
+
+void Ammunition::setDamage(float value) {
+	this->damage = value;
+}

@@ -22,6 +22,7 @@ class Ammunition {
 protected:
 	std::string owner;
 	unsigned ammunitionType;
+	float damage;
 public:
 	Ammunition();
 	~Ammunition();
@@ -29,9 +30,10 @@ public:
 	void setOwner(std::string value);
 	unsigned getAmmunitionType();
 	void setAmmunitionType(unsigned value);
+	float getDamage();
+	void setDamage(float value);
 
 };
-
 
 #endif // _AMMUNITION_H_
 
