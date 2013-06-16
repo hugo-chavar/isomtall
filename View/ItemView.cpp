@@ -39,12 +39,12 @@ void ItemView::update()
 
 void ItemView::updateSinglePlayer()
 {
-if(GameView::instance().isSinglePlayerGame())
 	if (this->canReviveForHimself)
 	{
 		if(this->getStatus()==DEATH_ITEM)
 			{
-				int delta=static_cast <int>(Game::instance().getTimer()->getDeltaTime());
+				int delta=static_cast <int>(Game::instance().getTimer()->getDeltaTime()*1000);
+				//int delta=15;
 				if(regenerationTime-delta>0)
 					this->regenerationTime-=delta;
 				else
@@ -53,7 +53,7 @@ if(GameView::instance().isSinglePlayerGame())
 						if(GameView::instance().getMyPersonaje()->getPosicionActualEnTiles()!=this->getPosition())
 						{
 							GameView::instance().getWorldView()->getTileAt(this->getPosition())->setOtherEntity(this);
-							this->revive(HIDDEN_ITEM,this->getPosition());//Aca tendria que meter logica para que cambie de lugar el item
+							this->reviveSinglePlayer(HIDDEN_ITEM,this->getPosition());//Aca tendria que meter logica para que cambie de lugar el item
 						}
 						else
 							regenerationTime=CONST_REGENERATION_TIME+rand()%VARIABLE_REGENERATION_TIME;
@@ -122,13 +122,12 @@ void ItemView::reviveSinglePlayer(unsigned _state,std::pair <int,int> _pos)
 void ItemView::kill()
 {
 	this->setStatus(DEATH_ITEM);
+	if(GameView::instance().isSinglePlayerGame())
+		this->killSinglePlayer();
 }
 
 void ItemView::killSinglePlayer()
 {
-	//this->state=DEATH_ITEM;
-	this->setStatus(DEATH_ITEM);
-	//EMPEZAR A CONTAR EL TIEMPO
 	GameView::instance().getWorldView()->getTileAt(this->getPosition())->setOtherEntity(NULL);
 	regenerationTime=CONST_REGENERATION_TIME+rand()%VARIABLE_REGENERATION_TIME;
 }
