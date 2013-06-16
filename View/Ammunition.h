@@ -23,11 +23,14 @@ protected:
 	std::string owner;
 	unsigned ammunitionType;
 	float damage;
+	std::string ammo_id;
 public:
 	Ammunition();
 	~Ammunition();
 	std::string getOwner();
 	void setOwner(std::string value);
+	std::string getAmmoId();
+	void setAmmoID(std::string value);
 	unsigned getAmmunitionType();
 	void setAmmunitionType(unsigned value);
 	float getDamage();
