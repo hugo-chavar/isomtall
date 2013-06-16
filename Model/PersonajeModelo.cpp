@@ -19,7 +19,6 @@ PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 }
 
 PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
-	//this->current = source.current;
 	this->setPosition(source.position);
 	this->target = source.target;
 	this->targetParcial = source.targetParcial;
@@ -55,11 +54,6 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
 	this->vision = NULL;
-	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
-	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
-	/*mapKeyPressedToAnimation['a'] = ATACAR;
-	mapKeyPressedToAnimation['s'] = DEFENDER;*/
-
 	following = false;
 	precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
 	danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
