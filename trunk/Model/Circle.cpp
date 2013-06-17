@@ -111,5 +111,21 @@ int Circle::distanceToCenter(pair<int, int> point) {
 	firstCoordinate = firstCoordinate*firstCoordinate;
 	secondCoordinate = secondCoordinate*secondCoordinate;
 	double distance = sqrt(static_cast<double>(firstCoordinate + secondCoordinate));
-	return static_cast<int> (std::floor(distance + 0.5));
+	return static_cast<int> (floor(distance + 0.5));
+}
+
+void Circle::setCenter(pair<int, int> value) {
+	this->center = value;
+}
+
+pair<int, int> Circle::getCenter() {
+	return this->center;
+}
+
+void Circle::setRadius(int value) {
+	this->radius = value;
+}
+
+int Circle::getRadius() {
+	return this->radius;
 }

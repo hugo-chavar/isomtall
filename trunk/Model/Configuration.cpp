@@ -107,7 +107,7 @@ unsigned int Configuration::serverPort() {
 
 void Configuration::visionRange(int value) {
 	// rango de puertos validos
-	if ( (value >= 2) && (value <= 5000) ) {
+	if ( (value >= 1) && (value <= 5000) ) {
 		this->_visionRange = static_cast<unsigned>(value);
 	} else {
 		Logger::instance().log("Game warning: Field 'vision personaje' is not valid, defaulted.");

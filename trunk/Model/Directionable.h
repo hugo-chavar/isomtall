@@ -54,6 +54,7 @@ public:
 	std::pair<int, int> getDirection();
 	void setDirection(std::pair<int, int> dir);
 	void setDirection(std::pair<int, int> from, std::pair<int, int> to);
+	std::pair<int, int> calculateDirection(std::pair<int, int> from, std::pair<int, int> to);
 	std::string directionToString();
 	void directionFromString(std::string);
 	int getOrientation();

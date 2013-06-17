@@ -70,6 +70,7 @@ public:
 
 	void herir();
 	void morir();
+	void setNoTarget();
 	//void setPosition(std::pair<int, int> pos);
 
 	//void setCurrentWeaponIndex(unsigned int currentWeaponIndex);

@@ -2,7 +2,6 @@
 
 Weapon::Weapon() {
 	this->active = false;
-	this->range = 0;
 	this->damage = 0;
 	this->precision = 0;
 }
@@ -14,8 +13,8 @@ void Weapon::setActive(bool active) {
 	this->active = active;
 }
 
-void Weapon::setRange(unsigned int range) {
-	this->range = range;
+void Weapon::setRange(int value) {
+	this->range.setRadius(value);
 }
 
 void Weapon::setDamage(float damage) {
@@ -37,8 +36,8 @@ bool Weapon::getActive() {
 	return this->active;
 }
 
-unsigned int Weapon::getRange() {
-	return this->range;
+int Weapon::getRange() {
+	return this->range.getRadius();
 }
 
 float Weapon::getDamage() {
@@ -55,4 +54,22 @@ std::string Weapon::getOwner() {
 
 void Weapon::setOwner(std::string value) {
 	this->owner = value;
+}
+
+bool Weapon::sameDirection(std::pair<int, int> tile) {
+	std::pair<int, int> aux = this->calculateDirection(this->getPosition(), tile);
+	return (aux == this->getDirection());
+}
+
+bool Weapon::isInsideRange(std::pair<int, int> tile) {
+	this->range.setCenter(this->getPosition());
+	return (this->range.inside(tile));
+}
+
+bool Weapon::readyToStrike(std::pair<int, int> tile) {
+	if (!this->sameDirection(tile))
+		return false;
+	if (!this->isInsideRange(tile))
+		return false;
+	return true;
 }
