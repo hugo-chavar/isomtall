@@ -403,6 +403,7 @@ void Personaje::atacar() {
 			//ataque con espada
 					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 					this->modelo->atacar();
+					
 				break;
 			}
 			case WEAPON_BOW: {
@@ -410,6 +411,7 @@ void Personaje::atacar() {
 				break;
 			}
 		}
+		currentEnemy = NULL;
 	}
 }
 
