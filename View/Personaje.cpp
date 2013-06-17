@@ -149,12 +149,12 @@ void Personaje::animar() {
 		return;
 	int currentAnimationNumber = modelo->getEstado();
 	if (this->calculateSpritePosition(currentAnimationNumber) != this->getCurrentSpritePosition()) {
-		if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
+		if (!this->hasValidSprite()) {
 			GameView::instance().getErrorImage()->restart();
 		} else {
 			sprites[this->getCurrentSpritePosition()]->restart();
 		}
-		if (this->calculateSpritePosition(currentAnimationNumber) > static_cast<int>(sprites.size()-1)) {
+		if (!this->hasValidSprite()) {
 			GameView::instance().getErrorImage()->restart();
 		} else {
 			sprites[this->calculateSpritePosition(currentAnimationNumber)]->restart();
@@ -178,7 +178,8 @@ void Personaje::update() {
 	common::Logger::instance().log("Character pos: " + this->positionToString());
 	modelo->update();
 	this->updateStatsBar();
-	if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
+	//if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
+	if (this->hasValidSprite()) {
 		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
 			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
 		}
@@ -236,13 +237,25 @@ void Personaje::calcularSigTileAMover(){
 		//tileActual = modelo->getPosition();
 		//modelo->setIsInCenterTile(true);
 		this->eatIfItem(this->getPosition());
-		//if Arma.meTengoQueDetener(posActual, posEnemigo)
-		  //detener
-		//else
+		if (this->currentEnemy != NULL) {
+			//prepare things to attack
+			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
+			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
+			//if Arma.meTengoQueDetener(posActual, posEnemigo)
+			// detenerse
+			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
+				//this->detenerAnimacion();
+				this->modelo->setNoTarget(); //Fer fijate si esta linea está bien..
+			} else
+				currentAnimationNumber = modelo->mover(tile, velocidad);
+		} else {
 			currentAnimationNumber = modelo->mover(tile, velocidad);
+		}
 		if (this->modelo->estaAnimandose())
 			return;
 		this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
+		if (currentSpritePosition < 0)
+			this->currentSpritePosition = 0;
 		if (previousSpritePosition != this->currentSpritePosition) {
 			ePot.first = 0;
 			ePot.second = 0;
@@ -384,22 +397,27 @@ void Personaje::recibirDano(float dano) {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
-		//&&(this->getSelectedWeapon()->isInsideRange(currentEnemy->getPosition())))
+		//this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
+		//this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
+		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
+			return;
+		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
+			return;
 		switch (this->selectedWeapon) {
-		case WEAPON_SWORD: {
+			case WEAPON_SWORD: {
 			//ataque con espada
-			if ((currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
-				//this->resolverAtaque();
-				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
-				this->modelo->atacar();
-				currentEnemy = NULL;
+				//if ((currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
+					//this->resolverAtaque();
+					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+					this->modelo->atacar();
+					currentEnemy = NULL;
+				//}
+				break;
 			}
-			break;
-						   }
-		case WEAPON_BOW:
-			//ataque con arco y flecha
-			break;
-
+			case WEAPON_BOW: {
+				//ataque con arco y flecha
+				break;
+			}
 		}
 	}
 }
@@ -687,6 +705,7 @@ int Personaje::getCurrentSpritePosition() {
 void Personaje::setCurrentSpritePosition(int pos) {
 	if (pos == ESTADO_ERROR) {
 		this->currentSpritePosition = 0;
+		return;
 	}
 	this->currentSpritePosition = pos;
 }

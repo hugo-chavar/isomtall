@@ -40,8 +40,7 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setPosition(std::make_pair(pos_x, pos_y));
-	this->target = this->getPosition();
-	this->targetParcial = this->target;
+	this->setNoTarget();
 	this->startPosition = this->target;
 	xPath = NULL;
 	yPath = NULL;
@@ -297,6 +296,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	int cambio = SIN_CAMBIO;
 	double coste = 0;
 	float costeF = 0;
+	
 
 	if (this->target == this->getPosition()) {
 		return (this->quedarseQuieto(velocidadAni));
@@ -347,6 +347,7 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 
 
 void PersonajeModelo::orientar(std::pair<int, int> destino) {
+	this->setDirection(this->getPosition(), destino);
 	int cambio = ESTADO_MOVIMIENTO;
 	estado = cambiarEstado(destino.first, destino.second, cambio);
 }
@@ -548,10 +549,7 @@ void PersonajeModelo::increaseSpeed(float factor)
 	}
 }
 
-//std::vector<model::Weapon*>& PersonajeModelo::getWeapons() {
-//	return this->weapons;
-//}
-//
-//void PersonajeModelo::setCurrentWeaponIndex(unsigned int currentWeaponIndex) {
-//	this->currentWeaponIndex = currentWeaponIndex;
-//}
+void PersonajeModelo::setNoTarget() {
+	this->target = this->getPosition();
+	this->targetParcial = this->target;
+}

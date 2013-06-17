@@ -39,9 +39,7 @@ void Directionable::directionFromString(std::string stringPosition) {
 }
 
 void Directionable::setDirection(std::pair<int, int> from, std::pair<int, int> to) {
-	std::pair<int, int> aux = to + (from*(-1));
-	this->direction.first = (aux.first == 0) ? 0 : ((aux.first > 0)? 1: -1);
-	this->direction.second = (aux.second == 0) ? 0 : ((aux.second > 0)? 1: -1);
+	this->setDirection(this->calculateDirection(from, to));
 }
 
 int Directionable::getOrientation() {
@@ -70,4 +68,11 @@ int Directionable::getOrientation() {
 
 std::pair<int, int> Directionable::getPixelDirection() {
 	return TRANSFORM_TILE_TO_PIXEL_DIRECTION.at(this->direction);
+}
+
+std::pair<int, int> Directionable::calculateDirection(std::pair<int, int> from, std::pair<int, int> to) {
+	std::pair<int, int> aux = to + (from*(-1));
+	aux.first = (aux.first == 0) ? 0 : ((aux.first > 0)? 1: -1);
+	aux.second = (aux.second == 0) ? 0 : ((aux.second > 0)? 1: -1);
+	return aux;
 }
