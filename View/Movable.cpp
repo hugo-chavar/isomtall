@@ -151,7 +151,6 @@ bool Movable::isAlive() {
 }
 
 void Movable::initialize() {
-	this->setSprite(this->getSpriteWithName(this->getName()));
 	this->setCurrentTile(this->getInitialTile());
 	this->setLastTile(this->getInitialTile());
 	int x, y;
