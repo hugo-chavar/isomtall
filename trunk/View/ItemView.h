@@ -15,7 +15,6 @@ protected:
 	//bool alive;
 
 	//Andy agrego
-	std::string name;
 	int regenerationTime;
 	bool canReviveForHimself;
 	//Andy agrego
