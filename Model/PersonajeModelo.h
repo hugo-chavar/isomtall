@@ -71,9 +71,6 @@ public:
 	void herir();
 	void morir();
 	void setNoTarget();
-	//void setPosition(std::pair<int, int> pos);
-
-	//void setCurrentWeaponIndex(unsigned int currentWeaponIndex);
 private:
 
 	int siCaminaDetenerse();
@@ -89,8 +86,6 @@ private:
 	void initialize(int pos_x, int pos_y);
 	void changeToState(int addedState);
 	void changeToAnimation(int animationNumber);
-	
-	//std::pair<int, int> current;
 	std::pair<int, int> target;
 	std::pair<int, int> targetParcial;
 	int* xPath;
@@ -119,17 +114,10 @@ private:
 	void resetChar();
 
 	std::pair<int, int> startPosition;
-	//std::pair<int, int> current;
 	bool isReseting;
 	bool active;
 	//bool isInCenterTile;
 	bool following;
-
-	//std::vector<model::Weapon*> weapons;
-
-	//unsigned int currentWeaponIndex;
-
-	//std::vector<model::Weapon*>& getWeapons();
 
 	//------------------------ATRIBUTOS (PONGAN ACA LOS ATRIBUTOS DEL PJ: VIDA, MAGIA, DAÑO, ETC)------------------------
 	float precisionMinima;

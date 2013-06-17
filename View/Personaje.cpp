@@ -394,8 +394,6 @@ void Personaje::recibirDano(float dano) {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
-		//this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
-		//this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
@@ -403,12 +401,8 @@ void Personaje::atacar() {
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
 			//ataque con espada
-				//if ((currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
-					//this->resolverAtaque();
 					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 					this->modelo->atacar();
-					currentEnemy = NULL;
-				//}
 				break;
 			}
 			case WEAPON_BOW: {
