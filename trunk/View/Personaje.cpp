@@ -248,11 +248,12 @@ void Personaje::calcularSigTileAMover(){
 		} else {
 			currentAnimationNumber = modelo->mover(tile, velocidad);
 		}
+		//currentAnimationNumber = modelo->mover(tile, velocidad);
 		if (this->modelo->estaAnimandose())
 			return;
 		this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
-		if (currentSpritePosition < 0)
-			this->currentSpritePosition = 0;
+		//if (currentSpritePosition < 0)
+		//	this->currentSpritePosition = 0;
 		if (previousSpritePosition != this->currentSpritePosition) {
 			ePot.first = 0;
 			ePot.second = 0;
@@ -394,6 +395,8 @@ void Personaje::recibirDano(float dano) {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
+		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
+		this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
