@@ -84,6 +84,7 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Daniable.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Flag.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameSounds.cpp" />
     <ClCompile Include="GameView.cpp" />
@@ -97,6 +98,7 @@
     <ClCompile Include="LoginUpdater.cpp" />
     <ClCompile Include="MagicBottle.cpp" />
     <ClCompile Include="MapItem.cpp" />
+    <ClCompile Include="Mission.cpp" />
     <ClCompile Include="ModelUpdater.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Notification.cpp" />
@@ -137,6 +139,7 @@
     <ClInclude Include="Connector.h" />
     <ClInclude Include="Daniable.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Flag.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />
     <ClInclude Include="Heart.h" />
@@ -149,6 +152,7 @@
     <ClInclude Include="LoginUpdater.h" />
     <ClInclude Include="MagicBottle.h" />
     <ClInclude Include="MapItem.h" />
+    <ClInclude Include="Mission.h" />
     <ClInclude Include="ModelUpdater.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Notification.h" />

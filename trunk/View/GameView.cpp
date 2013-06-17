@@ -37,8 +37,6 @@ GameView::~GameView() {
 
 	if (this->menu)
 		delete this->menu;
-
-
 }
 
 void GameView::initialize() {
@@ -68,6 +66,10 @@ void GameView::initialize() {
 		statTable.initialize();
 		statTable.setFont(this->getFontSize(12));
 	}
+	
+	if (this->isSinglePlayer)
+		mission.initialize();
+
 	this->menu->setNotificationFont(this->getFontSize(20));
 	
 	this->menu->setNotificationMessage("SERVER CONNECTION LOST");
@@ -90,6 +92,18 @@ void GameView::restart() {
 	this->chat.setIsTyping(false);
 	mapInitialized = worldView.initialize();
 
+	if (this->isSinglePlayer) {	
+		map<string, Personaje*>::iterator it;
+		it = personajes.find(this->getPlayerName());
+		personajes.erase(it);
+		delete (this->personaje);
+		Game::instance().world()->loadNamedChars();
+		this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
+		this->addPersonaje(this->getPlayerName(), this->personaje);
+		this->personaje->setActive(true);
+		mission.initialize();
+	}
+
 	if (mapInitialized) {
 		this->camera.setCenterPixel(this->personaje->getPixelPosition());
 		//statTable.initialize();
@@ -106,6 +120,10 @@ GameView& GameView::instance() {
 
 view::Stage* GameView::getWorldView() {
 	return &worldView;
+}
+
+Mission* GameView::getMission() {
+	return &mission;
 }
 
 Camera* GameView::getCamera() {
@@ -329,6 +347,10 @@ void GameView::update() {
 			this->menu->hideButtons();
 			this->worldView.updateSinglePlayer();
 			this->getMyPersonaje()->updateSinglePlayer();
+			if (this->mission.isGameOver()) {
+				this->winner = this->playerName;
+				this->setStatus(STATUS_GAME_OVER);
+			}
 		break;
 		case STATUS_SIMULATION_CONNECTED:
 			this->menu->setDisplayNotification(false);
@@ -575,7 +597,7 @@ Daniable* GameView::getDaniableInTile(std::pair <int, int> tile) {
 		{
 			return item;
 		}
-		// YAMI return mission.manageAttack(tile);
+		return mission.manageAttack(tile);
 	}
 	return NULL;
 }

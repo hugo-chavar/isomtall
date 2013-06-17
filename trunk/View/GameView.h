@@ -40,6 +40,7 @@ enum gameStatus_t {
 #include "Login.h"
 #include "StatsTable.h"
 #include "GameSounds.h"
+#include "Mission.h"
 
 using namespace std;
 
@@ -88,11 +89,11 @@ public:
 	StatsTable* getStatsTable();
 	void addFontSize(int size);
 	TTF_Font* getFontSize(int size);
-
+	Mission* getMission();
 	GameSounds& getGameSounds();
 	bool isSinglePlayerGame();
-
 	Daniable* getDaniableInTile(std::pair <int, int> tile);
+
 private:
 	view::Camera camera;
 	view::Stage worldView;
@@ -118,6 +119,7 @@ private:
 	bool needsConnectToServer;
 	bool needsUpdateFiles;
 	bool isSinglePlayer;
+	Mission mission;
 	//Sounds
 	GameSounds gameSounds;
 

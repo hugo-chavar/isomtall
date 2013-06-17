@@ -57,6 +57,10 @@ struct sMainCharacter {
 	string entityType;
 	int x;
 	int y;
+	float minPrecision;
+	float maxDamage;
+	float maxLife;
+	float maxMagic;
 };
 
 struct sItemsDef {

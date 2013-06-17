@@ -30,7 +30,6 @@ public:
 	void animar(char opcion);
 	std::pair<int, int> obtenerFrentePersonaje();
 	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
-	
 	std::string nextDirectory();
 	bool hasDirectoryRemaining();
 	void setAnimation(AnimatedEntity* entity);
@@ -50,6 +49,8 @@ public:
 	void setVidaMaxima(float vida);
 	float getMagiaMaxima();
 	void setMagiaMaxima(float magia);
+	void setPrecisionMinima(float precision);
+	void setDanoMaximo(float dano);
 
 	void setActive(bool active);
 	bool isActive();
@@ -61,8 +62,6 @@ public:
 	void atacar();
 	float getDanoMaximo();
 	float getPrecisionMinima();
-	void setDanoMaximo(float dano);
-	void setPrecisionMinima(float precision);
 
 	void setFollowingEnemy(bool enemy);
 	std::pair <int, int> getTarget();
@@ -71,6 +70,7 @@ public:
 	void herir();
 	void morir();
 	void setNoTarget();
+
 private:
 
 	int siCaminaDetenerse();
@@ -84,6 +84,7 @@ private:
 	void defender();
 
 	void initialize(int pos_x, int pos_y);
+	void resetChar();
 	void changeToState(int addedState);
 	void changeToAnimation(int animationNumber);
 	std::pair<int, int> target;
@@ -101,8 +102,6 @@ private:
 	AnimatedEntity * animation;
 	std::string name;
 	CharacterVision* vision;
-	float vidaMaxima;
-	float magiaMaxima;
 
 	int obtenerOrientacionRespectoAUnTile(int x, int y);	//Obtiene el sentido según el signo de x e y
 	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
@@ -111,7 +110,6 @@ private:
 
 	bool perseguirEnemigo();
 	void resolverAnimacion(int animacionNueva);
-	void resetChar();
 
 	std::pair<int, int> startPosition;
 	bool isReseting;
@@ -121,6 +119,8 @@ private:
 
 	//------------------------ATRIBUTOS (PONGAN ACA LOS ATRIBUTOS DEL PJ: VIDA, MAGIA, DAÑO, ETC)------------------------
 	float precisionMinima;
+	float vidaMaxima;
+	float magiaMaxima;
 	float danoMaximo;
 };
 

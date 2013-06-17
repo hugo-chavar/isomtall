@@ -428,7 +428,10 @@ void operator >> (const Node& node, sMainCharacter& mainCharacter) {
 	};
 	managePositiveIntCase(node, mainCharacter.x, mainCharacter.entityType, "main character","x",DEFAULT_MAIN_CHARACTER_X, YES);
 	managePositiveIntCase(node, mainCharacter.y, mainCharacter.entityType, "main character","y",DEFAULT_MAIN_CHARACTER_Y, YES);
-
+	managePositiveFloatCase(node, mainCharacter.minPrecision, mainCharacter.entityType, "main character", "precisionMinima", DEFAULT_CHARACTER_MIN_PRECISION, YES);
+	managePositiveFloatCase(node, mainCharacter.maxDamage, mainCharacter.entityType, "main character", "danoMaximo", DEFAULT_CHARACTER_MAX_DAMAGE, YES);
+	managePositiveFloatCase(node, mainCharacter.maxLife, mainCharacter.entityType, "main character", "vidaMaxima", DEFAULT_CHARACTER_MAX_LIFE, YES);
+	managePositiveFloatCase(node, mainCharacter.maxMagic, mainCharacter.entityType, "main character", "magiaMaxima", DEFAULT_CHARACTER_MAX_MAGIC, YES);
 }
 
 void operator >> (const Node& node, sItem& item) {
@@ -573,6 +576,10 @@ PersonajeModelo* YAMLParser::generateDefaultMainCharacter() {
 	mainCharacter->setDestino(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 	mainCharacter->setAnimation(entities.vAnimatedEntities[0]); // Uso la primera entidad porque ahí va estar el default en caso de no haber ninguna entidad.
 	mainCharacter->setName("DEFAULT");
+	mainCharacter->setDanoMaximo(DEFAULT_CHARACTER_MAX_DAMAGE);
+	mainCharacter->setMagiaMaxima(DEFAULT_CHARACTER_MAX_MAGIC);
+	mainCharacter->setPrecisionMinima(DEFAULT_CHARACTER_MIN_PRECISION);
+	mainCharacter->setVidaMaxima(DEFAULT_CHARACTER_MAX_LIFE);
 	return mainCharacter;
 }
 
@@ -686,6 +693,10 @@ void YAMLParser::loadMainCharacters(int stage_index) {
 				mainCharacter->setDestino(mainCharacter_aux.x, mainCharacter_aux.y);
 				mainCharacter->setAnimation(animatedEntityType);
 				mainCharacter->setName(mainCharacter_aux.entityType);
+				mainCharacter->setDanoMaximo(mainCharacter_aux.maxDamage);
+				mainCharacter->setMagiaMaxima(mainCharacter_aux.maxMagic);
+				mainCharacter->setPrecisionMinima(mainCharacter_aux.minPrecision);
+				mainCharacter->setVidaMaxima(mainCharacter_aux.maxLife);
 				stage_aux.vMainCharacters.push_back(mainCharacter);
 			}
 			else {
