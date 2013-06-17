@@ -112,7 +112,7 @@ private:
 	void moverSpriteEnY();
 	//void setCenteredInTile(bool centroTile);
 	void atacar();
-	void resolverAtaque();
+	//void resolverAtaque();
 	void perseguirEnemigo();
 	bool isCenteredInTileInSinglePlayer();
 

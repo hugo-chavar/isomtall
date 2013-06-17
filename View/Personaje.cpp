@@ -371,16 +371,16 @@ void Personaje::recibirDano(float dano) {
 		GameView::instance().getWorldView()->relocateItem(this->getPosition());
 	}
 }
-
-void Personaje::resolverAtaque() {
-	float precision = Game::instance().getRandom();
-	if (precision >= this->modelo->getPrecisionMinima()) {
-		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-		//YAMI if (!(this->currentEnemy->isAlive())) {
-		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-		//}
-	}
-}
+//
+//void Personaje::resolverAtaque() {
+//	float precision = Game::instance().getRandom();
+//	if (precision >= this->modelo->getPrecisionMinima()) {
+//		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
+//		//YAMI if (!(this->currentEnemy->isAlive())) {
+//		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+//		//}
+//	}
+//}
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
@@ -389,7 +389,8 @@ void Personaje::atacar() {
 		case WEAPON_SWORD: {
 			//ataque con espada
 			if ((currentEnemy->getPosition() == this->modelo->obtenerFrentePersonaje())) {
-				this->resolverAtaque();
+				//this->resolverAtaque();
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->atacar();
 				currentEnemy = NULL;
 			}
@@ -819,16 +820,16 @@ std::vector<Weapon*>& Personaje::getWeapons() {
 }
 
 void Personaje::loadWeapons() {
-		
 	//Initializing weapons
 	Sword* sword = new Sword();
 	sword->setOwner(this->getPlayerName());
-	sword->initialize(true,1,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	
+	sword->initialize(true,1,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(sword);
 
 	Bow* bow = new Bow();
 	bow->setOwner(this->getPlayerName());
-	bow->initialize(false,5,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
+	bow->initialize(true,5,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bow);
 	this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 }

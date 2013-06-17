@@ -14,5 +14,6 @@ void Arrow::impact(Daniable* daniable) {
 	if (daniable) {
 		daniable->recibirDano(this->getDamage());
 		this->setTargetReached(true);
+		this->setAvailable(true);
 	}
 }
