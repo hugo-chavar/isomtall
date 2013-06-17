@@ -3,8 +3,9 @@
 
 #include <string>
 #include "Daniable.h"
+#include "Positionable.h"
 
-class Weapon {
+class Weapon: public Positionable {
 private:
 	bool active;
 	unsigned int range;

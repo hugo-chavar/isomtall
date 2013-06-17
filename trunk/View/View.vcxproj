@@ -72,7 +72,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Ammunition.cpp" />
-    <ClCompile Include="AmmunitionPool.cpp" />
     <ClCompile Include="Arrow.cpp" />
     <ClCompile Include="Bow.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -101,7 +100,6 @@
     <ClCompile Include="ModelUpdater.cpp" />
     <ClCompile Include="Movable.cpp" />
     <ClCompile Include="Notification.cpp" />
-    <ClCompile Include="ProjectileWeapon.cpp" />
     <ClCompile Include="Receiver.cpp" />
     <ClCompile Include="RenderHelper.cpp" />
     <ClCompile Include="RunningBoots.cpp" />
@@ -127,7 +125,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammunition.h" />
-    <ClInclude Include="AmmunitionPool.h" />
     <ClInclude Include="Arrow.h" />
     <ClInclude Include="Bow.h" />
     <ClInclude Include="Button.h" />
@@ -155,7 +152,6 @@
     <ClInclude Include="ModelUpdater.h" />
     <ClInclude Include="Movable.h" />
     <ClInclude Include="Notification.h" />
-    <ClInclude Include="ProjectileWeapon.h" />
     <ClInclude Include="Receiver.h" />
     <ClInclude Include="RenderHelper.h" />
     <ClInclude Include="RunningBoots.h" />
