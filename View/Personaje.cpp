@@ -241,11 +241,8 @@ void Personaje::calcularSigTileAMover(){
 			//prepare things to attack
 			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
-			//if Arma.meTengoQueDetener(posActual, posEnemigo)
-			// detenerse
 			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
-				//this->detenerAnimacion();
-				//this->modelo->setNoTarget(); //Fer fijate si esta linea está bien..
+				this->modelo->setNoTarget(); 
 			} else
 				currentAnimationNumber = modelo->mover(tile, velocidad);
 		} else {
