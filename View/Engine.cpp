@@ -95,8 +95,6 @@ void Engine::onMultiplayerEvent(SDL_Event* sdlEvent) {
 				{
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 						if (GameView::instance().isGameOver()) {
-							// TODO: Reiniciar correctamente el juego
-							//GameView::instance().initialize();
 							instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 							instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"1");
 							GameView::instance().getModelUpdater()->addInstruction(instruction);
@@ -227,12 +225,13 @@ void Engine::onSingleplayerEvent(SDL_Event* sdlEvent) {
 				{
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 						if (GameView::instance().isGameOver()) {
-							// TODO: Reiniciar correctamente el juego
-							//GameView::instance().initialize();
-							GameView::instance().setStatus(STATUS_START_SCREEN);
-							GameView::instance().getGameMenu()->setDisplayNotification(false);
-							GameView::instance().getGameMenu()->setDisplayBackground(true);
-							GameView::instance().getGameMenu()->showButtons();
+							int stageNumber = Game::instance().getStageNumber() + 1;
+							if (stageNumber >= Game::instance().yParser.vStages().size())
+								stageNumber = 0;
+							Game::instance().setStageNumber(stageNumber);
+							Game::instance().restart();
+							GameView::instance().restart();
+							GameView::instance().setStatus(STATUS_SIMULATION_PLAYING_SINGLEPLAYER);
 						} else {
 							GameView::instance().setStatus(STATUS_START_SCREEN);
 							GameView::instance().getGameMenu()->setDisplayNotification(false);

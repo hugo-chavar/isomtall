@@ -740,6 +740,10 @@ std::string Personaje::getPlayerName() {
 	return this->playerName;
 }
 
+std::string Personaje::getCharacterId() {
+	return this->character_id;
+}
+
 std::string Personaje::idToString() {
 	std::string out = this->getPlayerName();
 	out.append(";");

@@ -54,10 +54,10 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	animacionActual = SIN_CAMBIO;
 	this->vision = NULL;
 	following = false;
-	precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
-	danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
-	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
-	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
+	//precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
+	//danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
+	//vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
+	//magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	isReseting = false;
 
 	//Initializing weapons
@@ -178,10 +178,10 @@ void PersonajeModelo::resetChar() {
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
 	following = false;
-	precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
-	danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
-	vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
-	magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
+	//precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
+	//danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
+	//vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
+	//magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	isReseting = true;
 }
 
@@ -216,6 +216,14 @@ float PersonajeModelo::getMagiaMaxima() {
 
 void PersonajeModelo::setMagiaMaxima(float magia) {
 	magiaMaxima = magia;
+}
+
+void PersonajeModelo::setDanoMaximo(float dano) {
+	danoMaximo = dano;
+}
+
+void PersonajeModelo::setPrecisionMinima(float precision) {
+	precisionMinima = precision;
 }
 
 string PersonajeModelo::nextDirectory() {
