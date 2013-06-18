@@ -18,7 +18,6 @@ public:
 	~PersonajeModelo();
 	PersonajeModelo& operator=(const PersonajeModelo&);
 	void setEstado(int state);
-	//void setCurrent(int x, int y);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
 	void setIsActivo(bool active);
