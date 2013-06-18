@@ -699,10 +699,10 @@ Personaje::~Personaje(){
 PersonajeModelo* Personaje::personajeModelo() {
 	return modelo;
 }
-
-std::pair<int,int> Personaje::getPosicionEnTiles(){
-	return modelo->getPosition();
-}
+//
+//std::pair<int,int> Personaje::getPosicionEnTiles(){
+//	return modelo->getPosition();
+//}
 
 std::pair<int,int> Personaje::getPosicionActualEnTiles(){
 	float deltaAbsX = std::abs(delta.first);

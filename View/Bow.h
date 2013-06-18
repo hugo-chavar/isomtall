@@ -2,7 +2,7 @@
 #define _BOW_H_
 
 #ifndef ARROW_POOL_SIZE
-#define ARROW_POOL_SIZE 2
+#define ARROW_POOL_SIZE 5
 #endif//ARROW_POOL_SIZE
 
 #include "Arrow.h"

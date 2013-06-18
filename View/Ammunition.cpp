@@ -1,8 +1,11 @@
 #include "Ammunition.h"
+#include "StringUtilities.h"
+
+unsigned Ammunition::ammo_id_counter = 0;
 
 Ammunition::Ammunition() {
 	this->owner = "";
-	this->ammo_id = "";
+	this->ammo_id = stringUtilities::unsignedToString(ammo_id_counter++);
 }
 
 Ammunition::~Ammunition() {
