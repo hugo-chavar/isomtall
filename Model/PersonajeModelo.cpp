@@ -84,12 +84,13 @@ void PersonajeModelo::morir() {
 
 void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
 	this->setAnimating(true);
-	this->setNoTarget();
-	if (estado >= MOVIMIENTO) {
-		estado = estado + nuevaAnimacion - MOVIMIENTO;
-	} else {
-		estado = estado + nuevaAnimacion - PARADO;
-	}
+	this->changeToAnimation(nuevaAnimacion);
+	//this->setNoTarget();
+	//if (estado >= MOVIMIENTO) {
+	//	estado = estado + nuevaAnimacion - MOVIMIENTO;
+	//} else {
+	//	estado = estado + nuevaAnimacion - PARADO;
+	//}
 }
 
 float PersonajeModelo::getDanoMaximo() {
@@ -122,33 +123,32 @@ void PersonajeModelo::changeToState(int addedState) {
 	this->estado += addedState;
 }
 
-void PersonajeModelo::animar(char opcion) {
-	if ((isActivo )&& (animacionActual == SIN_CAMBIO)) {
-		
-		switch (opcion) {
-		case (OPCION_ATACAR): {
-			this->setAnimating(true);
-			this->changeToAnimation(ATACAR);
-			break;
-				  }
-		case (OPCION_DEFENDER): {
-			this->setAnimating(true);
-			this->changeToAnimation(DEFENDER);
-			break;
-				  }
-		default:;
-		}
-	}
-}
-
-
+//void PersonajeModelo::animar(char opcion) {
+//	if ((isActivo )&& (animacionActual == SIN_CAMBIO)) {
+//		
+//		switch (opcion) {
+//		case (OPCION_ATACAR): {
+//			this->setAnimating(true);
+//			this->changeToAnimation(ATACAR);
+//			break;
+//				  }
+//		case (OPCION_DEFENDER): {
+//			this->setAnimating(true);
+//			this->changeToAnimation(DEFENDER);
+//			break;
+//				  }
+//		default:;
+//		}
+//	}
+//}
 
 void PersonajeModelo::terminarAnimacion() {
 	this->setAnimating(false);
 	if (animacionActual == MORIR) {
 		this->resetChar();
 	} else {
-		estado = estado - animacionActual + PARADO;
+		//estado = estado - animacionActual + PARADO;
+		this->changeToState(PARADO - animacionActual);
 		animacionActual = SIN_CAMBIO;
 	}
 }
