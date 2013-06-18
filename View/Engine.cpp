@@ -240,7 +240,7 @@ void Engine::onSingleplayerEvent(SDL_Event* sdlEvent) {
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 						if (GameView::instance().isGameOver()) {
 							int stageNumber = Game::instance().getStageNumber() + 1;
-							if (stageNumber >= Game::instance().yParser.vStages().size())
+							if (static_cast<unsigned>(stageNumber) >= Game::instance().yParser.vStages().size())
 								stageNumber = 0;
 							Game::instance().setStageNumber(stageNumber);
 							Game::instance().restart();

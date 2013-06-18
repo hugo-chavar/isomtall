@@ -73,25 +73,25 @@ void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
 
 void PersonajeModelo::herir() {
 	animacionActual = HERIR;
-	this->resolverAnimacion(animacionActual);
+	this->changeToAnimation(animacionActual);
 }
 
 void PersonajeModelo::morir() {
 	animacionActual = MORIR;
-	this->resolverAnimacion(animacionActual);
+	this->changeToAnimation(animacionActual);
 }
 
 
-void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
-	this->setAnimating(true);
-	this->changeToAnimation(nuevaAnimacion);
-	//this->setNoTarget();
-	//if (estado >= MOVIMIENTO) {
-	//	estado = estado + nuevaAnimacion - MOVIMIENTO;
-	//} else {
-	//	estado = estado + nuevaAnimacion - PARADO;
-	//}
-}
+//void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
+//	this->setAnimating(true);
+//	this->changeToAnimation(nuevaAnimacion);
+//	//this->setNoTarget();
+//	//if (estado >= MOVIMIENTO) {
+//	//	estado = estado + nuevaAnimacion - MOVIMIENTO;
+//	//} else {
+//	//	estado = estado + nuevaAnimacion - PARADO;
+//	//}
+//}
 
 float PersonajeModelo::getDanoMaximo() {
 	return this->danoMaximo;
@@ -103,7 +103,12 @@ float PersonajeModelo::getPrecisionMinima() {
 
 void PersonajeModelo::atacar() {
 		animacionActual = ATACAR;
-		this->resolverAnimacion(animacionActual);
+		this->changeToAnimation(animacionActual);
+}
+
+void PersonajeModelo::defender() {
+	animacionActual = DEFENDER;
+	this->changeToAnimation(animacionActual);
 }
 
 bool PersonajeModelo::estaAnimandose() {
@@ -111,6 +116,7 @@ bool PersonajeModelo::estaAnimandose() {
 }
 
 void PersonajeModelo::changeToAnimation(int animationNumber) {
+	this->setAnimating(true);
 	this->setNoTarget();
 	if (estado >= MOVIMIENTO) {
 		this->changeToState(animationNumber - MOVIMIENTO);
@@ -504,21 +510,21 @@ void PersonajeModelo::update() {
 	this->vision->updatePosition(this->getPosition());
 }
 
-std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
-	std::pair <int, int> posicionSig = this->getPosition();
-
-	if ((orientacion == NORTE) || (orientacion == NORESTE) || (orientacion == ESTE))
-		posicionSig.second--;
-	else if ((orientacion == SUDOESTE) || (orientacion == OESTE) || (orientacion == SUR))
-		posicionSig.second++;
-
-	if ((orientacion == NORTE) || (orientacion == NOROESTE) || (orientacion == OESTE))
-		posicionSig.first--;
-	else if ((orientacion == ESTE) || (orientacion == SUDESTE) || (orientacion == SUR))
-		posicionSig.first++;
-	
-	return posicionSig;
-}
+//std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
+//	std::pair <int, int> posicionSig = this->getPosition();
+//
+//	if ((orientacion == NORTE) || (orientacion == NORESTE) || (orientacion == ESTE))
+//		posicionSig.second--;
+//	else if ((orientacion == SUDOESTE) || (orientacion == OESTE) || (orientacion == SUR))
+//		posicionSig.second++;
+//
+//	if ((orientacion == NORTE) || (orientacion == NOROESTE) || (orientacion == OESTE))
+//		posicionSig.first--;
+//	else if ((orientacion == ESTE) || (orientacion == SUDESTE) || (orientacion == SUR))
+//		posicionSig.first++;
+//	
+//	return posicionSig;
+//}
 
 void PersonajeModelo::setAnimating(bool value) {
 	this->isAnimating = value;

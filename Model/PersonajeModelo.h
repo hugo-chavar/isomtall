@@ -27,7 +27,7 @@ public:
 	bool estaAnimandose();
 	void terminarAnimacion();
 	//void animar(char opcion);
-	std::pair<int, int> obtenerFrentePersonaje();
+	//std::pair<int, int> obtenerFrentePersonaje();
 	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
 	std::string nextDirectory();
 	bool hasDirectoryRemaining();
@@ -59,6 +59,7 @@ public:
 	void setIsReseting();
 	bool isThereAnEnemy(int tileX, int tileY);
 	void atacar();
+	void defender();
 	float getDanoMaximo();
 	float getPrecisionMinima();
 
@@ -72,6 +73,7 @@ public:
 
 	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
 	void changeToAnimation(int animationNumber);
+	//void resolverAnimacion(int animacionNueva);
 
 private:
 
@@ -110,7 +112,7 @@ private:
 	
 
 	bool perseguirEnemigo();
-	void resolverAnimacion(int animacionNueva);
+	
 
 	std::pair<int, int> startPosition;
 	bool isReseting;
