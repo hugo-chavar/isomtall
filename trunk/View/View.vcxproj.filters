@@ -192,6 +192,9 @@
     <ClCompile Include="ItemTerremoto.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="Explosive.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -366,6 +369,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="ItemTerremoto.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Explosive.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

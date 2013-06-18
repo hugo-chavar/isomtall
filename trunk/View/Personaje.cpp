@@ -263,7 +263,7 @@ void Personaje::mover() {
 }
 
 bool Personaje::repositionToStrike() {
-	std::pair<int, int> reposition = this->getWeapons()[this->selectedWeapon]->calculateRepositionToStrike(this->currentEnemy->getPosition());
+	std::pair<int, int> reposition = this->getWeapons()[this->getSelectedWeapon()]->calculateRepositionToStrike(this->currentEnemy->getPosition());
 	if (reposition == this->getPosition())
 		return false;
 	this->modelo->setDestino(reposition.first, reposition.second);
@@ -283,12 +283,12 @@ void Personaje::calcularSigTileAMover(){
 		this->eatIfItem(this->getPosition());
 		if (this->currentEnemy != NULL) {
 			//prepare things to attack
-			common::Logger::instance().log(":calcularSigTileAMover()  enemy NOT NULL");
+			//common::Logger::instance().log(":calcularSigTileAMover()  enemy NOT NULL");
 			//common::Logger::instance().log("Enemy:  " + ((Entity*)this->currentEnemy)->getName());
-			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
-			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
-			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
-				if (this->getWeapons()[this->selectedWeapon]->needsToReposition(this->currentEnemy->getPosition())) {
+			this->getWeapons()[this->getSelectedWeapon()]->setPosition(this->getPosition());
+			this->getWeapons()[this->getSelectedWeapon()]->setDirection(this->modelo->getDirection());
+			if (this->getWeapons()[this->getSelectedWeapon()]->readyToStrike(this->currentEnemy->getPosition())) {
+				if (this->getWeapons()[this->getSelectedWeapon()]->needsToReposition(this->currentEnemy->getPosition())) {
 					this->repositionToStrike();
 					currentAnimationNumber = modelo->mover(tile, velocidad);
 				}
@@ -300,7 +300,7 @@ void Personaje::calcularSigTileAMover(){
 				currentAnimationNumber = modelo->mover(tile, velocidad);
 			}
 		} else {
-			common::Logger::instance().log("calcularSigTileAMover()  ENEMY IS NULL ");
+			//common::Logger::instance().log("calcularSigTileAMover()  ENEMY IS NULL ");
 			currentAnimationNumber = modelo->mover(tile, velocidad);
 		}
 		//currentAnimationNumber = modelo->mover(tile, velocidad);
@@ -940,8 +940,16 @@ void Personaje::loadWeapons() {
 	bow->setOwner(this->getPlayerName());
 	bow->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bow);
-	//this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
-	this->selectedWeapon = WEAPON_BOW;
-	//this->selectedWeapon = WEAPON_ICE_INCANTATOR;
-	//this->selectedWeapon = WEAPON_HAND_GRENADE;
+	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
+	this->setSelectedWeapon(WEAPON_BOW);
+	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
+	//this->setSelectedWeapon(WEAPON_HAND_GRENADE);
+}
+
+void Personaje::setSelectedWeapon(unsigned value) {
+	this->selectedWeapon = value;
+}
+
+unsigned Personaje::getSelectedWeapon() {
+	return this->selectedWeapon;
 }

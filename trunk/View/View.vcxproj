@@ -84,6 +84,7 @@
     <ClCompile Include="Connector.cpp" />
     <ClCompile Include="Daniable.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="Explosive.cpp" />
     <ClCompile Include="Flag.cpp" />
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameSounds.cpp" />
@@ -145,6 +146,7 @@
     <ClInclude Include="Connector.h" />
     <ClInclude Include="Daniable.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="Explosive.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />

@@ -38,6 +38,9 @@ public:
 	std::vector<Weapon*>& getWeapons();
 	void setCenteredInTile(bool centroTile);
 	bool isCenteredInTile();
+	void setSelectedWeapon(unsigned value);
+	unsigned getSelectedWeapon();
+
 	//----- Simulation methods -----
 	void update();
 	void updateSinglePlayer();
