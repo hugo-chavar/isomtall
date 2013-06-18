@@ -11,11 +11,11 @@ StatsTable::StatsTable() {
 	this->sword = NULL;
 	this->bomb = NULL;
 	this->bow = NULL;
-	this->grenade = NULL;
+	this->handGrenade = NULL;
 	this->wand = NULL;
 	this->bombs = 0;
 	this->arrows = 0;
-	this->grenade = 0;
+	this->handGrenade = 0;
 	this->shieldEndurance = 0;
 	this->ammo = NULL;
 	this->shieldDur = NULL;
@@ -63,12 +63,12 @@ SDL_Surface *loadSurface(std::string filename)
 bool StatsTable::initialize() {
 	sword = loadSurface("../Images/sword.png");
 	bow = loadSurface("../Images/sword.png");
-	grenade = loadSurface("../Images/sword.png");
+	handGrenade = loadSurface("../Images/sword.png");
 	bomb = loadSurface("../Images/sword.png");
 	wand = loadSurface("../Images/sword.png");
 	shield = loadSurface("../Images/Shield.png");
 	spell = loadSurface("../Images/Spell.png");
-	if ((sword == NULL) || (bow == NULL) || (grenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL)) {
+	if ((sword == NULL) || (bow == NULL) || (handGrenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL)) {
 		return false;
 	}
 	weaponBox.w = static_cast<Uint16>(sword->w);
@@ -148,9 +148,9 @@ StatsTable::~StatsTable() {
 		SDL_FreeSurface(bomb);
 		bomb = NULL;
 	}
-	if (grenade != NULL) {
-		SDL_FreeSurface(grenade);
-		grenade = NULL;
+	if (handGrenade != NULL) {
+		SDL_FreeSurface(handGrenade);
+		handGrenade = NULL;
 	}
 	if (bow != NULL) {
 		SDL_FreeSurface(bow);
