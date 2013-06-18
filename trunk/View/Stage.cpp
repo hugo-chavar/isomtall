@@ -6,6 +6,7 @@
 #include "GameView.h"
 #include "ItemFactoryView.h"
 #include "Arrow.h"
+#include "Grenade.h"
 #include "Logger.h"
 
 #define START_LEVEL 0
@@ -109,6 +110,7 @@ void view::Stage::generateStage() {
 		tileModel = tileModel->getNextTile();
 	}
 	Arrow* arrow = new Arrow();
+	Grenade* grenade = new Grenade();
 	//arrow->setInitialTile(make_pair(15,6));
 	//arrow->initialize();
 	//arrow->setDirection(Directionable::DIRECTION_S);
@@ -125,7 +127,12 @@ void view::Stage::generateStage() {
 	arrow->initialize();
 	arrow->setDirection(Directionable::DIRECTION_NO);
 	arrow->setVelocity(20);
+	grenade->setInitialTile(make_pair(15,7));
+	grenade->initialize();
+	grenade->setDirection(Directionable::DIRECTION_NO);
+	grenade->setVelocity(20);
 	this->ammunitions.push_back(arrow);
+	this->ammunitions.push_back(grenade);
 	//arrow = new Arrow();
 	//arrow->setInitialTile(make_pair(15,6));
 	//arrow->initialize();

@@ -24,7 +24,7 @@ namespace view {
 		int arrows;
 		SDL_Surface* bomb;
 		int bombs;
-		SDL_Surface* grenade;
+		SDL_Surface* handGrenade;
 		int grenades;
 		SDL_Surface* wand;
 		SDL_Surface* shield;

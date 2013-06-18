@@ -5,6 +5,7 @@
 #include "StringUtilities.h"
 #include "Sword.h"
 #include "Bow.h"
+#include "HandGrenade.h"
 
 #include "Game.h"
 #include "GameView.h"
@@ -468,6 +469,12 @@ void Personaje::atacar() {
 			}
 			case WEAPON_BOW: {
 				//ataque con arco y flecha
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->defender();
+				break;
+			}
+			case WEAPON_HAND_GRENADE: {
+				//ataque con granada
 				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->defender();
 				break;
@@ -940,6 +947,10 @@ void Personaje::loadWeapons() {
 	bow->setOwner(this->getPlayerName());
 	bow->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bow);
+	HandGrenade* handGrenade = new HandGrenade();
+	handGrenade->setOwner(this->getPlayerName());
+	handGrenade->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
+	this->getWeapons().push_back(handGrenade);
 	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 	this->setSelectedWeapon(WEAPON_BOW);
 	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);

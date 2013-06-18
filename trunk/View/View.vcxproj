@@ -89,6 +89,8 @@
     <ClCompile Include="GameMenu.cpp" />
     <ClCompile Include="GameSounds.cpp" />
     <ClCompile Include="GameView.cpp" />
+    <ClCompile Include="Grenade.cpp" />
+    <ClCompile Include="HandGrenade.cpp" />
     <ClCompile Include="Heart.cpp" />
     <ClCompile Include="Hechizo.cpp" />
     <ClCompile Include="HechizoProteccion.cpp" />
@@ -150,6 +152,8 @@
     <ClInclude Include="Flag.h" />
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />
+    <ClInclude Include="Grenade.h" />
+    <ClInclude Include="HandGrenade.h" />
     <ClInclude Include="Heart.h" />
     <ClInclude Include="Hechizo.h" />
     <ClInclude Include="HechizoProteccion.h" />
