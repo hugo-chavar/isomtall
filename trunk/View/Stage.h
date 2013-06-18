@@ -40,12 +40,12 @@ namespace view {
 		void cleanUp();
 		Sprite* getSpriteWithName(string value);
 		void updateAmmunitions();
+		void addAmmunition(Entity * ammo);
 		//Single Player
 		void updateSinglePlayer();
 		ItemView* findDeathItemSinglePlayer();
 		ItemView* getItemInTile(int posX,int posY);
 		void relocateItem(pair<int,int>pos);
-		//Sprite* getSprite(string name);
 		//Single Player
 	private:
 		vector<Sprite*> spriteArray;

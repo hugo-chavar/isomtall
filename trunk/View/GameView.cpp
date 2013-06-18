@@ -440,8 +440,7 @@ bool GameView::insidePlayerVision(std::pair<int,int> pos) {
 		TileModel* relatedTile = this->worldView.getWorldModel()->getTileAt(pos); //->getRelatedTile()
 		if (relatedTile)
 			relatedTile = relatedTile->getRelatedTile();
-		if (relatedTile) {//TODO: mejorar para optimizar codigo
-			// preguntar si es drawable() e ir salteando..
+		if (relatedTile) {
 			while ( (!inside) && (relatedTile != this->getWorldView()->getWorldModel()->getTileAt(pos)) ) {
 				pair<int, int> posRelated = relatedTile->getPosition();
 				inside = this->getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(posRelated);

@@ -11,10 +11,14 @@
 using namespace common;
 
 PersonajeModelo::PersonajeModelo() {
+	this->xPath = NULL;
+	this->yPath = NULL;
 	this->initialize(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
+	this->xPath = NULL;
+	this->yPath = NULL;
 	this->initialize(ActualX, ActualY);
 }
 
@@ -46,8 +50,6 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	this->setPosition(std::make_pair(pos_x, pos_y));
 	this->setNoTarget();
 	this->startPosition = this->target;
-	xPath = NULL;
-	yPath = NULL;
 	posMov = 0;
 	caminoSize = 0;
 	estado = PARADO;
@@ -63,15 +65,6 @@ void PersonajeModelo::initialize(int pos_x, int pos_y) {
 	//vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
 	//magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	isReseting = false;
-
-	//Initializing weapons
-	//model::Sword* sword = new model::Sword();
-	//sword->initialize(true,1,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
-	//this->getWeapons().push_back(sword);
-
-	//model::Bow* bow = new model::Bow();
-	//bow->initialize(false,5,DEFAULT_CHARACTER_MAX_DAMAGE,DEFAULT_CHARACTER_MIN_PRECISION);
-	//this->getWeapons().push_back(bow);
 }
 
 void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
@@ -91,8 +84,7 @@ void PersonajeModelo::morir() {
 
 void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
 	this->setAnimating(true);
-	this->target = this->getPosition();
-	this->targetParcial = this->target;
+	this->setNoTarget();
 	if (estado >= MOVIMIENTO) {
 		estado = estado + nuevaAnimacion - MOVIMIENTO;
 	} else {
@@ -118,8 +110,7 @@ bool PersonajeModelo::estaAnimandose() {
 }
 
 void PersonajeModelo::changeToAnimation(int animationNumber) {
-	this->targetParcial = this->getPosition();
-	this->target = this->targetParcial;
+	this->setNoTarget();
 	if (estado >= MOVIMIENTO) {
 		this->changeToState(animationNumber - MOVIMIENTO);
 	} else {
@@ -164,8 +155,7 @@ void PersonajeModelo::terminarAnimacion() {
 
 void PersonajeModelo::resetChar() {
 	this->setPosition(this->startPosition);
-	this->target = this->getPosition();
-	this->targetParcial = this->target;
+	this->setNoTarget();
 	this->limpiarPath();
 	posMov = 0;
 	caminoSize = 0;
@@ -405,6 +395,7 @@ void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad){
 
 	destino.first = xPath[posMov];
 	destino.second = yPath[posMov];
+	this->setDirection(this->getPosition(), destino);
 	coste = (Game::instance().world())->cost(xPath[posMov], yPath[posMov]);
 	costeF = (float) coste;
 	velocidad = ((this->velocidad)*costeF);

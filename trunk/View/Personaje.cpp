@@ -207,7 +207,7 @@ void Personaje::update() {
 	if (this->isCenteredInTile()) {
 		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 	}
-	common::Logger::instance().log("Character pos: " + this->positionToString());
+	//common::Logger::instance().log("Character pos: " + this->positionToString());
 	modelo->update();
 	this->updateStatsBar();
 	//if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
@@ -219,6 +219,7 @@ void Personaje::update() {
 }
 
 void Personaje::updateSinglePlayer() {
+	//Logger::instance().log("Personaje " + this->positionToString() );
 	this->isCenteredInTileInSinglePlayer();
 	this->setFogged(!modelo->isActive());
 	this->mover();
@@ -251,7 +252,12 @@ void Personaje::mover() {
 	factor.second = 0;
 	
 	perseguirEnemigo();
-	calcularSigTileAMover();
+	try {
+		calcularSigTileAMover();
+	} catch (std::bad_alloc& ba) {
+		std::string whatError = ba.what();
+		common::Logger::instance().logUnexpected("bad_alloc caught in calcularSigTileAMover(): " + whatError);
+	}
 	calcularvelocidadRelativa(factor);
 	if (this->getCurrentSpritePosition() != ESTADO_ERROR) {
 		moverSprite(factor);
@@ -271,6 +277,8 @@ void Personaje::calcularSigTileAMover(){
 		this->eatIfItem(this->getPosition());
 		if (this->currentEnemy != NULL) {
 			//prepare things to attack
+			common::Logger::instance().log(":calcularSigTileAMover()  enemy NOT NULL");
+			//common::Logger::instance().log("Enemy:  " + ((Entity*)this->currentEnemy)->getName());
 			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
@@ -280,6 +288,7 @@ void Personaje::calcularSigTileAMover(){
 				currentAnimationNumber = modelo->mover(tile, velocidad);
 			}
 		} else {
+			common::Logger::instance().log("calcularSigTileAMover()  ENEMY IS NULL ");
 			currentAnimationNumber = modelo->mover(tile, velocidad);
 		}
 		//currentAnimationNumber = modelo->mover(tile, velocidad);
@@ -296,15 +305,17 @@ void Personaje::calcularSigTileAMover(){
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			//modelo->setIsInCenterTile(false);
-			if (tile == std::make_pair<int,int>(0,0)) {
-				int i = 0;
-			}
+			//if (tile == std::make_pair<int,int>(0,0)) {
+			//	int i = 0;
+			//}
 			modelo->setPosition(tile);
 		} else {
 
 			this->atacar();
 		}
+		common::Logger::instance().log("if (modelo->getIsReseting()) "+ stringUtilities::intToString(this->currentSpritePosition));
 		if (modelo->getIsReseting()) {
+			
 			this->setRectangle(this->getPosition(), sprites[this->currentSpritePosition]);
 			currentEnemy = NULL;
 			this->heal();
@@ -436,6 +447,8 @@ std::string Personaje::getSpellActualMulti() {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
+		common::Logger::instance().log("Enemy: going to attack  " );
+		try {
 		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 		this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
@@ -447,15 +460,19 @@ void Personaje::atacar() {
 			//ataque con espada
 					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 					this->modelo->atacar();
-					if (!(this->currentEnemy->isAlive()))
-						GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-					currentEnemy = NULL;
+					//if (!(this->currentEnemy->isAlive()))
+					//	GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+					//currentEnemy = NULL;
 				break;
 			}
 			case WEAPON_BOW: {
 				//ataque con arco y flecha
 				break;
 			}
+		}
+		} catch (std::bad_alloc& ba) {
+			std::string whatError = ba.what();
+			common::Logger::instance().logUnexpected("bad_alloc caught in void Personaje::atacar(): " + whatError);
 		}
 		currentEnemy = NULL;
 	}
@@ -554,8 +571,10 @@ void Personaje::setDestino(int xTile, int yTile){
 
 void Personaje::setCurrentEnemy(int tileX, int tileY) {
 	std::pair<int, int> tileDestino(tileX, tileY);
-
+	common::Logger::instance().log("currentEnemy = GameView::instance().getDaniableInTile(tileDestino) ");
 	if (modelo->isThereAnEnemy(tileX, tileY)) {
+		//this->modelo->setDirection(this->getPosition(), tileDestino);
+		this->modelo->orientar(tileDestino);
 		currentEnemy = GameView::instance().getDaniableInTile(tileDestino);
 		if (currentEnemy == this) {
 			currentEnemy = NULL;
@@ -920,7 +939,10 @@ void Personaje::loadWeapons() {
 
 	Bow* bow = new Bow();
 	bow->setOwner(this->getPlayerName());
-	bow->initialize(true,5,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
+	bow->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bow);
 	this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
+	//this->selectedWeapon = WEAPON_BOW;
+	//this->selectedWeapon = WEAPON_ICE_INCANTATOR;
+	//this->selectedWeapon = WEAPON_HAND_GRENADE;
 }

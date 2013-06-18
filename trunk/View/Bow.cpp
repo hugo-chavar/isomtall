@@ -1,7 +1,9 @@
+#include "GameView.h"
 #include "Bow.h"
 #include "Arrow.h"
 
 Bow::Bow() {
+	this->setAmmo(5);//TODO: quitar harcodeo
 	Arrow* arrow = NULL;
 	for (unsigned int i = 0; i < ARROW_POOL_SIZE; i++) {
 		arrow = new Arrow();
@@ -21,10 +23,17 @@ void Bow::strike(Daniable* target) {
 	if (this->getAmmo() > 0) {
 		arrow = this->getAvailableArrow();
 		if (arrow != NULL) {
+			arrow->setCouldContinue(true);
+			arrow->setTargetReached(false);
+			arrow->setOwner(this->getOwner());
 			arrow->setTargetTile(target->getPosition());
 			arrow->setInitialTile(this->getPosition());
 			arrow->setDamage(this->getDamage());
-			//put projectile into simulation entities list.
+			arrow->setDirection(this->getDirection());
+			arrow->setVelocity(50.0);//TODO: sacar harcodeo
+			arrow->initialize();
+			GameView::instance().getWorldView()->addAmmunition(arrow);
+			//TODO: put projectile into simulation entities list.
 		}
 	}
 }
