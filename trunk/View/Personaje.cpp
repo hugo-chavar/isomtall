@@ -262,6 +262,14 @@ void Personaje::mover() {
 	}
 }
 
+bool Personaje::repositionToStrike() {
+	std::pair<int, int> reposition = this->getWeapons()[this->selectedWeapon]->calculateRepositionToStrike(this->currentEnemy->getPosition());
+	if (reposition == this->getPosition())
+		return false;
+	this->modelo->setDestino(reposition.first, reposition.second);
+	return true;
+}
+
 void Personaje::calcularSigTileAMover(){
 	int currentAnimationNumber = 0;	//animacion del personaje en el sistema de PersonajeModelo
 	std::pair<int, int> tile;	//Un tile
@@ -280,8 +288,14 @@ void Personaje::calcularSigTileAMover(){
 			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
-				this->modelo->setNoTarget();
-				this->velocidad = 0;
+				if (this->getWeapons()[this->selectedWeapon]->needsToReposition(this->currentEnemy->getPosition())) {
+					this->repositionToStrike();
+					currentAnimationNumber = modelo->mover(tile, velocidad);
+				}
+				else {
+					this->modelo->setNoTarget();
+					this->velocidad = 0;
+				}
 			} else {
 				currentAnimationNumber = modelo->mover(tile, velocidad);
 			}

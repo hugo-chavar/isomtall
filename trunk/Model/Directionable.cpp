@@ -76,3 +76,8 @@ std::pair<int, int> Directionable::calculateDirection(std::pair<int, int> from, 
 	aux.second = (aux.second == 0) ? 0 : ((aux.second > 0)? 1: -1);
 	return aux;
 }
+
+std::pair<int, int> Directionable::calculateDistance(std::pair<int, int> from, std::pair<int, int> to) {
+	std::pair<int, int> aux = to + (from*(-1));
+	return aux;
+}
