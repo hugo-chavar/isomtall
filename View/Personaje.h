@@ -23,9 +23,6 @@ public:
 	void clearSprites() ;
 	void addNextSprite(AnimatedEntity*);
 	void addFirstSprite(AnimatedEntity*);
-	//std::pair<int,int> getPosicionEnTiles();
-	//std::pair<int,int> getPosicionAnteriorEnTiles();
-	//void setFreezed(bool value);
 	void setAnimating(bool value);
 	std::string updateToString();
 	void updateFromString(std::string data);
@@ -66,6 +63,7 @@ public:
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
 	std::string getSpellActualMulti();
+	std::vector<Weapon*>& getWeapons();
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -133,7 +131,7 @@ private:
 	//Weapons
 	unsigned selectedWeapon;
 	std::vector<Weapon*> weapons;
-	std::vector<Weapon*>& getWeapons();
+	
 
 };
 #endif
