@@ -441,7 +441,7 @@ int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 		return estado;
 	}
 	if((this->getPosition() == std::make_pair(x,y))&&(cambio==ESTADO_MOVIMIENTO)){
-		return (estado-PARADO);
+		return PARADO;
 	}
 	orientacion = obtenerOrientacionRespectoAUnTile(x, y);
 	if ((orientacion >= 0)&&(orientacion <= 7)) {
