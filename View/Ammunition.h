@@ -22,13 +22,14 @@ private:
 	static unsigned ammo_id_counter;
 
 protected:
+	// ----- Non-static class members ----
 	std::string owner;
 	unsigned ammunitionType;
 	float damage;
-	std::string ammo_id; //creo q va a ser util para actualizar desde el server
+	std::string ammo_id;
 	bool available;
 public:
-	// ----- Non-static class members ----
+	
 	Ammunition();
 	~Ammunition();
 	std::string getOwner();

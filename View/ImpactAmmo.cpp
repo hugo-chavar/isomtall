@@ -17,7 +17,3 @@ void ImpactAmmo::verify() {
 	if (!this->isAlive())
 		this->setAvailable(true);
 }
-
-void ImpactAmmo::impact(Daniable*) {
-	//only to override
-}
