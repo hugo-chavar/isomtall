@@ -70,22 +70,29 @@ public:
 	void loadWeapons();
 	
 private:
+	//----- Private methods -----
 	int calculateSpritePosition(int currentAnimationNumber);
-	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
-	void mover();
 	void calcularSigTileAMover();
-	//realiza el desplazamiento en x y en y del sprite, de un tile a otro
-	//void moverSprite(std::pair<float, float>& factor);
-	//void moverSpriteEnX();
-	//void moverSpriteEnY();
-	
 	void animar();
+	void atacar();
 	void detenerAnimacion();
 	void createLabelName();
 	void createStatsBar();
 	void updateStatsBar();
 	void renderStatsBars(Camera& camera);
-	//std::pair<int, int> tileActual;
+	void calcularvelocidadRelativa(std::pair<float, float>& factor);
+	void mover();
+	void moverSprite(std::pair<float, float>& factor);
+	void moverSpriteEnX();
+	void moverSpriteEnY();
+	void perseguirEnemigo();
+	bool isCenteredInTileInSinglePlayer();
+	void createOnPJInfo();
+	void renderProtHalo(Camera& camera);
+	void rendertShield(Camera& camera);
+	void manejarDano(float dano);
+
+	//----- Attributes -----
 	SDL_Surface* labelName;
 	SDL_Surface* magicBarPos;
 	SDL_Surface* magicBarNeg;
@@ -105,38 +112,16 @@ private:
 	std::string playerName;
 	bool active;
 	TTF_Font* font;
-
 	std::vector<unsigned int> animationFxRelation;
-
-	void calcularvelocidadRelativa(std::pair<float, float>& factor);
-	//realiza el desplazamiento en x y en y del sprite, de un tile a otro
-	void moverSprite(std::pair<float, float>& factor);
-	void moverSpriteEnX();
-	void moverSpriteEnY();
-	//void setCenteredInTile(bool centroTile);
-	void atacar();
-	//void resolverAtaque();
-	void perseguirEnemigo();
-	bool isCenteredInTileInSinglePlayer();
-	void createOnPJInfo();
-	void renderProtHalo(Camera& camera);
-	void rendertShield(Camera& camera);
-
-	Daniable* currentEnemy; //el destruible que esta atacando el pj
-
+	Daniable* currentEnemy;
 	float shieldAbsortion;
 	SDL_Surface* ProtectionHalo;
 	SDL_Surface* tShield;
 	bool invulnerable;
 	std::string hechizoActualMulti;
-	void manejarDano(float dano);
-
 	std::string character_id;
-
-	//Weapons
 	unsigned selectedWeapon;
 	std::vector<Weapon*> weapons;
-	
 
 };
 #endif
