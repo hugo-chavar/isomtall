@@ -42,7 +42,6 @@ public:
 	std::string idToString();
 	void setActive(bool value);
 	bool isActive();
-	//void setDestino(int xTile, int yTile);
 	void setFont(TTF_Font* font);
 	bool hasValidSprite();
 	float getShieldResistance();
@@ -54,7 +53,7 @@ public:
 
 	std::pair<int,int> getPosicionEnTiles();
 	std::pair<int,int> getPosicionActualEnTiles();
-	void animateModel(char animation);
+	//void animateModel(char animation);
 	std::string getCharacterId();
 	void increaseSpeed(float factor);
 	void heal();

@@ -26,7 +26,7 @@ public:
 	float getVelocidad();
 	bool estaAnimandose();
 	void terminarAnimacion();
-	void animar(char opcion);
+	//void animar(char opcion);
 	std::pair<int, int> obtenerFrentePersonaje();
 	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
 	std::string nextDirectory();
@@ -71,6 +71,7 @@ public:
 	void setNoTarget();
 
 	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
+	void changeToAnimation(int animationNumber);
 
 private:
 
@@ -82,12 +83,11 @@ private:
 	int quedarseQuieto(float &velocidadAni);
 	//Modifica las variables del modelo para representar el movimiento
 	void moverse(std::pair<int, int>& destino, float &velocidadAni);
-	void defender();
 
 	void initialize(int pos_x, int pos_y);
 	void resetChar();
 	void changeToState(int addedState);
-	void changeToAnimation(int animationNumber);
+	
 	std::pair<int, int> target;
 	std::pair<int, int> targetParcial;
 	int* xPath;

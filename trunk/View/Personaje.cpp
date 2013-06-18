@@ -205,10 +205,12 @@ void Personaje::animar() {
 void Personaje::update() {
 
 	if (this->isCenteredInTile()) {
-		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
+		//this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
+		this->personajeModelo()->update();
+		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
 	//common::Logger::instance().log("Character pos: " + this->positionToString());
-	modelo->update();
+	//
 	this->updateStatsBar();
 	//if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
 	if (this->hasValidSprite()) {
@@ -225,9 +227,10 @@ void Personaje::updateSinglePlayer() {
 	this->mover();
 	if (this->isCenteredInTile()) {
 		this->animar();
-		this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
+		this->personajeModelo()->update();
+		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
-	modelo->update();
+	//modelo->update();
 	if (this->isImmobilized())
 		return;
 	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
@@ -252,12 +255,7 @@ void Personaje::mover() {
 	factor.second = 0;
 	
 	perseguirEnemigo();
-	try {
-		calcularSigTileAMover();
-	} catch (std::bad_alloc& ba) {
-		std::string whatError = ba.what();
-		common::Logger::instance().logUnexpected("bad_alloc caught in calcularSigTileAMover(): " + whatError);
-	}
+	calcularSigTileAMover();
 	calcularvelocidadRelativa(factor);
 	if (this->getCurrentSpritePosition() != ESTADO_ERROR) {
 		moverSprite(factor);
@@ -435,20 +433,9 @@ std::string Personaje::getSpellActualMulti() {
 	return this->hechizoActualMulti;
 }
 
-//void Personaje::resolverAtaque() {
-//	float precision = Game::instance().getRandom();
-//	if (precision >= this->modelo->getPrecisionMinima()) {
-//		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-//		if (!(this->currentEnemy->isAlive())) {
-//		GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-//		}
-//	}
-//}
-
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
 		common::Logger::instance().log("Enemy: going to attack  " );
-		try {
 		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 		this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
@@ -458,8 +445,8 @@ void Personaje::atacar() {
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
 			//ataque con espada
-					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
-					this->modelo->atacar();
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->atacar();
 					//if (!(this->currentEnemy->isAlive()))
 					//	GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
 					//currentEnemy = NULL;
@@ -467,12 +454,10 @@ void Personaje::atacar() {
 			}
 			case WEAPON_BOW: {
 				//ataque con arco y flecha
+				
+				this->modelo->changeToAnimation(DEFENDER);
 				break;
 			}
-		}
-		} catch (std::bad_alloc& ba) {
-			std::string whatError = ba.what();
-			common::Logger::instance().logUnexpected("bad_alloc caught in void Personaje::atacar(): " + whatError);
 		}
 		currentEnemy = NULL;
 	}
@@ -598,10 +583,10 @@ void Personaje::perseguirEnemigo() {
 	}
 	this->modelo->setFollowingEnemy(false);
 }
-
-void Personaje::animateModel(char animacion) {
-	modelo->animar(animacion);
-}
+//
+//void Personaje::animateModel(char animacion) {
+//	modelo->animar(animacion);
+//}
 
 void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
 	float deltaTime = this->getDeltaTime()*100;
@@ -941,8 +926,8 @@ void Personaje::loadWeapons() {
 	bow->setOwner(this->getPlayerName());
 	bow->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bow);
-	this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
-	//this->selectedWeapon = WEAPON_BOW;
+	//this->selectedWeapon = WEAPON_SWORD; //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
+	this->selectedWeapon = WEAPON_BOW;
 	//this->selectedWeapon = WEAPON_ICE_INCANTATOR;
 	//this->selectedWeapon = WEAPON_HAND_GRENADE;
 }
