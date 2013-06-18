@@ -17,7 +17,7 @@ namespace view {
 		void setFont(TTF_Font* font);
 	private:
 		SDL_Surface* getWeapon();
-		SDL_Rect generateInfo(int info, SDL_Surface* &surface);
+		SDL_Rect generateInfo(std::string info, SDL_Surface* &surface);
 
 		SDL_Surface* sword;
 		SDL_Surface* bow;
@@ -31,8 +31,12 @@ namespace view {
 		int shieldEndurance;
 		SDL_Surface* ammo;
 		SDL_Surface* shieldDur;
+		SDL_Surface* spell;
+		SDL_Surface* spellName;
+		std::string spellId;
 		SDL_Rect weaponBox;
 		SDL_Rect shieldBox;
+		SDL_Rect spellBox;
 		TTF_Font* font;
 	};
 

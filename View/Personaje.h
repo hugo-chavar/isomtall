@@ -66,6 +66,7 @@ public:
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
+	std::string getSpellActualMulti();
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -115,11 +116,17 @@ private:
 	//void resolverAtaque();
 	void perseguirEnemigo();
 	bool isCenteredInTileInSinglePlayer();
-
+	void createOnPJInfo();
+	void renderProtHalo(Camera& camera);
+	void rendertShield(Camera& camera);
 
 	Daniable* currentEnemy; //el destruible que esta atacando el pj
 
 	float shieldAbsortion;
+	SDL_Surface* ProtectionHalo;
+	SDL_Surface* tShield;
+	bool invulnerable;
+	std::string hechizoActualMulti;
 	void manejarDano(float dano);
 
 	std::string character_id;

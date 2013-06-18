@@ -19,6 +19,9 @@ StatsTable::StatsTable() {
 	this->shieldEndurance = 0;
 	this->ammo = NULL;
 	this->shieldDur = NULL;
+	this->spell = NULL;
+	this->spellName = NULL;
+	this->spellId = "";
 }
 
 //TODO: Mover esto a un lugar general, ver ChatView.h
@@ -64,28 +67,32 @@ bool StatsTable::initialize() {
 	bomb = loadSurface("../Images/sword.png");
 	wand = loadSurface("../Images/sword.png");
 	shield = loadSurface("../Images/Shield.png");
-	if ((sword == NULL) || (bow == NULL) || (grenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL)) {
+	spell = loadSurface("../Images/Spell.png");
+	if ((sword == NULL) || (bow == NULL) || (grenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL)) {
 		return false;
 	}
 	weaponBox.w = static_cast<Uint16>(sword->w);
 	weaponBox.h = static_cast<Uint16>(sword->h);
 	shieldBox.h = static_cast<Uint16>(shield->h);
 	shieldBox.w = static_cast<Uint16>(shield->w);
+	spellBox.h = static_cast<Uint16>(spell->h);
+	spellBox.w = static_cast<Uint16>(spell->w);
 	return true;
 }
 
 void StatsTable::update(Personaje* personaje) {
 	shieldEndurance = (int) (personaje->getShieldResistance());
+	spellId = personaje->getSpellActualMulti();
 }
 
-SDL_Rect StatsTable::generateInfo(int info, SDL_Surface* &surface) {
+SDL_Rect StatsTable::generateInfo(std::string info, SDL_Surface* &surface) {
 	SDL_Rect retValue;
 	
 	if (surface != NULL) {
 		SDL_FreeSurface(surface);
 		surface = NULL;
 	}
-	surface = TTF_RenderText_Blended(this->font, (stringUtilities::intToString(info)).c_str(), Camera::WHITE_COLOR);
+	surface = TTF_RenderText_Blended(this->font, info.c_str(), Camera::WHITE_COLOR);
 	retValue.h = (Uint16) surface->h;
 	retValue.w = (Uint16) surface->w;
 	return retValue;
@@ -102,19 +109,29 @@ SDL_Surface* StatsTable::getWeapon() {
 void StatsTable::render(Camera &camera) {
 	SDL_Rect shieldInfoBox;
 	SDL_Rect weaponInfoBox;
+	SDL_Rect spellInfoBox;
 
 	//TODO: ver de optimizar esto
 	weaponBox.x = static_cast<Uint16>(camera.getOffsetX() + 10);
 	weaponBox.y = static_cast<Uint16>(camera.getOffsetY() + 50);
 	shieldBox.x = weaponBox.x;
 	shieldBox.y = weaponBox.y + weaponBox.h;
+	spellBox.x = weaponBox.x;
+	spellBox.y = shieldBox.y + shieldBox.h;
 	camera.render (weaponBox, getWeapon());
 	if (shieldEndurance > 0) {
 		camera.render (shieldBox, shield);
-		shieldInfoBox = this->generateInfo(shieldEndurance, shieldDur);
+		shieldInfoBox = this->generateInfo(stringUtilities::intToString(shieldEndurance), shieldDur);
 		shieldInfoBox.y = shieldBox.y;
 		shieldInfoBox.x = shieldBox.x + shieldBox.w;
 		camera.render(shieldInfoBox, shieldDur);
+	}
+	if (spellId != "") {
+		camera.render (spellBox, spell);
+		spellInfoBox = this->generateInfo(spellId, spellName);
+		spellInfoBox.y = spellBox.y;
+		spellInfoBox.x = spellBox.x + spellBox.w;
+		camera.render(spellInfoBox, spellName);
 	}
 }
 
@@ -150,5 +167,13 @@ StatsTable::~StatsTable() {
 	if (ammo != NULL) {
 		SDL_FreeSurface(ammo);
 		ammo = NULL;
+	}
+	if (spell != NULL) {
+		SDL_FreeSurface(spell);
+		spell = NULL;
+	}
+	if (spellName != NULL) {
+		SDL_FreeSurface(spellName);
+		spellName = NULL;
 	}
 }
