@@ -274,9 +274,11 @@ void Personaje::calcularSigTileAMover(){
 			this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 			this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 			if (this->getWeapons()[this->selectedWeapon]->readyToStrike(this->currentEnemy->getPosition())) {
-				this->modelo->setNoTarget(); 
-			} else
+				this->modelo->setNoTarget();
+				this->velocidad = 0;
+			} else {
 				currentAnimationNumber = modelo->mover(tile, velocidad);
+			}
 		} else {
 			currentAnimationNumber = modelo->mover(tile, velocidad);
 		}
@@ -294,6 +296,9 @@ void Personaje::calcularSigTileAMover(){
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			//modelo->setIsInCenterTile(false);
+			if (tile == std::make_pair<int,int>(0,0)) {
+				int i = 0;
+			}
 			modelo->setPosition(tile);
 		} else {
 
