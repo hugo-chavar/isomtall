@@ -6,6 +6,9 @@
 #include "Heart.h"
 #include "MagicBottle.h"
 #include "Shield.h"
+#include "ItemHProteccion.h"
+#include "ItemTerremoto.h"
+#include "ItemFlecha.h"
 
 ItemFactoryView::ItemFactoryView(void)
 {
@@ -59,12 +62,15 @@ ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <i
 		case 5:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("Shield");
 			return new Shield("Shield",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
-		/*case 6:
-			sprite=GameView::instance().getWorldView()->getSprite("ItemHProteccion");
+		case 6:
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemHProteccion");
 			return new ItemHProteccion("ItemHProteccion",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 7:
-			sprite=GameView::instance().getWorldView()->getSprite("ItemTerremoto");
-			return new ItemTerremoto("ItemTerremoto",_state,pos,hiddenSprite,sprite,_canReviveForHimself);*/
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemTerremoto");
+			return new ItemTerremoto("ItemTerremoto",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+		case 8:
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemFlecha");
+			return new ItemFlecha("ItemFlecha",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		}
 	return NULL;
 }
