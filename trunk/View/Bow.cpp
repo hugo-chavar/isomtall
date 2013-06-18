@@ -24,6 +24,7 @@ void Bow::strike(Daniable* target) {
 	if (this->getAmmo() > 0) {
 		arrow = this->getAvailableArrow();
 		if (arrow != NULL) {
+			this->ammo--;
 			arrow->setCouldContinue(true);
 			arrow->setTargetReached(false);
 			arrow->setOwner(this->getOwner());
