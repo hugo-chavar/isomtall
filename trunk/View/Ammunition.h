@@ -13,10 +13,13 @@ enum ammoType_t {
 #endif
 
 #include <string>
-//#include "Entity.h"
-//#include "Personaje.h"
+
 
 class Ammunition {
+
+private:
+	// ----- Static class members ----
+	static unsigned ammo_id_counter;
 
 protected:
 	std::string owner;
@@ -25,6 +28,7 @@ protected:
 	std::string ammo_id; //creo q va a ser util para actualizar desde el server
 	bool available;
 public:
+	// ----- Non-static class members ----
 	Ammunition();
 	~Ammunition();
 	std::string getOwner();

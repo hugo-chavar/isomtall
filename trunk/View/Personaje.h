@@ -48,7 +48,7 @@ public:
 
 	std::vector<unsigned int>& getAnimationFxRelation();
 
-	std::pair<int,int> getPosicionEnTiles();
+	//std::pair<int,int> getPosicionEnTiles();
 	std::pair<int,int> getPosicionActualEnTiles();
 	//void animateModel(char animation);
 	std::string getCharacterId();
