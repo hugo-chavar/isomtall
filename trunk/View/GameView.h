@@ -93,6 +93,8 @@ public:
 	GameSounds& getGameSounds();
 	bool isSinglePlayerGame();
 	Daniable* getDaniableInTile(std::pair <int, int> tile);
+	void updateEvents(string serializedEventsUpdates);
+	void updateEvent(string serializedItemUpdate);
 
 private:
 	view::Camera camera;

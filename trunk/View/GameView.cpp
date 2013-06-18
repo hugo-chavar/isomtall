@@ -601,3 +601,24 @@ Daniable* GameView::getDaniableInTile(std::pair <int, int> tile) {
 	}
 	return NULL;
 }
+
+void GameView::updateEvents(string serializedEventsUpdates)
+{
+	if(serializedEventsUpdates.size()<1)
+		return;
+	std::vector <string> updateVector;
+	stringUtilities::splitString(serializedEventsUpdates,updateVector,':');
+	for(unsigned i=0;i<updateVector.size();i++)
+	{
+		this->updateEvent(updateVector[i]);
+	}
+}
+
+void GameView::updateEvent(string serializedItemUpdate)
+{
+	if(serializedItemUpdate=="vibrar")
+	{
+		this->camera.setVibrating();
+	}
+	//Agregar logica para otros eventos
+}
