@@ -70,6 +70,8 @@ public:
 	void morir();
 	void setNoTarget();
 
+	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
+
 private:
 
 	int siCaminaDetenerse();
@@ -103,7 +105,7 @@ private:
 	CharacterVision* vision;
 
 	int obtenerOrientacionRespectoAUnTile(int x, int y);	//Obtiene el sentido según el signo de x e y
-	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
+	
 	bool followingEnemy();
 	
 

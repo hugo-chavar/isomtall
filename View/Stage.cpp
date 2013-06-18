@@ -26,9 +26,9 @@ void view::Stage::cleanUp() {
 	for (unsigned int i = 0; i < this->spriteArray.size(); i++) {
 		delete this->spriteArray[i];
 	}
-	for (unsigned int i = 0; i < this->ammunitions.size(); i++) {
-		delete this->ammunitions[i];
-	}
+	//for (unsigned int i = 0; i < this->ammunitions.size(); i++) {
+	//	delete this->ammunitions[i];
+	//}
 	this->spriteArray.clear();
 	this->ammunitions.clear();
 	this->deleteStage();
@@ -71,6 +71,7 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(),true);//Harcodeo porcentaje de items
 		if(item)
 			{
+				Logger::instance().log("Item " + item->getName()+" "+ stringUtilities::pairIntToString(tile->getPosition()) );
 				itemsArray.push_back(item);
 				tile->setOtherEntity(item);
 			}	
@@ -540,14 +541,24 @@ void Stage::relocateItem(pair<int,int>pos)
 		this->getTileAt(pos)->setOtherEntity(item);
 	}
 }
-//Esto es codigo repetido ver metodo getSpriteWithName
-//Sprite* Stage::getSprite(string name)
-//{
-//	return spriteArray[mapEntityToSprite.at(name)];
-//}
 
 void Stage::updateAmmunitions() {
-	for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
-		this->ammunitions[i]->update();
+	vector<Entity*>::iterator it;
+	it = ammunitions.begin();
+	while ( it != ammunitions.end()) {
+		if ((*it)->isAlive()) {
+			(*it)->update();
+			it++;
+		} else {
+			ammunitions.erase(it); //TODO: testear esto
+		}
 	}
+	//for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
+
+	//	this->ammunitions[i]->update();
+	//}
+}
+
+void Stage::addAmmunition(Entity * ammo) {
+	this->ammunitions.push_back(ammo);
 }
