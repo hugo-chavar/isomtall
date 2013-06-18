@@ -34,6 +34,10 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 	this->isActivo = source.isActivo;
 	this->isAnimating = source.isAnimating;
 	this->vision = NULL;
+	precisionMinima = source.precisionMinima;
+	danoMaximo = source.danoMaximo;
+	vidaMaxima = source.vidaMaxima;
+	magiaMaxima = source.magiaMaxima;
 	return *this;
 	this->vidaMaxima = source.vidaMaxima;
 }
