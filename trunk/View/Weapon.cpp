@@ -79,6 +79,7 @@ bool Weapon::needsToReposition(std::pair<int, int> tile) {
 		return false;
 	if ((distance.first < distance.second) || (distance.first > distance.second))
 		return true;
+	return true;
 }
 
 bool Weapon::readyToStrike(std::pair<int, int> tile) {
@@ -86,8 +87,6 @@ bool Weapon::readyToStrike(std::pair<int, int> tile) {
 		return false;
 	if (!this->isInsideRange(tile))
 		return false;
-	//if (this->needsToReposition(tile))
-	//	return false;
 	return true;
 }
 
