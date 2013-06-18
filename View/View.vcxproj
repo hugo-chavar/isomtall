@@ -89,7 +89,13 @@
     <ClCompile Include="GameSounds.cpp" />
     <ClCompile Include="GameView.cpp" />
     <ClCompile Include="Heart.cpp" />
+    <ClCompile Include="Hechizo.cpp" />
+    <ClCompile Include="HechizoProteccion.cpp" />
+    <ClCompile Include="HechizoTerremoto.cpp" />
     <ClCompile Include="ImpactAmmo.cpp" />
+    <ClCompile Include="ItemFlecha.cpp" />
+    <ClCompile Include="ItemHProteccion.cpp" />
+    <ClCompile Include="ItemTerremoto.cpp" />
     <ClCompile Include="ItemView.cpp" />
     <ClCompile Include="ItemFactoryView.cpp" />
     <ClCompile Include="Lamp.cpp" />
@@ -143,7 +149,13 @@
     <ClInclude Include="GameMenu.h" />
     <ClInclude Include="GameView.h" />
     <ClInclude Include="Heart.h" />
+    <ClInclude Include="Hechizo.h" />
+    <ClInclude Include="HechizoProteccion.h" />
+    <ClInclude Include="HechizoTerremoto.h" />
     <ClInclude Include="ImpactAmmo.h" />
+    <ClInclude Include="ItemFlecha.h" />
+    <ClInclude Include="ItemHProteccion.h" />
+    <ClInclude Include="ItemTerremoto.h" />
     <ClInclude Include="ItemView.h" />
     <ClInclude Include="ItemFactoryView.h" />
     <ClInclude Include="Lamp.h" />
