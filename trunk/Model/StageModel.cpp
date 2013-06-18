@@ -144,29 +144,10 @@ bool StageModel::isInsideWorld(pair<int,int> tileCoordinates) {
 	return ( (tileCoordinates.first >= 0) && (tileCoordinates.first < static_cast<int>(this->width())) && (tileCoordinates.second >= 0) && (tileCoordinates.second < static_cast<int>(this->height())) );
 }
 
-//Unir mas tarde
-
-//void StageModel::destino(int x,int y,float cameraX,float cameraY){
-//	pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
-//	if(isInsideWorld(destino)) 
-//		Game::instance().personaje()->setDestino(destino.first,destino.second);
-//}
-
 pair<int, int> StageModel::destination(int x,int y,float cameraX,float cameraY) {
 	pair<int,int> destino = pixelToTileCoordinatesInStage(make_pair(x,y), cameraX, cameraY);
 	return destino;
 }
-//Unir mas tarde
-
-//void StageModel::insertMainCharacter(PersonajeModelo* pm){
-//	_vMainCharacters.push_back(pm);
-//}
-
-//PersonajeModelo* StageModel::modelMainCharacters(unsigned pos){
-//	if (_vMainCharacters.size() > pos)
-//		return _vMainCharacters[pos];
-//	return NULL;
-//}
 
 void StageModel::clearStage(){
 	for (unsigned j=0; j < (this->_vMainCharacters.size()); j++)
@@ -207,8 +188,6 @@ void StageModel::resolveRelatedTiles(TileModel* tile){
 	EntityObject* entity = tile->getOtherEntity();
 	if ( (entity) && ((entity->baseWidth() > 1) || (entity->baseHeight() > 1)) ){
 		this->markRelatedTiles(tile);
-		//if  ((entity->baseWidth() > 2) || (entity->baseHeight() > 2))
-		//	this->resolveBolckedEntities(tile);
 	}
 }
 
@@ -265,16 +244,10 @@ void StageModel::markRelatedTiles(TileModel* tile) {
 	TileModel* currentTile = _tilesMap->at(tilePos);
 	if ( centerTile != currentTile){
 		currentTile->setRelatedTile(centerTile);
-		//centerTile->setRelatedTile(tile);
 		hasCenter = true;
 	} 
 	centerTile->setRelatedTile(tile);
-	//TileModel* referenceTile = currentTile;
 	tile->setUndrawable();
-
-	//TileModel* referenceTile = tile; //currentTile;
-	//currentTile->setUndrawable(); //tile
-	//tile->setRelatedTile(currentTile); //testing
 	unsigned levels = entity->baseWidth() + entity->baseHeight() - 2;
 	currentTile  = tile;
 	unsigned currentLevel = 1;
@@ -300,7 +273,6 @@ void StageModel::markRelatedTiles(TileModel* tile) {
 		} //when exit level complete
 		currentLevel++;
 	}
-	//referenceTile->setDrawable();
 	centerTile->setDrawable();
 }
 
@@ -319,27 +291,6 @@ TileModel* StageModel::getTileAt(KeyPair k) {
 TileModel* StageModel::getFirstTile() {
 	return this->firstTile;
 }
-
-//bool StageModel::isThereAChar(string & name,int x,int y,float cameraX,float cameraY) {
-//	pair<int,int> pixelCoordinates;
-//	pixelCoordinates.first = x;
-//	pixelCoordinates.second = y;
-//	pair<int,int> tilePos = pixelToTileCoordinatesInStage(pixelCoordinates,cameraX,cameraY);
-//	if(isInsideWorld(tilePos))
-//	{
-//		for(unsigned i = 0; i < _vMainCharacters.size(); i++)
-//		{
-//			pair<int,int> posChar = _vMainCharacters[i]->getPosition();
-//			//_vMainCharacters[i]->getCurrent(posChar);
-//			if(posChar == tilePos)
-//			{
-//				name = _vMainCharacters[i]->getName();
-//				return true;
-//			}
-//		}
-//	}
-//	return false;
-//}
 
 void StageModel::setSize(unsigned w, unsigned h) {
 	this->height(h);

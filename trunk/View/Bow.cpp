@@ -9,6 +9,7 @@ Bow::Bow() {
 		arrow = new Arrow();
 		this->getArrows().push_back(arrow);
 	}
+	this->setNextArrowIndex(0);
 }
 
 Bow::~Bow() {
@@ -30,7 +31,7 @@ void Bow::strike(Daniable* target) {
 			arrow->setInitialTile(this->getPosition());
 			arrow->setDamage(this->getDamage());
 			arrow->setDirection(this->getDirection());
-			arrow->setVelocity(50.0);//TODO: sacar harcodeo
+			arrow->setVelocity(150.0);//TODO: sacar harcodeo
 			arrow->initialize();
 			GameView::instance().getWorldView()->addAmmunition(arrow);
 			//TODO: put projectile into simulation entities list.
@@ -50,7 +51,7 @@ Arrow* Bow::getAvailableArrow() {
 			arrow->setAvailable(false);
 		}
 
-		if (i < ARROW_POOL_SIZE)
+		if (i < (this->getArrows().size() - 1))
 			i++;
 		else
 			i = 0;

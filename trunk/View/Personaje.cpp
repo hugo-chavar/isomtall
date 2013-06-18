@@ -454,8 +454,8 @@ void Personaje::atacar() {
 			}
 			case WEAPON_BOW: {
 				//ataque con arco y flecha
-				
-				this->modelo->changeToAnimation(DEFENDER);
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->defender();
 				break;
 			}
 		}
