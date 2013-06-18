@@ -42,7 +42,7 @@ public:
 	void setFont(TTF_Font* font);
 	bool hasValidSprite();
 	float getShieldResistance();
-
+	bool repositionToStrike();
 	void setCurrentEnemy(int tileX, int tileY);
 	void setDestino(int xTile, int yTile);
 
