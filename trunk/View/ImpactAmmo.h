@@ -12,7 +12,7 @@ public:
 	ImpactAmmo();
 	~ImpactAmmo();
 	void verify();
-	virtual void impact(Daniable* );
+	virtual void impact(Daniable* ) = 0;
 };
 
 

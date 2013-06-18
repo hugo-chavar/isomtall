@@ -16,42 +16,48 @@ class Personaje : public Entity, public Daniable {
 public:
 	Personaje(PersonajeModelo*,std::string char_id);
 	~Personaje();
-	void update();
-	void render(Camera& camera);
 	PersonajeModelo* personajeModelo();
-	void loadSprites();
-	void clearSprites() ;
-	void addNextSprite(AnimatedEntity*);
-	void addFirstSprite(AnimatedEntity*);
+	//----- Getters/Setters methods -----
 	void setAnimating(bool value);
-	std::string updateToString();
-	void updateFromString(std::string data);
-	void updateSinglePlayer();
-	std::string initToString();
-	void initFromString(std::string data);
+	void setActive(bool value);
+	bool isActive();
 	void setPixelPosition(std::pair<int, int> pixel);
 	std::pair<int, int> getPixelPosition();
 	int getCurrentSpritePosition();
 	void setCurrentSpritePosition(int pos);
 	void setPlayerName(std::string name);
 	std::string getPlayerName();
-	bool isCenteredInTile();
-	std::string idToString();
-	void setActive(bool value);
-	bool isActive();
 	void setFont(TTF_Font* font);
-	bool hasValidSprite();
 	float getShieldResistance();
-	bool repositionToStrike();
+	std::string getCharacterId();
+	std::pair<int,int> getPosicionActualEnTiles();
 	void setCurrentEnemy(int tileX, int tileY);
 	void setDestino(int xTile, int yTile);
-
 	std::vector<unsigned int>& getAnimationFxRelation();
+	std::string getSpellActualMulti();
+	std::vector<Weapon*>& getWeapons();
+	void setCenteredInTile(bool centroTile);
+	bool isCenteredInTile();
+	//----- Simulation methods -----
+	void update();
+	void updateSinglePlayer();
+	void render(Camera& camera);
 
-	//std::pair<int,int> getPosicionEnTiles();
-	std::pair<int,int> getPosicionActualEnTiles();
-	//void animateModel(char animation);
-	std::string getCharacterId();
+	//----- Server updating methods -----
+	std::string updateToString();
+	void updateFromString(std::string data);
+	std::string initToString();
+	void initFromString(std::string data);
+	std::string idToString();
+	//----- Sprite loading methods -----
+	void loadSprites();
+	void clearSprites() ;
+	void addNextSprite(AnimatedEntity*);
+	void addFirstSprite(AnimatedEntity*);
+	//----- Functional methods -----
+	
+	bool hasValidSprite();
+	bool repositionToStrike();
 	void increaseSpeed(float factor);
 	void heal();
 	void rechargeMagic();
@@ -62,8 +68,7 @@ public:
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
-	std::string getSpellActualMulti();
-	std::vector<Weapon*>& getWeapons();
+	
 private:
 	int calculateSpritePosition(int currentAnimationNumber);
 	//void calcularvelocidadRelativa(std::pair<float, float>& factor);
@@ -73,7 +78,7 @@ private:
 	//void moverSprite(std::pair<float, float>& factor);
 	//void moverSpriteEnX();
 	//void moverSpriteEnY();
-	void setCenteredInTile(bool centroTile);
+	
 	void animar();
 	void detenerAnimacion();
 	void createLabelName();
