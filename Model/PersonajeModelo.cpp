@@ -166,14 +166,7 @@ void PersonajeModelo::resetChar() {
 	this->setPosition(this->startPosition);
 	this->target = this->getPosition();
 	this->targetParcial = this->target;
-	if (xPath == NULL) {
-		delete [] xPath;
-		xPath = NULL;
-	}
-	if (yPath == NULL) {
-		delete [] yPath;
-		yPath = NULL;
-	}
+	this->limpiarPath();
 	posMov = 0;
 	caminoSize = 0;
 	estado = PARADO;
