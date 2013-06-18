@@ -414,16 +414,6 @@ void Personaje::recibirDano(float dano) {
 		GameView::instance().getWorldView()->relocateItem(this->getPosition());
 	}
 }
-//
-//void Personaje::resolverAtaque() {
-//	float precision = Game::instance().getRandom();
-//	if (precision >= this->modelo->getPrecisionMinima()) {
-//		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-//		//YAMI if (!(this->currentEnemy->isAlive())) {
-//		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-//		//}
-//	}
-//}
 
 std::string Personaje::getSpellActualMulti() {
 	return this->hechizoActualMulti;
@@ -433,9 +423,9 @@ std::string Personaje::getSpellActualMulti() {
 //	float precision = Game::instance().getRandom();
 //	if (precision >= this->modelo->getPrecisionMinima()) {
 //		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-//		//YAMI if (!(this->currentEnemy->isAlive())) {
-//		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-//		//}
+//		if (!(this->currentEnemy->isAlive())) {
+//		GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+//		}
 //	}
 //}
 
@@ -452,6 +442,8 @@ void Personaje::atacar() {
 			//ataque con espada
 					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 					this->modelo->atacar();
+					if (!(this->currentEnemy->isAlive()))
+						GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
 					currentEnemy = NULL;
 				break;
 			}
