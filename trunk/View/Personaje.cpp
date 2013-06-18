@@ -10,6 +10,8 @@
 #include "GameView.h"
 
 #define BAR_HEIGHT 4
+#define PROT_HALO_FILE_PATH "../Images/Halo.png"
+#define TINY_SHIELD_FILE_PATH "../Images/tShield.png"
 
 Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->font = NULL;
@@ -33,6 +35,10 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->lifeBarR = NULL;
 	this->magicBarNeg = NULL;
 	this->magicBarPos = NULL;
+	this->invulnerable = false;
+	this->hechizoActualMulti = "";
+	this->ProtectionHalo = NULL;
+	//this->tShield = NULL;
 	this->barWidth = 0;
 	this->vidaActual = modelo->getVidaMaxima();
 	this->magiaActual = modelo->getMagiaMaxima();
@@ -75,6 +81,31 @@ void Personaje::createStatsBar() {
 	this->lifeBarR = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
 }
 
+SDL_Surface* createSurface(char* path) {
+	SDL_Surface* loadedImage = NULL;
+    SDL_Surface* optimizedImage = NULL;
+
+    loadedImage = IMG_Load(path);
+
+    if(loadedImage!=NULL)
+    {
+        optimizedImage = SDL_DisplayFormat(loadedImage);
+        SDL_FreeSurface(loadedImage);
+        if(optimizedImage!=NULL)
+        {
+            Uint32 colorkey = SDL_MapRGB(optimizedImage->format, 0xFF, 0, 0xFF);
+            SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY, colorkey);
+        }
+    }
+	return optimizedImage;
+}
+
+void Personaje::createOnPJInfo() {
+    
+	ProtectionHalo = createSurface(PROT_HALO_FILE_PATH);
+	//tShield = createSurface(TINY_SHIELD_FILE_PATH);
+}
+
 void Personaje::updateStatsBar() {
 	int porcActualVida = (int) ((vidaActual)*100/(modelo->getVidaMaxima()));
 	int porcActualMagia = (int) ((magiaActual)*100/(modelo->getMagiaMaxima()));
@@ -104,6 +135,7 @@ void Personaje::loadSprites() {
 	delete animatedEntity;
 	animatedEntity = NULL;
 	this->createStatsBar();
+	this->createOnPJInfo();
 }
 
 void Personaje::clearSprites() {
@@ -393,6 +425,20 @@ void Personaje::recibirDano(float dano) {
 //	}
 //}
 
+std::string Personaje::getSpellActualMulti() {
+	return this->hechizoActualMulti;
+}
+
+void Personaje::resolverAtaque() {
+	float precision = Game::instance().getRandom();
+	if (precision >= this->modelo->getPrecisionMinima()) {
+		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
+		//YAMI if (!(this->currentEnemy->isAlive())) {
+		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+		//}
+	}
+}
+
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
 		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
@@ -450,11 +496,34 @@ void Personaje::renderStatsBars(Camera& camera) {
 	camera.render(pMagicBarBox, magicBarPos);
 }
 
+void Personaje::renderProtHalo(Camera& camera) {
+	SDL_Rect haloBox;
+
+	if (this->invulnerable) {
+		haloBox.w = static_cast<Sint16>(ProtectionHalo->w); haloBox.h = static_cast<Sint16>(ProtectionHalo->h);
+		haloBox.x = spriteRect.x;
+		haloBox.y = (spriteRect.y) + static_cast<Sint16>(spriteRect.h/2);
+		camera.render(haloBox, ProtectionHalo);
+	}
+}
+
+void Personaje::rendertShield(Camera& camera) {
+	SDL_Rect tShieldBox;
+
+	if (this->shieldResistance > 0) {
+		tShieldBox.w = static_cast<Sint16>(this->tShield->w); tShieldBox.h = static_cast<Sint16>(this->tShield->h);
+		tShieldBox.x = spriteRect.x + static_cast<Sint16>(spriteRect.w - tShield->w);
+		tShieldBox.y = spriteRect.y + static_cast<Sint16>(spriteRect.y * 0.25);
+		camera.render(tShieldBox, tShield);
+	}
+}
+
 void Personaje::render(Camera& camera) {
 	SDL_Rect cuadroMensaje;
 
 	cuadroMensaje.x = static_cast<Sint16>((2*spriteRect.x + spriteRect.w - this->labelName->w)/2);
 	cuadroMensaje.y = spriteRect.y;
+	this->renderProtHalo(camera);
 	if (this->isImmobilized()) {
 		if (this->isFogged()) {
 			if (!this->hasValidSprite()) {
@@ -478,7 +547,7 @@ void Personaje::render(Camera& camera) {
 	SDL_SetClipRect(this->labelName, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->labelName);
 	this->renderStatsBars(camera);
-	
+	//this->rendertShield(camera);
 }
 
 void Personaje::setDestino(int xTile, int yTile){
@@ -604,6 +673,8 @@ Personaje::~Personaje(){
 	SDL_FreeSurface(this->lifeBarR);
 	SDL_FreeSurface(this->magicBarNeg);
 	SDL_FreeSurface(this->magicBarPos);
+	SDL_FreeSurface(this->ProtectionHalo);
+	//SDL_FreeSurface(this->tShield);
 	//Destroying weapons
 	for (unsigned int i = 0; i < this->getWeapons().size(); i++) {
 		delete this->getWeapons()[i];
@@ -687,7 +758,9 @@ void Personaje::updateFromString(std::string data) {
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
 	this->magiaActual = stringUtilities::stringToFloat(splittedData[7]);
 	this->shieldResistance = stringUtilities::stringToFloat(splittedData[8]);
-	this->modelo->getVision()->updateFromString(splittedData[9]);
+	this->invulnerable = (splittedData[9] == "T");
+	this->hechizoActualMulti = splittedData[10];
+	this->modelo->getVision()->updateFromString(splittedData[11]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
