@@ -429,15 +429,15 @@ std::string Personaje::getSpellActualMulti() {
 	return this->hechizoActualMulti;
 }
 
-void Personaje::resolverAtaque() {
-	float precision = Game::instance().getRandom();
-	if (precision >= this->modelo->getPrecisionMinima()) {
-		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
-		//YAMI if (!(this->currentEnemy->isAlive())) {
-		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-		//}
-	}
-}
+//void Personaje::resolverAtaque() {
+//	float precision = Game::instance().getRandom();
+//	if (precision >= this->modelo->getPrecisionMinima()) {
+//		this->currentEnemy->recibirDano(this->modelo->getDanoMaximo());
+//		//YAMI if (!(this->currentEnemy->isAlive())) {
+//		//YAMI GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
+//		//}
+//	}
+//}
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
@@ -757,10 +757,12 @@ void Personaje::updateFromString(std::string data) {
 	this->setCenteredInTile(splittedData[5] == "T");
 	this->vidaActual = stringUtilities::stringToFloat(splittedData[6]);
 	this->magiaActual = stringUtilities::stringToFloat(splittedData[7]);
-	this->shieldResistance = stringUtilities::stringToFloat(splittedData[8]);
-	this->invulnerable = (splittedData[9] == "T");
-	this->hechizoActualMulti = splittedData[10];
-	this->modelo->getVision()->updateFromString(splittedData[11]);
+	this->modelo->setVidaMaxima(stringUtilities::stringToFloat(splittedData[8]));
+	this->modelo->setMagiaMaxima(stringUtilities::stringToFloat(splittedData[9]));
+	this->shieldResistance = stringUtilities::stringToFloat(splittedData[10]);
+	this->invulnerable = (splittedData[11] == "T");
+	this->hechizoActualMulti = splittedData[12];
+	this->modelo->getVision()->updateFromString(splittedData[13]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
