@@ -12,7 +12,8 @@ protected:
 public:
 	Grenade();
 	~Grenade();
-	//void impact(Daniable* daniable);
+	bool isAlive();
+	void update();
 };
 
 
