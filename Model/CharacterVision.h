@@ -24,6 +24,7 @@ public:
 	bool testPosition(pair<int, int> pos);
 	void setKnown(pair<int, int> pos);
 	bool isInsideVision(pair<int, int> pos);
+	bool isInsideMyVision(pair<int, int> pos);
 	string initToString();
 	void initFromString(string data);
 	string updateToString();
@@ -31,7 +32,9 @@ public:
 	void setAllKnown(bool value);
 	bool isAllKnown();
 	void setMagicVision(bool value);
-	bool setMagicVision();
+	bool getMagicVision();
+	//void setOtherCharacterVision(CharacterVision* other);
+	//void deleteOtherCharacterVision(CharacterVision* other);
 private:
 	void updateVision();
 	vector <bitset<MAX_STAGE_SIZE_X> > mapKnowledge;
@@ -41,6 +44,7 @@ private:
 	Circle vision;
 	bool allKnown;
 	bool magicVision;
+	//std::vector<CharacterVision*> otherCharacterVision;
 };
 
 #endif //_CHARACTERVISION_H_

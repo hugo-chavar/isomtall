@@ -9,6 +9,7 @@ CharacterVision::CharacterVision() {
 	mapKnowledge.clear();
 	this->setAllKnown(false);
 	this->setRangeVision(0);
+	this->setMagicVision(false);
 }
 
 CharacterVision::~CharacterVision() {
@@ -81,6 +82,25 @@ void CharacterVision::setKnown(pair<int, int> pos){
 }
 
 bool CharacterVision::isInsideVision(pair<int, int> pos) {
+		if( this->vision.inside(pos))
+			return true;
+		if(this->magicVision)
+		{
+		std::vector<CharacterVision *>* visions=GameView::instance().getCharactersVisions();
+		for(int i=0;i<visions->size();i++)
+			{
+			if((*visions)[i]->isInsideMyVision(pos))
+				{
+				return true;
+				}
+
+			}
+		}
+		return false;
+}
+
+bool CharacterVision::isInsideMyVision(pair<int, int> pos) 
+{
 	return this->vision.inside(pos);
 }
 
@@ -148,6 +168,22 @@ void CharacterVision::setMagicVision(bool value) {
 	this->magicVision = value;
 }
 
-bool CharacterVision::setMagicVision() {
+bool CharacterVision::getMagicVision() {
 	return this->magicVision;
 }
+
+//void CharacterVision::setOtherCharacterVision(CharacterVision* other)
+//{
+//	this->otherCharacterVision.push_back(other);
+//}
+//
+//void CharacterVision::deleteOtherCharacterVision(CharacterVision* other)
+//{
+//	std::vector<CharacterVision*>::iterator it=this->otherCharacterVision.begin();
+//	for(it;it<this->otherCharacterVision.end();it++)
+//	{
+//		if((*it)==other)
+//		{
+//			this->otherCharacterVision.erase(it);
+//		}
+//}

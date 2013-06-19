@@ -892,6 +892,14 @@ void Personaje::updateFromString(std::string data) {
 	std::pair<int,int> pixels = stringUtilities::stringToPairInt(splittedData[1]);
 	//common::Logger::instance().log("Character pix: " + splittedData[1]);
 	this->setPixelPosition(pixels);
+	if(splittedData[2]=="F" && !this->isFogged())
+		{
+			GameView::instance().deleteCharacterVision(this->personajeModelo()->getVision());
+		}
+	else if(splittedData[2]!="F" && this->isFogged())
+		{
+			GameView::instance().setCharacterVision(this->personajeModelo()->getVision());
+		}
 	this->setFogged(splittedData[2] == "F");
 	this->setCurrentSpritePosition(stringUtilities::stringToInt(splittedData[3]));
 	if (this->hasValidSprite()) {
@@ -905,7 +913,8 @@ void Personaje::updateFromString(std::string data) {
 	this->shieldResistance = stringUtilities::stringToFloat(splittedData[10]);
 	this->invulnerable = (splittedData[11] == "T");
 	this->hechizoActualMulti = splittedData[12];
-	this->modelo->getVision()->updateFromString(splittedData[13]);
+	this->personajeModelo()->getVision()->setMagicVision(splittedData[13] == "T");
+	this->modelo->getVision()->updateFromString(splittedData[14]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
