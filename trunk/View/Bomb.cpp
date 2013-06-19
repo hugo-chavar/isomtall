@@ -19,3 +19,8 @@ bool Bomb::isAlive() {
 void Bomb::update() {
 
 }
+		
+void Bomb::startCountDown(unsigned seconds) {
+	this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
+	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
+}

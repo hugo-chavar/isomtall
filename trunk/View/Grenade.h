@@ -14,6 +14,7 @@ public:
 	~Grenade();
 	bool isAlive();
 	void update();
+	void startCountDown(unsigned seconds);
 };
 
 

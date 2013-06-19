@@ -14,6 +14,7 @@ public:
 	~Bomb();
 	bool isAlive();
 	void update();
+	void startCountDown(unsigned seconds);
 };
 
 
