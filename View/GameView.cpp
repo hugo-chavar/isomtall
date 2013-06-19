@@ -615,9 +615,37 @@ void GameView::updateEvents(string serializedEventsUpdates)
 
 void GameView::updateEvent(string serializedItemUpdate)
 {
-	if(serializedItemUpdate=="vibrar")
+	std::vector<string> vector;
+	stringUtilities::splitString(serializedItemUpdate,vector,';');
+	int evento=stringUtilities::stringToInt(vector[0]);
+	switch (evento){
+		case EVENT_VIBRATING:
+			this->camera.setVibrating();
+		break;
+		case EVENT_SOUND_ARROW:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ARROW);
+					break;
+		case EVENT_SOUND_ATTACK_ON_SHIELD:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);
+					break;
+		case EVENT_SOUND_ATTACK_ON_WOOD:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);
+					break;
+		case EVENT_SOUND_EAT_ITEM:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EAT_ITEM);
+					break;
+		case EVENT_SOUND_REGENERATION:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_REGENERATION);
+					break;
+	}
+	/*if(serializedItemUpdate=="vibrar")
 	{
 		this->camera.setVibrating();
-	}
+	}*/
 	//Agregar logica para otros eventos
 }

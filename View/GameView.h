@@ -42,6 +42,18 @@ enum gameStatus_t {
 #include "GameSounds.h"
 #include "Mission.h"
 
+#ifndef event_t
+#define event_t
+enum event_t {
+	EVENT_VIBRATING,
+	EVENT_SOUND_ARROW,
+	EVENT_SOUND_ATTACK_ON_SHIELD,
+	EVENT_SOUND_ATTACK_ON_WOOD,
+	EVENT_SOUND_EAT_ITEM,
+	EVENT_SOUND_REGENERATION,
+};
+#endif
+
 using namespace std;
 
 
