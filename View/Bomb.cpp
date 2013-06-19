@@ -1,22 +1,21 @@
 #include "GameView.h"
-#include "Grenade.h"
+#include "Bomb.h"
 
-Grenade::Grenade() {
-	this->setName("Grenade");
+Bomb::Bomb() {
+	this->setName("Bomb");
 	this->setAmmunitionType(HAND_GRENADE);
+	this->setStatus(EXPLOSIVE_INACTIVE);
 	//this->setDamage(50.0);
 	this->setSprite(this->getSpriteWithName(this->getName()));
 }
 
-Grenade::~Grenade() {
+Bomb::~Bomb() {
 }
 
-//void Grenade::impact(Daniable* daniable) {
-//	if (daniable) {
-//		daniable->recibirDano(this->getDamage());
-//		this->setTargetReached(true);
-//		this->setAvailable(true);
-//		if (!(daniable->isAlive()))
-//			GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
-//	}
-//}
+bool Bomb::isAlive() {
+	return (this->getStatus() != EXPLOSIVE_DUST_IN_THE_WIND);
+}
+
+void Bomb::update() {
+
+}

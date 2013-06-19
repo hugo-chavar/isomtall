@@ -24,6 +24,7 @@ void HandGrenade::strike(Daniable* target) {
 		grenade = this->getAvailableGrenade();
 		if (grenade != NULL) {
 			this->ammo--;
+			grenade->setStatus(EXPLOSIVE_FLYING);
 			grenade->setCouldContinue(true);
 			grenade->setTargetReached(false);
 			grenade->setOwner(this->getOwner());

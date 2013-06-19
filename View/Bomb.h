@@ -1,19 +1,20 @@
-#ifndef _GRENADE_H_
-#define _GRENADE_H_
+#ifndef _BOMB_H_
+#define _BOMB_H_
 
 #include "Movable.h"
 #include "Daniable.h"
 #include "Explosive.h"
 
-class Grenade: public Movable, public Explosive {
+class Bomb: public Entity, public Explosive, public Positionable {
 
 protected:
 
 public:
-	Grenade();
-	~Grenade();
-	//void impact(Daniable* daniable);
+	Bomb();
+	~Bomb();
+	bool isAlive();
+	void update();
 };
 
 
-#endif // _GRENADE_H_
+#endif // _BOMB_H_
