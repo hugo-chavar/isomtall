@@ -3,10 +3,10 @@
 
 Bomb::Bomb() {
 	this->setName("Bomb");
-	this->setAmmunitionType(HAND_GRENADE);
+	this->setAmmunitionType(BOMB);
 	this->setStatus(EXPLOSIVE_INACTIVE);
 	this->setSprite(this->getSpriteWithName(this->getName()));
-	explosionSprite = static_cast<SpriteAnimado*>(this->getSpriteWithName("redexplosion"));
+	explosionSprite = (SpriteAnimado*)(this->getSpriteWithName("redexplosion"));
 }
 
 Bomb::~Bomb() {
@@ -17,10 +17,61 @@ bool Bomb::isAlive() {
 }
 
 void Bomb::update() {
+	switch (this->getStatus()){
+		case EXPLOSIVE_EXPLOSION_COUNTDOWN: {
+			this->decreaseEndStatusTime();
+			//common::Logger::instance().log("this->endStatusTime: " + stringUtilities::unsignedToString(static_cast<unsigned>(this->endStatusTime)));
+			if (this->endStatusTime == 0)
+				this->setStatus(EXPLOSIVE_EXPLOSION);
+			break;
+		}
+		case EXPLOSIVE_EXPLOSION: {
+			this->setStatus(EXPLOSIVE_BURNING);
+			explosionSprite->setAccumulatedTime(0.0);
+			explosionSprite->restart();
+			this->setCenter(this->getPosition());
+			this->setRange(3);
+			this->activate();
+			this->range.fill();
+			std::pair<int, int > aux;
+			while (this->range.hasNext()) {
+				aux = this->range.next();
+				Daniable* daniable = GameView::instance().getDaniableInTile(aux);
+				if (daniable) {
+					daniable->recibirDano(this->getDamage());
+					if (!(daniable->isAlive()))
+						GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
+				}
+			}
 
+			//this->setSprite(explosionSprite);
+			//this->setRectangle(this->getPosition(),explosionSprite);
+			break;
+		}
+		case EXPLOSIVE_BURNING: {
+			
+			explosionSprite->updateFrame();
+			this->decreaseEndStatusTime();
+			if ((this->endStatusTime == 0)&&(explosionSprite->lastFrame())) {
+				this->setStatus(EXPLOSIVE_DUST_IN_THE_WIND);
+				this->setAvailable(true);
+			}
+			break;
+		}
+	}
 }
 		
 void Bomb::startCountDown(float seconds) {
-	this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
 	this->setEndStatusTime(seconds);
+}
+
+void Bomb::render(Camera& camera) {
+	
+		if (this->getStatus() != EXPLOSIVE_BURNING)
+			Entity::render(camera);
+		else { // if (this->getStatus() == EXPLOSIVE_FLYING)
+			this->setRectangle(this->getPosition(),explosionSprite);
+			camera.render(this->spriteRect,explosionSprite->getSurfaceAt(-1)->getSurfaceToShow(false));
+		}
+
 }

@@ -62,3 +62,7 @@ float SpriteAnimado::getDelay() {
 		return this->delay;
 	return 0;
 }
+
+void SpriteAnimado::setAccumulatedTime(float ticks) {
+	this->accumulatedTime = ticks;
+}

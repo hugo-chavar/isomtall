@@ -20,6 +20,19 @@ bool HechizoTerremoto::startSpell(std::string actualCaster) {
 	if (invocador->useMagic(cost)) {
 		//Realizar el terremoto
 		GameView::instance().getCamera()->setVibrating();
+		this->setRange(5);
+		this->activate();
+		this->range.fill();
+		std::pair<int, int > aux;
+		while (this->range.hasNext()) {
+			aux = this->range.next();
+			Daniable* daniable = GameView::instance().getDaniableInTile(aux);
+			if (daniable) {
+				daniable->recibirDano(30.0);
+				if (!(daniable->isAlive()))
+					GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
+			}
+		}
 		return true;
 	}
 	return false;

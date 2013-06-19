@@ -1,6 +1,7 @@
 #pragma once
 #include "Hechizo.h"
 
+
 class HechizoTerremoto : public Hechizo
 {
 public:

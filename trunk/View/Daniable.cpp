@@ -1,5 +1,10 @@
 #include "Daniable.h"
 
+Daniable::Daniable(int tileX,int tileY,Sprite* spriteCargado):Entity(tileX,tileY,spriteCargado)
+{
+	vidaActual = 0;
+}
+
 Daniable::Daniable()
 {
 	vidaActual = 0;

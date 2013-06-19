@@ -20,5 +20,6 @@ public:
 	~SpriteAnimado();
 	void addSticks(float ticks);
 	float getDelay();
+	void setAccumulatedTime(float ticks);
 };
 

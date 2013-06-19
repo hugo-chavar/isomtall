@@ -13,7 +13,7 @@
 #include "Weapon.h"
 #include "Hechizo.h"
 
-class Personaje : public Entity, public Daniable {
+class Personaje : public Daniable {
 public:
 	Personaje(PersonajeModelo*,std::string char_id);
 	~Personaje();

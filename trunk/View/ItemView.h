@@ -1,11 +1,13 @@
-#pragma once
-#include "Entity.h"
+#ifndef __ITEM_VIEW_H__
+#define __ITEM_VIEW_H__
+
+#include "Daniable.h"
 #include "Game.h"
 #include "Personaje.h"
 #include "stringUtilities.h"
 
 
-class ItemView: public Entity,public Daniable
+class ItemView: public Daniable
 {
 
 protected:
@@ -51,3 +53,4 @@ public:
 	bool isWood();
 };
 
+#endif

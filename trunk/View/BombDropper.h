@@ -19,7 +19,11 @@ public:
 	Bomb* getAvailableBomb();
 	unsigned getAmmo();
 	void setAmmo(unsigned ammo);
-
+	//----- Functional methods  -----
+	bool sameDirection(std::pair<int, int> tile);
+	bool isInsideRange(std::pair<int, int> tile);
+	bool needsToReposition(std::pair<int, int> tile);
+	bool readyToStrike(std::pair<int, int> tile);
 private:
 	std::vector<Bomb*> bombs;
 	unsigned ammo;
