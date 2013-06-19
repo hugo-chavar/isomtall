@@ -98,6 +98,7 @@
     <ClCompile Include="HechizoProteccion.cpp" />
     <ClCompile Include="HechizoTerremoto.cpp" />
     <ClCompile Include="ImpactAmmo.cpp" />
+    <ClCompile Include="ItemCrystallBall.cpp" />
     <ClCompile Include="ItemFlecha.cpp" />
     <ClCompile Include="ItemHProteccion.cpp" />
     <ClCompile Include="ItemTerremoto.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="HechizoProteccion.h" />
     <ClInclude Include="HechizoTerremoto.h" />
     <ClInclude Include="ImpactAmmo.h" />
+    <ClInclude Include="ItemCrystallBall.h" />
     <ClInclude Include="ItemFlecha.h" />
     <ClInclude Include="ItemHProteccion.h" />
     <ClInclude Include="ItemTerremoto.h" />
