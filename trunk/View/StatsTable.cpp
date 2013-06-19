@@ -70,8 +70,8 @@ SDL_Surface *loadSurface(std::string filename)
 bool StatsTable::initialize() {
 	sword = loadSurface("../Images/sword.png");
 	bow = loadSurface("../Images/sword.png");
-	handGrenade = loadSurface("../Images/sword.png");
-	bomb = loadSurface("../Images/sword.png");
+	handGrenade = loadSurface("../Images/granada/01N.png");
+	bomb = loadSurface("../Images/bomb.png");
 	wand = loadSurface("../Images/sword.png");
 	shield = loadSurface("../Images/Shield.png");
 	spell = loadSurface("../Images/Spell.png");
