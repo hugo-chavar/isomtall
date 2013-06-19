@@ -642,6 +642,14 @@ void GameView::updateEvent(string serializedItemUpdate)
 			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
 				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_REGENERATION);
 					break;
+		case EVENT_SOUND_EXPLOSION:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EXPLOSION);
+					break;
+		case EVENT_SOUND_MAGIC:
+			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_MAGIC);
+					break;
 	}
 	/*if(serializedItemUpdate=="vibrar")
 	{

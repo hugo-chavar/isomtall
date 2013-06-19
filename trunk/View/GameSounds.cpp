@@ -30,6 +30,8 @@ void GameSounds::initialize() {
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/openBottle.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/eatItem.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/regeneracion.wav"));
+	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/explosion.wav"));
+	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/magic2.wav"));
 }
 
 void GameSounds::startBackgroundMusic() {
@@ -49,7 +51,7 @@ void GameSounds::toggleBackgroundMusic() {
 
 void GameSounds::playSoundEffect(unsigned int soundEffectIndex) {
 	if (soundEffectIndex < SOUND_INDEX_NO_SOUND)
-		Mix_PlayChannel(-1,this->getSoundEffects()[soundEffectIndex],1);
+		Mix_PlayChannel(-1,this->getSoundEffects()[soundEffectIndex],0);
 }
 
 void GameSounds::cleanUp() {
