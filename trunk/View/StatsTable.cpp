@@ -29,6 +29,7 @@ void StatsTable::setWeaponFalse() {
 	this->weapons[1] = false;
 	this->weapons[2] = false;
 	this->weapons[3] = false;
+	this->weapons[4] = false;
 }
 
 //TODO: Mover esto a un lugar general, ver ChatView.h
@@ -69,10 +70,10 @@ SDL_Surface *loadSurface(std::string filename)
 
 bool StatsTable::initialize() {
 	sword = loadSurface("../Images/sword.png");
-	bow = loadSurface("../Images/BowIcon.png");
-	handGrenade = loadSurface("../Images/granada/01N.png");
-	bomb = loadSurface("../Images/bombIcon.png");
-	wand = loadSurface("../Images/sword.png");
+	bow = loadSurface("../Images/menuBow.png");
+	handGrenade = loadSurface("../Images/menuGrenade.png");
+	bomb = loadSurface("../Images/menuBomb.png");
+	wand = loadSurface("../Images/menuWand.png");
 	shield = loadSurface("../Images/Shield.png");
 	spell = loadSurface("../Images/Spell.png");
 	if ((sword == NULL) || (bow == NULL) || (handGrenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL)) {
@@ -88,7 +89,7 @@ bool StatsTable::initialize() {
 }
 
 bool StatsTable::canGenerateWeaponInfo() {
-	return (weapons[1] || weapons[3]);
+	return (weapons[1] || weapons[3] || weapons[4]);
 }
 
 void StatsTable::update(Personaje* personaje) {
@@ -112,6 +113,11 @@ void StatsTable::update(Personaje* personaje) {
 	case WEAPON_HAND_GRENADE: {
 								weapons[3] = true;
 								this->ammunition = personaje->getWeapons()[WEAPON_HAND_GRENADE]->getAmmo();
+								break;
+							  }
+	case WEAPON_BOMB_DROPPER: {
+								weapons[4] = true;
+								this->ammunition = personaje->getWeapons()[WEAPON_BOMB_DROPPER]->getAmmo();
 								break;
 							  }
 	default: break;
@@ -144,6 +150,9 @@ SDL_Surface* StatsTable::getWeapon() {
 	}
 	if (weapons[3] == true) {
 		return handGrenade;
+	}
+	if (weapons[4] == true) {
+		return bomb;
 	}
 	return sword;
 }
