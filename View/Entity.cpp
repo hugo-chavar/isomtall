@@ -93,20 +93,20 @@ bool Entity::isImmobilized() {
 	return ((this->isFogged() )||(this->getStatus() == ENTITY_FROZEN));
 }
 
-void Entity::iceUp(unsigned seconds) {
+void Entity::iceUp(float seconds) {
 	this->setStatus(ENTITY_FROZEN);
-	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
+	this->setEndStatusTime(seconds);
 }
 
 void Entity::decreaseEndStatusTime(/*float timeToDecrease*/) {
-	Uint32 aux = static_cast<Uint32>(this->getDeltaTime());
-	if (aux < this->endStatusTime)
-		this->endStatusTime -= aux;
+	//Uint32 aux = static_cast<Uint32>(this->getDeltaTime());
+	if ( this->getDeltaTime() < this->endStatusTime)
+		this->endStatusTime -= this->getDeltaTime();
 	else
 		this->setEndStatusTime(0);
 }
 
-void Entity::setEndStatusTime(Uint32 endTime) {
+void Entity::setEndStatusTime(float endTime) {
 	this->endStatusTime = endTime;
 }
 
