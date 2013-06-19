@@ -155,6 +155,20 @@ void Engine::onMultiplayerEvent(SDL_Event* sdlEvent) {
 					}
 					break;
 				}
+				case SDLK_w:
+				{
+					if (!GameView::instance().getChat()->isTyping())
+					{
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						//TODO: Create an option header
+						string opcion_caracter;
+						opcion_caracter.push_back(OPCION_CAMBIAR_ARMA);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
+						GameView::instance().getModelUpdater()->addInstruction(instruction);
+					}
+					break;
+				}
 			case SDLK_m:
 				{
 					if (!GameView::instance().getChat()->isTyping())
