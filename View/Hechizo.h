@@ -3,10 +3,10 @@
 #ifndef HECHIZO_H
 #define HECHIZO_H
 
-#include <string.h>
 #include <string>
+#include "Explosive.h"
 
-class Hechizo {
+class Hechizo: public Explosive {
 
 public:
 	Hechizo(float coste, std::string spellId);

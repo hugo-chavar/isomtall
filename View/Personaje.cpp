@@ -7,7 +7,7 @@
 #include "Sword.h"
 #include "Bow.h"
 #include "HandGrenade.h"
-
+#include "BombDropper.h"
 #include "Game.h"
 #include "GameView.h"
 
@@ -422,6 +422,8 @@ void Personaje::invocarMagia() {
 	bool canActivate;
 	
 	if (this->hechizoActual != NULL) {
+		this->hechizoActual->setCenter(this->getPosition());
+		this->hechizoActual->setOwner(this->getPlayerName());
 		canActivate = this->hechizoActual->startSpell(this->getPlayerName());
 		if (canActivate) {
 			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_MAGIC);//AGREGO SONIDO
@@ -592,6 +594,12 @@ void Personaje::atacar() {
 				break;
 			}
 			case WEAPON_HAND_GRENADE: {
+				//ataque con granada
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->defender();
+				break;
+			}
+			case WEAPON_BOMB_DROPPER: {
 				//ataque con granada
 				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->defender();
@@ -1086,6 +1094,10 @@ void Personaje::loadWeapons() {
 	handGrenade->setOwner(this->getPlayerName());
 	handGrenade->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(handGrenade);
+	BombDropper* bombDropper = new BombDropper();
+	bombDropper->setOwner(this->getPlayerName());
+	bombDropper->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
+	this->getWeapons().push_back(bombDropper);
 	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 	//this->setSelectedWeapon(WEAPON_BOW);
 	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);

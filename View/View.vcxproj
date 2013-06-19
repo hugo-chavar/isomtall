@@ -97,6 +97,7 @@
     <ClCompile Include="Hechizo.cpp" />
     <ClCompile Include="HechizoProteccion.cpp" />
     <ClCompile Include="HechizoTerremoto.cpp" />
+    <ClCompile Include="IceIncantation.cpp" />
     <ClCompile Include="ImpactAmmo.cpp" />
     <ClCompile Include="ItemCrystallBall.cpp" />
     <ClCompile Include="ItemFlecha.cpp" />
@@ -136,6 +137,7 @@
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="tp.cpp" />
     <ClCompile Include="Weapon.cpp" />
+    <ClCompile Include="WeaponIceIncantator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ammunition.h" />
@@ -163,6 +165,7 @@
     <ClInclude Include="Hechizo.h" />
     <ClInclude Include="HechizoProteccion.h" />
     <ClInclude Include="HechizoTerremoto.h" />
+    <ClInclude Include="IceIncantation.h" />
     <ClInclude Include="ImpactAmmo.h" />
     <ClInclude Include="ItemCrystallBall.h" />
     <ClInclude Include="ItemFlecha.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="Weapon.h" />
+    <ClInclude Include="WeaponIceIncantator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">

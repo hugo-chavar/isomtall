@@ -325,9 +325,17 @@ void view::Stage::render(Camera& camera) {
 		}
 
 		for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
-			if (renderHelper.shouldRenderThis(((Movable*)this->ammunitions[i])->getCurrentTile(),((Movable*)this->ammunitions[i])->getLastTile()))
-				this->ammunitions[i]->render(camera);
+			if (this->ammunitions[i]->getName() == "Bomb") {
+
+				if (renderHelper.shouldRenderThis(((Bomb*)this->ammunitions[i])->getPosition(),((Bomb*)this->ammunitions[i])->getPosition()))
+					this->ammunitions[i]->render(camera);
+			} else {
+				if (renderHelper.shouldRenderThis(((Movable*)this->ammunitions[i])->getCurrentTile(),((Movable*)this->ammunitions[i])->getLastTile()))
+					this->ammunitions[i]->render(camera);
+
+			}
 		}
+
 	}
 }
 

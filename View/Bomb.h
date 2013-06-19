@@ -16,6 +16,7 @@ public:
 	bool isAlive();
 	void update();
 	void startCountDown(float seconds);
+	void render(Camera& camera);
 };
 
 

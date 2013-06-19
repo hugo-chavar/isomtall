@@ -7,7 +7,7 @@
 #include "AnimatedEntity.h"
 
 
-class Flag : public Daniable, public Entity {
+class Flag : public Daniable {
 
 public:
 	Flag();

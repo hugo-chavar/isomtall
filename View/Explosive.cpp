@@ -4,7 +4,6 @@
 #include "../Common/StringUtilities.h"
 
 Explosive::Explosive():Ammunition() {
-	//this->exploded = false;
 }
 
 Explosive::~Explosive() {

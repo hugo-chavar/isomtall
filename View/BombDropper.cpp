@@ -17,18 +17,20 @@ BombDropper::~BombDropper() {
 	}
 }
 
-void BombDropper::strike(Daniable* target) {
+void BombDropper::strike(Daniable*) {
 	Bomb* bomb = NULL;
 
 	if (this->getAmmo() > 0) {
 		bomb = this->getAvailableBomb();
 		if (bomb != NULL) {
 			this->ammo--;
-			bomb->setStatus(EXPLOSIVE_FLYING);
+			bomb->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
 			bomb->setOwner(this->getOwner());
 			bomb->setPosition(this->getPosition());
 			bomb->setDamage(this->getDamage());
 			bomb->setRectangle(bomb->getPosition(), bomb->getSprite() );
+			bomb->setDamage(this->getDamage());
+			bomb->startCountDown(5);
 			//bomb->setDirection(this->getDirection());
 			//bomb->setVelocity(150.0);//TODO: sacar harcodeo
 			//bomb->initialize();
@@ -82,4 +84,21 @@ void BombDropper::setNextBombIndex(unsigned value) {
 
 std::vector<Bomb*>& BombDropper::getBombs() {
 	return this->bombs;
+}
+
+bool BombDropper::sameDirection(std::pair<int, int> ) {
+	return true;
+}
+
+bool BombDropper::isInsideRange(std::pair<int, int> ) {
+	return true;
+}
+
+bool BombDropper::needsToReposition(std::pair<int, int> ) {
+	return false;
+}
+
+
+bool BombDropper::readyToStrike(std::pair<int, int> ) {
+	return true;
 }

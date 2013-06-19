@@ -33,10 +33,10 @@ public:
 	void setPrecision(float precision);
 	virtual unsigned getAmmo() = 0;
 	//----- Functional methods  -----
-	bool sameDirection(std::pair<int, int> tile);
-	bool isInsideRange(std::pair<int, int> tile);
-	bool needsToReposition(std::pair<int, int> tile);
-	bool readyToStrike(std::pair<int, int> tile);
+	virtual bool sameDirection(std::pair<int, int> tile);
+	virtual bool isInsideRange(std::pair<int, int> tile);
+	virtual bool needsToReposition(std::pair<int, int> tile);
+	virtual bool readyToStrike(std::pair<int, int> tile);
 	std::pair<int, int> calculateRepositionToStrike(std::pair<int, int> tile);
 	virtual void strike(Daniable* target) = 0;
 };

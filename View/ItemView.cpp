@@ -3,7 +3,7 @@
 #define VARIABLE_REGENERATION_TIME 60000
 #define CONST_REGENERATION_TIME 30000
 
-ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,unsigned _state,string _name):Entity(tileX,tileY,spriteCargado)
+ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSprite,unsigned _state,string _name):Daniable(tileX,tileY,spriteCargado)
 {
 
 	this->setStatus(_state);
@@ -148,7 +148,7 @@ void ItemView::modifyCharacter(Personaje* )
 }
 
 //Single Player
-ItemView::ItemView(string _name,unsigned _state,std::pair <int,int> _pos,Sprite* _hiddenSprite, Sprite* sprite,bool _canReviveForHimself):Entity(_pos.first,_pos.second,sprite)
+ItemView::ItemView(string _name,unsigned _state,std::pair <int,int> _pos,Sprite* _hiddenSprite, Sprite* sprite,bool _canReviveForHimself):Daniable(_pos.first,_pos.second,sprite)
 {
 	this->name=_name;
 	this->setPosition(_pos);
