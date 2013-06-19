@@ -4,10 +4,12 @@
 #include "Movable.h"
 #include "Daniable.h"
 #include "Explosive.h"
+#include "SpriteAnimado.h"
 
 class Grenade: public Movable, public Explosive {
 
-protected:
+private:
+	SpriteAnimado * explosionSprite;
 
 public:
 	Grenade();

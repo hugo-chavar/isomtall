@@ -60,6 +60,7 @@ public:
 	void directionFromString(std::string);
 	int getOrientation();
 	std::pair<int, int> getPixelDirection();
+	void changeToOppositeDirection();
 private:
 	std::pair<int, int> direction;
 	

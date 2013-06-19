@@ -6,6 +6,7 @@ Bomb::Bomb() {
 	this->setAmmunitionType(HAND_GRENADE);
 	this->setStatus(EXPLOSIVE_INACTIVE);
 	this->setSprite(this->getSpriteWithName(this->getName()));
+	explosionSprite = static_cast<SpriteAnimado*>(this->getSpriteWithName("redexplosion"));
 }
 
 Bomb::~Bomb() {
@@ -19,7 +20,7 @@ void Bomb::update() {
 
 }
 		
-void Bomb::startCountDown(unsigned seconds) {
+void Bomb::startCountDown(float seconds) {
 	this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
-	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
+	this->setEndStatusTime(seconds);
 }
