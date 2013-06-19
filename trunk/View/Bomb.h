@@ -7,14 +7,15 @@
 
 class Bomb: public Entity, public Explosive, public Positionable {
 
-protected:
+private:
+	SpriteAnimado * explosionSprite;
 
 public:
 	Bomb();
 	~Bomb();
 	bool isAlive();
 	void update();
-	void startCountDown(unsigned seconds);
+	void startCountDown(float seconds);
 };
 
 

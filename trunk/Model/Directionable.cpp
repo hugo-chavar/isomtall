@@ -81,3 +81,8 @@ std::pair<int, int> Directionable::calculateDistance(std::pair<int, int> from, s
 	std::pair<int, int> aux = to + (from*(-1));
 	return aux;
 }
+
+
+void Directionable::changeToOppositeDirection() {
+	this->setDirection((this->getDirection()*(-1)));
+}
