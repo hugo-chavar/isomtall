@@ -80,6 +80,10 @@ ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <i
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemFlecha");
 			if (sprite)
 				return new ItemFlecha("ItemFlecha",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+		case 9:
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("crystalBall");
+			if (sprite)
+				return new ItemFlecha("crystalBall",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		}
 	return NULL;
 }

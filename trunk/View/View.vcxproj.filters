@@ -207,6 +207,9 @@
     <ClCompile Include="BombDropper.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="ItemCrystallBall.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -396,6 +399,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="BombDropper.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemCrystallBall.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
