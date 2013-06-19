@@ -31,6 +31,7 @@ public:
 	void setRange(int range);
 	void setDamage(float damage);
 	void setPrecision(float precision);
+	virtual unsigned getAmmo() = 0;
 	//----- Functional methods  -----
 	bool sameDirection(std::pair<int, int> tile);
 	bool isInsideRange(std::pair<int, int> tile);
