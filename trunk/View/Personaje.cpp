@@ -350,7 +350,7 @@ void Personaje::calcularSigTileAMover(){
 
 			this->atacar();
 		}
-		common::Logger::instance().log("if (modelo->getIsReseting()) "+ stringUtilities::intToString(this->currentSpritePosition));
+		//common::Logger::instance().log("if (modelo->getIsReseting()) "+ stringUtilities::intToString(this->currentSpritePosition));
 		if (modelo->getIsReseting()) {
 			this->reset();
 		}
@@ -562,7 +562,7 @@ std::string Personaje::getSpellActual() {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
-		common::Logger::instance().log("Enemy: going to attack  " );
+		//common::Logger::instance().log("Enemy: going to attack  " );
 		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 		this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
@@ -694,7 +694,7 @@ void Personaje::setDestino(int xTile, int yTile){
 
 void Personaje::setCurrentEnemy(int tileX, int tileY) {
 	std::pair<int, int> tileDestino(tileX, tileY);
-	common::Logger::instance().log("currentEnemy = GameView::instance().getDaniableInTile(tileDestino) ");
+	//common::Logger::instance().log("currentEnemy = GameView::instance().getDaniableInTile(tileDestino) ");
 	if (modelo->isThereAnEnemy(tileX, tileY)) {
 		//this->modelo->setDirection(this->getPosition(), tileDestino);
 		this->modelo->orientar(tileDestino);

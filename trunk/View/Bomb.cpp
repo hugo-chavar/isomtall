@@ -5,7 +5,6 @@ Bomb::Bomb() {
 	this->setName("Bomb");
 	this->setAmmunitionType(HAND_GRENADE);
 	this->setStatus(EXPLOSIVE_INACTIVE);
-	//this->setDamage(50.0);
 	this->setSprite(this->getSpriteWithName(this->getName()));
 }
 

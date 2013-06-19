@@ -1,11 +1,12 @@
 #include "GameView.h"
 #include "Grenade.h"
+#include "Logger.h"
+#include "../Common/StringUtilities.h"
 
 Grenade::Grenade() {
 	this->setName("Grenade");
 	this->setAmmunitionType(HAND_GRENADE);
 	this->setStatus(EXPLOSIVE_INACTIVE);
-	//this->setDamage(50.0);
 	this->setSprite(this->getSpriteWithName(this->getName()));
 }
 
@@ -19,7 +20,7 @@ bool Grenade::isAlive() {
 void Grenade::update() {
 	if (this->getStatus() == EXPLOSIVE_FLYING) {
 		Movable::verify();
-		if (!this->isTargetReached())
+		if ((!this->isTargetReached())&&(this->couldContinue()))
 			Movable::update();
 		else {
 			this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
@@ -28,12 +29,11 @@ void Grenade::update() {
 	} else {
 
 		if (this->getStatus() == EXPLOSIVE_EXPLOSION_COUNTDOWN) {
-			//tic tac tic tac
-			//TODO: decrease time and manage bomb blast
 			this->decreaseEndStatusTime();
+			common::Logger::instance().log("this->endStatusTime: " + stringUtilities::unsignedToString(static_cast<unsigned>(this->endStatusTime)));
 			if (this->endStatusTime == 0) {
 				this->setStatus(EXPLOSIVE_EXPLOSION);
-				this->startCountDown(2); //tarda 2 segundos en mostrar sprite de explosion
+				//this->startCountDown(2); //tarda 2 segundos en mostrar sprite de explosion
 
 			}
 		} else {
@@ -46,7 +46,7 @@ void Grenade::update() {
 	}
 }
 		
-void Grenade::startCountDown(unsigned seconds) {
+void Grenade::startCountDown(float seconds) {
 	
-	this->setEndStatusTime(static_cast<Uint32>(seconds*1000));
+	this->setEndStatusTime(seconds);
 }

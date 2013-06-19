@@ -33,7 +33,7 @@ protected:
 	Sprite * sprite;
 	SDL_Rect posicionIsometricaPorTiles(int tileX,int tileY,Sprite* sprite);
 	bool fogged;
-	Uint32 endStatusTime;
+	float endStatusTime;
 	int freezedSpriteState;
 	unsigned status;
 	std::string name;
@@ -52,9 +52,9 @@ public:
 	void setStatus(unsigned status);
 	unsigned getStatus();
 	bool isImmobilized();
-	void setEndStatusTime(Uint32 endTime);
+	void setEndStatusTime(float endTime);
 	void decreaseEndStatusTime();
-	void iceUp(unsigned seconds);
+	void iceUp(float seconds);
 	virtual bool isItem();
 	bool needsCountDown();
 	bool needsToBeCleaned();
