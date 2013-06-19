@@ -28,6 +28,7 @@ void BombDropper::strike(Daniable* target) {
 			bomb->setOwner(this->getOwner());
 			bomb->setPosition(this->getPosition());
 			bomb->setDamage(this->getDamage());
+			bomb->setRectangle(bomb->getPosition(), bomb->getSprite() );
 			//bomb->setDirection(this->getDirection());
 			//bomb->setVelocity(150.0);//TODO: sacar harcodeo
 			//bomb->initialize();
