@@ -9,6 +9,7 @@
 #include "ItemHProteccion.h"
 #include "ItemTerremoto.h"
 #include "ItemFlecha.h"
+#include "ItemCrystallBall.h"
 
 ItemFactoryView::ItemFactoryView(void)
 {
@@ -83,7 +84,7 @@ ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <i
 		case 9:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("crystalBall");
 			if (sprite)
-				return new ItemFlecha("crystalBall",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+				return new ItemCrystallBall("crystalBall",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		}
 	return NULL;
 }
