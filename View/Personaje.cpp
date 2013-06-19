@@ -219,11 +219,13 @@ void Personaje::update() {
 	//
 	this->updateStatsBar();
 	//if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
-	if (this->hasValidSprite()) {
-		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
-		}
-	}
+	
+	//SACO SONIDO
+	//if (this->hasValidSprite()) {
+	//	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
+	//		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+		//}
+	//}
 }
 
 void Personaje::updateProtectionSpell() {
@@ -261,11 +263,13 @@ void Personaje::updateSinglePlayer() {
 	} else {
 		sprites[this->currentSpritePosition]->updateFrame();
 	}
-	if ((int)(this->sprites.size()-1) >= ((int)this->getCurrentSpritePosition())) {
-		if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
-		}
-	}
+
+	//SACO SONIDO
+	//if ((int)(this->sprites.size()-1) >= ((int)this->getCurrentSpritePosition())) {
+	//	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
+	//		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
+	//	}
+	//}
 	this->updateProtectionSpell();
 	this->updateStatsBar();
 }
@@ -565,6 +569,11 @@ void Personaje::atacar() {
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
 			return;
+		if(currentEnemy->isWood())
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);//AGREGO SONIDO
+		else
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);//AGREGO SONIDO
+		
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
 			//ataque con espada
@@ -1020,6 +1029,7 @@ void Personaje::eatIfItem(std::pair<int, int> destino)
 			ItemView* item=(ItemView*)entity;
 			if(item->isAlive())
 			{
+				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EAT_ITEM);//AGREGO SONIDO
 				item->modifyCharacter(this);
 				item->kill();
 			}
@@ -1078,4 +1088,9 @@ void Personaje::setSelectedWeapon(unsigned value) {
 
 unsigned Personaje::getSelectedWeapon() {
 	return this->selectedWeapon;
+}
+
+bool Personaje::isWood()
+{
+	return false;
 }

@@ -73,6 +73,7 @@ public:
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
+	bool isWood();
 	
 	void processKeyCommand(char animation);
 	void setInvulnerable(bool inv);

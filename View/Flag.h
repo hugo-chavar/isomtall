@@ -14,6 +14,7 @@ public:
 	~Flag();
 	string getName();
 	void destroy();
+	bool isWood();
 
 private:
 	AnimatedEntity* entity;

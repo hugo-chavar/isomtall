@@ -10,6 +10,7 @@ public:
 	~Daniable(void);
 	virtual void recibirDano(float dano);
 	bool isAlive();
+	virtual bool isWood();
 
 protected:
 	float vidaActual;
