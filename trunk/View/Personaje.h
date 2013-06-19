@@ -79,9 +79,9 @@ public:
 	void setInvulnerable(bool inv);
 	void invocarMagia();
 	void detenerMagia();
-	void setProtCost(float cost);
 	void setHechizo(Hechizo* hechizo);
 	void setProtTime(float time);
+	void setProtCost(float cost);
 	
 private:
 	//----- Private methods -----
@@ -137,8 +137,8 @@ private:
 	SDL_Surface* tShield;
 	bool invulnerable;
 	Hechizo* hechizoActual;
-	float protCost;
 	float protTime;
+	float protCost;
 	std::string hechizoActualMulti;
 	std::string character_id;
 	unsigned selectedWeapon;

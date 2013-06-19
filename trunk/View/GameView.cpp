@@ -1,7 +1,7 @@
+
 #include "GameView.h"
 #include "TileModel.h"
 #include "Constants.h"
-
 
 
 GameView::GameView() {
@@ -152,6 +152,7 @@ void GameView::newPersonaje(string name, string char_id) {
 
 void GameView::addPersonaje(string name,Personaje * personaje) {
 	this->personajes.insert(std::make_pair<string,Personaje *>(name,personaje));
+	this->setCharacterVision(personaje->personajeModelo()->getVision());
 }
 
 Personaje* GameView::getMyPersonaje() {
@@ -356,6 +357,7 @@ void GameView::update() {
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
 			this->worldView.update();
+			this->updateOthersVision();
 			this->chat.update(camera);
 		break;
 		case STATUS_SIMULATION_CONNECTION_LOST:
@@ -656,4 +658,38 @@ void GameView::updateEvent(string serializedItemUpdate)
 		this->camera.setVibrating();
 	}*/
 	//Agregar logica para otros eventos
+}
+
+std::vector<CharacterVision *>* GameView::getCharactersVisions()
+{
+	return &this->charactersVisions;
+}
+
+void GameView::setCharacterVision(CharacterVision * other)
+{
+	this->charactersVisions.push_back(other);
+}
+
+void GameView::updateOthersVision()
+{
+	itPersonajes=personajes.begin();
+	for(itPersonajes;itPersonajes!=personajes.end();itPersonajes++)
+		{
+			if((*itPersonajes).second!=this->personaje)
+				{
+				(*itPersonajes).second->personajeModelo()->update();
+				}
+		}
+}
+
+void GameView::deleteCharacterVision(CharacterVision* other)
+{
+	std::vector<CharacterVision*>::iterator it=this->charactersVisions.begin();
+	for(it;it<this->charactersVisions.end();it++)
+	{
+		if((*it)==other)
+		{
+			this->charactersVisions.erase(it);
+		}
+	}
 }

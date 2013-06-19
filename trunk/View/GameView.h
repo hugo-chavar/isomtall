@@ -42,6 +42,7 @@ enum gameStatus_t {
 #include "GameSounds.h"
 #include "Mission.h"
 
+
 #ifndef event_t
 #define event_t
 enum event_t {
@@ -109,6 +110,9 @@ public:
 	Daniable* getDaniableInTile(std::pair <int, int> tile);
 	void updateEvents(string serializedEventsUpdates);
 	void updateEvent(string serializedItemUpdate);
+	std::vector<CharacterVision *>* getCharactersVisions();
+	void deleteCharacterVision(CharacterVision*);
+	void setCharacterVision(CharacterVision *);
 
 private:
 	view::Camera camera;
@@ -138,6 +142,8 @@ private:
 	Mission mission;
 	//Sounds
 	GameSounds gameSounds;
+	std::vector<CharacterVision *> charactersVisions;
+	void updateOthersVision();
 
 };
 
