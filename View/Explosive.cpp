@@ -6,13 +6,17 @@
 Explosive::Explosive():Ammunition() {
 }
 
-Explosive::~Explosive(){
+Explosive::~Explosive() {
 }
 
-//void Explosive::verify() {
-//	//common::Logger::instance().log("Ammo pos tile: " + stringUtilities::pairIntToString(this->getCurrentTile()));
-//	//common::Logger::instance().log("Ammo pos pixel: " + this->positionToString());
-//	this->impact(GameView::instance().getDaniableInTile(this->getCurrentTile()));
-//	if (!this->isAlive())
-//		this->setAvailable(true);
-//}
+void Explosive::setRange(int value) {
+	this->range.setRadius(value);
+}
+
+void Explosive::setCenter(std::pair<int, int> value) {
+	this->range.setCenter(value);
+}
+
+void Explosive::activate() {
+	this->range.initialize();
+}

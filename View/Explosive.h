@@ -1,17 +1,24 @@
 #ifndef _EXPLOSIVE_H_
 #define _EXPLOSIVE_H_
 
+#include <utility>
 #include "Ammunition.h"
 #include "Circle.h"
+#include "Positionable.h"
+#include "GameDependent.h"
 
-class Explosive: public Ammunition {
+class Explosive: public Ammunition{
 
 protected:
+	Circle range;
 
 public:
 	Explosive();
 	~Explosive();
-	void update();
+	void setRange(int value);
+	void setCenter(std::pair<int, int> value);
+	//virtual void update() = 0;
+	void activate();
 	//virtual void impact(Daniable* ) = 0;
 };
 
