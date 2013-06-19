@@ -110,6 +110,7 @@
     <ClInclude Include="ListaPath.h" />
     <ClInclude Include="Mutex.h" />
     <ClInclude Include="Nodo.h" />
+    <ClInclude Include="OpcionesJuego.h" />
     <ClInclude Include="Par.h" />
     <ClInclude Include="Pathfinder.h" />
     <ClInclude Include="PersonajeConstantes.h" />

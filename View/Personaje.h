@@ -11,6 +11,7 @@
 #include "Constants.h"
 #include "SDL_ttf.h"
 #include "Weapon.h"
+#include "Hechizo.h"
 
 class Personaje : public Entity, public Daniable {
 public:
@@ -34,7 +35,7 @@ public:
 	void setCurrentEnemy(int tileX, int tileY);
 	void setDestino(int xTile, int yTile);
 	std::vector<unsigned int>& getAnimationFxRelation();
-	std::string getSpellActualMulti();
+	std::string getSpellActual();
 	std::vector<Weapon*>& getWeapons();
 	void setCenteredInTile(bool centroTile);
 	bool isCenteredInTile();
@@ -60,6 +61,7 @@ public:
 	//----- Functional methods -----
 	
 	bool hasValidSprite();
+	bool isThisSpriteValid(int currentAnimationNumber);
 	bool repositionToStrike();
 	void increaseSpeed(float factor);
 	void heal();
@@ -71,6 +73,14 @@ public:
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
+	
+	void processKeyCommand(char animation);
+	void setInvulnerable(bool inv);
+	void invocarMagia();
+	void detenerMagia();
+	void setProtCost(float cost);
+	void setHechizo(Hechizo* hechizo);
+	void setProtTime(float time);
 	
 private:
 	//----- Private methods -----
@@ -94,6 +104,10 @@ private:
 	void renderProtHalo(Camera& camera);
 	void rendertShield(Camera& camera);
 	void manejarDano(float dano);
+	void stopProtectionSpell();
+	void updateProtectionSpell();
+	void reset();
+	void changeWeapon();
 
 	//----- Attributes -----
 	SDL_Surface* labelName;
@@ -121,6 +135,9 @@ private:
 	SDL_Surface* ProtectionHalo;
 	SDL_Surface* tShield;
 	bool invulnerable;
+	Hechizo* hechizoActual;
+	float protCost;
+	float protTime;
 	std::string hechizoActualMulti;
 	std::string character_id;
 	unsigned selectedWeapon;

@@ -14,7 +14,7 @@ ItemHProteccion::~ItemHProteccion()
 void ItemHProteccion::modifyCharacter(Personaje* personaje)
 {
 
-	//ACA COMENTE FER HechizoProteccion* hechizo;
-	//hechizo = new HechizoProteccion(COSTE, "Proteccion");
-	//personaje->setHechizo(hechizo);
+	HechizoProteccion* hechizo;
+	hechizo = new HechizoProteccion(COSTE, "Proteccion");
+	personaje->setHechizo(hechizo);
 }

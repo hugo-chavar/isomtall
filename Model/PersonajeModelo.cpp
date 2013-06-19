@@ -328,6 +328,11 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	return estado;
 }
 
+void PersonajeModelo::hacerMagia() {
+	animacionActual = MAGIA;
+	this->changeToAnimation(animacionActual);
+}
+
 //int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 //	int cambio = SIN_CAMBIO;
 //	double coste = 0;

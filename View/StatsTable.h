@@ -18,18 +18,19 @@ namespace view {
 	private:
 		SDL_Surface* getWeapon();
 		SDL_Rect generateInfo(std::string info, SDL_Surface* &surface);
+		void setWeaponFalse();
+		bool canGenerateWeaponInfo();
 
+		bool weapons [4];
 		SDL_Surface* sword;
 		SDL_Surface* bow;
-		int arrows;
 		SDL_Surface* bomb;
-		int bombs;
 		SDL_Surface* handGrenade;
-		int grenades;
 		SDL_Surface* wand;
 		SDL_Surface* shield;
 		int shieldEndurance;
 		SDL_Surface* ammo;
+		int ammunition;
 		SDL_Surface* shieldDur;
 		SDL_Surface* spell;
 		SDL_Surface* spellName;

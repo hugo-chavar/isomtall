@@ -271,20 +271,30 @@ void Engine::onSingleplayerEvent(SDL_Event* sdlEvent) {
 					/*}*/
 					break;
 				}
-			//case SDLK_s:
-			//	{
-			//		/*if (!GameView::instance().getChat()->isTyping())
-			//		{
-			//			instruction.clear();*/
-			//			instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-			//			//TODO: Create an option header
-			//			string opcion_caracter;
-			//			opcion_caracter.push_back(OPCION_DEFENDER);
-			//			instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-			//			GameView::instance().getModelUpdater()->addInstruction(instruction);
-			//		}
-			//		break;
-			//	}
+				case SDLK_u:
+				{
+					if (!GameView::instance().getChat()->isTyping())
+					{
+						GameView::instance().getMyPersonaje()->processKeyCommand(OPCION_MAGIA);
+					}
+					break;
+				}
+				case SDLK_i:
+				{
+					if (!GameView::instance().getChat()->isTyping())
+					{
+						GameView::instance().getMyPersonaje()->processKeyCommand(OPCION_TERMINAR_MAGIA);
+					}
+					break;
+				}
+				case SDLK_w:
+				{
+					if (!GameView::instance().getChat()->isTyping())
+					{
+						GameView::instance().getMyPersonaje()->processKeyCommand(OPCION_CAMBIAR_ARMA);
+					}
+					break;
+				}
 			case SDLK_m:
 				{
 					/*if (!GameView::instance().getChat()->isTyping())

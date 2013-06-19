@@ -1,5 +1,6 @@
 #include "Personaje.h"
 #include "../Model/PersonajeConstantes.h"
+#include "../Model/OpcionesJuego.h"
 #include "SDL_ttf.h"
 #include "Logger.h"
 #include "StringUtilities.h"
@@ -36,7 +37,10 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->lifeBarR = NULL;
 	this->magicBarNeg = NULL;
 	this->magicBarPos = NULL;
-	this->invulnerable = false;
+	hechizoActual = NULL;
+	invulnerable = false;
+	protCost = 0;
+	protTime = 0;
 	this->hechizoActualMulti = "";
 	this->ProtectionHalo = NULL;
 	//this->tShield = NULL;
@@ -187,7 +191,7 @@ void Personaje::animar() {
 		} else {
 			sprites[this->getCurrentSpritePosition()]->restart();
 		}
-		if (!this->hasValidSprite()) {
+		if (!this->isThisSpriteValid(currentAnimationNumber)) {
 			GameView::instance().getErrorImage()->restart();
 		} else {
 			sprites[this->calculateSpritePosition(currentAnimationNumber)]->restart();
@@ -222,6 +226,22 @@ void Personaje::update() {
 	}
 }
 
+void Personaje::updateProtectionSpell() {
+	float tiempoTranscurrido = 0.0;
+	
+	if (this->invulnerable) {
+		protTime += this->getDeltaTime();
+	}
+	if (protTime > 1.0) {
+		tiempoTranscurrido = std::floor(protTime);
+		protTime -= tiempoTranscurrido;
+		if (!(this->useMagic(protCost*tiempoTranscurrido))) {
+			this->stopProtectionSpell();
+		}
+	}
+}
+
+
 void Personaje::updateSinglePlayer() {
 	//Logger::instance().log("Personaje " + this->positionToString() );
 	this->isCenteredInTileInSinglePlayer();
@@ -246,6 +266,7 @@ void Personaje::updateSinglePlayer() {
 			GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
 		}
 	}
+	this->updateProtectionSpell();
 	this->updateStatsBar();
 }
 
@@ -320,9 +341,6 @@ void Personaje::calcularSigTileAMover(){
 		//common::Logger::instance().log("Velocidad: "+ aux);
 		if (velocidad != 0) {
 			//modelo->setIsInCenterTile(false);
-			//if (tile == std::make_pair<int,int>(0,0)) {
-			//	int i = 0;
-			//}
 			modelo->setPosition(tile);
 		} else {
 
@@ -330,14 +348,24 @@ void Personaje::calcularSigTileAMover(){
 		}
 		common::Logger::instance().log("if (modelo->getIsReseting()) "+ stringUtilities::intToString(this->currentSpritePosition));
 		if (modelo->getIsReseting()) {
-			
-			this->setRectangle(this->getPosition(), sprites[this->currentSpritePosition]);
-			currentEnemy = NULL;
-			this->heal();
-			this->rechargeMagic();
-			modelo->setIsReseting();
+			this->reset();
 		}
 	}
+}
+
+void Personaje::reset() {
+	this->setRectangle(this->getPosition(), sprites[this->currentSpritePosition]);
+	currentEnemy = NULL;
+	this->heal();
+	this->rechargeMagic();
+	if (this->hechizoActual != NULL) {
+		delete hechizoActual;
+		hechizoActual = NULL;
+	}
+	invulnerable = false;
+	protCost = 0;
+	protTime = 0;
+	modelo->setIsReseting();
 }
 
 void Personaje::moverSprite(std::pair<float, float>& factor){
@@ -381,6 +409,81 @@ void Personaje::moverSpriteEnX() {
 		}
 	}
 }
+
+void Personaje::setInvulnerable(bool inv) {
+	this->invulnerable = inv;
+}
+
+void Personaje::invocarMagia() {
+	bool canActivate;
+	
+	if (this->hechizoActual != NULL) {
+		canActivate = this->hechizoActual->startSpell(this->getPlayerName());
+		if (canActivate) {
+			modelo->hacerMagia();
+			delete (this->hechizoActual);
+			this->hechizoActual = NULL;
+		}
+	}
+}
+
+void Personaje::detenerMagia() {
+		modelo->hacerMagia();
+		this->stopProtectionSpell();
+}
+
+void Personaje::setProtCost(float cost) {
+	this->protCost = cost;
+}
+
+void Personaje::setHechizo(Hechizo* hechizo) {
+	if (this->hechizoActual != NULL) {
+		delete (this->hechizoActual);
+		this->hechizoActual = NULL;
+	}
+	this->hechizoActual = hechizo;
+}
+
+void Personaje::setProtTime(float time) {
+	protTime = time;
+}
+
+void Personaje::stopProtectionSpell() {
+	if (this->invulnerable) {
+		invulnerable = false;
+		protCost = 0;
+		protTime = 0;
+	}
+}
+
+void Personaje::changeWeapon() {
+
+	//this->setSelectedWeapon(this->getSelectedWeapon()+1);
+	if ((this->getWeapons().size() - 1) == (this->getSelectedWeapon())) {
+		this->setSelectedWeapon(0);
+	} else {
+		this->setSelectedWeapon(this->getSelectedWeapon()+1);
+	}
+}
+
+void Personaje::processKeyCommand(char animacion) {
+	switch (animacion) {
+		case (OPCION_MAGIA): {
+			this->invocarMagia();
+			break;
+				  }
+		case (OPCION_TERMINAR_MAGIA): {
+			this->stopProtectionSpell();
+			break;
+				  }
+		case (OPCION_CAMBIAR_ARMA): {
+			this->changeWeapon();
+			break;
+				  }
+		default:;
+		}
+}
+
 
 void Personaje::moverSpriteEnY() {
 	float factorT = 0;	//El truncamiento de la variable factor
@@ -446,7 +549,10 @@ void Personaje::recibirDano(float dano) {
 	}
 }
 
-std::string Personaje::getSpellActualMulti() {
+std::string Personaje::getSpellActual() {
+	if (this->hechizoActual != NULL) {
+		return hechizoActual->getSpellId();
+	}
 	return this->hechizoActualMulti;
 }
 
@@ -698,6 +804,9 @@ Personaje::~Personaje(){
 	SDL_FreeSurface(this->magicBarNeg);
 	SDL_FreeSurface(this->magicBarPos);
 	SDL_FreeSurface(this->ProtectionHalo);
+	if (hechizoActual != NULL) {
+		delete hechizoActual;
+	}
 	//SDL_FreeSurface(this->tShield);
 	//Destroying weapons
 	for (unsigned int i = 0; i < this->getWeapons().size(); i++) {
@@ -867,6 +976,10 @@ void Personaje::setFont(TTF_Font* font) {
 
 bool Personaje::hasValidSprite() {
 	return ((this->getCurrentSpritePosition() <= static_cast<int>(sprites.size()-1))&&(this->getCurrentSpritePosition() >= 0));
+}
+
+bool Personaje::isThisSpriteValid(int currentAnimationNumber) {
+	return ((this->calculateSpritePosition(currentAnimationNumber) <= static_cast<int>(sprites.size()-1))&&(this->calculateSpritePosition(currentAnimationNumber) >= 0));
 }
 
 float Personaje::getShieldResistance(){

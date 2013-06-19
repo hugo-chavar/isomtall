@@ -6,6 +6,7 @@
 #define OPCION_DEFENDER 's'
 #define OPCION_MAGIA 'u'
 #define OPCION_TERMINAR_MAGIA 'i'
+#define OPCION_CAMBIAR_ARMA 'w'
 
 
 #endif
