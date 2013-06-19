@@ -28,6 +28,8 @@ void GameSounds::initialize() {
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/attackOnshield.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/attackOnWood.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/openBottle.wav"));
+	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/eatItem.wav"));
+	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/regeneracion.wav"));
 }
 
 void GameSounds::startBackgroundMusic() {

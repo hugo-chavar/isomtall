@@ -22,6 +22,7 @@ protected:
 	SDL_Rect hiddenSpriteRect;
 	Sprite * hiddenSprite;
 	void setHiddenRectangle(std::pair<int, int> pos, Sprite* sprite );
+	bool isWood();
 	//string name;
 
 public:

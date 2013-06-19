@@ -27,3 +27,9 @@ bool Daniable::isAlive() {
 	}
 	return false;
 }
+
+bool Daniable::isWood()
+{
+	return false;
+	//METODO ABSTRACTO
+}

@@ -17,6 +17,11 @@ ItemView::ItemView(int tileX,int tileY,Sprite* spriteCargado,Sprite * _hiddenSpr
 //	return this->name;
 //}
 
+bool ItemView::isWood()
+{
+	return true;
+}
+
 bool ItemView::isAlive()
 {
 	return (this->isHidden() || this->getStatus()==UNCOVER_ITEM);
@@ -116,6 +121,10 @@ void ItemView::reviveSinglePlayer(unsigned _state,std::pair <int,int> _pos)
 		this->setStatus(HIDDEN_ITEM);
 		Game::instance().world()->getTileAt(this->getPosition())->setHasHiddenItem(true);
 	}
+	if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(_pos))
+		{
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_REGENERATION);//AGREGO SONIDO
+		}
 }
 
 
