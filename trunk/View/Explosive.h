@@ -11,7 +11,7 @@ class Explosive: public Ammunition{
 
 protected:
 	Circle range;
-	bool exploded;
+	//bool exploded;
 
 public:
 	Explosive();

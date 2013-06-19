@@ -7,6 +7,7 @@
 #include "ItemFactoryView.h"
 #include "Arrow.h"
 #include "Grenade.h"
+#include "Bomb.h"
 #include "Logger.h"
 
 #define START_LEVEL 0
@@ -111,6 +112,7 @@ void view::Stage::generateStage() {
 	}
 	Arrow* arrow = new Arrow();
 	Grenade* grenade = new Grenade();
+	Bomb* bomb = new Bomb();
 	//arrow->setInitialTile(make_pair(15,6));
 	//arrow->initialize();
 	//arrow->setDirection(Directionable::DIRECTION_S);
