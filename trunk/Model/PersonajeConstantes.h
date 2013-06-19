@@ -41,8 +41,8 @@
 //Weapons
 #define WEAPON_SWORD 0
 #define WEAPON_BOW 1
-#define WEAPON_ICE_INCANTATOR 2
-#define WEAPON_HAND_GRENADE 3
+#define WEAPON_HAND_GRENADE 2
+#define WEAPON_ICE_INCANTATOR 3
 
 
 #endif

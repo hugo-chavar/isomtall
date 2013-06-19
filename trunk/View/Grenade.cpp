@@ -11,12 +11,12 @@ Grenade::Grenade() {
 Grenade::~Grenade() {
 }
 
-//void Grenade::impact(Daniable* daniable) {
-//	if (daniable) {
-//		daniable->recibirDano(this->getDamage());
-//		this->setTargetReached(true);
-//		this->setAvailable(true);
-//		if (!(daniable->isAlive()))
-//			GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
-//	}
-//}
+bool Grenade::isAlive() {
+	return (!this->exploded);
+}
+
+void Grenade::update() {
+	Movable::verify();
+	if (!this->isTargetReached())
+		Movable::update();
+}
