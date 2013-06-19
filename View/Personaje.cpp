@@ -424,6 +424,7 @@ void Personaje::invocarMagia() {
 	if (this->hechizoActual != NULL) {
 		canActivate = this->hechizoActual->startSpell(this->getPlayerName());
 		if (canActivate) {
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_MAGIC);//AGREGO SONIDO
 			modelo->hacerMagia();
 			delete (this->hechizoActual);
 			this->hechizoActual = NULL;
