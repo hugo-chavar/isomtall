@@ -19,6 +19,7 @@
 #define DEFENDER 5
 #define HERIR 6
 #define MORIR 7
+#define MAGIA 8
 
 //Orientacion
 

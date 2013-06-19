@@ -3,6 +3,7 @@
 #include <string.h>
 #include <string>
 #include "../Common/stringUtilities.h"
+#include "PersonajeConstantes.h"
 
 using namespace view;
 
@@ -13,15 +14,21 @@ StatsTable::StatsTable() {
 	this->bow = NULL;
 	this->handGrenade = NULL;
 	this->wand = NULL;
-	this->bombs = 0;
-	this->arrows = 0;
-	this->handGrenade = 0;
+	this->ammunition = 0;
 	this->shieldEndurance = 0;
 	this->ammo = NULL;
 	this->shieldDur = NULL;
 	this->spell = NULL;
 	this->spellName = NULL;
 	this->spellId = "";
+	this->setWeaponFalse();
+}
+
+void StatsTable::setWeaponFalse() {
+	this->weapons[0] = false;
+	this->weapons[1] = false;
+	this->weapons[2] = false;
+	this->weapons[3] = false;
 }
 
 //TODO: Mover esto a un lugar general, ver ChatView.h
@@ -80,9 +87,35 @@ bool StatsTable::initialize() {
 	return true;
 }
 
+bool StatsTable::canGenerateWeaponInfo() {
+	return (weapons[1] || weapons[3]);
+}
+
 void StatsTable::update(Personaje* personaje) {
 	shieldEndurance = (int) (personaje->getShieldResistance());
-	spellId = personaje->getSpellActualMulti();
+	spellId = personaje->getSpellActual();
+	this->setWeaponFalse();
+	switch (personaje->getSelectedWeapon()) {
+	case WEAPON_SWORD: {
+						weapons[0] = true;
+						break;
+					   }
+	case WEAPON_BOW: {
+						weapons[1] = true;
+						this->ammunition = personaje->getWeapons()[WEAPON_BOW]->getAmmo();
+						break;
+					 }
+	case WEAPON_ICE_INCANTATOR: {
+									weapons[2] = true;
+									break;
+								}
+	case WEAPON_HAND_GRENADE: {
+								weapons[3] = true;
+								this->ammunition = personaje->getWeapons()[WEAPON_HAND_GRENADE]->getAmmo();
+								break;
+							  }
+	default: break;
+	}
 }
 
 SDL_Rect StatsTable::generateInfo(std::string info, SDL_Surface* &surface) {
@@ -103,6 +136,15 @@ void StatsTable::setFont(TTF_Font* font) {
 }
 
 SDL_Surface* StatsTable::getWeapon() {
+	if (weapons[1] == true) {
+		return bow;
+	}
+	if (weapons[2] == true) {
+		return wand;
+	}
+	if (weapons[3] == true) {
+		return handGrenade;
+	}
 	return sword;
 }
 
@@ -119,6 +161,12 @@ void StatsTable::render(Camera &camera) {
 	spellBox.x = weaponBox.x;
 	spellBox.y = shieldBox.y + shieldBox.h;
 	camera.render (weaponBox, getWeapon());
+	if (this->canGenerateWeaponInfo()) {
+		weaponInfoBox = this->generateInfo(stringUtilities::intToString(this->ammunition), this->ammo);
+		weaponInfoBox.y = weaponBox.y;
+		weaponInfoBox.x = weaponBox.x + weaponBox.w;
+		camera.render(weaponInfoBox, ammo);
+	}
 	if (shieldEndurance > 0) {
 		camera.render (shieldBox, shield);
 		shieldInfoBox = this->generateInfo(stringUtilities::intToString(shieldEndurance), shieldDur);

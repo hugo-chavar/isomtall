@@ -18,10 +18,9 @@ bool HechizoProteccion::startSpell(std::string actualCaster) {
 		return false;
 	}
 	if (invocador->useMagic(cost)) {
-		//ACA COMENTE FER
-		//invocador->setInvulnerable(true);
-		//invocador->setProtCost(this->cost);
-		//invocador->setProtTime(0.0);
+		invocador->setInvulnerable(true);
+		invocador->setProtCost(this->cost);
+		invocador->setProtTime(0.0);
 		return true;
 	}
 	return false;

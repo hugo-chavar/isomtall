@@ -14,6 +14,6 @@ ItemTerremoto::~ItemTerremoto(void)
 
 void ItemTerremoto::modifyCharacter(Personaje* personaje)
 {
-	//ACA COMENTE FER HechizoTerremoto* hechizo = new HechizoTerremoto(COSTE, "Terremoto");
-	// personaje->setHechizo(hechizo);
+	HechizoTerremoto* hechizo = new HechizoTerremoto(COSTE, "Terremoto");
+	personaje->setHechizo(hechizo);
 }
