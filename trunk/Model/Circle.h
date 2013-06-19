@@ -13,6 +13,7 @@ public:
 	~Circle();
 	bool inside(pair<int, int>);
 	void initialize(pair<int, int>, int);
+	void initialize();
 	void clear();
 	void fill();
 	bool hasNext();
