@@ -37,15 +37,22 @@ void Grenade::update() {
 		}
 		
 		case EXPLOSIVE_BOUNCING: {
-			//Movable::verify();
-			if ((!this->isTargetReached())&&(this->couldContinue())) {
-				Movable::update();
-				Movable::verify();
-			}
-			else {
+			int x, y;
+			this->setCurrentTile(this->getCurrentTile() + this->getDirection());
+			x = this->getTileWidth()*(this->getCurrentTile().first - this->getCurrentTile().second)/2 - this->getSprite()->relatx();
+			y = this->getTileHeight()*(this->getCurrentTile().first + this->getCurrentTile().second)/2 - this->getSprite()->relaty();
+			this->setPosition(std::make_pair(x, y));
+			//this->setRectangle(this->getInitialTile(),this->getSprite());
+			//this->updateRectanglePosition(,)
+			//this->setBouncing(true);
+			//if ((!this->isTargetReached())&&(this->couldContinue())) {
+			//	Movable::update();
+			//	Movable::verify();
+			//}
+			//else {
 				this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
 				this->startCountDown(5); //tarda 5 segundos en exlotar
-			}
+			//}
 		}
 		break;
 		case EXPLOSIVE_EXPLOSION_COUNTDOWN: {

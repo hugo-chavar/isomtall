@@ -7,6 +7,7 @@ Movable::Movable() {
 	this->remaining = std::make_pair<float, float>(0, 0);
 	this->setTargetReached(false);
 	this->setCouldContinue(true);
+	this->setBouncing(false);
 
 }
 
@@ -61,6 +62,14 @@ void Movable::setTargetReached(bool value) {
 
 bool Movable::isTargetReached() {
 	return this->targetReached;
+}
+
+void Movable::setBouncing(bool value) {
+	this->bouncing = value;
+}
+
+bool Movable::isBouncing() {
+	return this->bouncing;
 }
 
 void Movable::setCouldContinue(bool value) {
@@ -139,7 +148,7 @@ void Movable::calculateWayForward() {
 }
 
 void Movable::verify() {
-	if (!this->canCross(this->getCurrentTile())) {
+	if (!this->canCross(this->getCurrentTile()) && !this->isBouncing()) {
 		this->setCouldContinue(false);
 	}
 	if (this->getCurrentTile() == this->getTargetTile())
