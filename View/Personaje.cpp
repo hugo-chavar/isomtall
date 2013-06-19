@@ -209,6 +209,7 @@ void Personaje::update() {
 		//this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 		this->personajeModelo()->update();
 		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
+		//this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
 	//common::Logger::instance().log("Character pos: " + this->positionToString());
 	//
@@ -230,6 +231,7 @@ void Personaje::updateSinglePlayer() {
 		this->animar();
 		this->personajeModelo()->update();
 		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
+		//this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
 	//modelo->update();
 	if (this->isImmobilized())
@@ -951,8 +953,8 @@ void Personaje::loadWeapons() {
 	handGrenade->setOwner(this->getPlayerName());
 	handGrenade->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(handGrenade);
-	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
-	this->setSelectedWeapon(WEAPON_BOW);
+	this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
+	//this->setSelectedWeapon(WEAPON_BOW);
 	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
 	//this->setSelectedWeapon(WEAPON_HAND_GRENADE);
 }
