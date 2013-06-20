@@ -954,6 +954,11 @@ std::pair<int,int> Personaje::getPixelPosition() {
 	return std::make_pair<int,int>(spriteRect.x, spriteRect.y);
 }
 
+std::pair<int,int> Personaje::getRealPixelPosition()
+{
+	return std::make_pair<int,int>(getPixelPosition().first+personajeModelo()->getRefPixelX(),getPixelPosition().second+personajeModelo()->getRefPixelY());
+}
+
 void Personaje::setPixelPosition(std::pair<int,int> pixel) {
 	spriteRect.x = static_cast<Sint16>(pixel.first);
 	spriteRect.y = static_cast<Sint16>(pixel.second);
