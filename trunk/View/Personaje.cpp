@@ -1111,9 +1111,9 @@ void Personaje::loadWeapons() {
 	weaponIceIncantator->setOwner(this->getPlayerName());
 	weaponIceIncantator->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(weaponIceIncantator);
-	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
+	this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 	//this->setSelectedWeapon(WEAPON_BOW);
-	this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
+	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
 	//this->setSelectedWeapon(WEAPON_HAND_GRENADE);
 }
 
