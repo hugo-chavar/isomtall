@@ -87,7 +87,7 @@ void RenderHelper::renderNextLevel(Camera& camera) {
 	bool isInsidePlayerVision = GameView::instance().insidePlayerVision(tile->getPosition());
 	while ((tile) && (tile != (*levelIterator).second) ) {
 		if ( isInsidePlayerVision  || (GameView::instance().isKnownByPlayer(tile->getPosition()))) {
-			tile->renderEntity(camera);
+			tile->renderEntity(camera,isInsidePlayerVision);
 			//if (!isInsidePlayerVision)
 			//	tile->renderFog(camera);
 		} //else if (Game::instance().isKnownByPlayer(tile->getPosition())){
