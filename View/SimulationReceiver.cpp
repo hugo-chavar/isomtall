@@ -28,7 +28,7 @@ std::string SimulationReceiver::receiveMessageFromSocket()
 		message = this->getReminder().substr(0,messageEndPosition);
 		this->setReminder(this->getReminder().substr(messageEndPosition));
 		//common::Logger::instance().log("			Returning message: " + message +  " from remainder - at: " + stringUtilities::longToString(SDL_GetTicks()));
-		//Sleep(20);//Parche
+		Sleep(20);//Parche
 		return message;
 	}
 
