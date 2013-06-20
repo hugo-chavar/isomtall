@@ -24,7 +24,7 @@ GameView::GameView() {
 }
 
 GameView::~GameView() {
-	Logger::instance().log("GameView::~GameView()");
+	//Logger::instance().log("GameView::~GameView()");
 	map<string, Personaje*>::iterator it;
 	it = personajes.begin();
 	for( ;it != personajes.end(); it++) {

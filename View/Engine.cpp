@@ -54,7 +54,7 @@ int Engine::execute() {
 			//common::Logger::instance().log("---- FINISHED WAITING AT: "+ stringUtilities::unsignedToString(SDL_GetTicks()));
 		}
 	}
-	Logger::instance().log("Exiting..");
+	//Logger::instance().log("Exiting..");
 	this->cleanUp();
 
     return 0;
@@ -372,11 +372,11 @@ void Engine::render() {
 }
 
 void Engine::cleanUp() {
-	Logger::instance().log("Engine::cleanUp()");
+	//Logger::instance().log("Engine::cleanUp()");
 	//Instruction instructionOut;
 
 	GameView::instance().cleanUp();
-	Logger::instance().log("GameView::instance().cleanUp();");
+	//Logger::instance().log("GameView::instance().cleanUp();");
 
 	//this->_login.cleanUp();
 
@@ -390,13 +390,13 @@ void Engine::cleanUp() {
 }
 
 Engine::~Engine() {
-	Logger::instance().log("Engine::~Engine()");
+	//Logger::instance().log("Engine::~Engine()");
 	WSACleanup();
-	Logger::instance().log("WSACleanup()");
+	//Logger::instance().log("WSACleanup()");
 	TTF_Quit();
-	Logger::instance().log("TTF_Quit()");
+	//Logger::instance().log("TTF_Quit()");
 	SDL_Quit();
-	Logger::instance().log("SDL_Quit()");
+	//Logger::instance().log("SDL_Quit()");
 }
 //
 //ModelUpdater* Engine::getModelUpdater() {

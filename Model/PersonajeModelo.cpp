@@ -13,12 +13,14 @@ using namespace common;
 PersonajeModelo::PersonajeModelo() {
 	this->xPath = NULL;
 	this->yPath = NULL;
+	this->vision = NULL;
 	this->initialize(DEFAULT_MAIN_CHARACTER_X, DEFAULT_MAIN_CHARACTER_Y);
 }
 
 PersonajeModelo::PersonajeModelo(int ActualX, int ActualY) {
 	this->xPath = NULL;
 	this->yPath = NULL;
+	this->vision = NULL;
 	this->initialize(ActualX, ActualY);
 }
 
@@ -47,122 +49,16 @@ PersonajeModelo& PersonajeModelo::operator=(const PersonajeModelo &source){
 }
 
 void PersonajeModelo::initialize(int pos_x, int pos_y) {
-	this->setPosition(std::make_pair(pos_x, pos_y));
-	this->setNoTarget();
-	this->startPosition = this->target;
-	posMov = 0;
-	caminoSize = 0;
-	estado = PARADO;
-	velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
-	this->setActive(true);
-	orientacion = SUR;
-	this->setAnimating(false);
-	animacionActual = SIN_CAMBIO;
-	this->vision = NULL;
-	following = false;
-	//precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
-	//danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
-	//vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
-	//magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
-	isReseting = false;
+	this->startPosition = std::make_pair(pos_x, pos_y);
+	//velocidad = DEFAULT_MAIN_CHARACTER_SPEED;
+	this->resetChar();
 }
 
-void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
-	animation = ae;
-}
-
-void PersonajeModelo::herir() {
-	animacionActual = HERIR;
-	this->changeToAnimation(animacionActual);
-}
-
-void PersonajeModelo::morir() {
-	animacionActual = MORIR;
-	this->changeToAnimation(animacionActual);
-}
-
-
-//void PersonajeModelo::resolverAnimacion(int nuevaAnimacion) {
-//	this->setAnimating(true);
-//	this->changeToAnimation(nuevaAnimacion);
-//	//this->setNoTarget();
-//	//if (estado >= MOVIMIENTO) {
-//	//	estado = estado + nuevaAnimacion - MOVIMIENTO;
-//	//} else {
-//	//	estado = estado + nuevaAnimacion - PARADO;
-//	//}
-//}
-
-float PersonajeModelo::getDanoMaximo() {
-	return this->danoMaximo;
-}
-
-float PersonajeModelo::getPrecisionMinima() {
-	return this->precisionMinima;
-}
-
-void PersonajeModelo::atacar() {
-		animacionActual = ATACAR;
-		this->changeToAnimation(animacionActual);
-}
-
-void PersonajeModelo::defender() {
-	animacionActual = DEFENDER;
-	this->changeToAnimation(animacionActual);
-}
-
-bool PersonajeModelo::estaAnimandose() {
-	return this->isAnimating;
-}
-
-void PersonajeModelo::changeToAnimation(int animationNumber) {
-	this->setAnimating(true);
-	this->setNoTarget();
-	if (estado >= MOVIMIENTO) {
-		this->changeToState(animationNumber - MOVIMIENTO);
-	} else {
-		this->changeToState(animationNumber - PARADO);
-	}
-}
-
-void PersonajeModelo::changeToState(int addedState) {
-	this->estado += addedState;
-}
-
-//void PersonajeModelo::animar(char opcion) {
-//	if ((isActivo )&& (animacionActual == SIN_CAMBIO)) {
-//		
-//		switch (opcion) {
-//		case (OPCION_ATACAR): {
-//			this->setAnimating(true);
-//			this->changeToAnimation(ATACAR);
-//			break;
-//				  }
-//		case (OPCION_DEFENDER): {
-//			this->setAnimating(true);
-//			this->changeToAnimation(DEFENDER);
-//			break;
-//				  }
-//		default:;
-//		}
-//	}
-//}
-
-void PersonajeModelo::terminarAnimacion() {
-	this->setAnimating(false);
-	if (animacionActual == MORIR) {
-		this->resetChar();
-	} else {
-		//estado = estado - animacionActual + PARADO;
-		this->changeToState(PARADO - animacionActual);
-		animacionActual = SIN_CAMBIO;
-	}
-}
 
 void PersonajeModelo::resetChar() {
 	this->setPosition(this->startPosition);
-	this->setNoTarget();
 	this->limpiarPath();
+	this->setNoTarget();
 	posMov = 0;
 	caminoSize = 0;
 	estado = PARADO;
@@ -171,24 +67,22 @@ void PersonajeModelo::resetChar() {
 	this->setAnimating(false);
 	animacionActual = SIN_CAMBIO;
 	following = false;
-	//precisionMinima = DEFAULT_CHARACTER_MIN_PRECISION;
-	//danoMaximo = DEFAULT_CHARACTER_MAX_DAMAGE;
-	//vidaMaxima = DEFAULT_CHARACTER_MAX_LIFE;
-	//magiaMaxima = DEFAULT_CHARACTER_MAX_MAGIC;
 	isReseting = true;
+	this->setActive(true);
 }
 
-bool PersonajeModelo::getIsReseting(){
-	return isReseting;
+//---------Getters/setters ------------------------------
+
+void PersonajeModelo::setAnimation(AnimatedEntity* ae) {
+	animation = ae;
 }
 
-void PersonajeModelo::setIsReseting(){
-	isReseting = false;
+float PersonajeModelo::getDanoMaximo() {
+	return this->danoMaximo;
 }
 
-
-bool PersonajeModelo::hasDirectoryRemaining(){
-	return animation->hasNextDir();
+float PersonajeModelo::getPrecisionMinima() {
+	return this->precisionMinima;
 }
 
 AnimatedEntity* PersonajeModelo::getAnimation() {
@@ -217,6 +111,134 @@ void PersonajeModelo::setDanoMaximo(float dano) {
 
 void PersonajeModelo::setPrecisionMinima(float precision) {
 	precisionMinima = precision;
+}
+
+bool PersonajeModelo::estaAnimandose() {
+	return this->isAnimating;
+}
+
+bool PersonajeModelo::getIsReseting(){
+	return isReseting;
+}
+
+void PersonajeModelo::setIsReseting(){
+	isReseting = false;
+}
+
+void PersonajeModelo::setEstado(int state) {
+	this->estado = state;
+}
+
+int PersonajeModelo::getEstado() {
+	return this->estado;
+}
+
+void PersonajeModelo::setActive(bool value) {
+		this->active = value;
+}
+
+bool PersonajeModelo::isActive() {
+	return this->active;
+}
+
+void PersonajeModelo::setVelocidad(float vel) {
+	this->velocidad = vel;
+}
+
+float PersonajeModelo::getVelocidad() {
+	return this->velocidad;
+}
+
+int PersonajeModelo::getOrientacion() {
+	return this->orientacion;
+}
+
+bool PersonajeModelo::followingEnemy() {
+	return following;
+}
+
+void PersonajeModelo::setFollowingEnemy(bool enemy) {
+	following = enemy;
+}
+
+std::pair<int, int> PersonajeModelo::getTarget() {
+	return target;
+}
+
+void PersonajeModelo::setName(string nombreJugador) {
+	this->name = nombreJugador;
+}
+
+string PersonajeModelo::getName() {
+	return this->name;
+}
+
+void PersonajeModelo::setAnimating(bool value) {
+	this->isAnimating = value;
+}
+
+int PersonajeModelo::getRefPixelX() {
+	return this->animation->pixelRefX();
+}
+
+int PersonajeModelo::getRefPixelY() {
+	return this->animation->pixelRefY();
+}
+
+//-----------------Functional methods -----------------------
+
+void PersonajeModelo::herir() {
+	animacionActual = HERIR;
+	this->changeToAnimation(animacionActual);
+}
+
+void PersonajeModelo::morir() {
+	animacionActual = MORIR;
+	this->changeToAnimation(animacionActual);
+}
+
+
+void PersonajeModelo::atacar() {
+		animacionActual = ATACAR;
+		this->changeToAnimation(animacionActual);
+}
+
+void PersonajeModelo::defender() {
+	animacionActual = DEFENDER;
+	this->changeToAnimation(animacionActual);
+}
+
+void PersonajeModelo::hacerMagia() {
+	animacionActual = MAGIA;
+	this->changeToAnimation(animacionActual);
+}
+
+void PersonajeModelo::changeToAnimation(int animationNumber) {
+	this->setAnimating(true);
+	this->setNoTarget();
+	if (estado >= MOVIMIENTO) {
+		this->changeToState(animationNumber - MOVIMIENTO);
+	} else {
+		this->changeToState(animationNumber - PARADO);
+	}
+}
+
+void PersonajeModelo::changeToState(int addedState) {
+	this->estado += addedState;
+}
+
+void PersonajeModelo::terminarAnimacion() {
+	this->setAnimating(false);
+	if (animacionActual == MORIR) {
+		this->resetChar();
+	} else {
+		this->changeToState(PARADO - animacionActual);
+		animacionActual = SIN_CAMBIO;
+	}
+}
+
+bool PersonajeModelo::hasDirectoryRemaining(){
+	return animation->hasNextDir();
 }
 
 string PersonajeModelo::nextDirectory() {
@@ -252,36 +274,8 @@ void PersonajeModelo::setDestino(int x, int y) {
 	}
 }
 
-void PersonajeModelo::setEstado(int state) {
-	this->estado = state;
-}
 
-int PersonajeModelo::getEstado() {
-	return this->estado;
-}
 
-void PersonajeModelo::setIsActivo(bool active) {
-		this->isActivo = active;
-}
-bool PersonajeModelo::getIsActivo() {
-	return isActivo;
-}
-
-void PersonajeModelo::setActive(bool value) {
-		this->active = value;
-}
-
-bool PersonajeModelo::isActive() {
-	return this->active;
-}
-
-void PersonajeModelo::setVelocidad(float vel) {
-	this->velocidad = vel;
-}
-
-float PersonajeModelo::getVelocidad() {
-	return this->velocidad;
-}
 
 int PersonajeModelo::siCaminaDetenerse() {
 	int cambio = SIN_CAMBIO;
@@ -328,10 +322,6 @@ int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 	return estado;
 }
 
-void PersonajeModelo::hacerMagia() {
-	animacionActual = MAGIA;
-	this->changeToAnimation(animacionActual);
-}
 
 //int PersonajeModelo::mover(std::pair<int, int>& destino, float& velocidadAni) {
 //	int cambio = SIN_CAMBIO;
@@ -358,9 +348,6 @@ void PersonajeModelo::orientar(std::pair<int, int> destino) {
 	estado = cambiarEstado(destino.first, destino.second, cambio);
 }
 
-int PersonajeModelo::getOrientacion() {
-	return this->orientacion;
-}
 
 bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	if ((xPath == NULL)&&(yPath == NULL)) { //Si no hay camino seteado
@@ -384,20 +371,8 @@ bool PersonajeModelo::esNecesarioCalcularNuevoPath(){
 	return false;
 }
 
-bool PersonajeModelo::followingEnemy() {
-	return following;
-}
-
-void PersonajeModelo::setFollowingEnemy(bool enemy) {
-	following = enemy;
-}
-
 bool PersonajeModelo::canSee(std::pair<int, int> tile) {
 	return vision->isInsideVision(tile);
-}
-
-std::pair<int, int> PersonajeModelo::getTarget() {
-	return target;
 }
 
 void PersonajeModelo::moverse(std::pair<int, int>& destino, float &velocidad){
@@ -432,8 +407,6 @@ void PersonajeModelo::limpiarPath() {
 		yPath = NULL;
 	}
 }
-
-
 
 int PersonajeModelo::cambiarEstado(int x, int y, int cambio) {
 	if (cambio == SIN_CAMBIO) {
@@ -488,18 +461,6 @@ PersonajeModelo::~PersonajeModelo(){
 	}
 }
 
-void PersonajeModelo::setName(string nombreJugador) {
-	this->name = nombreJugador;
-}
-
-string PersonajeModelo::getName() {
-	return this->name;
-}
-//
-//std::pair<int, int> PersonajeModelo::getPosition() {
-//	return this->current;
-//}
-
 void PersonajeModelo::createVision(int range) {
 	this->vision = new CharacterVision();
 	this->vision->setRangeVision(range);
@@ -513,34 +474,6 @@ CharacterVision* PersonajeModelo::getVision() {
 
 void PersonajeModelo::update() {
 	this->vision->updatePosition(this->getPosition());
-}
-
-//std::pair<int, int> PersonajeModelo::obtenerFrentePersonaje() {
-//	std::pair <int, int> posicionSig = this->getPosition();
-//
-//	if ((orientacion == NORTE) || (orientacion == NORESTE) || (orientacion == ESTE))
-//		posicionSig.second--;
-//	else if ((orientacion == SUDOESTE) || (orientacion == OESTE) || (orientacion == SUR))
-//		posicionSig.second++;
-//
-//	if ((orientacion == NORTE) || (orientacion == NOROESTE) || (orientacion == OESTE))
-//		posicionSig.first--;
-//	else if ((orientacion == ESTE) || (orientacion == SUDESTE) || (orientacion == SUR))
-//		posicionSig.first++;
-//	
-//	return posicionSig;
-//}
-
-void PersonajeModelo::setAnimating(bool value) {
-	this->isAnimating = value;
-}
-
-int PersonajeModelo::getRefPixelX() {
-	return this->animation->pixelRefX();
-}
-
-int PersonajeModelo::getRefPixelY() {
-	return this->animation->pixelRefY();
 }
 
 void PersonajeModelo::restartDirectories() {

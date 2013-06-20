@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include "Game.h"
+#include "StringUtilities.h"
 
 Entity::Entity() {
 }
@@ -46,29 +47,6 @@ void Entity::update() {
 	}
 }
 
-void Entity::render(Camera& camera) {
-	
-	this->renderEntitySprite(this->spriteRect,this->sprite,camera);
-	/*if (this->isImmobilized()) {
-		if (this->isFogged())
-			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
-		else
-			camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
-	}
-	camera.render(spriteRect,sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));*/
-}
-
-void Entity::renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera)
-{
-	if (this->isImmobilized()) {
-		if (this->isFogged())
-			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
-		else
-			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
-	}
-	camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
-}
-
 void Entity::setFogged(bool value) {
 	this->fogged = value;
 }
@@ -98,8 +76,7 @@ void Entity::iceUp(float seconds) {
 	this->setEndStatusTime(seconds);
 }
 
-void Entity::decreaseEndStatusTime(/*float timeToDecrease*/) {
-	//Uint32 aux = static_cast<Uint32>(this->getDeltaTime());
+void Entity::decreaseEndStatusTime() {
 	if ( this->getDeltaTime() < this->endStatusTime)
 		this->endStatusTime -= this->getDeltaTime();
 	else
@@ -136,6 +113,10 @@ bool Entity::needsToBeCleaned() {
 	return false;
 }
 
+std::string Entity::statusToString() {
+	return stringUtilities::unsignedToString(this->getStatus());
+}
+
 void Entity::setSprite(Sprite* sprite) {
 	this->sprite = sprite;
 }
@@ -167,4 +148,20 @@ std::string Entity::getName() {
 
 void Entity::setName(std::string value) {
 	this->name = value;
+}
+
+void Entity::render(Camera& camera) {
+	
+	this->renderEntitySprite(this->spriteRect,this->sprite,camera);
+}
+
+void Entity::renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera)
+{
+	if (this->isImmobilized()) {
+		if (this->isFogged())
+			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getBlackShadow());
+		else
+			camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getWhiteShadow());
+	}
+	camera.render(rect,_sprite->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 }

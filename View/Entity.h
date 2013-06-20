@@ -60,6 +60,7 @@ public:
 	virtual bool isItem();
 	bool needsCountDown();
 	bool needsToBeCleaned();
+	std::string statusToString();
 	void setSprite(Sprite* sprite);
 	Sprite* getSprite();
 	unsigned getTileWidth();

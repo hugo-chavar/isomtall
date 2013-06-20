@@ -82,21 +82,21 @@ void CharacterVision::setKnown(pair<int, int> pos){
 }
 
 bool CharacterVision::isInsideVision(pair<int, int> pos) {
-		if( this->vision.inside(pos))
-			return true;
-		if(this->magicVision)
-		{
+	if( this->vision.inside(pos))
+		return true;
+	if(this->magicVision)
+	{
 		std::vector<CharacterVision *>* visions=GameView::instance().getCharactersVisions();
-		for(int i=0;i<visions->size();i++)
-			{
+		for(unsigned i=0;i<visions->size();i++)
+		{
 			if((*visions)[i]->isInsideMyVision(pos))
-				{
+			{
 				return true;
-				}
-
 			}
+
 		}
-		return false;
+	}
+	return false;
 }
 
 bool CharacterVision::isInsideMyVision(pair<int, int> pos) 

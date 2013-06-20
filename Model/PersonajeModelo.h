@@ -17,60 +17,62 @@ public:
 	PersonajeModelo(int ActualX, int ActualY);
 	~PersonajeModelo();
 	PersonajeModelo& operator=(const PersonajeModelo&);
+	//------ getters/setters-----------
 	void setEstado(int state);
 	void setDestino(int x, int y);
 	void setVelocidad(float vel);
-	void setIsActivo(bool active);
-	bool getIsActivo();
+	void setActive(bool active);
+	bool isActive();
 	int getEstado();
 	float getVelocidad();
 	bool estaAnimandose();
-	void terminarAnimacion();
-	//void animar(char opcion);
-	//std::pair<int, int> obtenerFrentePersonaje();
-	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
-	std::string nextDirectory();
-	bool hasDirectoryRemaining();
-	void setAnimation(AnimatedEntity* entity);
-	AnimatedEntity* getAnimation();
-	int fps();
-	int delay();
+	float getDanoMaximo();
+	float getPrecisionMinima();
+	void setFollowingEnemy(bool enemy);
+	std::pair <int, int> getTarget();
 	std::string getName();
 	void setName(string nombreJugador);
-	void createVision(int range);
-	CharacterVision* getVision();
-	void update();
 	void setAnimating(bool value);
 	int getRefPixelX();
 	int getRefPixelY();
-	void restartDirectories();
 	float getVidaMaxima();
 	void setVidaMaxima(float vida);
 	float getMagiaMaxima();
 	void setMagiaMaxima(float magia);
 	void setPrecisionMinima(float precision);
 	void setDanoMaximo(float dano);
-
-	void setActive(bool active);
-	bool isActive();
-	int getOrientacion();
-	void increaseSpeed(float factor);
+	void setAnimation(AnimatedEntity* entity);
+	CharacterVision* getVision();
+	AnimatedEntity* getAnimation();
 	bool getIsReseting();
 	void setIsReseting();
-	bool isThereAnEnemy(int tileX, int tileY);
+	int getOrientacion();
+
+	//-----------------Functional methods -----------------------
+	void terminarAnimacion();
+	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
+	std::string nextDirectory();
+	bool hasDirectoryRemaining();
+	
+	
+	int fps();
+	int delay();
+
+	
+	
+	void update();
+
+	void restartDirectories();
+	void increaseSpeed(float factor);
 	void atacar();
 	void defender();
-	float getDanoMaximo();
-	float getPrecisionMinima();
-
-	void setFollowingEnemy(bool enemy);
-	std::pair <int, int> getTarget();
-	bool canSee(std::pair<int, int> tile);
-
 	void herir();
 	void morir();
 	void hacerMagia();
 	void setNoTarget();
+	bool canSee(std::pair<int, int> tile);
+	bool isThereAnEnemy(int tileX, int tileY);
+	void createVision(int range);
 
 	void orientar(std::pair<int, int> destino); //orienta el personaje para que mire hacia destino
 	void changeToAnimation(int animationNumber);
