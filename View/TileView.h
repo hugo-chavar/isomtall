@@ -34,7 +34,7 @@ public:
 	string getOtherEntityName();
 	void createGround(Sprite*);
 	void createOtherEntity(Sprite*);
-	void renderEntity(Camera& camera);
+	void renderEntity(Camera& camera,bool isInsidePlayerVision);
 	void renderGround(Camera& camera);
 	void setFogged(bool value);
 	void update();

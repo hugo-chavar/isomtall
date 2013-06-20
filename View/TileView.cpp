@@ -136,7 +136,7 @@ void TileView::setFogged(bool value) {
 		}
 }
 
-void TileView::renderEntity(Camera& camera){
+void TileView::renderEntity(Camera& camera,bool isInsidePlayerVision){
 
 	if (this->drawable()) {
 		TileView* tileaux = this->getRelatedTile();
@@ -145,7 +145,8 @@ void TileView::renderEntity(Camera& camera){
 		}
 		else 
 			if (this->getOtherEntity()) { //this->hasOtherEntity()
-				this->getOtherEntity()->render(camera);
+				if(isInsidePlayerVision || !this->getOtherEntity()->isItem())
+					this->getOtherEntity()->render(camera);
 			}
 	}
 }
