@@ -11,7 +11,6 @@ public:
 	IceIncantation();
 	~IceIncantation();
 	void impact(Daniable* daniable);
-	void impact(Entity* entity);
 };
 
 #endif // _ICE_INCANTATION_H_

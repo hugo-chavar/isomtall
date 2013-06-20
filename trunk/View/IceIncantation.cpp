@@ -13,15 +13,7 @@ IceIncantation::~IceIncantation() {
 
 void IceIncantation::impact(Daniable* daniable) {
 	if (daniable) {
-		//this->impact(static_cast<Personaje>daniable);
-		this->setTargetReached(true);
-		this->setAvailable(true);
-	}
-}
-
-void IceIncantation::impact(Entity* entity) {
-	if (entity) {
-		entity->iceUp(5);
+		daniable->iceUp(5);
 		this->setTargetReached(true);
 		this->setAvailable(true);
 	}

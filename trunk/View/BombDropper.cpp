@@ -31,11 +31,7 @@ void BombDropper::strike(Daniable*) {
 			bomb->setRectangle(bomb->getPosition(), bomb->getSprite() );
 			bomb->setDamage(this->getDamage());
 			bomb->startCountDown(5);
-			//bomb->setDirection(this->getDirection());
-			//bomb->setVelocity(150.0);//TODO: sacar harcodeo
-			//bomb->initialize();
 			GameView::instance().getWorldView()->addAmmunition(bomb);
-			//TODO: put projectile into simulation entities list.
 		}
 	}
 }
@@ -97,7 +93,6 @@ bool BombDropper::isInsideRange(std::pair<int, int> ) {
 bool BombDropper::needsToReposition(std::pair<int, int> ) {
 	return false;
 }
-
 
 bool BombDropper::readyToStrike(std::pair<int, int> ) {
 	return true;
