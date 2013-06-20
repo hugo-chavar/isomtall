@@ -73,7 +73,7 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(),true);//Harcodeo porcentaje de items
 		if(item)
 			{
-				Logger::instance().log("Item " + item->getName()+" "+ stringUtilities::pairIntToString(tile->getPosition()) );
+				//Logger::instance().log("Item " + item->getName()+" "+ stringUtilities::pairIntToString(tile->getPosition()) );
 				itemsArray.push_back(item);
 				tile->setOtherEntity(item);
 			}	

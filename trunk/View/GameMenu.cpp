@@ -7,7 +7,7 @@ GameMenu::GameMenu() {
 }
 
 GameMenu::~GameMenu() { 
-	Logger::instance().log("GameMenu::~GameMenu()");
+	//Logger::instance().log("GameMenu::~GameMenu()");
 	for (unsigned i = 0; i < buttons.size(); i++){
 		delete buttons[i];
 	}

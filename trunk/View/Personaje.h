@@ -7,7 +7,6 @@
 #include "PersonajeModelo.h"
 #include "Entity.h"
 #include "Daniable.h"
-#include "Mutex.h"
 #include "Constants.h"
 #include "SDL_ttf.h"
 #include "Weapon.h"
@@ -17,8 +16,9 @@ class Personaje : public Daniable {
 public:
 	Personaje(PersonajeModelo*,std::string char_id);
 	~Personaje();
-	PersonajeModelo* personajeModelo();
+	
 	//----- Getters/Setters methods -----
+	PersonajeModelo* personajeModelo();
 	void setAnimating(bool value);
 	void setActive(bool value);
 	bool isActive();
