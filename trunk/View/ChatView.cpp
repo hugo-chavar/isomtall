@@ -114,9 +114,12 @@ bool view::ChatView::isClosing(float x, float y) {
 
 void view::ChatView::sendMessage()
 {
-	modelChat->setInputBuffer(this->textbox.getText());
-	modelChat->setTo(this->nameBox.getLines()[0]->getStrText());
-	modelChat->sendMessage();
+	if(this->nameBox.getLines().size()>0)
+	{
+		modelChat->setInputBuffer(this->textbox.getText());
+		modelChat->setTo(this->nameBox.getLines()[0]->getStrText());
+		modelChat->sendMessage();
+	}
 	this->cleanInput();
 }
 
