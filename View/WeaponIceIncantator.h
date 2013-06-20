@@ -14,7 +14,6 @@ public:
 	WeaponIceIncantator();
 	~WeaponIceIncantator();
 	void strike(Daniable* target);
-	//void strike(Entity* target)
 	std::vector<IceIncantation*>& getIceIncantations();
 	IceIncantation* getAvailableIceIncantation();
 	unsigned getAmmo();
@@ -26,7 +25,5 @@ private:
 	unsigned getNextIceIncantationIndex();
 	void setNextIceIncantationIndex(unsigned value);
 };
-
-
 
 #endif // _WEAPON_ICE_INCANTATOR_H_

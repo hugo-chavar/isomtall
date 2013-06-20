@@ -8,6 +8,7 @@
 #include "Bow.h"
 #include "HandGrenade.h"
 #include "BombDropper.h"
+#include "WeaponIceIncantator.h"
 #include "Game.h"
 #include "GameView.h"
 
@@ -213,7 +214,8 @@ void Personaje::update() {
 		//this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 		this->personajeModelo()->update();
 		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
-		this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
+		this->getWeapons()[WEAPON_ICE_INCANTATOR]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
+		//this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
 	//common::Logger::instance().log("Character pos: " + this->positionToString());
 	//
@@ -253,6 +255,7 @@ void Personaje::updateSinglePlayer() {
 		this->animar();
 		this->personajeModelo()->update();
 		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
+		this->getWeapons()[WEAPON_ICE_INCANTATOR]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 		this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
 	//modelo->update();
@@ -600,7 +603,13 @@ void Personaje::atacar() {
 				break;
 			}
 			case WEAPON_BOMB_DROPPER: {
-				//ataque con granada
+				//ataque con bomba
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->defender();
+				break;
+			}
+			case WEAPON_ICE_INCANTATOR: {
+				//ataque con varita magica
 				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->defender();
 				break;
@@ -1098,10 +1107,14 @@ void Personaje::loadWeapons() {
 	bombDropper->setOwner(this->getPlayerName());
 	bombDropper->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bombDropper);
+	WeaponIceIncantator* weaponIceIncantator = new WeaponIceIncantator();
+	weaponIceIncantator->setOwner(this->getPlayerName());
+	weaponIceIncantator->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
+	this->getWeapons().push_back(weaponIceIncantator);
 	//this->setSelectedWeapon(WEAPON_SWORD); //selectedWeapon es la posicion en el vector de weapons, ver PersonajeConstantes.h
 	//this->setSelectedWeapon(WEAPON_BOW);
-	//this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
-	this->setSelectedWeapon(WEAPON_HAND_GRENADE);
+	this->setSelectedWeapon(WEAPON_ICE_INCANTATOR);
+	//this->setSelectedWeapon(WEAPON_HAND_GRENADE);
 }
 
 void Personaje::setSelectedWeapon(unsigned value) {

@@ -3,7 +3,7 @@
 #include "IceIncantation.h"
 
 WeaponIceIncantator::WeaponIceIncantator() {
-	this->setAmmo(5);//TODO: quitar harcodeo
+	this->setAmmo(500);//TODO: quitar harcodeo
 	IceIncantation* iceIncantation = NULL;
 	for (unsigned int i = 0; i < ICE_INCANTATOR_POOL_SIZE; i++) {
 		iceIncantation = new IceIncantation();
@@ -35,7 +35,6 @@ void WeaponIceIncantator::strike(Daniable* target) {
 			iceIncantation->setVelocity(150.0);//TODO: sacar harcodeo
 			iceIncantation->initialize();
 			GameView::instance().getWorldView()->addAmmunition(iceIncantation);
-			//TODO: put projectile into simulation entities list.
 		}
 	}
 }
@@ -85,25 +84,3 @@ void WeaponIceIncantator::setNextIceIncantationIndex(unsigned value) {
 std::vector<IceIncantation*>& WeaponIceIncantator::getIceIncantations() {
 	return this->iceIncantations;
 }
-//
-//void WeaponIceIncantator::strike(Entity* target) {
-//	IceIncantation* iceIncantation = NULL;
-//
-//	if (this->getAmmo() > 0) {
-//		iceIncantation = this->getAvailableIceIncantation();
-//		if (iceIncantation != NULL) {
-//			this->ammo--;
-//			iceIncantation->setCouldContinue(true);
-//			iceIncantation->setTargetReached(false);
-//			iceIncantation->setOwner(this->getOwner());
-//			iceIncantation->setTargetTile(target->getPosition());
-//			iceIncantation->setInitialTile(this->getPosition());
-//			iceIncantation->setDamage(this->getDamage());
-//			iceIncantation->setDirection(this->getDirection());
-//			iceIncantation->setVelocity(150.0);//TODO: sacar harcodeo
-//			iceIncantation->initialize();
-//			GameView::instance().getWorldView()->addAmmunition(iceIncantation);
-//			//TODO: put projectile into simulation entities list.
-//		}
-//	}
-//}

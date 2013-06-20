@@ -31,8 +31,6 @@ void Grenade::update() {
 				this->setTargetReached(false);
 				this->setCouldContinue(true);
 				this->changeToOppositeDirection();
-				//this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
-				//this->startCountDown(5); //tarda 5 segundos en exlotar
 			}
 			break;
 		}
@@ -43,17 +41,8 @@ void Grenade::update() {
 			x = this->getTileWidth()*(this->getCurrentTile().first - this->getCurrentTile().second)/2 - this->getSprite()->relatx();
 			y = this->getTileHeight()*(this->getCurrentTile().first + this->getCurrentTile().second)/2 - this->getSprite()->relaty();
 			this->setPosition(std::make_pair(x, y));
-			//this->setRectangle(this->getInitialTile(),this->getSprite());
-			//this->updateRectanglePosition(,)
-			//this->setBouncing(true);
-			//if ((!this->isTargetReached())&&(this->couldContinue())) {
-			//	Movable::update();
-			//	Movable::verify();
-			//}
-			//else {
-				this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
-				this->startCountDown(5); //tarda 5 segundos en exlotar
-			//}
+			this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
+			this->startCountDown(5); //tarda 5 segundos en exlotar
 		}
 		break;
 		case EXPLOSIVE_EXPLOSION_COUNTDOWN: {
@@ -81,9 +70,6 @@ void Grenade::update() {
 						GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
 				}
 			}
-
-			//this->setSprite(explosionSprite);
-			//this->setRectangle(this->getPosition(),explosionSprite);
 			break;
 		}
 		case EXPLOSIVE_BURNING: {
@@ -100,15 +86,13 @@ void Grenade::update() {
 }
 		
 void Grenade::startCountDown(float seconds) {
-	
 	this->setEndStatusTime(seconds);
 }
 
 void Grenade::render(Camera& camera) {
-	
 		if (this->getStatus() != EXPLOSIVE_BURNING)
 			Movable::render(camera);
-		else { // if (this->getStatus() == EXPLOSIVE_FLYING)
+		else {
 			this->setRectangle(this->getCurrentTile(),explosionSprite);
 			camera.render(this->spriteRect,explosionSprite->getSurfaceAt(-1)->getSurfaceToShow(false));
 		}
