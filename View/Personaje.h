@@ -24,6 +24,7 @@ public:
 	bool isActive();
 	void setPixelPosition(std::pair<int, int> pixel);
 	std::pair<int, int> getPixelPosition();
+	std::pair<int,int> getRealPixelPosition();
 	int getCurrentSpritePosition();
 	void setCurrentSpritePosition(int pos);
 	void setPlayerName(std::string name);

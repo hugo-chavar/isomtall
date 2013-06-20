@@ -170,7 +170,8 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				if (syncData != "") {
 					GameView::instance().getMyPersonaje()->initFromString(syncData);
 					GameView::instance().getMyPersonaje()->setActive(true);
-					GameView::instance().getCamera()->setCenterPixel(GameView::instance().getMyPersonaje()->getPixelPosition());
+					GameView::instance().getCamera()->setCenterPixel(GameView::instance().getMyPersonaje()->getRealPixelPosition());
+					//GameView::instance().getCamera()->setCenterPixel(GameView::instance().getMyPersonaje()->getPixelPosition());
 				}
 
 				std::string ItemsData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_ITEMS_INIT);

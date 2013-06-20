@@ -58,7 +58,8 @@ void GameView::initialize() {
 
 
 	if (mapInitialized) {
-		this->camera.setCenterPixel(this->personaje->getPixelPosition());
+		this->camera.setCenterPixel(this->personaje->getRealPixelPosition());
+		//this->camera.setCenterPixel(this->personaje->getPixelPosition());
 		AnimatedEntity errorEntity;
 		errorEntity.loadImages(ERROR_ANIMATED_DIR);
 		errorEntity.delay(0);
@@ -105,7 +106,7 @@ void GameView::restart() {
 	}
 
 	if (mapInitialized) {
-		this->camera.setCenterPixel(this->personaje->getPixelPosition());
+		this->camera.setCenterPixel(this->personaje->getRealPixelPosition());
 		//statTable.initialize();
 		//statTable.setFont(this->getFontSize(12));
 	}
@@ -298,7 +299,7 @@ void GameView::update() {
 			} else {
 				this->setStatus(STATUS_SIMULATION_CONNECTED);
 				this->camera.configure();
-				this->camera.setCenterPixel(this->personaje->getPixelPosition());
+				this->camera.setCenterPixel(this->personaje->getRealPixelPosition());
 				this->getChat()->setIsTyping(true);
 			}
 		}
@@ -321,13 +322,15 @@ void GameView::update() {
 			this->setStatus(STATUS_UPDATING_FILES);
 		break;
 		case STATUS_SIMULATION_SINGLE_PLAYER:
+			{
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
 			this->isSinglePlayer=true;
 			Game::instance().initialize();
 			this->initialize();
 			this->camera.configure();
-			this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			//this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			this->camera.setCenterPixel(this->personaje->getRealPixelPosition());
 			this->getMyPersonaje()->setActive(true);
 			this->setStatus(STATUS_SIMULATION_PLAYING_SINGLEPLAYER);
 
@@ -335,6 +338,7 @@ void GameView::update() {
 			//this->menu->setNotificationFontColor(Camera::BLUE_COLOR);
 			//this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
 			//this->menu->setDisplayNotification(true);
+			}
 		break;
 		case STATUS_UPDATING_CONNECTION_LOST:
 			this->camera.unconfigure();
@@ -390,7 +394,7 @@ void GameView::update() {
 		break;
 		case STATUS_SIMULATION_READY_TO_RECONNECT:
 			this->camera.configure();
-			this->camera.setCenterPixel(this->personaje->getPixelPosition());
+			this->camera.setCenterPixel(this->personaje->getRealPixelPosition());
 			this->setStatus(STATUS_SIMULATION_CONNECTED);
 		break;
 		case STATUS_GAME_OVER:
