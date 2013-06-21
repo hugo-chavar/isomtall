@@ -42,6 +42,7 @@ public:
 	void setDamage(float value);
 	bool isAvailable();
 	void setAvailable(bool value);
+	virtual bool needsUpdates();
 };
 
 #endif // _AMMUNITION_H_

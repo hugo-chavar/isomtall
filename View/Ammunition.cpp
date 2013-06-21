@@ -50,3 +50,7 @@ bool Ammunition::isAvailable() {
 void Ammunition::setAvailable(bool available) {
 	this->available = available;
 }
+
+bool Ammunition::needsUpdates() {
+	return true;
+}

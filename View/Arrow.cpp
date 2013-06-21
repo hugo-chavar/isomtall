@@ -20,3 +20,21 @@ void Arrow::impact(Daniable* daniable) {
 			GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
 	}
 }
+//
+//void Arrow::deserialize(std::string in) {
+//	std::vector<std::string> splittedIn;
+//	stringUtilities::splitString(in,splittedIn,';');
+//
+//	this->setName(splittedIn[0]);
+//	this->setAmmoID(splittedIn[1]);
+//	this->positionFromString(splittedIn[2]);
+//}
+//
+//std::string Arrow::serialize() {
+//	std::string out = this->getName();
+//	out.append(";");
+//	out.append(this->getAmmoId());
+//	out.append(";");
+//	out.append(this->positionToString());
+//	return out;
+//}
