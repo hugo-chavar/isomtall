@@ -1,4 +1,5 @@
 #include "ChatView.h"
+#include "stringUtilities.h"
 
 view::ChatView::ChatView() {
 	this->initialized = false;
@@ -71,6 +72,7 @@ bool view::ChatView::initialize(Camera &camera) {
 	if (!initializeCloseButton())
 		return false;
 	this->initialized = true;
+	this->setIsTyping(false);
 	return true;
 }
 
@@ -79,6 +81,8 @@ bool view::ChatView::isTyping() {
 }
 
 void view::ChatView::setIsTyping(bool state) {
+	if(!state)
+		this->setTo("");
 	typing = state;
 }
 
@@ -114,7 +118,7 @@ bool view::ChatView::isClosing(float x, float y) {
 
 void view::ChatView::sendMessage()
 {
-	if(this->nameBox.getLines().size()>0)
+	if(this->nameBox.getLines()[0]->getStrText()!="")
 	{
 		modelChat->setInputBuffer(this->textbox.getText());
 		modelChat->setTo(this->nameBox.getLines()[0]->getStrText());
@@ -129,6 +133,13 @@ void view::ChatView::receiveMsgs()
 	bool recibido=false;
 	if (modelChat->getMessagesListMutex().tryLock()) {
 		for ( it = modelChat->getMessagesList().begin(); it != modelChat->getMessagesList().end(); ++it) {
+			if(this->textbox.getText()=="")
+			{
+				int pos=(*it).find_first_of(':');
+				string str=(*it).substr(0,pos);
+				if(str!="Server" && pos!=string::npos)
+					this->setTo(str);
+			}
 			messagesBox.addLine((*it));
 			recibido=true;
 		}
