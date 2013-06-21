@@ -4,8 +4,9 @@
 #include "Movable.h"
 #include "Ammunition.h"
 #include "Daniable.h"
+#include "Serializable.h"
 
-class ImpactAmmo: public Ammunition, public Movable {
+class ImpactAmmo: public Ammunition, public Movable, public Serializable {
 
 protected:
 public:
@@ -13,6 +14,8 @@ public:
 	~ImpactAmmo();
 	void verify();
 	virtual void impact(Daniable* ) = 0;
+	void deserialize(std::string in);
+	std::string serialize();
 };
 
 

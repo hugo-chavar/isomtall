@@ -2,8 +2,7 @@
 #include "Hechizo.h"
 
 
-class HechizoTerremoto : public Hechizo
-{
+class HechizoTerremoto : public Hechizo {
 public:
 	HechizoTerremoto(float coste, std::string spellId);
 	~HechizoTerremoto(void);

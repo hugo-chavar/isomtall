@@ -75,3 +75,21 @@ void Bomb::render(Camera& camera) {
 		}
 
 }
+
+void Bomb::deserialize(std::string in) {
+	std::vector<std::string> splittedIn;
+	stringUtilities::splitString(in,splittedIn,';');
+
+	this->setName(splittedIn[0]);
+	this->setAmmoID(splittedIn[1]);
+	this->positionFromString(splittedIn[2]);
+}
+
+std::string Bomb::serialize() {
+	std::string out = this->getName();
+	out.append(";");
+	out.append(this->getAmmoId());
+	out.append(";");
+	out.append(this->positionToString());
+	return out;
+}
