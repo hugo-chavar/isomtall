@@ -43,8 +43,6 @@ void GameView::initialize() {
 	this->camera.configure();
 	bool mapInitialized = false;
 	bool chatInitialized = false;
-
-	this->chat.setIsTyping(false);
 	
 	this->chat.setBigFont(this->getFontSize(16));
 	this->chat.setSmallFont(this->getFontSize(10));
