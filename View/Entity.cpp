@@ -43,7 +43,8 @@ void Entity::update() {
 	if (this->needsCountDown()) {
 		this->decreaseEndStatusTime();
 		if (this->endStatusTime == 0)
-			this->setStatus(ENTITY_NORMAL);
+			//this->setStatus(ENTITY_NORMAL);
+			this->setStatus(previousStatus);
 	}
 }
 
@@ -60,6 +61,7 @@ bool Entity::isFogged() {
 }
 
 void Entity::setStatus(unsigned status) {
+	this->previousStatus = this->status;
 	this->status = status;
 }
 

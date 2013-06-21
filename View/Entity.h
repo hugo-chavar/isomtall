@@ -38,6 +38,7 @@ protected:
 	float endStatusTime;
 	int freezedSpriteState;
 	unsigned status;
+	unsigned previousStatus;
 	std::string name;
 	void renderEntitySprite(SDL_Rect rect,Sprite * _sprite,Camera& camera);
 

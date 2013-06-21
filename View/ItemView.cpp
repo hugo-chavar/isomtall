@@ -63,7 +63,9 @@ void ItemView::updateSinglePlayer()
 						else
 							regenerationTime=CONST_REGENERATION_TIME+rand()%VARIABLE_REGENERATION_TIME;
 					}
-			}
+			} else {
+				Entity::update();
+		}
 	}
 }
 
@@ -73,7 +75,7 @@ void ItemView::render(Camera& camera)
 		{
 			this->renderEntitySprite(this->spriteRect,this->sprite,camera);
 		}
-		else if(this->isHidden()){
+		else {
 			this->renderEntitySprite(this->hiddenSpriteRect,this->hiddenSprite,camera);
 		}
 }
