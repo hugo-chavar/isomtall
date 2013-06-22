@@ -163,8 +163,8 @@ void Movable::initialize() {
 	this->setCurrentTile(this->getInitialTile());
 	this->setLastTile(this->getInitialTile());
 	int x, y;
-	x = this->getTileWidth()*(this->getInitialTile().first - this->getInitialTile().second)/2 - this->getSprite()->relatx();
-	y = this->getTileHeight()*(this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
+	x = static_cast<int>(this->getTileWidth())*(this->getInitialTile().first - this->getInitialTile().second)/2 - this->getSprite()->relatx();
+	y = static_cast<int>(this->getTileHeight())*(this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
 	this->setPosition(std::make_pair(x, y));
 	this->setRectangle(this->getInitialTile(),this->getSprite());
 }
