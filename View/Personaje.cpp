@@ -1024,7 +1024,7 @@ bool Personaje::isThisSpriteValid(int currentAnimationNumber) {
 	return ((this->calculateSpritePosition(currentAnimationNumber) <= static_cast<int>(sprites.size()-1))&&(this->calculateSpritePosition(currentAnimationNumber) >= 0));
 }
 
-float Personaje::getShieldResistance(){
+float Personaje::getShieldResistance() {
 	return shieldResistance;
 }
 
@@ -1032,36 +1032,28 @@ std::vector<unsigned int>& Personaje::getAnimationFxRelation() {
 	return this->animationFxRelation;
 }
 
-void Personaje::increaseSpeed(float factor)
-{
+void Personaje::increaseSpeed(float factor) {
 	this->modelo->increaseSpeed(factor);
 }
 
 void Personaje::heal() {
-
 	vidaActual = modelo->getVidaMaxima();
 }
 
 void Personaje::rechargeMagic() {
-
 	magiaActual = modelo->getMagiaMaxima();
 }
 
-bool Personaje::isItem()
-{
+bool Personaje::isItem() {
 	return false;
 }
 
-void Personaje::eatIfItem(std::pair<int, int> destino)
-{
+void Personaje::eatIfItem(std::pair<int, int> destino) {
 	Entity * entity= GameView::instance().getWorldView()->getTileAt(destino)->getOtherEntity();
-	if(entity!=NULL)
-	{
-		if(entity->isItem())
-		{
+	if(entity!=NULL) {
+		if(entity->isItem()) {
 			ItemView* item=(ItemView*)entity;
-			if(item->isAlive())
-			{
+			if(item->isAlive())	{
 				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EAT_ITEM);//AGREGO SONIDO
 				item->modifyCharacter(this);
 				item->kill();
@@ -1070,8 +1062,7 @@ void Personaje::eatIfItem(std::pair<int, int> destino)
 	}
 }
 
-void Personaje::setShield(float resistance,float absortion)
-{
+void Personaje::setShield(float resistance,float absortion) {
 	this->shieldResistance=resistance;
 	this->shieldAbsortion=absortion;
 }
@@ -1084,9 +1075,8 @@ bool Personaje::useMagic(float usedMagic) {
 	return false;
 }
 
-bool Personaje::hasShield()
-{
-	return (this->shieldResistance>0);
+bool Personaje::hasShield() {
+	return (this->shieldResistance > 0);
 }
 
 std::vector<Weapon*>& Personaje::getWeapons() {
@@ -1131,7 +1121,22 @@ unsigned Personaje::getSelectedWeapon() {
 	return this->selectedWeapon;
 }
 
-bool Personaje::isWood()
-{
+bool Personaje::isWood() {
 	return false;
+}
+
+bool Personaje::hasIceSpell() {
+	return this->iceSpell;
+}
+
+void Personaje::setIceSpell(bool value) {
+	this->iceSpell = value;
+}
+
+bool Personaje::hasWandSpell() {
+	return this->wandSpell;
+}
+
+void Personaje::setWandSpell(bool value) {
+	this->wandSpell = value;
 }

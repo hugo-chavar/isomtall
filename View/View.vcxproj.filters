@@ -219,6 +219,9 @@
     <ClCompile Include="AmmunitionPool.cpp">
       <Filter>Archivos de código fuente</Filter>
     </ClCompile>
+    <ClCompile Include="ItemIceSpell.cpp">
+      <Filter>Archivos de código fuente</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -420,6 +423,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="AmmunitionPool.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemIceSpell.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

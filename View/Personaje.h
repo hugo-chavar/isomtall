@@ -42,6 +42,14 @@ public:
 	bool isCenteredInTile();
 	void setSelectedWeapon(unsigned value);
 	unsigned getSelectedWeapon();
+	void setHechizo(Hechizo* hechizo);
+	void setProtTime(float time);
+	void setProtCost(float cost);
+	void setInvulnerable(bool inv);
+	bool hasIceSpell();
+	void setIceSpell(bool value);
+	bool hasWandSpell();
+	void setWandSpell(bool value);
 
 	//----- Simulation methods -----
 	void update();
@@ -75,14 +83,10 @@ public:
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
 	bool isWood();
-	
 	void processKeyCommand(char animation);
-	void setInvulnerable(bool inv);
 	void invocarMagia();
 	void detenerMagia();
-	void setHechizo(Hechizo* hechizo);
-	void setProtTime(float time);
-	void setProtCost(float cost);
+
 	
 private:
 	//----- Private methods -----
@@ -144,6 +148,8 @@ private:
 	std::string character_id;
 	unsigned selectedWeapon;
 	std::vector<Weapon*> weapons;
+	bool iceSpell;
+	bool wandSpell;
 
 };
 #endif
