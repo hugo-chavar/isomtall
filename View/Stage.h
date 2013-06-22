@@ -46,6 +46,7 @@ namespace view {
 		ItemView* findDeathItemSinglePlayer();
 		ItemView* getItemInTile(int posX,int posY);
 		void relocateItem(pair<int,int>pos);
+		void manageAmmunitionChange(std::string serializado);
 		//Single Player
 	private:
 		vector<Sprite*> spriteArray;

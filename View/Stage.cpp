@@ -579,3 +579,10 @@ void Stage::updateAmmunitions() {
 void Stage::addAmmunition(Entity * ammo) {
 	this->ammunitions.push_back(ammo);
 }
+
+void Stage::manageAmmunitionChange(std::string serializado)
+{
+	//Cambio en la flecha
+
+	//Cambio en la bomba
+}
