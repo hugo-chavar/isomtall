@@ -660,6 +660,7 @@ void GameView::updateEvent(string serializedItemUpdate)
 					break;
 		case EVENT_AMMUNITION_CHANGE:
 			{
+				GameView::instance().getWorldView()->manageAmmunitionChange(vector[1]);
 				//Agregar logica al recibir evento en una Ammunition
 			}
 			break;
