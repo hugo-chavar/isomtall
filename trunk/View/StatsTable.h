@@ -21,12 +21,13 @@ namespace view {
 		void setWeaponFalse();
 		bool canGenerateWeaponInfo();
 
-		bool weapons [5];
+		bool weapons [6];
 		SDL_Surface* sword;
 		SDL_Surface* bow;
 		SDL_Surface* bomb;
 		SDL_Surface* handGrenade;
 		SDL_Surface* wand;
+		SDL_Surface* bombSpell;
 		SDL_Surface* shield;
 		int shieldEndurance;
 		SDL_Surface* ammo;

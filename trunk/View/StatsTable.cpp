@@ -14,6 +14,7 @@ StatsTable::StatsTable() {
 	this->bow = NULL;
 	this->handGrenade = NULL;
 	this->wand = NULL;
+	this->bombSpell = NULL;
 	this->ammunition = 0;
 	this->shieldEndurance = 0;
 	this->ammo = NULL;
@@ -30,6 +31,7 @@ void StatsTable::setWeaponFalse() {
 	this->weapons[2] = false;
 	this->weapons[3] = false;
 	this->weapons[4] = false;
+	this->weapons[5] = false;
 }
 
 //TODO: Mover esto a un lugar general, ver ChatView.h
@@ -76,7 +78,8 @@ bool StatsTable::initialize() {
 	wand = loadSurface("../Images/menuWand.png");
 	shield = loadSurface("../Images/Shield.png");
 	spell = loadSurface("../Images/Spell.png");
-	if ((sword == NULL) || (bow == NULL) || (handGrenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL)) {
+	bombSpell = loadSurface("../Images/ItemIceSpell.png");
+	if ((sword == NULL) || (bow == NULL) || (handGrenade == NULL) || (wand == NULL) || (bomb == NULL) || (shield == NULL) || (spell == NULL) || (bombSpell == NULL)) {
 		return false;
 	}
 	weaponBox.w = static_cast<Uint16>(sword->w);
@@ -89,7 +92,7 @@ bool StatsTable::initialize() {
 }
 
 bool StatsTable::canGenerateWeaponInfo() {
-	return (weapons[1] || weapons[3] || weapons[4]);
+	return (weapons[1] || weapons[2] || weapons[3] || weapons[4]);
 }
 
 void StatsTable::update(Personaje* personaje) {
@@ -108,6 +111,7 @@ void StatsTable::update(Personaje* personaje) {
 					 }
 	case WEAPON_ICE_INCANTATOR: {
 									weapons[2] = true;
+									this->ammunition = personaje->getWeapons()[WEAPON_ICE_INCANTATOR]->getAmmo();
 									break;
 								}
 	case WEAPON_HAND_GRENADE: {
@@ -120,6 +124,10 @@ void StatsTable::update(Personaje* personaje) {
 								this->ammunition = personaje->getWeapons()[WEAPON_BOMB_DROPPER]->getAmmo();
 								break;
 							  }
+	case WEAPON_ICE_BOMB_SPELL: {
+									weapons[5] = true;
+									break;
+								}
 	default: break;
 	}
 }
@@ -153,6 +161,9 @@ SDL_Surface* StatsTable::getWeapon() {
 	}
 	if (weapons[4] == true) {
 		return bomb;
+	}
+	if (weapons[5] == true) {
+		return bombSpell;
 	}
 	return sword;
 }
@@ -216,6 +227,10 @@ StatsTable::~StatsTable() {
 	if (wand != NULL) {
 		SDL_FreeSurface(wand);
 		wand = NULL;
+	}
+	if (bombSpell != NULL) {
+		SDL_FreeSurface(bombSpell);
+		bombSpell = NULL;
 	}
 	if (shieldDur != NULL) {
 		SDL_FreeSurface(shieldDur);
