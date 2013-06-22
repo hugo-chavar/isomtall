@@ -109,7 +109,6 @@ void Movable::render(Camera& camera) {
 }
 
 void Movable::move() {
-	//common::Logger::instance().log("Ammo pos: " + stringUtilities::pairIntToString(this->getCurrentTile()));
 	std::pair<float, float> deltaMovement;
 	float deltaVelocity = this->getVelocity()*this->getDeltaTime();//0.02;//
 	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
@@ -164,7 +163,7 @@ void Movable::initialize() {
 	this->setLastTile(this->getInitialTile());
 	int x, y;
 	x = static_cast<int>(this->getTileWidth())*(this->getInitialTile().first - this->getInitialTile().second)/2 - this->getSprite()->relatx();
-	y = static_cast<int>(this->getTileHeight())*(this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
+	y = static_cast<int>(this->getTileHeight())*(1 + this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
 	this->setPosition(std::make_pair(x, y));
 	this->setRectangle(this->getInitialTile(),this->getSprite());
 }
