@@ -103,6 +103,7 @@
     <ClCompile Include="ItemCrystallBall.cpp" />
     <ClCompile Include="ItemFlecha.cpp" />
     <ClCompile Include="ItemHProteccion.cpp" />
+    <ClCompile Include="ItemIceSpell.cpp" />
     <ClCompile Include="ItemTerremoto.cpp" />
     <ClCompile Include="ItemView.cpp" />
     <ClCompile Include="ItemFactoryView.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="ItemCrystallBall.h" />
     <ClInclude Include="ItemFlecha.h" />
     <ClInclude Include="ItemHProteccion.h" />
+    <ClInclude Include="ItemIceSpell.h" />
     <ClInclude Include="ItemTerremoto.h" />
     <ClInclude Include="ItemView.h" />
     <ClInclude Include="ItemFactoryView.h" />
