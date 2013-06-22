@@ -16,11 +16,8 @@ public:
 	void strike(Daniable* target);
 	std::vector<IceIncantation*>& getIceIncantations();
 	IceIncantation* getAvailableIceIncantation();
-	unsigned getAmmo();
-	void setAmmo(unsigned ammo);
 private:
 	std::vector<IceIncantation*> iceIncantations;
-	unsigned ammo;
 	unsigned nextIceIncantationIndex;
 	unsigned getNextIceIncantationIndex();
 	void setNextIceIncantationIndex(unsigned value);

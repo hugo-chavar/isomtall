@@ -16,6 +16,9 @@ private:
 	std::string owner;
 	Circle range;
 
+protected:
+		unsigned ammo;
+
 public:
 	Weapon();
 	virtual ~Weapon();
@@ -31,7 +34,9 @@ public:
 	void setRange(int range);
 	void setDamage(float damage);
 	void setPrecision(float precision);
-	virtual unsigned getAmmo() = 0;
+	//virtual unsigned getAmmo() = 0;
+	unsigned getAmmo();
+	void setAmmo(unsigned _ammo);
 	//----- Functional methods  -----
 	virtual bool sameDirection(std::pair<int, int> tile);
 	virtual bool isInsideRange(std::pair<int, int> tile);

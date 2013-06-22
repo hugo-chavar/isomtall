@@ -16,11 +16,8 @@ public:
 	void strike(Daniable* target);
 	std::vector<Arrow*>& getArrows();
 	Arrow* getAvailableArrow();
-	unsigned getAmmo();
-	void setAmmo(unsigned ammo);
 private:
 	std::vector<Arrow*> arrows;
-	unsigned ammo;
 	unsigned nextArrowIndex;
 	unsigned getNextArrowIndex();
 	void setNextArrowIndex(unsigned value);

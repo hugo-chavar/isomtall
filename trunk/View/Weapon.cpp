@@ -113,3 +113,11 @@ std::pair<int, int> Weapon::calculateRepositionToStrike(std::pair<int, int> tile
 	}
 	return reposition;
 }
+
+unsigned Weapon::getAmmo() {
+	return this->ammo;
+}
+
+void Weapon::setAmmo(unsigned _ammo) {
+	this->ammo = _ammo;
+}

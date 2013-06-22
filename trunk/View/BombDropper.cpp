@@ -62,14 +62,6 @@ Bomb* BombDropper::getAvailableBomb() {
 	return bomb;
 }
 
-unsigned BombDropper::getAmmo() {
-	return this->ammo;
-}
-
-void BombDropper::setAmmo(unsigned ammo) {
-	this->ammo = ammo;
-}
-
 unsigned BombDropper::getNextBombIndex() {
 	return this->nextBombIndex;
 }

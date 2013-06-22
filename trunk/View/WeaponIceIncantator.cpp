@@ -65,14 +65,6 @@ IceIncantation* WeaponIceIncantator::getAvailableIceIncantation() {
 	return iceIncantation;
 }
 
-unsigned WeaponIceIncantator::getAmmo() {
-	return this->ammo;
-}
-
-void WeaponIceIncantator::setAmmo(unsigned ammo) {
-	this->ammo = ammo;
-}
-
 unsigned WeaponIceIncantator::getNextIceIncantationIndex() {
 	return this->nextIceIncantationIndex;
 }

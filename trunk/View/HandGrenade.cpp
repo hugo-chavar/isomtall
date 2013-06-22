@@ -66,14 +66,6 @@ Grenade* HandGrenade::getAvailableGrenade() {
 	return grenade;
 }
 
-unsigned HandGrenade::getAmmo() {
-	return this->ammo;
-}
-
-void HandGrenade::setAmmo(unsigned ammo) {
-	this->ammo = ammo;
-}
-
 unsigned HandGrenade::getNextGrenadeIndex() {
 	return this->nextGrenadeIndex;
 }
