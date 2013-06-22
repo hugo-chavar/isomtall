@@ -17,6 +17,7 @@ view::Stage::Stage() {
 	spriteArray.clear();
 	this->worldModel = NULL;
 	this->firstTile = NULL;
+	this->ammunitionPool=NULL;
 }
 
 view::Stage::~Stage() {
@@ -34,6 +35,8 @@ void view::Stage::cleanUp() {
 	this->spriteArray.clear();
 	this->ammunitions.clear();
 	this->deleteStage();
+	if(this->ammunitionPool)
+		delete this->ammunitionPool;
 }
 
 void view::Stage::loadSprites() {
@@ -110,6 +113,11 @@ void view::Stage::generateStage() {
 		currentTile = currentTile->getNextTile();
 		tileModel = tileModel->getNextTile();
 	}
+	if(!GameView::instance().isSinglePlayerGame())
+	{
+		this->ammunitionPool=new AmmunitionPool();
+	}
+
 	//Arrow* arrow = new Arrow();
 	//Grenade* grenade = new Grenade();
 	//Bomb* bomb = new Bomb();
@@ -583,6 +591,6 @@ void Stage::addAmmunition(Entity * ammo) {
 void Stage::manageAmmunitionChange(std::string serializado)
 {
 	//Cambio en la flecha
-
+	this->ammunitionPool->deserialize(serializado);
 	//Cambio en la bomba
 }

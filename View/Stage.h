@@ -16,6 +16,7 @@
 #include "SpriteAnimado.h"
 #include "RenderHelper.h"
 #include "ItemView.h"
+#include "AmmunitionPool.h"
 
 
 using namespace std;
@@ -77,6 +78,7 @@ namespace view {
 		ItemView* findDeathItem(string name);
 		void updateItem(string serializedItemUpdate);
 		void updateItemsSinglePlayer();
+		AmmunitionPool* ammunitionPool;
 		
 	};
 
