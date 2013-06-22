@@ -79,7 +79,7 @@ void Personaje::createStatsBar() {
 	int height;
 	
 	height = BAR_HEIGHT;
-	barWidth = (int) (spriteRect.w * 0.75);
+	barWidth = (int) (spriteRect.w * 0.50);
 
 	this->magicBarPos = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
 	this->magicBarNeg = SDL_DisplayFormat(SDL_CreateRGBSurface(SDL_SWSURFACE, barWidth, height, 32, 0, 0, 0, 0));
@@ -657,10 +657,10 @@ void Personaje::renderStatsBars(Camera& camera) {
 	SDL_FillRect(magicBarNeg, NULL, SDL_MapRGB (magicBarNeg->format, 149, 149, 255));
 	SDL_FillRect(magicBarPos, NULL, SDL_MapRGB (magicBarPos->format, 0, 0, 255));
 
-	gLifeBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); gLifeBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - BAR_HEIGHT);
+	gLifeBarBox.x = static_cast<Sint16>(spriteRect.x + (0.25*spriteRect.w)); gLifeBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 3*BAR_HEIGHT);
 	rLifeBarBox.x = gLifeBarBox.x; rLifeBarBox.y = gLifeBarBox.y;
 
-	pMagicBarBox.x = static_cast<Sint16>(spriteRect.x + (0.125*spriteRect.w)); pMagicBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 2*BAR_HEIGHT - 1);
+	pMagicBarBox.x = static_cast<Sint16>(spriteRect.x + (0.25*spriteRect.w)); pMagicBarBox.y = static_cast<Sint16>(spriteRect.y + spriteRect.h - 4*BAR_HEIGHT - 1);
 	nMagicBarBox.x = pMagicBarBox.x; nMagicBarBox.y = pMagicBarBox.y;
 
 	camera.render(rLifeBarBox, lifeBarR);
@@ -675,8 +675,8 @@ void Personaje::renderProtHalo(Camera& camera) {
 
 	if (this->invulnerable) {
 		haloBox.w = static_cast<Sint16>(ProtectionHalo->w); haloBox.h = static_cast<Sint16>(ProtectionHalo->h);
-		haloBox.x = spriteRect.x;
-		haloBox.y = (spriteRect.y) + static_cast<Sint16>(spriteRect.h/2);
+		haloBox.x = spriteRect.x + 16;
+		haloBox.y = (spriteRect.y) + static_cast<Sint16>((spriteRect.h/2) - BAR_HEIGHT);
 		camera.render(haloBox, ProtectionHalo);
 	}
 }
@@ -696,7 +696,7 @@ void Personaje::render(Camera& camera) {
 	SDL_Rect cuadroMensaje;
 
 	cuadroMensaje.x = static_cast<Sint16>((2*spriteRect.x + spriteRect.w - this->labelName->w)/2);
-	cuadroMensaje.y = spriteRect.y;
+	cuadroMensaje.y = spriteRect.y + static_cast<Sint16>(spriteRect.h/8);
 	this->renderProtHalo(camera);
 	if (this->isImmobilized()) {
 		if (this->isFogged()) {
