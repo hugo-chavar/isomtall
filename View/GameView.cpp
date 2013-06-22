@@ -654,6 +654,11 @@ void GameView::updateEvent(string serializedItemUpdate)
 			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
 				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_MAGIC);
 					break;
+		case EVENT_AMMUNITION_CHANGE:
+			{
+				//Agregar logica al recibir evento en una Ammunition
+			}
+			break;
 	}
 	/*if(serializedItemUpdate=="vibrar")
 	{
