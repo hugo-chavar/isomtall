@@ -1,7 +1,7 @@
 #pragma once
 #include "ItemView.h"
 
-#define NUMBERITEMS 11 // Cantidad de items implementados
+#define NUMBERITEMS 12 // Cantidad de items implementados
 
 class ItemFactoryView
 {

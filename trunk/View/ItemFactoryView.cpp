@@ -11,6 +11,7 @@
 #include "ItemFlecha.h"
 #include "ItemCrystallBall.h"
 #include "ItemIceSpell.h"
+#include "ItemMagicWand.h"
 
 ItemFactoryView::ItemFactoryView(void)
 {
@@ -90,6 +91,10 @@ ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <i
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemIceSpell");
 			if (sprite)
 				return new ItemCrystallBall("ItemIceSpell",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+		case 11:
+			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemMagicWand");
+			if (sprite)
+				return new ItemMagicWand("ItemMagicWand",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		}
 	return NULL;
 }
