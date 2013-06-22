@@ -9,7 +9,7 @@ public:
 	Sword();
 	~Sword();
 	void strike(Daniable* target);
-	unsigned getAmmo();
+	//unsigned getAmmo();
 };
 
 

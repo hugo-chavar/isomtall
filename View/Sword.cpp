@@ -3,6 +3,7 @@
 #include "Sword.h"
 
 Sword::Sword() {
+	this->setAmmo(1);
 }
 
 Sword::~Sword() {
@@ -18,7 +19,7 @@ void Sword::strike(Daniable* target) {
 	
 }
 
-unsigned Sword::getAmmo() {
-	return 1;
-}
+//unsigned Sword::getAmmo() {
+//	return 1;
+//}
 

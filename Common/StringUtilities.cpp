@@ -151,7 +151,7 @@ std::string substrAfterFirst(std::string cadena,char car)
 		return auxPair;
 	}
 
-	std::pair<unsigned, unsigned> pairUnsignedToString(std::string source) {
+	std::pair<unsigned, unsigned> stringToPairUnsigned(std::string source) {
 		std::vector <std::string> auxVector;
 		splitString(source, auxVector, ',');
 		std::pair<unsigned, unsigned> auxPair = std::make_pair(stringToUnsigned(auxVector[0]), stringToUnsigned(auxVector[1]));

@@ -17,12 +17,9 @@ public:
 	void strike(Daniable* target);
 	std::vector<Grenade*>& getGrenades();
 	Grenade* getAvailableGrenade();
-	unsigned getAmmo();
-	void setAmmo(unsigned ammo);
 
 private:
 	std::vector<Grenade*> grenades;
-	unsigned ammo;
 	unsigned nextGrenadeIndex;
 	unsigned getNextGrenadeIndex();
 	void setNextGrenadeIndex(unsigned value);

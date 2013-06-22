@@ -66,14 +66,6 @@ Arrow* Bow::getAvailableArrow() {
 	return arrow;
 }
 
-unsigned Bow::getAmmo() {
-	return this->ammo;
-}
-
-void Bow::setAmmo(unsigned ammo) {
-	this->ammo = ammo;
-}
-
 unsigned Bow::getNextArrowIndex() {
 	return this->nextArrowIndex;
 }
