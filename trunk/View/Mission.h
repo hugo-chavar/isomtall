@@ -15,8 +15,6 @@ public:
 	~Mission();
 	void initialize();
 	void missionUpdate(Daniable* victim, string attacker);
-	string manageMissionInitialSynch();
-	string manageMissionChange();
 	Daniable* manageAttack(pair <int,int> tile);
 	bool isGameOver();
 
