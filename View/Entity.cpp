@@ -95,7 +95,6 @@ bool Entity::isItem() {
 
 bool Entity::needsCountDown() {
 	switch (this->getStatus()) {
-		case ITEM_WAITING_REGENERATION:
 		case EXPLOSIVE_EXPLOSION_COUNTDOWN:
 		case ENTITY_FROZEN:
 			return true;
