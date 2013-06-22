@@ -49,7 +49,6 @@ void Bomb::update() {
 			break;
 		}
 		case EXPLOSIVE_BURNING: {
-			
 			explosionSprite->updateFrame();
 			this->decreaseEndStatusTime();
 			if ((this->endStatusTime == 0)&&(explosionSprite->lastFrame())) {
@@ -67,7 +66,7 @@ void Bomb::startCountDown(float seconds) {
 
 void Bomb::render(Camera& camera) {
 	
-		if (this->getStatus() != EXPLOSIVE_BURNING)
+		if ((this->getStatus() != EXPLOSIVE_BURNING) && (this->getStatus() != EXPLOSIVE_DUST_IN_THE_WIND))
 			Entity::render(camera);
 		else { // if (this->getStatus() == EXPLOSIVE_FLYING)
 			this->setRectangle(this->getPosition(),explosionSprite);
