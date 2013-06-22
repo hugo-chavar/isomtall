@@ -163,6 +163,11 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 					if (GameView::instance().getStatus() == STATUS_RESTART_GAME) {
 						Game::instance().restart();
 						GameView::instance().restart();
+						Instruction instruction;
+						instruction.clear();
+						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
+						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"RESTART CHARACTER");
+						this->addInstruction(instruction);
 					}
 				}
 
