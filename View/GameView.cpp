@@ -659,6 +659,11 @@ void GameView::updateEvent(string serializedItemUpdate)
 				//Agregar logica al recibir evento en una Ammunition
 			}
 			break;
+		case EVENT_AMMUNITION_DEATH:
+			{
+		
+			}
+			break;
 	}
 	/*if(serializedItemUpdate=="vibrar")
 	{
