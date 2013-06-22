@@ -712,9 +712,7 @@ void Personaje::setDestino(int xTile, int yTile){
 
 void Personaje::setCurrentEnemy(int tileX, int tileY) {
 	std::pair<int, int> tileDestino(tileX, tileY);
-	//common::Logger::instance().log("currentEnemy = GameView::instance().getDaniableInTile(tileDestino) ");
 	if (modelo->isThereAnEnemy(tileX, tileY)) {
-		//this->modelo->setDirection(this->getPosition(), tileDestino);
 		this->modelo->orientar(tileDestino);
 		currentEnemy = GameView::instance().getDaniableInTile(tileDestino);
 		if (currentEnemy == this) {
