@@ -32,6 +32,7 @@ void GameSounds::initialize() {
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/regeneracion.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/explosion.wav"));
 	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/magic2.wav"));
+	this->getSoundEffects().push_back(Mix_LoadWAV("../Sounds/zbeep.wav"));
 }
 
 void GameSounds::startBackgroundMusic() {

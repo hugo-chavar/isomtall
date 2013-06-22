@@ -54,6 +54,7 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->setCenteredInTile(true);
 	this->setActive(false);
 	this->resetSpriteState();
+	this->setIceSpell(false);
 
 	//Loading relationship between animations and sounds.
 	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking north
@@ -467,13 +468,20 @@ void Personaje::stopProtectionSpell() {
 }
 
 void Personaje::changeWeapon() {
-
-	//this->setSelectedWeapon(this->getSelectedWeapon()+1);
 	if ((this->getWeapons().size() - 1) == (this->getSelectedWeapon())) {
 		this->setSelectedWeapon(0);
 	} else {
 		this->setSelectedWeapon(this->getSelectedWeapon()+1);
 	}
+}
+
+bool Personaje::isValidWeapon() {
+	switch (this->getSelectedWeapon()) {
+	case WEAPON_ICE_BOMB_SPELL:
+		return this->hasIceSpell();
+		break;
+	}
+	return true;
 }
 
 void Personaje::processKeyCommand(char animacion) {
@@ -488,6 +496,8 @@ void Personaje::processKeyCommand(char animacion) {
 				  }
 		case (OPCION_CAMBIAR_ARMA): {
 			this->changeWeapon();
+			while (!this->isValidWeapon())
+				this->changeWeapon();
 			break;
 				  }
 		default:;
@@ -575,10 +585,10 @@ void Personaje::atacar() {
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
 			return;
-		if(currentEnemy->isWood())
-			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);//AGREGO SONIDO
-		else
-			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);//AGREGO SONIDO
+		//if(currentEnemy->isWood())
+		//	GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);//AGREGO SONIDO
+		//else
+		//	GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);//AGREGO SONIDO
 		
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
@@ -610,6 +620,13 @@ void Personaje::atacar() {
 			}
 			case WEAPON_ICE_INCANTATOR: {
 				//ataque con varita magica
+				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				this->modelo->defender();
+				break;
+			}
+			case WEAPON_ICE_BOMB_SPELL: {
+				//ataque con hechizo de hielo
+				this->setIceSpell(false);
 				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->defender();
 				break;
@@ -1131,12 +1148,4 @@ bool Personaje::hasIceSpell() {
 
 void Personaje::setIceSpell(bool value) {
 	this->iceSpell = value;
-}
-
-bool Personaje::hasWandSpell() {
-	return this->wandSpell;
-}
-
-void Personaje::setWandSpell(bool value) {
-	this->wandSpell = value;
 }

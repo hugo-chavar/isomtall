@@ -12,5 +12,5 @@ ItemIceSpell::~ItemIceSpell(void)
 
 void ItemIceSpell::modifyCharacter(Personaje* personaje)
 {
-
+	personaje->setIceSpell(true);
 }
