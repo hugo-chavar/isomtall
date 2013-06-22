@@ -931,7 +931,8 @@ void Personaje::updateFromString(std::string data) {
 	this->invulnerable = (splittedData[11] == "T");
 	this->hechizoActualMulti = splittedData[12];
 	this->personajeModelo()->getVision()->setMagicVision(splittedData[13] == "T");
-	this->modelo->getVision()->updateFromString(splittedData[14]);
+	this->setSelectedWeapon(stringUtilities::stringToUnsigned(splittedData[14]));
+	this->modelo->getVision()->updateFromString(splittedData[15]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
