@@ -96,7 +96,7 @@ void Engine::onMultiplayerEvent(SDL_Event* sdlEvent) {
 					if (GameView::instance().showingMenu() && GameView::instance().getGameMenu()->displayingNotification()) {
 						if (GameView::instance().isGameOver()) {
 							instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-							instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"1");
+							instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"RESTART GAME");
 							GameView::instance().getModelUpdater()->addInstruction(instruction);
 							GameView::instance().setStatus(STATUS_RESTART_GAME);
 							GameView::instance().getGameMenu()->setDisplayNotification(false);
