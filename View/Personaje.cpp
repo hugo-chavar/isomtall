@@ -620,8 +620,10 @@ void Personaje::atacar() {
 			}
 			case WEAPON_ICE_INCANTATOR: {
 				//ataque con varita magica
-				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
-				this->modelo->defender();
+				if (this->useMagic(15.0)) {
+					this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+					this->modelo->defender();
+				}
 				break;
 			}
 			case WEAPON_ICE_BOMB_SPELL: {
