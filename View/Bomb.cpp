@@ -26,6 +26,7 @@ void Bomb::update() {
 			break;
 		}
 		case EXPLOSIVE_EXPLOSION: {
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EXPLOSION);
 			this->setStatus(EXPLOSIVE_BURNING);
 			explosionSprite->setAccumulatedTime(0.0);
 			explosionSprite->restart();

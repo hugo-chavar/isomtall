@@ -13,6 +13,10 @@ Arrow::~Arrow() {
 
 void Arrow::impact(Daniable* daniable) {
 	if (daniable) {
+		if(daniable->isWood())
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);
+		else
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);
 		daniable->recibirDano(this->getDamage());
 		this->setTargetReached(true);
 		this->setAvailable(true);

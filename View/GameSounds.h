@@ -12,6 +12,7 @@ enum soundEffectIndex_t {
 	SOUND_INDEX_REGENERATION,
 	SOUND_INDEX_EXPLOSION,
 	SOUND_INDEX_MAGIC,
+	SOUND_INDEX_ICE,
 	SOUND_INDEX_NO_SOUND
 };
 #endif//soundEffectIndex_t

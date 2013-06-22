@@ -48,8 +48,6 @@ public:
 	void setInvulnerable(bool inv);
 	bool hasIceSpell();
 	void setIceSpell(bool value);
-	bool hasWandSpell();
-	void setWandSpell(bool value);
 
 	//----- Simulation methods -----
 	void update();
@@ -82,6 +80,7 @@ public:
 	bool hasShield();
 	bool useMagic(float usedMagic); //Devuelve si pudo usar esa cantidad de magia
 	void loadWeapons();
+	bool isValidWeapon();
 	bool isWood();
 	void processKeyCommand(char animation);
 	void invocarMagia();
