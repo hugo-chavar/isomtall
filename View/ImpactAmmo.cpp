@@ -20,7 +20,7 @@ void ImpactAmmo::verify() {
 
 void ImpactAmmo::deserialize(std::string in) {
 	std::vector<std::string> splittedIn;
-	stringUtilities::splitString(in,splittedIn,';');
+	stringUtilities::splitString(in,splittedIn,'?');
 
 	this->setName(splittedIn[0]);
 	this->setAmmoID(splittedIn[1]);
@@ -30,11 +30,11 @@ void ImpactAmmo::deserialize(std::string in) {
 
 std::string ImpactAmmo::serialize() {
 	std::string out = this->getName();
-	out.append(";");
+	out.append("?");
 	out.append(this->getAmmoId());
 	out.append(";");
 	out.append(this->positionToString());
-	out.append(";");
+	out.append("?");
 	if (this->isAlive())
 		out.append("A");
 	else
