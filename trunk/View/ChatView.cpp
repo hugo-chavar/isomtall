@@ -135,7 +135,7 @@ void view::ChatView::receiveMsgs()
 		for ( it = modelChat->getMessagesList().begin(); it != modelChat->getMessagesList().end(); ++it) {
 			if(this->textbox.getText()=="")
 			{
-				int pos=(*it).find_first_of(':');
+				unsigned pos=(*it).find_first_of(':');
 				string str=(*it).substr(0,pos);
 				if(str!="Server" && pos!=string::npos)
 					this->setTo(str);
