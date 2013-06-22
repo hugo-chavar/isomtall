@@ -94,7 +94,7 @@ void AmmunitionPool::setNextGrenadeIndex(unsigned value) {
 void AmmunitionPool::deserialize(string argument) {
 	bool found = false;
 	std::vector <std::string> data;
-	stringUtilities::splitString(argument, data, ';');
+	stringUtilities::splitString(argument, data, '?');
 
 	if (data[0] == "Arrow") {
 		for (unsigned int i=0; i<this->arrows.size(); i++) {
