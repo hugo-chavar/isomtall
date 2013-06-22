@@ -100,7 +100,8 @@ void AmmunitionPool::deserialize(string argument) {
 		for (unsigned int i=0; i<this->arrows.size(); i++) {
 			if ((this->arrows[i]->getAmmoId() == data[1]) && (!this->arrows[i]->isAvailable())) {
 				this->arrows[i]->positionFromString(data[2]);
-				this->arrows[i]->setCouldContinue(data[3] == "A");
+				this->arrows[i]->directionFromString(data[3]);
+				this->arrows[i]->setCouldContinue(data[4] == "A");
 				found = true;
 			}
 		}
@@ -111,7 +112,8 @@ void AmmunitionPool::deserialize(string argument) {
 				arrow->setName(data[0]);
 				arrow->setAmmoID(data[1]);
 				arrow->positionFromString(data[2]);
-				arrow->setCouldContinue(data[3] == "A");
+				arrow->directionFromString(data[3]);
+				arrow->setCouldContinue(data[4] == "A");
 				GameView::instance().getWorldView()->addAmmunition(arrow);
 			}
 		}
