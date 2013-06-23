@@ -78,6 +78,17 @@ void Entity::iceUp(float seconds) {
 	this->setEndStatusTime(seconds);
 }
 
+void Entity::iceUp() {
+	if(this->status!=ENTITY_FROZEN)
+		this->setStatus(ENTITY_FROZEN);
+}
+
+void Entity::notIceUp()
+{
+	if(this->status==ENTITY_FROZEN)
+		this->setStatus(previousStatus);
+}
+
 void Entity::decreaseEndStatusTime() {
 	if ( this->getDeltaTime() < this->endStatusTime)
 		this->endStatusTime -= this->getDeltaTime();

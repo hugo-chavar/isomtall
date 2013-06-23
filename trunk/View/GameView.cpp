@@ -654,10 +654,26 @@ void GameView::updateEvent(string serializedItemUpdate)
 			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
 				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_MAGIC);
 					break;
-		case EVENT_SOUND_ICESPELL_IMPACT:
-			if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(stringUtilities::stringToPairInt(vector[1])))
-				GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ICE);
-					break;
+		case EVENT_ICESPELL_ITEMIMPACT:
+			{
+			std::pair<int,int> pos=stringUtilities::stringToPairInt(vector[1]);
+			Entity* entity=this->getWorldView()->getTileAt(pos)->getOtherEntity();
+			if(entity)
+				{
+				entity->iceUp();
+				if(GameView::instance().getMyPersonaje()->personajeModelo()->canSee(pos))
+					GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ICE);
+				}
+			}
+			break;
+		case EVENT_STOP_ITEMICEUP:
+			{
+			std::pair<int,int> pos=stringUtilities::stringToPairInt(vector[1]);
+			Entity* entity=this->getWorldView()->getTileAt(pos)->getOtherEntity();
+			if(entity)
+				entity->notIceUp();
+			}
+			break;
 		case EVENT_AMMUNITION_CHANGE:
 			{
 				GameView::instance().getWorldView()->manageAmmunitionChange(vector[1]);
