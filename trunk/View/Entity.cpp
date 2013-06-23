@@ -118,6 +118,10 @@ std::string Entity::statusToString() {
 	return stringUtilities::unsignedToString(this->getStatus());
 }
 
+void Entity::setStatusFromString(std::string status) {
+	this->setStatus(stringUtilities::stringToInt(status));
+}
+
 void Entity::setSprite(Sprite* sprite) {
 	this->sprite = sprite;
 }

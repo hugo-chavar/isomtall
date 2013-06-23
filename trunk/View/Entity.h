@@ -62,6 +62,7 @@ public:
 	bool needsCountDown();
 	bool needsToBeCleaned();
 	std::string statusToString();
+	void setStatusFromString(std::string status);
 	void setSprite(Sprite* sprite);
 	Sprite* getSprite();
 	unsigned getTileWidth();

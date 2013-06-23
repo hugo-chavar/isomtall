@@ -11,10 +11,13 @@ AmmunitionPool::AmmunitionPool() {
 	Bomb* bomb = NULL;
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		arrow = new Arrow();
+		arrow->setVelocity(0);
 		this->arrows.push_back(arrow);
 		grenade = new Grenade();
+		grenade->setVelocity(0);
 		this->grenades.push_back(grenade);
 		iceIncantation = new IceIncantation();
+		iceIncantation->setVelocity(0);
 		this->iceIncantations.push_back(iceIncantation);
 		bomb = new Bomb();
 		this->bombs.push_back(bomb);
@@ -213,6 +216,7 @@ void AmmunitionPool::deserialize(string argument) {
 					this->grenades[i]->positionFromString(data[2]);
 					this->grenades[i]->directionFromString(data[3]);
 					this->grenades[i]->setCouldContinue(data[4] == "A");
+					this->grenades[i]->setStatusFromString(data[5]);
 					found = true;
 				}
 			}
@@ -225,6 +229,7 @@ void AmmunitionPool::deserialize(string argument) {
 					grenade->positionFromString(data[2]);
 					grenade->directionFromString(data[3]);
 					grenade->setCouldContinue(data[4] == "A");
+					grenade->setStatusFromString(data[5]);
 					GameView::instance().getWorldView()->addAmmunition(grenade);
 				}
 			}
