@@ -1,19 +1,24 @@
 #include "AmmunitionPool.h"
 #include "StringUtilities.h"
 #include "GameView.h"
+#include "Logger.h"
 
 
 AmmunitionPool::AmmunitionPool() {
 	Arrow* arrow = NULL;
 	Grenade* grenade = NULL;
+	IceIncantation* iceIncantation = NULL;
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		arrow = new Arrow();
 		this->arrows.push_back(arrow);
 		grenade = new Grenade();
 		this->grenades.push_back(grenade);
+		iceIncantation = new IceIncantation();
+		this->iceIncantations.push_back(iceIncantation);
 	}
 	this->setNextArrowIndex(0);
 	this->setNextGrenadeIndex(0);
+	this->setNextIceIncantationIndex(0);
 }
 
 AmmunitionPool::~AmmunitionPool() {
@@ -75,6 +80,33 @@ Grenade* AmmunitionPool::getAvailableGrenade() {
 	return grenade;
 }
 
+
+IceIncantation* AmmunitionPool::getAvailableIceIncantation() {
+	IceIncantation* iceIncantation = NULL;
+	bool found = false;
+	unsigned int i = this->getNextIceIncantationIndex();
+
+	do {
+		iceIncantation = this->iceIncantations[i];
+		if (iceIncantation->isAvailable()) {
+			found = true;
+			iceIncantation->setAvailable(false);
+		}
+
+		if (i < (this->iceIncantations.size() - 1))
+			i++;
+		else
+			i = 0;
+	} while (!found && i != this->getNextIceIncantationIndex());
+
+	if (!found)
+		iceIncantation = NULL; //TODO: LOG SOME WARNING.
+
+	this->setNextIceIncantationIndex(i);
+
+	return iceIncantation;
+}
+
 unsigned AmmunitionPool::getNextArrowIndex() {
 	return this->nextArrowIndex;
 }
@@ -91,9 +123,18 @@ void AmmunitionPool::setNextGrenadeIndex(unsigned value) {
 	this->nextGrenadeIndex = value;
 }
 
+unsigned AmmunitionPool::getNextIceIncantationIndex() {
+	return this->nextIceIncantationIndex;
+}
+
+void AmmunitionPool::setNextIceIncantationIndex(unsigned value) {
+	this->nextIceIncantationIndex = value;
+}
+
 void AmmunitionPool::deserialize(string argument) {
 	bool found = false;
 	std::vector <std::string> data;
+	common::Logger::instance().log(argument);
 	stringUtilities::splitString(argument, data, '?');
 
 	if (data[0] == "Arrow") {
@@ -139,8 +180,29 @@ void AmmunitionPool::deserialize(string argument) {
 					GameView::instance().getWorldView()->addAmmunition(grenade);
 				}
 			}
+		} else if (data[0] == "IceIncantation") {
+			for (unsigned int i=0; i<this->iceIncantations.size(); i++) {
+				if ((this->iceIncantations[i]->getAmmoId() == data[1]) && (!this->iceIncantations[i]->isAvailable())) {
+					this->iceIncantations[i]->positionFromString(data[2]);
+					this->iceIncantations[i]->directionFromString(data[3]);
+					this->iceIncantations[i]->setCouldContinue(data[4] == "A");
+					found = true;
+				}
+			}
+			if (!found) {
+				IceIncantation *iceIncantation = NULL;
+				iceIncantation = this->getAvailableIceIncantation();
+				if (iceIncantation) {
+					iceIncantation->setName(data[0]);
+					iceIncantation->setAmmoID(data[1]);
+					iceIncantation->positionFromString(data[2]);
+					iceIncantation->directionFromString(data[3]);
+					iceIncantation->setCouldContinue(data[4] == "A");
+					GameView::instance().getWorldView()->addAmmunition(iceIncantation);
+				}
+			}
 		}
-	}
+	} 
 }
 
 bool AmmunitionPool::ammoIDIsInPlay(string name, string id) {
