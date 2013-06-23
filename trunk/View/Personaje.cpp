@@ -29,9 +29,6 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	ePot.second = 0;
 	serr = 0;
 	currentEnemy = NULL;
-	//if (!(this->getPlayerName().empty())) {
-	//	crearNombre(this->getPlayerName());
-	//}
 	this->labelName = NULL;
 	this->playerName = "";
 	this->lifeBarG = NULL;
@@ -212,23 +209,14 @@ void Personaje::animar() {
 void Personaje::update() {
 
 	if (this->isCenteredInTile()) {
-		//this->personajeModelo()->getVision()->updatePosition(modelo->getPosition());
 		this->personajeModelo()->update();
 		this->getWeapons()[WEAPON_BOW]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 		this->getWeapons()[WEAPON_ICE_INCANTATOR]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 		//this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
-	//common::Logger::instance().log("Character pos: " + this->positionToString());
-	//
+
 	this->updateStatsBar();
-	//if ((int)(this->sprites.size()-1) >= (this->getCurrentSpritePosition())) {
-	
-	//SACO SONIDO
-	//if (this->hasValidSprite()) {
-	//	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-	//		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
-		//}
-	//}
+
 }
 
 void Personaje::updateProtectionSpell() {
@@ -248,7 +236,6 @@ void Personaje::updateProtectionSpell() {
 
 
 void Personaje::updateSinglePlayer() {
-	//Logger::instance().log("Personaje " + this->positionToString() );
 	this->isCenteredInTileInSinglePlayer();
 	this->setFogged(!modelo->isActive());
 	this->mover();
@@ -259,7 +246,6 @@ void Personaje::updateSinglePlayer() {
 		this->getWeapons()[WEAPON_ICE_INCANTATOR]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 		this->getWeapons()[WEAPON_HAND_GRENADE]->setRange((this->personajeModelo()->getVision()->getRangeVision())/2 + 1);
 	}
-	//modelo->update();
 	if (this->isImmobilized())
 		return;
 	if (this->getCurrentSpritePosition() > static_cast<int>(sprites.size()-1)) {
@@ -268,12 +254,6 @@ void Personaje::updateSinglePlayer() {
 		sprites[this->currentSpritePosition]->updateFrame();
 	}
 
-	//SACO SONIDO
-	//if ((int)(this->sprites.size()-1) >= ((int)this->getCurrentSpritePosition())) {
-	//	if (this->sprites[this->getCurrentSpritePosition()]->getCurrentSurfaceNumber() == 0)/* && GameView::instance().getMyPersonaje()->personajeModelo()->getVision()->isInsideVision(this->getPosition()))*/ {
-	//		GameView::instance().getGameSounds().playSoundEffect(this->getAnimationFxRelation()[this->getCurrentSpritePosition()]);
-	//	}
-	//}
 	this->updateProtectionSpell();
 	this->updateStatsBar();
 }
@@ -303,20 +283,17 @@ bool Personaje::repositionToStrike() {
 }
 
 void Personaje::calcularSigTileAMover(){
-	int currentAnimationNumber = 0;	//animacion del personaje en el sistema de PersonajeModelo
-	std::pair<int, int> tile;	//Un tile
+	int currentAnimationNumber = 0;
+	std::pair<int, int> tile;
 	int previousSpritePosition = this->getCurrentSpritePosition();
 
 	if (this->isCenteredInTile()) {
 		serr = 0;
 		this->setPosition(modelo->getPosition());
-		//tileActual = modelo->getPosition();
-		//modelo->setIsInCenterTile(true);
+
 		this->eatIfItem(this->getPosition());
 		if (this->currentEnemy != NULL) {
 			//prepare things to attack
-			//common::Logger::instance().log(":calcularSigTileAMover()  enemy NOT NULL");
-			//common::Logger::instance().log("Enemy:  " + ((Entity*)this->currentEnemy)->getName());
 			this->getWeapons()[this->getSelectedWeapon()]->setPosition(this->getPosition());
 			this->getWeapons()[this->getSelectedWeapon()]->setDirection(this->modelo->getDirection());
 			if (this->getWeapons()[this->getSelectedWeapon()]->readyToStrike(this->currentEnemy->getPosition())) {
@@ -332,29 +309,22 @@ void Personaje::calcularSigTileAMover(){
 				currentAnimationNumber = modelo->mover(tile, velocidad);
 			}
 		} else {
-			//common::Logger::instance().log("calcularSigTileAMover()  ENEMY IS NULL ");
 			currentAnimationNumber = modelo->mover(tile, velocidad);
 		}
-		//currentAnimationNumber = modelo->mover(tile, velocidad);
 		if (this->modelo->estaAnimandose())
 			return;
 		this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
-		//if (currentSpritePosition < 0)
-		//	this->currentSpritePosition = 0;
 		if (previousSpritePosition != this->currentSpritePosition) {
 			ePot.first = 0;
 			ePot.second = 0;
 		} 
-		//std::string aux = stringUtilities::floatToString(velocidad);
-		//common::Logger::instance().log("Velocidad: "+ aux);
+
 		if (velocidad != 0) {
-			//modelo->setIsInCenterTile(false);
 			modelo->setPosition(tile);
 		} else {
 
 			this->atacar();
 		}
-		//common::Logger::instance().log("if (modelo->getIsReseting()) "+ stringUtilities::intToString(this->currentSpritePosition));
 		if (modelo->getIsReseting()) {
 			this->reset();
 		}
@@ -592,26 +562,18 @@ std::string Personaje::getSpellActual() {
 
 void Personaje::atacar() {
 	if (currentEnemy != NULL) {
-		//common::Logger::instance().log("Enemy: going to attack  " );
 		this->getWeapons()[this->selectedWeapon]->setPosition(this->getPosition());
 		this->getWeapons()[this->selectedWeapon]->setDirection(this->modelo->getDirection());
 		if (!this->getWeapons()[this->selectedWeapon]->sameDirection(currentEnemy->getPosition()))
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
 			return;
-		//if(currentEnemy->isWood())
-		//	GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_WOOD);//AGREGO SONIDO
-		//else
-		//	GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ATTACK_ON_SHIELD);//AGREGO SONIDO
 		
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
 			//ataque con espada
 				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->atacar();
-					//if (!(this->currentEnemy->isAlive()))
-					//	GameView::instance().getMission()->missionUpdate(currentEnemy, this->getPlayerName());
-					//currentEnemy = NULL;
 				break;
 			}
 			case WEAPON_BOW: {
@@ -962,10 +924,11 @@ void Personaje::updateFromString(std::string data) {
 	this->invulnerable = (splittedData[11] == "T");
 	this->hechizoActualMulti = splittedData[12];
 	this->personajeModelo()->getVision()->setMagicVision(splittedData[13] == "T");
-	std::pair<unsigned,unsigned> weapon=stringUtilities::stringToPairUnsigned(splittedData[14]);
+	std::pair<unsigned,unsigned> weapon = stringUtilities::stringToPairUnsigned(splittedData[14]);
 	this->setSelectedWeapon(weapon.first);
 	this->weapons[this->getSelectedWeapon()]->setAmmo(weapon.second);
-	this->modelo->getVision()->updateFromString(splittedData[15]);
+	this->weapons[this->getSelectedWeapon()]->setRange(stringUtilities::stringToInt(splittedData[15]));
+	this->modelo->getVision()->updateFromString(splittedData[16]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);

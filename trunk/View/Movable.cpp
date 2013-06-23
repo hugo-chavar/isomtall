@@ -7,8 +7,6 @@ Movable::Movable() {
 	this->remaining = std::make_pair<float, float>(0, 0);
 	this->setTargetReached(false);
 	this->setCouldContinue(true);
-	//this->setBouncing(false);
-
 }
 
 Movable::~Movable() {
@@ -63,14 +61,6 @@ void Movable::setTargetReached(bool value) {
 bool Movable::isTargetReached() {
 	return this->targetReached;
 }
-//
-//void Movable::setBouncing(bool value) {
-//	this->bouncing = value;
-//}
-//
-//bool Movable::isBouncing() {
-//	return this->bouncing;
-//}
 
 void Movable::setCouldContinue(bool value) {
 	this->_couldContinue = value;
@@ -83,11 +73,6 @@ bool Movable::couldContinue() {
 bool Movable::isItem() {
 	return false;
 }
-
-//
-//string Movable::getName() {
-//	return this->name;
-//}
 
 // ------------------- Functional methods -------------------
 void Movable::update() {
@@ -111,7 +96,7 @@ void Movable::render(Camera& camera) {
 void Movable::move() {
 	std::pair<float, float> deltaMovement;
 	float deltaTime = this->getDeltaTime();
-	float deltaVelocity = this->getVelocity()*deltaTime;//0.02;//
+	float deltaVelocity = this->getVelocity()*deltaTime;
 	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
 	deltaMovement.second = deltaVelocity*this->getPixelDirection().second/2 + this->remaining.second;
 	float deltaFirst = (deltaMovement.first < 0) ? std::ceil(deltaMovement.first) : std::floor(deltaMovement.first);
