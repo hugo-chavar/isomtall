@@ -49,6 +49,7 @@ public:
 	bool isAlive();
 	void initialize();
 	bool isItem();
+	bool goingDiagonal();
 };
 
 #endif // _MOVABLE_H_

@@ -8,6 +8,7 @@ AmmunitionPool::AmmunitionPool() {
 	Arrow* arrow = NULL;
 	Grenade* grenade = NULL;
 	IceIncantation* iceIncantation = NULL;
+	Bomb* bomb = NULL;
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		arrow = new Arrow();
 		this->arrows.push_back(arrow);
@@ -15,16 +16,21 @@ AmmunitionPool::AmmunitionPool() {
 		this->grenades.push_back(grenade);
 		iceIncantation = new IceIncantation();
 		this->iceIncantations.push_back(iceIncantation);
+		bomb = new Bomb();
+		this->bombs.push_back(bomb);
 	}
 	this->setNextArrowIndex(0);
 	this->setNextGrenadeIndex(0);
 	this->setNextIceIncantationIndex(0);
+	this->setNextBombIndex(0);
 }
 
 AmmunitionPool::~AmmunitionPool() {
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		delete this->arrows[i];
 		delete this->grenades[i];
+		this->iceIncantations[i];
+		this->bombs[i];
 	}
 }
 
@@ -107,6 +113,32 @@ IceIncantation* AmmunitionPool::getAvailableIceIncantation() {
 	return iceIncantation;
 }
 
+Bomb* AmmunitionPool::getAvailableBomb() {
+	Bomb* bomb = NULL;
+	bool found = false;
+	unsigned int i = this->getNextBombIndex();
+
+	do {
+		bomb = this->bombs[i];
+		if (bomb->isAvailable()) {
+			found = true;
+			bomb->setAvailable(false);
+		}
+
+		if (i < (this->bombs.size() - 1))
+			i++;
+		else
+			i = 0;
+	} while (!found && i != this->getNextBombIndex());
+
+	if (!found)
+		bomb = NULL; //TODO: LOG SOME WARNING.
+
+	this->setNextBombIndex(i);
+
+	return bomb;
+}
+
 unsigned AmmunitionPool::getNextArrowIndex() {
 	return this->nextArrowIndex;
 }
@@ -129,6 +161,14 @@ unsigned AmmunitionPool::getNextIceIncantationIndex() {
 
 void AmmunitionPool::setNextIceIncantationIndex(unsigned value) {
 	this->nextIceIncantationIndex = value;
+}
+
+unsigned AmmunitionPool::getNextBombIndex() {
+	return this->nextBombIndex;
+}
+
+void AmmunitionPool::setNextBombIndex(unsigned value) {
+	this->nextBombIndex = value;
 }
 
 void AmmunitionPool::deserialize(string argument) {
