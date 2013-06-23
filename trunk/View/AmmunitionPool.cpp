@@ -257,6 +257,39 @@ void AmmunitionPool::deserialize(string argument) {
 					GameView::instance().getWorldView()->addAmmunition(iceIncantation);
 				}
 			}
+		} else if (data[0] == "Bomb") {
+			for (unsigned int i=0; i<this->bombs.size(); i++) {
+				if ((!this->bombs[i]->isAlive()) && (!this->bombs[i]->isAvailable())) {
+					this->bombs[i]->setAvailable(true);
+				}
+				if ((this->bombs[i]->getAmmoId() == data[1]) && (!this->bombs[i]->isAvailable())) {
+					this->bombs[i]->positionFromString(data[2]);
+					this->bombs[i]->setEndStatusTime(5000);
+					//bomb->directionFromString(data[3]);
+					//bomb->setCouldContinue(data[3] == "A");
+					this->bombs[i]->setStatusFromString(data[3]);
+					if (this->bombs[i]->getStatus() == EXPLOSIVE_BURNING) {
+						this->bombs[i]->setEndStatusTime(0);
+						this->bombs[i]->setStatus(EXPLOSIVE_EXPLOSION);
+					}
+					found = true;
+				}
+			}
+			if (!found) {
+				Bomb * bomb = NULL;
+				bomb = this->getAvailableBomb();
+				if (bomb) {
+					bomb->setName(data[0]);
+					bomb->setAmmoID(data[1]);
+					bomb->positionFromString(data[2]);
+					//bomb->directionFromString(data[3]);
+					//bomb->setCouldContinue(data[3] == "A");
+					bomb->setStatusFromString(data[3]);
+					if (bomb->getStatus() == EXPLOSIVE_EXPLOSION_COUNTDOWN)
+						bomb->setEndStatusTime(5000);
+					GameView::instance().getWorldView()->addAmmunition(bomb);
+				}
+			}
 		}
 	} 
 }
