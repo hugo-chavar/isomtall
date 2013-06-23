@@ -54,6 +54,7 @@ void Bomb::update() {
 			this->decreaseEndStatusTime();
 			if ((this->endStatusTime == 0)&&(explosionSprite->lastFrame())) {
 				this->setStatus(EXPLOSIVE_DUST_IN_THE_WIND);
+				
 				this->setAvailable(true);
 			}
 			break;
