@@ -29,9 +29,6 @@ void view::Stage::cleanUp() {
 	for (unsigned int i = 0; i < this->spriteArray.size(); i++) {
 		delete this->spriteArray[i];
 	}
-	//for (unsigned int i = 0; i < this->ammunitions.size(); i++) {
-	//	delete this->ammunitions[i];
-	//}
 	this->spriteArray.clear();
 	this->ammunitions.clear();
 	this->deleteStage();
@@ -47,7 +44,6 @@ void view::Stage::loadSprites() {
 		EntityObject *entity = Game::instance().allEntities.vEntitiesObject[a];
 		mapEntityToSprite[entity->name()] = int(a);
 		auxSprite = new Sprite(entity);
-		//auxSprite->initialize();
 		spriteArray.push_back(auxSprite);
 		auxSprite = NULL;
 	}
@@ -58,7 +54,6 @@ void view::Stage::loadSprites() {
 		AnimatedEntity *entity = Game::instance().allEntities.vAnimatedEntities[a];
 		mapEntityToSprite[entity->name()] = int(a + staticEntitiesModelCount);
 		auxAnimatedSprite = new SpriteAnimado(entity);
-		//auxAnimatedSprite->initialize();
 		spriteArray.push_back(auxAnimatedSprite);
 		auxAnimatedSprite = NULL;
 	}
@@ -74,14 +69,12 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 	} else if(GameView::instance().isSinglePlayerGame()){
 		ItemFactoryView factory;
 		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(),true);//Harcodeo porcentaje de items
-		if(item)
-			{
-				//Logger::instance().log("Item " + item->getName()+" "+ stringUtilities::pairIntToString(tile->getPosition()) );
-				itemsArray.push_back(item);
-				tile->setOtherEntity(item);
-			}	
-			
-		}
+		if(item) {
+			itemsArray.push_back(item);
+			tile->setOtherEntity(item);
+		}	
+
+	}
 	tilesMap.insert(make_pair(tile->getPosition(), tile));
 	return tile;
 }
@@ -117,62 +110,6 @@ void view::Stage::generateStage() {
 	{
 		this->ammunitionPool=new AmmunitionPool();
 	}
-
-	//Arrow* arrow = new Arrow();
-	//Grenade* grenade = new Grenade();
-	//Bomb* bomb = new Bomb();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_S);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_N);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_NO);
-	//arrow->setVelocity(20);
-	//grenade->setInitialTile(make_pair(15,7));
-	//grenade->initialize();
-	//grenade->setDirection(Directionable::DIRECTION_NO);
-	//grenade->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//this->ammunitions.push_back(grenade);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_NE);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_E);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_O);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_SO);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
-	//arrow = new Arrow();
-	//arrow->setInitialTile(make_pair(15,6));
-	//arrow->initialize();
-	//arrow->setDirection(Directionable::DIRECTION_SE);
-	//arrow->setVelocity(20);
-	//this->ammunitions.push_back(arrow);
 }
 
 void view::Stage::setTilesInCamera(int w, int h) {
@@ -188,13 +125,6 @@ bool view::Stage::initialize() {
 	this->loadSprites();
 	this->generateStage();
 
-	//if (!Game::instance().personaje()){
-	//	return false;
-	//}
-	//_personaje = new Personaje(Game::instance().personaje());
-	//GameView::instance().addPersonaje(Game::instance().personaje()->getName(),_personaje);
-	//_personaje->loadSprites();
-
 	return true;
 }
 
@@ -204,10 +134,6 @@ void view::Stage::update() {
 	this->updateAmmunitions();
 
 }
-//
-//Personaje* view::Stage::personaje() {
-//	return _personaje;
-//}
 
 TileView* view::Stage::getTileAt(KeyPair k) {
 	return tilesMap.at(k);
@@ -402,9 +328,6 @@ void Stage::initItemsFromString(std::string ItemsData)
 	unsigned i=0;
 	itemsArray.clear();
 	ItemFactoryView factory;
-	//TODO: andy: puse este if porque pinchaba acá..
-	//if (v_items.size() < 3)
-	//	return;
 	while(i<v_items.size())
 	{
 		string itemName=v_items[i];
@@ -414,9 +337,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 		string tile=v_items[i];
 		i++;
 		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
-		//Sprite* itemSprite= spriteArray[ mapEntityToSprite.at(itemName)];//Deberia chequear que exista el item
-		//Sprite* chestSprite= spriteArray[ mapEntityToSprite.at("Chest")];
-		Sprite* itemSprite= this->getSpriteWithName(itemName);//Deberia chequear que exista el item
+		Sprite* itemSprite= this->getSpriteWithName(itemName);
 		Sprite* chestSprite= this->getSpriteWithName("Chest");
 		if ((itemSprite != NULL) && (chestSprite != NULL) ) {
 
@@ -575,13 +496,10 @@ void Stage::updateAmmunitions() {
 			(*it)->update();
 			it++;
 		} else {
-			ammunitions.erase(it); //TODO: testear esto
+			//((Ammunition*)(*it))->setAvailable(true);
+			ammunitions.erase(it);
 		}
 	}
-	//for (unsigned i = 0 ; i < this->ammunitions.size(); i++) {
-
-	//	this->ammunitions[i]->update();
-	//}
 }
 
 void Stage::addAmmunition(Entity * ammo) {

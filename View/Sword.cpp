@@ -22,8 +22,3 @@ void Sword::strike(Daniable* target) {
 	}
 	
 }
-
-//unsigned Sword::getAmmo() {
-//	return 1;
-//}
-

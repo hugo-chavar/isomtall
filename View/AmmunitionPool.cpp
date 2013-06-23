@@ -179,6 +179,9 @@ void AmmunitionPool::deserialize(string argument) {
 
 	if (data[0] == "Arrow") {
 		for (unsigned int i=0; i<this->arrows.size(); i++) {
+			if ((!this->arrows[i]->isAlive()) && (!this->arrows[i]->isAvailable())) {
+				this->arrows[i]->setAvailable(true);
+			}
 			if ((this->arrows[i]->getAmmoId() == data[1]) && (!this->arrows[i]->isAvailable())) {
 				this->arrows[i]->positionFromString(data[2]);
 				this->arrows[i]->directionFromString(data[3]);
@@ -203,6 +206,9 @@ void AmmunitionPool::deserialize(string argument) {
 	else {
 		if (data[0] == "Grenade") {
 			for (unsigned int i=0; i<this->grenades.size(); i++) {
+				if ((!this->grenades[i]->isAlive()) && (!this->grenades[i]->isAvailable())) {
+					this->grenades[i]->setAvailable(true);
+				}
 				if ((this->grenades[i]->getAmmoId() == data[1]) && (!this->grenades[i]->isAvailable())) {
 					this->grenades[i]->positionFromString(data[2]);
 					this->grenades[i]->setCouldContinue(data[3] == "A");
@@ -222,6 +228,9 @@ void AmmunitionPool::deserialize(string argument) {
 			}
 		} else if (data[0] == "IceIncantation") {
 			for (unsigned int i=0; i<this->iceIncantations.size(); i++) {
+				if ((!this->iceIncantations[i]->isAlive()) && (!this->iceIncantations[i]->isAvailable())) {
+					this->iceIncantations[i]->setAvailable(true);
+				}
 				if ((this->iceIncantations[i]->getAmmoId() == data[1]) && (!this->iceIncantations[i]->isAvailable())) {
 					this->iceIncantations[i]->positionFromString(data[2]);
 					this->iceIncantations[i]->directionFromString(data[3]);

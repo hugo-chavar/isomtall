@@ -11,8 +11,7 @@ public:
 	IceIncantation();
 	~IceIncantation();
 	void impact(Daniable* daniable);
-	//void deserialize(std::string serializedInstruction);
-	//std::string serialize();
+
 };
 
 #endif // _ICE_INCANTATION_H_
