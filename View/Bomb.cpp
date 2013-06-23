@@ -44,9 +44,6 @@ void Bomb::update() {
 						GameView::instance().getMission()->missionUpdate(daniable, this->getOwner());
 				}
 			}
-
-			//this->setSprite(explosionSprite);
-			//this->setRectangle(this->getPosition(),explosionSprite);
 			break;
 		}
 		case EXPLOSIVE_BURNING: {
@@ -54,7 +51,6 @@ void Bomb::update() {
 			this->decreaseEndStatusTime();
 			if ((this->endStatusTime == 0)&&(explosionSprite->lastFrame())) {
 				this->setStatus(EXPLOSIVE_DUST_IN_THE_WIND);
-				
 				this->setAvailable(true);
 			}
 			break;
@@ -67,10 +63,10 @@ void Bomb::startCountDown(float seconds) {
 }
 
 void Bomb::render(Camera& camera) {
-	
-		if ((this->getStatus() != EXPLOSIVE_BURNING) && (this->getStatus() != EXPLOSIVE_DUST_IN_THE_WIND))
+		if ((this->getStatus() != EXPLOSIVE_BURNING) && (this->getStatus() != EXPLOSIVE_DUST_IN_THE_WIND)) {
+			this->setRectangle(this->getPosition(),this->getSprite());
 			Entity::render(camera);
-		else { // if (this->getStatus() == EXPLOSIVE_FLYING)
+		} else {
 			this->setRectangle(this->getPosition(),explosionSprite);
 			camera.render(this->spriteRect,explosionSprite->getSurfaceAt(-1)->getSurfaceToShow(false));
 		}

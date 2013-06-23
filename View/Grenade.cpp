@@ -74,11 +74,9 @@ void Grenade::update() {
 			break;
 		}
 		case EXPLOSIVE_BURNING: {
-			
 			explosionSprite->updateFrame();
 			this->decreaseEndStatusTime();
 			if ((this->endStatusTime == 0)&&(explosionSprite->lastFrame())) {
-				
 				this->setStatus(EXPLOSIVE_DUST_IN_THE_WIND);
 				this->setAvailable(true);
 			}
