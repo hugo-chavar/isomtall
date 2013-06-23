@@ -110,12 +110,13 @@ void Movable::render(Camera& camera) {
 
 void Movable::move() {
 	std::pair<float, float> deltaMovement;
-	float deltaVelocity = this->getVelocity()*this->getDeltaTime();//0.02;//
+	float deltaTime = this->getDeltaTime();
+	float deltaVelocity = this->getVelocity()*deltaTime;//0.02;//
 	deltaMovement.first = deltaVelocity*this->getPixelDirection().first + this->remaining.first;
 	deltaMovement.second = deltaVelocity*this->getPixelDirection().second/2 + this->remaining.second;
 	float deltaFirst = (deltaMovement.first < 0) ? std::ceil(deltaMovement.first) : std::floor(deltaMovement.first);
 	float deltaSecond = (deltaMovement.second < 0) ? std::ceil(deltaMovement.second):std::floor(deltaMovement.second);
-	if ( (std::abs(deltaFirst) > 0) && (std::abs(deltaSecond) == 0) && (std::abs(deltaMovement.second) > 0)) {
+	if ( this->goingDiagonal() && (std::abs(deltaFirst) > 0) && (std::abs(deltaSecond) == 0) && (std::abs(deltaMovement.second) > 0)) {
 		this->remaining.first = deltaMovement.first;
 		this->remaining.second = deltaMovement.second;
 	} else {
@@ -170,4 +171,8 @@ void Movable::initialize() {
 
 std::pair<int, int> Movable::whichTile(std::pair<int, int> pix) {
 	return this->pixelToTileCoordinates(std::make_pair(pix.first + this->getSprite()->relatx(), pix.second + this->getSprite()->relaty()));
+}
+
+bool Movable::goingDiagonal() {
+	return ((this->getPixelDirection().first != 0) && (this->getPixelDirection().second != 0));
 }
