@@ -211,7 +211,8 @@ void AmmunitionPool::deserialize(string argument) {
 				}
 				if ((this->grenades[i]->getAmmoId() == data[1]) && (!this->grenades[i]->isAvailable())) {
 					this->grenades[i]->positionFromString(data[2]);
-					this->grenades[i]->setCouldContinue(data[3] == "A");
+					this->grenades[i]->directionFromString(data[3]);
+					this->grenades[i]->setCouldContinue(data[4] == "A");
 					found = true;
 				}
 			}
@@ -222,7 +223,8 @@ void AmmunitionPool::deserialize(string argument) {
 					grenade->setName(data[0]);
 					grenade->setAmmoID(data[1]);
 					grenade->positionFromString(data[2]);
-					grenade->setCouldContinue(data[3] == "A");
+					grenade->directionFromString(data[3]);
+					grenade->setCouldContinue(data[4] == "A");
 					GameView::instance().getWorldView()->addAmmunition(grenade);
 				}
 			}
