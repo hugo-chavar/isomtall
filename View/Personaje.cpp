@@ -929,6 +929,11 @@ void Personaje::updateFromString(std::string data) {
 	this->weapons[this->getSelectedWeapon()]->setAmmo(weapon.second);
 	this->weapons[this->getSelectedWeapon()]->setRange(stringUtilities::stringToInt(splittedData[15]));
 	this->modelo->getVision()->updateFromString(splittedData[16]);
+	if(splittedData[16]=="T"){
+		this->iceUp();
+	} else {
+		this->notIceUp();
+	}
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);

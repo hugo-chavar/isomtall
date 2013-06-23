@@ -71,6 +71,8 @@ public:
 	virtual bool isAlive();
 	std::string getName();
 	void setName(std::string value);
+	void iceUp();
+	void notIceUp();
 };
 
 #endif // _ENTITY_H_
