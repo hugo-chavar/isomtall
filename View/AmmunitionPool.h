@@ -5,6 +5,7 @@
 #include <vector>
 #include "Arrow.h"
 #include "Grenade.h"
+#include "IceIncantation.h"
 
 #define NUMBERAMMUNITIONS 5
 
@@ -16,12 +17,14 @@ public:
 	~AmmunitionPool();
 	Arrow* getAvailableArrow();
 	Grenade* getAvailableGrenade();
+	IceIncantation* getAvailableIceIncantation();
 	void deserialize(string argument);
 	bool ammoIDIsInPlay(string name, string id);
 
 private:
 	std::vector<Arrow*> arrows;
 	std::vector<Grenade*> grenades;
+	std::vector<IceIncantation*> iceIncantations;
 
 	unsigned nextArrowIndex;
 	unsigned getNextArrowIndex();
@@ -30,6 +33,10 @@ private:
 	unsigned nextGrenadeIndex;
 	unsigned getNextGrenadeIndex();
 	void setNextGrenadeIndex(unsigned value);
+
+	unsigned nextIceIncantationIndex;
+	unsigned getNextIceIncantationIndex();
+	void setNextIceIncantationIndex(unsigned value);
 
 };
 
