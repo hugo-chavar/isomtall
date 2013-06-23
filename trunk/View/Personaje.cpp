@@ -362,7 +362,15 @@ void Personaje::calcularSigTileAMover(){
 }
 
 void Personaje::reset() {
+	this->setPosition(modelo->getPosition());
 	this->setRectangle(this->getPosition(), sprites[this->currentSpritePosition]);
+	this->setCurrentSpritePosition(this->calculateSpritePosition(modelo->getEstado()));
+	velocidad = modelo->getVelocidad();
+	delta.first = 0;
+	delta.second = 0;
+	ePot.first = 0;
+	ePot.second = 0;
+	serr = 0;
 	currentEnemy = NULL;
 	this->heal();
 	this->rechargeMagic();
@@ -373,6 +381,12 @@ void Personaje::reset() {
 	invulnerable = false;
 	protCost = 0;
 	protTime = 0;
+	/*vidCost = 0;
+	vidTime = 0;
+	videncia = false;*/
+	this->setIceSpell(false);
+	this->setFogged(false);
+	this->resetSpriteState();
 	modelo->setIsReseting();
 }
 
