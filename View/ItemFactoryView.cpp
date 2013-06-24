@@ -33,7 +33,8 @@ ItemView* ItemFactoryView::generateRandomItem(float porcentajeAparicion,unsigned
 	if(porcentajeAparicion>0)
 	{
 	int indice=static_cast <int> ((100.0/porcentajeAparicion) * NUMBERITEMS);
-	int random= rand() % indice;
+	//int random= rand() % indice;
+	int random=(rand() * ( 1.0 / ( RAND_MAX + 1.0 ) ))*indice;
 	if(random<NUMBERITEMS)
 		{
 		return this->generateItem(random,_state,pos,_canReviveForHimself);
