@@ -8,6 +8,7 @@
 #include "Arrow.h"
 #include "Grenade.h"
 #include "Bomb.h"
+#include "IceBomb.h"
 #include "Logger.h"
 
 #define START_LEVEL 0
@@ -262,6 +263,10 @@ void view::Stage::render(Camera& camera) {
 			if (this->ammunitions[i]->getName() == "Bomb") {
 
 				if (renderHelper.shouldRenderThis(((Bomb*)this->ammunitions[i])->getPosition(),((Bomb*)this->ammunitions[i])->getPosition()))
+					this->ammunitions[i]->render(camera);
+			} if (this->ammunitions[i]->getName() == "IceBomb") {
+
+				if (renderHelper.shouldRenderThis(((IceBomb*)this->ammunitions[i])->getPosition(),((IceBomb*)this->ammunitions[i])->getPosition()))
 					this->ammunitions[i]->render(camera);
 			} else {
 				if (renderHelper.shouldRenderThis(((Movable*)this->ammunitions[i])->getCurrentTile(),((Movable*)this->ammunitions[i])->getLastTile()))
