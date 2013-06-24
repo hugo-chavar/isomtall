@@ -37,6 +37,9 @@ float ImpactAmmo::getPrecision() {
 bool ImpactAmmo::canHit(){
 	float precision = Game::instance().getRandom();
 	float recorrido = (float)this->getTileCount()*100/(float)this->getRange();
+	if (recorrido > 100) {
+		recorrido = 100;
+	}
 	this->resetTileCount();
 	precision = (precision*((float)TOLERANCE)*(100-recorrido)/100) + precision*(1-((float)TOLERANCE));
 	if (precision >= this->getPrecision()) {
