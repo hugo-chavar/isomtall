@@ -7,7 +7,7 @@ private:
 	float delay;
 	float fps;
 	float accumulatedTime;
-	void advance();
+	
 	bool timeIsOver();
 	
 	void loadSurfaces();
@@ -21,5 +21,6 @@ public:
 	void addSticks(float ticks);
 	float getDelay();
 	void setAccumulatedTime(float ticks);
+	void advance();
 };
 
