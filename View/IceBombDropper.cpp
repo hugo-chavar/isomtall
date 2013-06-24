@@ -28,7 +28,7 @@ void IceBombDropper::strike(Daniable*) {
 			bomb->setOwner(this->getOwner());
 			bomb->setPosition(this->getPosition());
 			bomb->setDamage(this->getDamage());
-			bomb->setRectangle(bomb->getPosition(), bomb->getSprite() );
+			//bomb->setRectangle(bomb->getPosition(), bomb->getSprite() );
 			bomb->setDamage(this->getDamage());
 			bomb->startCountDown(0);
 			GameView::instance().getWorldView()->addAmmunition(bomb);
