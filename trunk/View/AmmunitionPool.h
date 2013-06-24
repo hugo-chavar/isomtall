@@ -7,6 +7,7 @@
 #include "Grenade.h"
 #include "Bomb.h"
 #include "IceIncantation.h"
+#include "IceBomb.h"
 
 #define NUMBERAMMUNITIONS 5
 
@@ -20,6 +21,7 @@ public:
 	Grenade* getAvailableGrenade();
 	IceIncantation* getAvailableIceIncantation();
 	Bomb* getAvailableBomb();
+	IceBomb* getAvailableIceBomb();
 	void deserialize(string argument);
 	bool ammoIDIsInPlay(string name, string id);
 
@@ -28,6 +30,7 @@ private:
 	std::vector<Grenade*> grenades;
 	std::vector<IceIncantation*> iceIncantations;
 	std::vector<Bomb*> bombs;
+	std::vector<IceBomb*> iceBombs;
 
 	unsigned nextArrowIndex;
 	unsigned getNextArrowIndex();
@@ -44,6 +47,10 @@ private:
 	unsigned nextBombIndex;
 	unsigned getNextBombIndex();
 	void setNextBombIndex(unsigned value);
+
+	unsigned nextIceBombIndex;
+	unsigned getNextIceBombIndex();
+	void setNextIceBombIndex(unsigned value);
 
 };
 

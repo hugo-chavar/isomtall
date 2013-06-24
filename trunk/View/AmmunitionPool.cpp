@@ -9,6 +9,7 @@ AmmunitionPool::AmmunitionPool() {
 	Grenade* grenade = NULL;
 	IceIncantation* iceIncantation = NULL;
 	Bomb* bomb = NULL;
+	IceBomb* iceBomb = NULL;
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		arrow = new Arrow();
 		arrow->setVelocity(0);
@@ -21,11 +22,14 @@ AmmunitionPool::AmmunitionPool() {
 		this->iceIncantations.push_back(iceIncantation);
 		bomb = new Bomb();
 		this->bombs.push_back(bomb);
+		iceBomb = new IceBomb();
+		this->iceBombs.push_back(iceBomb);
 	}
 	this->setNextArrowIndex(0);
 	this->setNextGrenadeIndex(0);
 	this->setNextIceIncantationIndex(0);
 	this->setNextBombIndex(0);
+	this->setNextIceBombIndex(0);
 }
 
 AmmunitionPool::~AmmunitionPool() {
@@ -142,6 +146,32 @@ Bomb* AmmunitionPool::getAvailableBomb() {
 	return bomb;
 }
 
+IceBomb* AmmunitionPool::getAvailableIceBomb() {
+	IceBomb* iceBomb = NULL;
+	bool found = false;
+	unsigned int i = this->getNextIceBombIndex();
+
+	do {
+		iceBomb = this->iceBombs[i];
+		if (iceBomb->isAvailable()) {
+			found = true;
+			iceBomb->setAvailable(false);
+		}
+
+		if (i < (this->iceBombs.size() - 1))
+			i++;
+		else
+			i = 0;
+	} while (!found && i != this->getNextIceBombIndex());
+
+	if (!found)
+		iceBomb = NULL; //TODO: LOG SOME WARNING.
+
+	this->setNextIceBombIndex(i);
+
+	return iceBomb;
+}
+
 unsigned AmmunitionPool::getNextArrowIndex() {
 	return this->nextArrowIndex;
 }
@@ -172,6 +202,15 @@ unsigned AmmunitionPool::getNextBombIndex() {
 
 void AmmunitionPool::setNextBombIndex(unsigned value) {
 	this->nextBombIndex = value;
+}
+
+unsigned AmmunitionPool::getNextIceBombIndex()
+{
+	return this->nextIceBombIndex;
+}
+
+void AmmunitionPool::setNextIceBombIndex(unsigned value) {
+	this->nextIceBombIndex = value;
 }
 
 void AmmunitionPool::deserialize(string argument) {
@@ -288,6 +327,37 @@ void AmmunitionPool::deserialize(string argument) {
 					if (bomb->getStatus() == EXPLOSIVE_EXPLOSION_COUNTDOWN)
 						bomb->setEndStatusTime(5000);
 					GameView::instance().getWorldView()->addAmmunition(bomb);
+				}
+			}
+		}else if (data[0] == "IceBomb") {
+			for (unsigned int i=0; i<this->iceBombs.size(); i++) {
+				if ((!this->iceBombs[i]->isAlive()) && (!this->iceBombs[i]->isAvailable())) {
+					this->iceBombs[i]->setAvailable(true);
+				}
+				if ((this->iceBombs[i]->getAmmoId() == data[1]) && (!this->iceBombs[i]->isAvailable())) {
+					this->iceBombs[i]->positionFromString(data[2]);
+					this->iceBombs[i]->setEndStatusTime(5000);
+					this->iceBombs[i]->setStatusFromString(data[3]);
+					if (this->iceBombs[i]->getStatus() == EXPLOSIVE_BURNING) {
+						this->iceBombs[i]->setEndStatusTime(0);
+						this->iceBombs[i]->setStatus(EXPLOSIVE_EXPLOSION);
+					}
+					found = true;
+				}
+			}
+		if (!found) {
+				IceBomb * iceBomb = NULL;
+				iceBomb = this->getAvailableIceBomb();
+				if (iceBomb) {
+					iceBomb->setName(data[0]);
+					iceBomb->setAmmoID(data[1]);
+					iceBomb->positionFromString(data[2]);
+					//bomb->directionFromString(data[3]);
+					//bomb->setCouldContinue(data[3] == "A");
+					iceBomb->setStatusFromString(data[3]);
+					if (iceBomb->getStatus() == EXPLOSIVE_EXPLOSION_COUNTDOWN)
+						iceBomb->setEndStatusTime(5000);
+					GameView::instance().getWorldView()->addAmmunition(iceBomb);
 				}
 			}
 		}
