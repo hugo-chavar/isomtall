@@ -14,6 +14,7 @@ private:
 	std::pair<int, int> initialTile;
 	std::pair<int, int> currentTile;
 	std::pair<int, int> lastTile;
+	int tileCount;
 	bool targetReached;
 	bool _couldContinue;
 
@@ -35,6 +36,8 @@ public:
 	bool isTargetReached();
 	void setCouldContinue(bool value);
 	bool couldContinue();
+	void resetTileCount();
+	int getTileCount();
 	//----- Functional methods  -----
 	void update();
 	void render(Camera& camera);

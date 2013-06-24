@@ -33,6 +33,9 @@ void Bow::strike(Daniable* target) {
 			arrow->setDamage(this->getDamage());
 			arrow->setDirection(this->getDirection());
 			arrow->setVelocity(150.0);//TODO: sacar harcodeo
+			arrow->resetTileCount();
+			arrow->setPrecision(this->getPrecision());
+			arrow->setRange(this->getRange());
 			arrow->initialize();
 			GameView::instance().getWorldView()->addAmmunition(arrow);
 			//TODO: put projectile into simulation entities list.
