@@ -38,8 +38,10 @@ void Grenade::update() {
 		case EXPLOSIVE_BOUNCING: {
 			int x, y;
 			this->setCurrentTile(this->getCurrentTile() + this->getDirection());
-			x = this->getTileWidth()*(this->getCurrentTile().first - this->getCurrentTile().second)/2 - this->getSprite()->relatx();
-			y = this->getTileHeight()*(this->getCurrentTile().first + this->getCurrentTile().second)/2 - this->getSprite()->relaty();
+			x = static_cast<int>(this->getTileWidth())*(this->getCurrentTile().first - this->getCurrentTile().second)/2 - this->getSprite()->relatx();
+			y = static_cast<int>(this->getTileHeight())*(1 + this->getCurrentTile().first + this->getCurrentTile().second)/2 - this->getSprite()->relaty();
+			//x = static_cast<int>(this->getTileWidth())*(this->getInitialTile().first - this->getInitialTile().second)/2 - this->getSprite()->relatx();
+			//y = static_cast<int>(this->getTileHeight())*(1 + this->getInitialTile().first + this->getInitialTile().second)/2 - this->getSprite()->relaty();
 			this->setPosition(std::make_pair(x, y));
 			this->setStatus(EXPLOSIVE_EXPLOSION_COUNTDOWN);
 			this->startCountDown(5); //tarda 5 segundos en exlotar
