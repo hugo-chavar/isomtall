@@ -7,6 +7,7 @@ Movable::Movable() {
 	this->remaining = std::make_pair<float, float>(0, 0);
 	this->setTargetReached(false);
 	this->setCouldContinue(true);
+	this->tileCount = 0;
 }
 
 Movable::~Movable() {
@@ -74,6 +75,14 @@ bool Movable::isItem() {
 	return false;
 }
 
+int Movable::getTileCount() {
+	return (this->tileCount);
+}
+
+void Movable::resetTileCount() {
+	this->tileCount = 0;
+}
+
 // ------------------- Functional methods -------------------
 void Movable::update() {
 	//TODO: al metodo isAlive() llamar fuera de la clase y no entrar acá
@@ -117,6 +126,7 @@ void Movable::move() {
 			if (this->validTilePosition(newTilePosition)) {
 				this->setLastTile(this->getCurrentTile());
 				this->setCurrentTile(newTilePosition);
+				this->tileCount++;
 			} else {
 				this->setCouldContinue(false);
 			}

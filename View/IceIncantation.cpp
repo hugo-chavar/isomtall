@@ -13,8 +13,10 @@ IceIncantation::~IceIncantation() {
 
 void IceIncantation::impact(Daniable* daniable) {
 	if (daniable) {
-		GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ICE);
-		daniable->iceUp(5);
+		if (this->canHit()) {
+			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_ICE);
+			daniable->iceUp(5);
+		}
 		this->setTargetReached(true);
 		this->setAvailable(true);
 	}

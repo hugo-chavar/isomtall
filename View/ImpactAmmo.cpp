@@ -3,6 +3,8 @@
 #include "Logger.h"
 #include "../Common/StringUtilities.h"
 
+#define TOLERANCE 0.35
+
 ImpactAmmo::ImpactAmmo():Ammunition() {
 }
 
@@ -14,6 +16,33 @@ void ImpactAmmo::verify() {
 	this->impact(GameView::instance().getDaniableInTile(this->getCurrentTile()));
 	if (!this->isAlive())
 		this->setAvailable(true);
+}
+
+void ImpactAmmo::setRange(int range) {
+	this->range = range;
+}
+
+void ImpactAmmo::setPrecision(float precision) {
+	this->precision = precision;
+}
+
+int ImpactAmmo::getRange() {
+	return (this->range);
+}
+
+float ImpactAmmo::getPrecision() {
+	return (this->precision);
+}
+
+bool ImpactAmmo::canHit(){
+	float precision = Game::instance().getRandom();
+	float recorrido = (float)this->getTileCount()*100/(float)this->getRange();
+	this->resetTileCount();
+	precision = (precision*((float)TOLERANCE)*(100-recorrido)/100) + precision*(1-((float)TOLERANCE));
+	if (precision >= this->getPrecision()) {
+		return true;
+	}
+	return false;
 }
 
 void ImpactAmmo::deserialize(std::string in) {

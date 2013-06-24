@@ -33,6 +33,9 @@ void WeaponIceIncantator::strike(Daniable* target) {
 			iceIncantation->setDamage(this->getDamage());
 			iceIncantation->setDirection(this->getDirection());
 			iceIncantation->setVelocity(150.0);//TODO: sacar harcodeo
+			iceIncantation->resetTileCount();
+			iceIncantation->setPrecision(this->getPrecision());
+			iceIncantation->setRange(this->getRange());
 			iceIncantation->initialize();
 			GameView::instance().getWorldView()->addAmmunition(iceIncantation);
 		}
