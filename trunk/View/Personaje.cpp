@@ -8,6 +8,7 @@
 #include "Bow.h"
 #include "HandGrenade.h"
 #include "BombDropper.h"
+#include "IceBombDropper.h"
 #include "WeaponIceIncantator.h"
 #include "Game.h"
 #include "GameView.h"
@@ -1104,6 +1105,13 @@ void Personaje::loadWeapons() {
 	bombDropper->setOwner(this->getPlayerName());
 	bombDropper->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
 	this->getWeapons().push_back(bombDropper);
+
+	IceBombDropper* iceBombDropper = new IceBombDropper();
+	iceBombDropper->setOwner(this->getPlayerName());
+	//iceBombDropper->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
+	this->getWeapons().push_back(iceBombDropper);
+
+
 	WeaponIceIncantator* weaponIceIncantator = new WeaponIceIncantator();
 	weaponIceIncantator->setOwner(this->getPlayerName());
 	weaponIceIncantator->initialize(true,2,this->modelo->getDanoMaximo(),this->modelo->getPrecisionMinima());
