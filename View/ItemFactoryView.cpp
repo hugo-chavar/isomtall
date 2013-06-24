@@ -90,7 +90,7 @@ ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <i
 		case 10:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemIceSpell");
 			if (sprite)
-				return new ItemCrystallBall("ItemIceSpell",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+				return new ItemIceSpell("ItemIceSpell",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
 		case 11:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemMagicWand");
 			if (sprite)
