@@ -12,6 +12,7 @@ namespace view{
 			std::vector <SDL_Surface*> shadows;
 			void setSurface(SDL_Surface* surface);
 			void addShadowSurface(SDL_Surface* surface);
+			bool whiteShadowCreated;
 
 		public:
 			static const Uint32 HEXA_WHITE_COLOR;
@@ -33,8 +34,9 @@ namespace view{
 			void setTransparent();
 			void setOpaque();
 			void createShadow(Uint32 color);
-			void createShadows();
-
+			void createBlackShadow();
+			void createWhiteShadow();
+			bool hasWhiteShadow();
 	};
 }
  
