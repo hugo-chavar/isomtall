@@ -11,7 +11,7 @@ Mission::~Mission() {
 }
 
 void Mission::initialize() {
-	int numberOfFlags = 1; // HARCODEADO
+	int numberOfFlags = 1 + rand() % 5;
 	for (int i=0; i<numberOfFlags; i++) {
 		flags.push_back(new Flag());
 	}
