@@ -67,7 +67,7 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 	if (tile->hasOtherEntity()) {
 		posSpriteEntity = mapEntityToSprite.at(tile->getOtherEntityName());
 		tile->createOtherEntity(spriteArray[posSpriteEntity]);
-	} else if( (GameView::instance().isSinglePlayerGame()) && (tile->getRelatedTile() == NULL)) {
+	}/* else if( (GameView::instance().isSinglePlayerGame()) && (tile->getRelatedTile() == NULL)) {
 		ItemFactoryView factory;
 		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(), true);
 		if(item) {
@@ -75,12 +75,13 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 			tile->setOtherEntity(item);
 		}	
 
-	}
+	}*/
 	tilesMap.insert(make_pair(tile->getPosition(), tile));
 	return tile;
 }
 
 void view::Stage::generateStage() {
+	ItemFactoryView factory;
 	TileModel* tileModel = worldModel->getFirstTile();
 	this->firstTile = this->createTile(tileModel);
 	tileLevels.push_back(this->firstTile);
@@ -103,6 +104,12 @@ void view::Stage::generateStage() {
 			tilePos = tileModel->getRelatedTile()->getPosition();
 			prevTile = tilesMap.at(tilePos);
 			currentTile->setRelatedTile(prevTile);
+		}  else if (GameView::instance().isSinglePlayerGame()) {
+			ItemView* item = factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,currentTile->getPosition(), true);
+			if (item) {
+				itemsArray.push_back(item);
+				currentTile->setOtherEntity(item);
+			}
 		}
 		currentTile = currentTile->getNextTile();
 		tileModel = tileModel->getNextTile();
