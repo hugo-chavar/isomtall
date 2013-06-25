@@ -55,6 +55,7 @@ void Grenade::update() {
 			break;
 		}
 		case EXPLOSIVE_EXPLOSION: {
+			this->setCurrentTile(this->getTargetTile());
 			GameView::instance().getGameSounds().playSoundEffect(SOUND_INDEX_EXPLOSION);
 			this->setStatus(EXPLOSIVE_BURNING);
 			explosionSprite->setAccumulatedTime(0.0);

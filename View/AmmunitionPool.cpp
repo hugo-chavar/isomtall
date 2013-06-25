@@ -221,7 +221,7 @@ void AmmunitionPool::setNextIceBombIndex(unsigned value) {
 void AmmunitionPool::deserialize(string argument) {
 	bool found = false;
 	std::vector <std::string> data;
-	common::Logger::instance().log(argument);
+	//common::Logger::instance().log(argument);
 	stringUtilities::splitString(argument, data, '?');
 
 	if (data[0] == "Arrow") {
@@ -259,8 +259,14 @@ void AmmunitionPool::deserialize(string argument) {
 				if ((this->grenades[i]->getAmmoId() == data[1]) && (!this->grenades[i]->isAvailable())) {
 					this->grenades[i]->positionFromString(data[2]);
 					this->grenades[i]->directionFromString(data[3]);
-					this->grenades[i]->setCouldContinue(data[4] == "A");
-					this->grenades[i]->setStatusFromString(data[5]);
+					//this->grenades[i]->setCouldContinue(data[4] == "A");
+					this->grenades[i]->setStatusFromString(data[4]);
+					this->grenades[i]->setTargetTile(stringUtilities::stringToPairInt(data[5]));
+					if (this->grenades[i]->getStatus() == EXPLOSIVE_BURNING) {
+						this->grenades[i]->setEndStatusTime(0);
+						this->grenades[i]->setStatus(EXPLOSIVE_EXPLOSION);
+						
+					}
 					found = true;
 				}
 			}
@@ -272,8 +278,8 @@ void AmmunitionPool::deserialize(string argument) {
 					grenade->setAmmoID(data[1]);
 					grenade->positionFromString(data[2]);
 					grenade->directionFromString(data[3]);
-					grenade->setCouldContinue(data[4] == "A");
-					grenade->setStatusFromString(data[5]);
+					//grenade->setCouldContinue(data[4] == "A");
+					grenade->setStatusFromString(data[4]);
 					GameView::instance().getWorldView()->addAmmunition(grenade);
 				}
 			}
