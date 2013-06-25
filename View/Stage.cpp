@@ -356,7 +356,7 @@ void Stage::initItemsFromString(std::string ItemsData)
 		if ((itemSprite != NULL) && (chestSprite != NULL) ) {
 
 			ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
-			if(pos.first!=-1)
+			if(pos.first!=-1 && state!=DEATH_ITEM)
 				this->getTileAt(pos)->setOtherEntity(item);
 			itemsArray.push_back(item);
 		}
