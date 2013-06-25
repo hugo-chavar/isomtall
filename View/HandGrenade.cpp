@@ -2,7 +2,7 @@
 #include "HandGrenade.h"
 
 HandGrenade::HandGrenade() {
-	this->setAmmo(5);//TODO: quitar harcodeo
+	this->setAmmo(500);//TODO: quitar harcodeo
 	Grenade* grenade = NULL;
 	for (unsigned int i = 0; i < HANDGRENADE_POOL_SIZE; i++) {
 		grenade = new Grenade();
