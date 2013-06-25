@@ -350,7 +350,9 @@ void Stage::initItemsFromString(std::string ItemsData)
 		i++;
 		pair<int,int> pos=stringUtilities::stringToPairInt(tile);
 		Sprite* itemSprite= this->getSpriteWithName(itemName);
+		itemSprite->initWhiteShadows();
 		Sprite* chestSprite= this->getSpriteWithName("Chest");
+		chestSprite->initWhiteShadows();
 		if ((itemSprite != NULL) && (chestSprite != NULL) ) {
 
 			ItemView* item=factory.createItem(itemSprite,chestSprite,state,pos,itemName);
