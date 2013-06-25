@@ -70,15 +70,16 @@ void GameView::initialize() {
 		mission.initialize();
 
 	this->menu->setNotificationFont(this->getFontSize(20));
-	
+	this->menu->setNotificationMessage("UPDATING FILES..");
+	this->menu->setNotificationFontColor(Camera::RED_COLOR);
 	this->menu->setNotificationMessage("SERVER CONNECTION LOST");
 	this->menu->setNotificationMessage("ERROR LOADING CLIENT");
 	this->menu->setNotificationMessage("SERVER UNREACHABLE");
 	this->menu->setNotificationMessage("UPDATED FAILED CONNECTION LOST");
 	this->menu->setNotificationMessage("USER NAME UNAVAILABLE");
 	this->menu->setNotificationMessage("CONNECTION LOGIN FAILED");
-	this->menu->setNotificationMessage("UPDATING FILES..");
-	this->menu->setNotificationMessage("SINGLE PLAYER NOT IMPLEMENTED");
+	
+
 
 	this->getGameSounds().initialize();
 	this->getGameSounds().startBackgroundMusic();
@@ -361,6 +362,7 @@ void GameView::update() {
 			}
 		break;
 		case STATUS_INITIALIZING:
+			this->menu->hideButtons();
 			this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
 			this->menu->setNotificationMessage("RETRIEVING CURRENT STAGE..");
 			this->menu->setDisplayNotification(true);
