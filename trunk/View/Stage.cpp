@@ -22,7 +22,7 @@ view::Stage::Stage() {
 }
 
 view::Stage::~Stage() {
-	Logger::instance().log("view::Stage::~Stage()");
+	//Logger::instance().log("view::Stage::~Stage()");
 	this->cleanUp();
 }
 
