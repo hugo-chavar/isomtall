@@ -179,6 +179,10 @@ void Personaje::setCenteredInTile(bool centroTile) {
 }
 
 void Personaje::detenerAnimacion() {
+	if (modelo->getEstado() == ATACAR) {
+		this->getWeapons()[WEAPON_SWORD]->strike(currentEnemy);
+		currentEnemy = NULL;
+	}
 	modelo->terminarAnimacion();
 	int currentAnimationNumber = modelo->getEstado();
 	this->setCurrentSpritePosition(this->calculateSpritePosition(currentAnimationNumber));
@@ -576,7 +580,7 @@ void Personaje::atacar() {
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
 			//ataque con espada
-				this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
+				//this->getWeapons()[this->selectedWeapon]->strike(currentEnemy);
 				this->modelo->atacar();
 				break;
 			}
@@ -614,7 +618,9 @@ void Personaje::atacar() {
 				break;
 			}
 		}
-		currentEnemy = NULL;
+		if (this->selectedWeapon != WEAPON_SWORD) {
+			currentEnemy = NULL;
+		}
 	}
 }
 
@@ -717,6 +723,8 @@ void Personaje::setCurrentEnemy(int tileX, int tileY) {
 		if (currentEnemy == this) {
 			currentEnemy = NULL;
 		}
+	} else {
+		currentEnemy = NULL;
 	}
 }
 
