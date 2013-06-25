@@ -57,7 +57,8 @@ void Sprite::loadSurfaces() {
 void Sprite::addSurface(std::string path) {
 	view::Surface* auxSurface = new view::Surface();
 	auxSurface->load(path);
-	auxSurface->createShadows();
+	//auxSurface->createShadows();
+	auxSurface->createBlackShadow();
 	this->surfaces.push_back(auxSurface);
 }
 
@@ -78,4 +79,12 @@ void Sprite::restart() {
 
 void Sprite::setCurrentSurfaceNumber(unsigned surfaceNumber) {
 	this->currentSurfaceNumber = surfaceNumber;
+}
+
+void Sprite::initWhiteShadows() {
+	for ( unsigned i = 0; i < this->surfaces.size(); i++) {
+		if (!this->surfaces[i]->hasWhiteShadow()) {
+			this->surfaces[i]->createWhiteShadow();
+		}
+	}
 }

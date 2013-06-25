@@ -12,6 +12,7 @@ const Uint32 view::Surface::HEXA_GREEN_COLOR = 0x22B14C;
 view::Surface::Surface() {
 	this->surface = NULL;
 	this->shadows.clear();
+	this->whiteShadowCreated = false;
 }
 
 SDL_Surface* view::Surface::getSurface() {
@@ -133,8 +134,16 @@ void view::Surface::createShadow(Uint32 color) {
 	SDL_FreeSurface(shadowSurface);
 }
 
-void view::Surface::createShadows() {
+void view::Surface::createBlackShadow() {
 	this->createShadow(HEXA_BLACK_COLOR);
+	//this->createShadow(HEXA_LIGHT_BLUE_COLOR);
+}
+
+void view::Surface::createWhiteShadow() {
 	this->createShadow(HEXA_LIGHT_BLUE_COLOR);
-	//this->createShadow(HEXA_BLUE_COLOR);
+	this->whiteShadowCreated = true;
+}
+
+bool view::Surface::hasWhiteShadow() {
+	return this->whiteShadowCreated;
 }

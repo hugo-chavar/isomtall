@@ -35,6 +35,7 @@ public:
 	int getSurfaceHeight();
 	void setCurrentSurfaceNumber(unsigned surfaceNumber);
 	void restart();
+	void initWhiteShadows();
 };
 
 #endif

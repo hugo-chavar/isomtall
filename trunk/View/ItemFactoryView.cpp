@@ -46,56 +46,81 @@ ItemView* ItemFactoryView::generateRandomItem(float porcentajeAparicion,unsigned
 ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself)
 {
 	Sprite* hiddenSprite=GameView::instance().getWorldView()->getSpriteWithName("Chest");
+	hiddenSprite->initWhiteShadows();
 	Sprite* sprite=NULL;
 	switch (itemPos){
 		case 0:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("Lamp");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new Lamp("Lamp",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 1:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("RunningBoots");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new RunningBoots("RunningBoots",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 2:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("MapItem");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new MapItem("MapItem",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 3:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("Heart");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new Heart("Heart",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 4:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("MagicBottle");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new MagicBottle("MagicBottle",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 5:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("Shield");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new Shield("Shield",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 6:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemHProteccion");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemHProteccion("ItemHProteccion",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 7:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemTerremoto");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemTerremoto("ItemTerremoto",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 8:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemFlecha");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemFlecha("ItemFlecha",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 9:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("crystalBall");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemCrystallBall("crystalBall",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 10:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemIceSpell");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemIceSpell("ItemIceSpell",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		case 11:
 			sprite=GameView::instance().getWorldView()->getSpriteWithName("ItemMagicWand");
-			if (sprite)
+			if (sprite) {
+				sprite->initWhiteShadows();
 				return new ItemMagicWand("ItemMagicWand",_state,pos,hiddenSprite,sprite,_canReviveForHimself);
+			}
 		}
 	return NULL;
 }
