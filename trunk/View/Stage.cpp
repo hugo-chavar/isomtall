@@ -12,7 +12,7 @@
 #include "Logger.h"
 
 #define START_LEVEL 0
-#define EXTRA_TILES_TO_RENDER 12
+#define EXTRA_TILES_TO_RENDER 5
 
 view::Stage::Stage() {
 	spriteArray.clear();
@@ -67,9 +67,9 @@ TileView* view::Stage::createTile(TileModel* tileModel) {
 	if (tile->hasOtherEntity()) {
 		posSpriteEntity = mapEntityToSprite.at(tile->getOtherEntityName());
 		tile->createOtherEntity(spriteArray[posSpriteEntity]);
-	} else if(GameView::instance().isSinglePlayerGame()){
+	} else if( (GameView::instance().isSinglePlayerGame()) && (tile->getRelatedTile() == NULL)) {
 		ItemFactoryView factory;
-		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(),true);//Harcodeo porcentaje de items
+		ItemView* item=factory.generateRandomItem(Game::instance().world()->itemsPercentage(),HIDDEN_ITEM,tile->getPosition(), true);
 		if(item) {
 			itemsArray.push_back(item);
 			tile->setOtherEntity(item);
@@ -217,7 +217,7 @@ void view::Stage::alignLevel(std::pair<int,int> &k1, std::pair<int,int> &k2) {
 	cameraReferenceTile.first -= EXTRA_TILES_TO_RENDER;
 	pair<int,int> leftBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(0,camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
 	pair<int,int> rightBottom = this->worldModel->pixelToTileCoordinatesInStage(make_pair(camera.getWidth(),camera.getHeight()), camera.getOffsetX(), camera.getOffsetY());
-	leftBottom.second += EXTRA_TILES_TO_RENDER;
+	leftBottom.second += 2*(EXTRA_TILES_TO_RENDER) - 2;
 	rightBottom.first += EXTRA_TILES_TO_RENDER;
 	int endLevel = this->fixLevel(leftBottom);
 	this->fixKeyLeftBottom(endLevel, leftBottom);
