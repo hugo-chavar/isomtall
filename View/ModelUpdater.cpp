@@ -198,8 +198,10 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				this->requestSynchronize();
 
 				std::string restart = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_RESTART);
-				if ((GameView::instance().getStatus() == STATUS_RESTART_GAME) && (restart == "1"))
+				if ((GameView::instance().getStatus() == STATUS_RESTART_GAME) && (restart == "1")) {
+					GameView::instance().getMyPersonaje()->personajeModelo()->restartVision();
 					GameView::instance().setStatus(STATUS_SIMULATION_READY_TO_RECONNECT);
+				}
 			}
 			break;
 		case OPCODE_CLIENT_COMMAND:

@@ -103,11 +103,6 @@ void GameView::restart() {
 		this->personaje->setActive(true);
 		mission.initialize();
 	}
-	else {
-		int range = this->personaje->personajeModelo()->getVision()->getRangeVision();
-		delete (this->personaje->personajeModelo()->getVision());
-		this->personaje->personajeModelo()->createVision(range);
-	}
 
 	if (mapInitialized) {
 		this->camera.setCenterPixel(this->personaje->getRealPixelPosition());

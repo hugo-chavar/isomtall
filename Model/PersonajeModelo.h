@@ -61,7 +61,7 @@ public:
 	
 	
 	void update();
-
+	void restartVision();
 	void restartDirectories();
 	void increaseSpeed(float factor);
 	void atacar();
