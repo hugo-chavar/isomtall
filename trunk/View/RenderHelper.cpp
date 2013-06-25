@@ -32,10 +32,14 @@ void RenderHelper::setEndLevel(int value) {
 }
 
 void RenderHelper::setEmptyLevel() {
-	if (this->currentLevel > this->emptyEndLevel)
+	if (this->currentLevel > this->emptyEndLevel) {
 		this->emptyEndLevel = this->currentLevel;
-	else
+		if (this->emptyStartLevel == -1) {
+			this->emptyStartLevel = this->currentLevel;
+		}
+	} else {
 		this->emptyStartLevel = this->currentLevel;
+	}
 	this->currentLevel--;
 }
 
