@@ -53,6 +53,7 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->setActive(false);
 	this->resetSpriteState();
 	this->setIceSpell(false);
+	this->setStatus(ENTITY_NORMAL);
 
 	//Loading relationship between animations and sounds.
 	this->getAnimationFxRelation().push_back(SOUND_INDEX_NO_SOUND); // Looking north
@@ -691,9 +692,9 @@ void Personaje::render(Camera& camera) {
 		}
 	}
 	if (!this->hasValidSprite()) {
-		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
+		camera.render(this->spriteRect, GameView::instance().getErrorImage()->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 	} else {
-		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isFogged()));
+		camera.render(this->spriteRect, sprites[this->getCurrentSpritePosition()]->getSurfaceAt(freezedSpriteState)->getSurfaceToShow(this->isImmobilized()));
 	}
 	SDL_SetClipRect(this->labelName, (&cuadroMensaje));
 	camera.render(cuadroMensaje, this->labelName);
@@ -930,15 +931,10 @@ void Personaje::updateFromString(std::string data) {
 	this->weapons[this->getSelectedWeapon()]->setAmmo(weapon.second);
 	this->weapons[this->getSelectedWeapon()]->setRange(stringUtilities::stringToInt(splittedData[15]));
 	this->modelo->getVision()->updateFromString(splittedData[16]);
-	if(splittedData[16]=="T"){
-		this->iceUp();
-	} else {
-		this->notIceUp();
-	}
+	this->setStatusFromString(splittedData[17]);
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
-	//GameView::instance().getWorldView()->getTileAt(std::make_pair<unsigned,unsigned>(2,2))->getOtherEntity()->iceUp(20);
 }
 
 int Personaje::getCurrentSpritePosition() {
