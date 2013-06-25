@@ -134,6 +134,7 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
 			this->setConnected(true);
 
+			GameView::instance().setStatus(STATUS_INITIALIZING);
 			//GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);

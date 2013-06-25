@@ -360,6 +360,11 @@ void GameView::update() {
 				this->setStatus(STATUS_GAME_OVER);
 			}
 		break;
+		case STATUS_INITIALIZING:
+			this->menu->setNotificationFontColor(Camera::GREEN_COLOR);
+			this->menu->setNotificationMessage("RETRIEVING CURRENT STAGE..");
+			this->menu->setDisplayNotification(true);
+		break;
 		case STATUS_SIMULATION_CONNECTED:
 			this->menu->setDisplayNotification(false);
 			this->menu->hideButtons();
