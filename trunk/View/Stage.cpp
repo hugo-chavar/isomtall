@@ -12,7 +12,7 @@
 #include "Logger.h"
 
 #define START_LEVEL 0
-#define EXTRA_TILES_TO_RENDER 9
+#define EXTRA_TILES_TO_RENDER 12
 
 view::Stage::Stage() {
 	spriteArray.clear();
