@@ -13,16 +13,21 @@ AmmunitionPool::AmmunitionPool() {
 	for (unsigned int i = 0; i < NUMBERAMMUNITIONS; i++) {
 		arrow = new Arrow();
 		arrow->setVelocity(0);
+		arrow->setAvailable(true);
 		this->arrows.push_back(arrow);
 		grenade = new Grenade();
 		grenade->setVelocity(0);
+		grenade->setAvailable(true);
 		this->grenades.push_back(grenade);
 		iceIncantation = new IceIncantation();
 		iceIncantation->setVelocity(0);
+		iceIncantation->setAvailable(true);
 		this->iceIncantations.push_back(iceIncantation);
 		bomb = new Bomb();
+		bomb->setAvailable(true);
 		this->bombs.push_back(bomb);
 		iceBomb = new IceBomb();
+		iceBomb->setAvailable(true);
 		this->iceBombs.push_back(iceBomb);
 	}
 	this->setNextArrowIndex(0);
