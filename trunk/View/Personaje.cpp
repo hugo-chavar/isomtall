@@ -154,11 +154,13 @@ void Personaje::clearSprites() {
 
 void Personaje::addNextSprite(AnimatedEntity* entity) {
 	SpriteAnimado* newSprite = new SpriteAnimado(entity);
+	newSprite->initWhiteShadows();
 	sprites.push_back(newSprite);
 }
 
 void Personaje::addFirstSprite(AnimatedEntity* entity) {
 	SpriteAnimado* newSprite = new SpriteAnimado(entity);
+	newSprite->initWhiteShadows();
 	sprites.push_back(newSprite);
 	this->setRectangle(modelo->getPosition(), newSprite);
 }
