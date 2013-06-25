@@ -476,6 +476,12 @@ void PersonajeModelo::update() {
 	this->vision->updatePosition(this->getPosition());
 }
 
+void PersonajeModelo::restartVision() {
+	int range = this->vision->getRangeVision();
+	delete (this->vision);
+	this->createVision(range);
+}
+
 void PersonajeModelo::restartDirectories() {
 	this->animation->imagesPaths()->restartCurrentPosition();
 }
