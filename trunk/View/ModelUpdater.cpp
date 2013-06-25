@@ -133,7 +133,9 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 		break;
 		case OPCODE_SIMULATION_CONNECTION_ESTABLISHED:
 			this->setConnected(true);
-			GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+
+			//GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
+
 			instructionOut.setOpCode(OPCODE_SIMULATION_SYNCHRONIZE);
 			//common::Logger::instance().log("SENT SYNCHRONIZE INSTRUCTION TO SIMULATION AT: " + stringUtilities::unsignedToString(SDL_GetTicks()));
 
@@ -160,15 +162,19 @@ void ModelUpdater::processInstruction(Instruction& instructionIn) {
 				std::string stageNumber = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_STAGE_NUMBER);
 				if (stageNumber != "") {
 					Game::instance().setStageNumber(stringUtilities::stringToUnsigned(stageNumber));
+					Game::instance().restart();
+					GameView::instance().restart();
 					if (GameView::instance().getStatus() == STATUS_RESTART_GAME) {
-						Game::instance().restart();
-						GameView::instance().restart();
+						//Game::instance().restart();
+						//GameView::instance().restart();
 						Instruction instruction;
 						instruction.clear();
 						instruction.setOpCode(OPCODE_CLIENT_COMMAND);
 						instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_RESTART_GAME,"RESTART CHARACTER");
 						this->addInstruction(instruction);
 					}
+					else
+						GameView::instance().setStatus(STATUS_SIMULATION_CONNECTED);
 				}
 
 				std::string syncData = instructionIn.getArgument(INSTRUCTION_ARGUMENT_KEY_CHARACTER_INIT);
