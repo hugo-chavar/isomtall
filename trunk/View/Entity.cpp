@@ -83,8 +83,7 @@ void Entity::iceUp() {
 		this->setStatus(ENTITY_FROZEN);
 }
 
-void Entity::notIceUp()
-{
+void Entity::notIceUp() {
 	if(this->status==ENTITY_FROZEN)
 		this->setStatus(previousStatus);
 }
