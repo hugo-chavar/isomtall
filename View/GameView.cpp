@@ -42,10 +42,10 @@ void GameView::initialize() {
 	this->camera.configure();
 	bool mapInitialized = false;
 	bool chatInitialized = false;
-	this->characterFactory.initialize();
 	this->chat.setBigFont(this->getFontSize(16));
 	this->chat.setSmallFont(this->getFontSize(10));
 	mapInitialized = worldView.initialize();
+	this->characterFactory.initialize();
 	chatInitialized = chat.initialize(camera);
 	worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
 	this->personaje = this->characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
