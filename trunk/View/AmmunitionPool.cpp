@@ -251,13 +251,11 @@ void AmmunitionPool::deserialize(string argument) {
 
 	else {
 		if (data[0] == "Grenade") {
-			common::Logger::instance().log("Granade"+argument);
 			for (unsigned int i=0; i<this->grenades.size(); i++) {
 				if ((!this->grenades[i]->isAlive()) && (!this->grenades[i]->isAvailable())) {
 					this->grenades[i]->setAvailable(true);
 				}
 				if ((this->grenades[i]->getAmmoId() == data[1]) && (!this->grenades[i]->isAvailable())) {
-					//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 					this->grenades[i]->positionFromString(data[2]);
 					this->grenades[i]->directionFromString(data[3]);
 					//this->grenades[i]->setCouldContinue(data[4] == "A");
