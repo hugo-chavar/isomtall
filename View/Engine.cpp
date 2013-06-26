@@ -112,21 +112,6 @@ void Engine::onMultiplayerEvent(SDL_Event* sdlEvent) {
 					}
 					break;
 				}
-			case SDLK_a:
-				{
-					if (!GameView::instance().getChat()->isTyping())
-					{
-						GameView::instance().getCamera()->setVibrating();
-						//instruction.clear();
-						//instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						////TODO: Create an option header
-						//string opcion_caracter;
-						//opcion_caracter.push_back(OPCION_ATACAR);
-						//instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-						//GameView::instance().getModelUpdater()->addInstruction(instruction);
-					}
-					break;
-				}
 			case SDLK_u:
 				{
 					if (!GameView::instance().getChat()->isTyping())
@@ -268,21 +253,6 @@ void Engine::onSingleplayerEvent(SDL_Event* sdlEvent) {
 						//running = false;
 						GameView::instance().setStatus(STATUS_EXIT);
 					}
-					break;
-				}
-			case SDLK_a:
-				{
-					/*if (!GameView::instance().getChat()->isTyping())
-					{*/
-						GameView::instance().getCamera()->setVibrating();
-						//instruction.clear();
-						//instruction.setOpCode(OPCODE_CLIENT_COMMAND);
-						////TODO: Create an option header
-						//string opcion_caracter;
-						//opcion_caracter.push_back(OPCION_ATACAR);
-						//instruction.insertArgument(INSTRUCTION_ARGUMENT_KEY_COMMAND_STATE,opcion_caracter);
-						//GameView::instance().getModelUpdater()->addInstruction(instruction);
-					/*}*/
 					break;
 				}
 				case SDLK_u:
