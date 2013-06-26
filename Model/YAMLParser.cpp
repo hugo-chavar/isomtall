@@ -468,7 +468,7 @@ void operator >> (const Node& node, sItemsDef& itemsDef) {
 		const Node& node_aux = node["def"];
 		for(unsigned int i=0; i<node_aux.size(); i++) {
 			sItem item;
-			//node_aux[i] >> item;
+			node_aux[i] >> item;
 			if ( item.type.size() > 0 )
 				itemsDef.vItems.push_back(item);
 		}
