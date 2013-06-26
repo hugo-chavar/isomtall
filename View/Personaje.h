@@ -11,11 +11,13 @@
 #include "SDL_ttf.h"
 #include "Weapon.h"
 #include "Hechizo.h"
+#include "Mutex.h"
 
 class Personaje : public Daniable {
 public:
 	Personaje(PersonajeModelo*); //,std::string char_id
 	~Personaje();
+	Mutex mutex;
 	
 	//----- Getters/Setters methods -----
 	PersonajeModelo* personajeModelo();

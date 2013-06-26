@@ -42,6 +42,7 @@ enum gameStatus_t {
 #include "StatsTable.h"
 #include "GameSounds.h"
 #include "Mission.h"
+#include "Mutex.h"
 
 
 #ifndef event_t

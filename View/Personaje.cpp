@@ -684,6 +684,7 @@ void Personaje::rendertShield(Camera& camera) {
 }
 
 void Personaje::render(Camera& camera) {
+	this->mutex.lock();
 	SDL_Rect cuadroMensaje;
 
 	cuadroMensaje.x = static_cast<Sint16>((2*spriteRect.x + spriteRect.w - this->labelName->w)/2);
@@ -713,14 +714,18 @@ void Personaje::render(Camera& camera) {
 	camera.render(cuadroMensaje, this->labelName);
 	this->renderStatsBars(camera);
 	//this->rendertShield(camera);
+	this->mutex.unlock();
 }
 
 void Personaje::setDestino(int xTile, int yTile){
+	//this->mutex.lock();
 	modelo->setDestino(xTile, yTile);
 	setCurrentEnemy(xTile, yTile);
+	//this->mutex.unlock();
 }
 
 void Personaje::setCurrentEnemy(int tileX, int tileY) {
+	
 	std::pair<int, int> tileDestino(tileX, tileY);
 	if (modelo->isThereAnEnemy(tileX, tileY)) {
 		this->modelo->orientar(tileDestino);
@@ -736,7 +741,7 @@ void Personaje::setCurrentEnemy(int tileX, int tileY) {
 }
 
 void Personaje::perseguirEnemigo() {
-	
+	//this->mutex.lock();
 	if (currentEnemy == NULL) {
 		this->modelo->setFollowingEnemy(false);
 		return;
@@ -750,6 +755,7 @@ void Personaje::perseguirEnemigo() {
 		currentEnemy = NULL;
 	}
 	this->modelo->setFollowingEnemy(false);
+	
 }
 //
 //void Personaje::animateModel(char animacion) {
@@ -757,6 +763,7 @@ void Personaje::perseguirEnemigo() {
 //}
 
 void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
+	//this->mutex.lock();
 	float deltaTime = this->getDeltaTime()*100;
 	if (delta.first != 0) { //Hay movimiento en x
 		if (delta.second != 0) { //Diagonal
@@ -774,9 +781,12 @@ void Personaje::calcularvelocidadRelativa(std::pair<float, float>& factor) {
 		}
 
 	}
+	//this->mutex.unlock();
 }
 
 int Personaje::calculateSpritePosition(int currentAnimationNumber) {
+	
+	//this->mutex.lock();
 	int orientacion = modelo->getOrientacion();
 	
 	if ((currentAnimationNumber != MOVIMIENTO)) {
@@ -827,10 +837,15 @@ int Personaje::calculateSpritePosition(int currentAnimationNumber) {
 			delta.second = 0;
 			break;
 					}
-		default: return ESTADO_ERROR;
+		default: {
+			//this->mutex.unlock();
+			return ESTADO_ERROR;
+				 }
 		}
 	}
+	//this->mutex.unlock();
 	return ((currentAnimationNumber - 1)*8 + orientacion);
+	//this->mutex.unlock();
 }
 
 Personaje::~Personaje(){
@@ -911,6 +926,8 @@ std::string Personaje::updateToString() {
 
 //tilex, tiley; pixelx, pixely; isFreezed; nro_status; nro_surface
 void Personaje::updateFromString(std::string data) {
+	this->mutex.lock();
+	
 	vector <std::string> splittedData;
 	stringUtilities::splitString(data, splittedData, ';');
 	//std::pair<int,int> tilePosition = stringUtilities::stringToPairInt(splittedData[0]);
@@ -952,6 +969,7 @@ void Personaje::updateFromString(std::string data) {
 	//common::Logger::instance().log("simulation posicion:"+splittedData[1]+" posicionTile:"+splittedData[0]+" SpritePosition:"+splittedData[3]);
 	this->update();
 	this->setActive(true);
+	this->mutex.unlock();
 }
 
 int Personaje::getCurrentSpritePosition() {
@@ -959,11 +977,13 @@ int Personaje::getCurrentSpritePosition() {
 }
 
 void Personaje::setCurrentSpritePosition(int pos) {
+	//this->mutex.lock();
 	if (pos < 0) {
 		this->currentSpritePosition = 0;
 		return;
 	}
 	this->currentSpritePosition = pos;
+	//this->mutex.unlock();
 }
 
 std::pair<int,int> Personaje::getPixelPosition() {
@@ -976,8 +996,10 @@ std::pair<int,int> Personaje::getRealPixelPosition()
 }
 
 void Personaje::setPixelPosition(std::pair<int,int> pixel) {
+	//this->mutex.lock();
 	spriteRect.x = static_cast<Sint16>(pixel.first);
 	spriteRect.y = static_cast<Sint16>(pixel.second);
+	//this->mutex.unlock();
 }
 
 //tilex,tiley;pixelx,pixely;isFreezed;nro_status;nro_surface~datos_vision
