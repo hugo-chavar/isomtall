@@ -254,11 +254,26 @@ int PersonajeModelo::delay() {
 }
 
 bool PersonajeModelo::isThereAnEnemy(int tileX, int tileY) {
-	std::pair<int, int> tileDestino(tileX, tileY);
 
+	if (!canAct(tileX, tileY)) {
+		return false;
+	}
+	if (canAttack(tileX, tileY)) {
+		return true;
+	}
+	return false;
+}
+
+bool PersonajeModelo::canAct(int tileX, int tileY) {
 	if ((!this->isActive())||(this->estaAnimandose())) {
 		return false;
 	}
+	return true;
+}
+
+bool PersonajeModelo::canAttack(int tileX, int tileY) {
+	std::pair<int, int> tileDestino(tileX, tileY);
+
 	if ((vision != NULL) && (vision->isInsideVision(tileDestino)) && (GameView::instance().getDaniableInTile(tileDestino) != NULL)) {
 		return true;
 	}

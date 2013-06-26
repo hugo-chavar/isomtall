@@ -53,6 +53,8 @@ public:
 	int mover(std::pair<int, int>& destino, float &velocidadAni);	//Devuelve el estado, que son las orientaciones. Devuelve la velocidad del movimiento, la corrección de la vista no se la hace
 	std::string nextDirectory();
 	bool hasDirectoryRemaining();
+	bool canAct(int tileX, int tileY);
+	bool canAttack(int tileX, int tileY);
 	
 	
 	int fps();
