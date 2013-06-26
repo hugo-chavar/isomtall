@@ -577,6 +577,10 @@ void Personaje::atacar() {
 			return;
 		if (!this->getWeapons()[this->selectedWeapon]->isInsideRange(currentEnemy->getPosition()))
 			return;
+		if (this->getWeapons()[this->selectedWeapon]->getAmmo() < 1) {
+			currentEnemy = NULL;
+			return;
+		}
 		
 		switch (this->selectedWeapon) {
 			case WEAPON_SWORD: {
