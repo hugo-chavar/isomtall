@@ -312,8 +312,6 @@ void ModelUpdater::syncPlayer(std::string onePlayer) {
 	if ( !personaje) {
 		GameView::instance().newPersonaje(playerFields[0],playerFields[1]);
 		personaje = GameView::instance().getPersonaje(playerFields[0]);
-		//std::pair <int, int> pos = stringUtilities::stringToPairInt(playerFields[02]);
-		//personaje->personajeModelo()->setPosition(pos);
 		personaje->setActive(false);
 	}
 }

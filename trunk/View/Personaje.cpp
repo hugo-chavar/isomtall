@@ -17,10 +17,11 @@
 #define PROT_HALO_FILE_PATH "../Images/Halo.png"
 #define TINY_SHIELD_FILE_PATH "../Images/tShield.png"
 
-Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
+Personaje::Personaje(PersonajeModelo* pj) { //,std::string char_id
 	this->font = NULL;
 	modelo = pj;
-	this->character_id=char_id;
+	//this->character_id=char_id;
+	this->playerName = "";
 	this->setPosition(pj->getPosition());
 	this->setCurrentSpritePosition(this->calculateSpritePosition(pj->getEstado()));
 	velocidad = pj->getVelocidad();
@@ -47,7 +48,7 @@ Personaje::Personaje(PersonajeModelo* pj,std::string char_id) {
 	this->vidaActual = modelo->getVidaMaxima();
 	this->magiaActual = modelo->getMagiaMaxima();
 	this->shieldResistance = 0;
-	this->shieldAbsortion=0;
+	this->shieldAbsortion = 0;
 	this->setFogged(false);
 	this->setCenteredInTile(true);
 	this->setActive(false);
@@ -1002,10 +1003,10 @@ void Personaje::setPlayerName(std::string name) {
 std::string Personaje::getPlayerName() {
 	return this->playerName;
 }
-
-std::string Personaje::getCharacterId() {
-	return this->character_id;
-}
+//
+//std::string Personaje::getCharacterId() {
+//	return this->character_id;
+//}
 
 std::string Personaje::idToString() {
 	std::string out = this->getPlayerName();
@@ -1148,4 +1149,12 @@ bool Personaje::hasIceSpell() {
 
 void Personaje::setIceSpell(bool value) {
 	this->iceSpell = value;
+}
+
+void Personaje::setAvailable(bool value) {
+	this->available = value;
+}
+
+bool Personaje::isAvailable() {
+	return this->available;
 }

@@ -1,4 +1,3 @@
-
 #include "GameView.h"
 #include "TileModel.h"
 #include "Constants.h"
@@ -25,12 +24,12 @@ GameView::GameView() {
 
 GameView::~GameView() {
 	//Logger::instance().log("GameView::~GameView()");
-	map<string, Personaje*>::iterator it;
-	it = personajes.begin();
-	for( ;it != personajes.end(); it++) {
-		if ((*it).second)
-			delete (*it).second;
-	}
+	//map<string, Personaje*>::iterator it;
+	//it = personajes.begin();
+	//for( ;it != personajes.end(); it++) {
+	//	if ((*it).second)
+	//		delete (*it).second;
+	//}
 	if (errorImage != NULL) {
 		delete errorImage;
 	}
@@ -43,16 +42,16 @@ void GameView::initialize() {
 	this->camera.configure();
 	bool mapInitialized = false;
 	bool chatInitialized = false;
-	
+	this->characterFactory.initialize();
 	this->chat.setBigFont(this->getFontSize(16));
 	this->chat.setSmallFont(this->getFontSize(10));
-		mapInitialized = worldView.initialize();
-		chatInitialized = chat.initialize(camera);
-		worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
-		this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
-		this->addPersonaje(this->getPlayerName(), this->personaje);
-		if (!mapInitialized)
-			this->setStatus(STATUS_INIT_ERROR);
+	mapInitialized = worldView.initialize();
+	chatInitialized = chat.initialize(camera);
+	worldView.setTilesInCamera(this->camera.getWidth(), this->camera.getHeight());
+	this->personaje = this->characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
+	this->addPersonaje(this->getPlayerName(), this->personaje);
+	if (!mapInitialized)
+		this->setStatus(STATUS_INIT_ERROR);
 
 
 	if (mapInitialized) {
@@ -96,7 +95,8 @@ void GameView::restart() {
 		map<string, Personaje*>::iterator it;
 		it = personajes.find(this->getPlayerName());
 		personajes.erase(it);
-		delete (this->personaje);
+		this->characterFactory.remove(this->personaje);
+		//delete (this->personaje);
 		Game::instance().world()->loadNamedChars();
 		this->personaje = characterFactory.createViewCharacter(this->getPlayerCharacterId(), this->getPlayerName());
 		this->addPersonaje(this->getPlayerName(), this->personaje);

@@ -9,7 +9,8 @@
 #include "Grenade.h"
 #include "Bomb.h"
 #include "IceBomb.h"
-#include "Logger.h"
+//#include "Logger.h"
+#include "CharacterFactory.h"
 
 #define START_LEVEL 0
 #define EXTRA_TILES_TO_RENDER 5
@@ -296,6 +297,14 @@ void Stage::deleteStage() {
 	tilesMap.clear();
 	tileLevels.clear();
 	itemsArray.clear();
+
+	std::vector<Entity*>::iterator it;
+	it = ammunitions.begin();
+	while (it != ammunitions.end()) {
+		((Ammunition*)*it)->setAvailable(true);
+		ammunitions.erase(it);
+	}
+
 }
 
 bool Stage::addOtherEntity(pair <int,int> position, string entityName) {

@@ -28,23 +28,19 @@ ItemView* ItemFactoryView::createItem(Sprite* itemSprite,Sprite* hiddenSprite,un
 	return item;
 }
 
-ItemView* ItemFactoryView::generateRandomItem(float porcentajeAparicion,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself)
-{
-	if(porcentajeAparicion>0)
-	{
-	int indice=static_cast <int> ((100.0/porcentajeAparicion) * NUMBERITEMS);
-	//int random= rand() % indice;
-	int random=(rand() * ( 1.0 / ( RAND_MAX + 1.0 ) ))*indice;
-	if(random<NUMBERITEMS)
-		{
-		return this->generateItem(random,_state,pos,_canReviveForHimself);
+ItemView* ItemFactoryView::generateRandomItem(float porcentajeAparicion,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself) {
+	if (porcentajeAparicion > 0) {
+		int indice = static_cast <int> ((100.0/porcentajeAparicion) * NUMBERITEMS);
+		//int random= rand() % indice;
+		int random = static_cast <int> ((rand() * ( 1.0 / ( RAND_MAX + 1.0 ) ))*indice);
+		if (random < NUMBERITEMS) {
+			return this->generateItem(random, _state, pos, _canReviveForHimself);
 		}
 	}
 	return NULL;
 }
 
-ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself)
-{
+ItemView* ItemFactoryView::generateItem(int itemPos,unsigned _state,std::pair <int,int> pos,bool _canReviveForHimself) {
 	Sprite* hiddenSprite=GameView::instance().getWorldView()->getSpriteWithName("Chest");
 	hiddenSprite->initWhiteShadows();
 	Sprite* sprite=NULL;
