@@ -14,7 +14,7 @@
 
 class Personaje : public Daniable {
 public:
-	Personaje(PersonajeModelo*,std::string char_id);
+	Personaje(PersonajeModelo*); //,std::string char_id
 	~Personaje();
 	
 	//----- Getters/Setters methods -----
@@ -31,7 +31,7 @@ public:
 	std::string getPlayerName();
 	void setFont(TTF_Font* font);
 	float getShieldResistance();
-	std::string getCharacterId();
+	//std::string getCharacterId();
 	std::pair<int,int> getPosicionActualEnTiles();
 	void setCurrentEnemy(int tileX, int tileY);
 	void setDestino(int xTile, int yTile);
@@ -48,6 +48,8 @@ public:
 	void setInvulnerable(bool inv);
 	bool hasIceSpell();
 	void setIceSpell(bool value);
+	void setAvailable(bool value);
+	bool isAvailable();
 
 	//----- Simulation methods -----
 	void update();
@@ -144,11 +146,12 @@ private:
 	float protTime;
 	float protCost;
 	std::string hechizoActualMulti;
-	std::string character_id;
+	//std::string character_id;
 	unsigned selectedWeapon;
 	std::vector<Weapon*> weapons;
 	bool iceSpell;
-	bool wandSpell;
+	//bool wandSpell;
+	bool available;
 
 };
 #endif

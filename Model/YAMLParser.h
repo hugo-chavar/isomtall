@@ -76,7 +76,7 @@ struct sStage {
 	sItemsDef itemsDef;
 	vector <sMainCharacter> vMainCharacters_aux;
 	vector <PersonajeModelo*> vMainCharacters;
-	map <string,PersonajeModelo*> mapMainCharacters;
+	//map <string,PersonajeModelo*> mapMainCharacters;
 };
 
 struct Stages {

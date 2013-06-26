@@ -6,11 +6,9 @@ ItemCrystallBall::ItemCrystallBall(string _name,unsigned _state,std::pair <int,i
 }
 
 
-ItemCrystallBall::~ItemCrystallBall(void)
-{
+ItemCrystallBall::~ItemCrystallBall(void) {
 }
 
-void ItemCrystallBall::modifyCharacter(Personaje* personaje)
-{
+void ItemCrystallBall::modifyCharacter(Personaje*) {
 
 }
