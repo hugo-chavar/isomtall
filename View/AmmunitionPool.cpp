@@ -221,7 +221,6 @@ void AmmunitionPool::setNextIceBombIndex(unsigned value) {
 void AmmunitionPool::deserialize(string argument) {
 	bool found = false;
 	std::vector <std::string> data;
-	//common::Logger::instance().log(argument);
 	stringUtilities::splitString(argument, data, '?');
 
 	if (data[0] == "Arrow") {
@@ -252,11 +251,13 @@ void AmmunitionPool::deserialize(string argument) {
 
 	else {
 		if (data[0] == "Grenade") {
+			common::Logger::instance().log("Granade"+argument);
 			for (unsigned int i=0; i<this->grenades.size(); i++) {
 				if ((!this->grenades[i]->isAlive()) && (!this->grenades[i]->isAvailable())) {
 					this->grenades[i]->setAvailable(true);
 				}
 				if ((this->grenades[i]->getAmmoId() == data[1]) && (!this->grenades[i]->isAvailable())) {
+					//common::Logger::instance().log("Client start: "+ stringUtilities::unsignedToString(clientStart));
 					this->grenades[i]->positionFromString(data[2]);
 					this->grenades[i]->directionFromString(data[3]);
 					//this->grenades[i]->setCouldContinue(data[4] == "A");
@@ -267,6 +268,12 @@ void AmmunitionPool::deserialize(string argument) {
 						this->grenades[i]->setStatus(EXPLOSIVE_EXPLOSION);
 						
 					}
+					this->grenades[i]->setCurrentTile(stringUtilities::stringToPairInt(data[6]));
+					this->grenades[i]->setInitialTile(stringUtilities::stringToPairInt(data[7]));
+					this->grenades[i]->setVelocity(stringUtilities::stringToFloat(data[8]));
+					this->grenades[i]->setLastTile(stringUtilities::stringToPairInt(data[9]));
+					this->grenades[i]->setCouldContinue(data[10]=="T");
+					this->grenades[i]->setTargetReached(data[11]=="T");
 					found = true;
 				}
 			}
@@ -280,6 +287,13 @@ void AmmunitionPool::deserialize(string argument) {
 					grenade->directionFromString(data[3]);
 					//grenade->setCouldContinue(data[4] == "A");
 					grenade->setStatusFromString(data[4]);
+					grenade->setTargetTile(stringUtilities::stringToPairInt(data[5]));
+					grenade->setCurrentTile(stringUtilities::stringToPairInt(data[6]));
+					grenade->setInitialTile(stringUtilities::stringToPairInt(data[7]));
+					grenade->setVelocity(stringUtilities::stringToFloat(data[8]));
+					grenade->setLastTile(stringUtilities::stringToPairInt(data[9]));
+					grenade->setCouldContinue(data[10]=="T");
+					grenade->setTargetReached(data[11]=="T");
 					GameView::instance().getWorldView()->addAmmunition(grenade);
 				}
 			}
